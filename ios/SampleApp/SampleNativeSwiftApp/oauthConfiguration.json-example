@@ -1,0 +1,10 @@
+{
+   "client_id": "...",
+   "client_secret": "...",
+   "authorize_uri": ".../prweb/PRRestService/oauth2/v1/authorize",
+   "token_uri": ".../prweb/PRRestService/oauth2/v1/token",
+   "redirect_uris": ["..."],
+   "scope": "...",
+   "use_pkce": true,
+   "keychain": false
+}

@@ -1,0 +1,65 @@
+//
+// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
+//
+
+import Combine
+import Foundation
+import SwiftUI
+import OSLog
+
+// TODO: Rename/reorganize
+class ComponentManager {
+    var componentEventCallback: ((String, String) -> Void)?
+    var formSubmitCallback: (() -> Void)?
+
+    private var providers = [String: any ComponentProvider]()
+    private var context = [String: AnyCancellable]()
+
+    init () {
+        addComponent("1", type: "RootContainer")
+    }
+
+    func upadateComponentProps(_ id: String, _ propsJson: String) {
+        Logger.current().info("Received properties, id=\(id), props=\(propsJson)")
+        do {
+            try providers[id]?.updateProperties(propsJson)
+        } catch {
+            Logger.current().error("unable to update component props: \(error)")
+        }
+    }
+
+    func addComponent(_ id: String, type: String) {
+        guard let provider = try? PMSDKComponentManager.shared.create(type) else {
+            Logger.current().error("Can not create component provider for \(type)")
+            return
+        }
+        Logger.current().debug("Adding \(type) with id \(id)")
+
+        providers[id] = provider
+
+        (provider as? ContainerProvider)?.useManager(self)
+
+        let coder = JSONEncoder()
+        context[id] = provider.eventSubject
+            .debounce(for: .milliseconds(200), scheduler: RunLoop.main)
+            .tryMap({ try coder.encode($0) })
+            .map({ String(decoding: $0, as: UTF8.self) })
+            .sink(receiveCompletion: { completion in
+                if case let .failure (err) = completion {
+                    Logger.current().error("can not emit event \(err.localizedDescription)")
+                }
+            }, receiveValue: { [weak self] encodedEvent in
+                self?.componentEventCallback?(id, encodedEvent)
+            })
+    }
+
+    func removeComponent(_ id: String) {
+        Logger.current().debug( "Removing component \(id)")
+        providers.removeValue(forKey: id)
+        context.removeValue(forKey: id)
+    }
+
+    func view(for id: String) -> AnyView? {
+        providers[id]?.view
+    }
+}

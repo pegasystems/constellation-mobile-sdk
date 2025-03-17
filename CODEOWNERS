@@ -1,0 +1,13 @@
+@@@KillerBeesAndroid Marek.Pelc@pega.com Lukasz.Gajewski@pega.com
+@@@KillerBeesiOS Jerzy.Lukjaniec@pega.com Tomasz.Mlocek@pega.com
+
+@@@All @@KillerBeesAndroid @@KillerBeesiOS
+
+# default
+* @@All
+
+# ios
+/ios/ @@KillerBeesiOS
+
+# android
+/android/ @@KillerBeesAndroid
