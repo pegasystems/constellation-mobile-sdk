@@ -5,8 +5,8 @@
 iosWVJSEngine=true;
 
 sdkbridge = {
-  updateProps: function(param, param2) {
-      window.webkit.messageHandlers.formHandler.postMessage(["upadateComponentProps", String(param), param2]);
+  updateComponent: function(param, param2) {
+      window.webkit.messageHandlers.formHandler.postMessage(["updateComponent", String(param), param2]);
   },
 
   addComponent: function(param, param2) {
@@ -17,11 +17,19 @@ sdkbridge = {
       window.webkit.messageHandlers.formHandler.postMessage(["removeComponent", String(param)]);
   },
 
-  formFinished(successMessage) {
+  onReady: function() {
+      window.webkit.messageHandlers.formHandler.postMessage(["ready"]);
+  },
+
+  onFinished: function(successMessage) {
       window.webkit.messageHandlers.formHandler.postMessage(["finished", successMessage]);
   },
 
-  formCancelled() {
+  onCancelled: function() {
       window.webkit.messageHandlers.formHandler.postMessage(["cancelled"]);
+  },
+
+  onError: function(error) {
+      console.error("onError not implemented.");
   }
 };

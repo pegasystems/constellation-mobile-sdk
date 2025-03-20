@@ -4,75 +4,39 @@
 
 package com.pega.mobile.constellation.sample.components
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.pega.mobile.constellation.sdk.bridge.ComponentEvent
-import com.pega.mobile.constellation.sdk.components.containers.FieldComponent
-import com.pega.mobile.constellation.sdk.components.fields.toBaseFieldState
-import com.pega.mobile.constellation.sdk.viewmodel.FieldState
-import com.pega.mobile.constellation.sdk.viewmodel.BaseFieldState
-import com.pega.mobile.constellation.sdk.viewmodel.FieldViewModel
-import org.json.JSONObject
+import androidx.compose.material3.Slider
+import androidx.compose.runtime.Composable
+import com.pega.mobile.constellation.sdk.components.core.ComponentContext
+import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
+import com.pega.mobile.constellation.sdk.components.fields.FieldComponent
+import com.pega.mobile.constellation.sdk.components.fields.FieldViewModel
+import com.pega.mobile.dxcomponents.compose.containers.Column
+import com.pega.mobile.dxcomponents.compose.controls.form.Label
 
-class CustomSliderComponent(private val sendEventCallback: (ComponentEvent) -> Unit) :
-    FieldComponent {
-    override val viewModel = CustomSliderViewModel(
-        onValueChange = {
-            sendEventCallback(ComponentEvent.changeValueComponentEvent(it))
-        },
-        onFocusChanged = { focused, value ->
-            sendEventCallback(ComponentEvent.changeValueWithFocusComponentEvent(value, focused))
-        })
-
-    override fun updateProps(propsJson: JSONObject) {
-        Log.d(TAG, "updating props: $propsJson")
-        viewModel.update(propsJson.toSliderState())
-    }
-
-    private fun JSONObject.toSliderState(): SliderState {
-        return SliderState(
-            baseFieldState = toBaseFieldState()
-        )
-    }
-
-    companion object {
-        private const val TAG = "CustomEmailComponent"
-    }
+class CustomSliderComponent(context: ComponentContext) : FieldComponent(context) {
+    override val viewModel = SliderViewModel()
 }
 
-data class SliderState(
-    val baseFieldState: BaseFieldState
-) : FieldState by baseFieldState
+class SliderViewModel : FieldViewModel()
 
-class CustomSliderViewModel(
-    private val onValueChange: (String) -> Unit,
-    private val onFocusChanged: (Boolean, String) -> Unit
-) : FieldViewModel {
-    private val _state = MutableLiveData<SliderState>()
-    override val state: LiveData<SliderState>
-        get() = _state
-    private var _focused: Boolean by mutableStateOf(false)
-
-    override fun update(state: FieldState) {
-        _state.postValue(state as SliderState)
-    }
-
-    override fun setValue(value: String) {
-        _state.value?.let { stateValue ->
-            _state.value = stateValue.copy(baseFieldState = stateValue.baseFieldState.copy(value = value))
+class CustomSliderRenderer : ComponentRenderer<SliderViewModel> {
+    @Composable
+    override fun Render(viewModel: SliderViewModel) {
+        with(viewModel) {
+            Column {
+                Label(
+                    label = label,
+                    required = required,
+                    disabled = disabled,
+                    readOnly = readOnly
+                )
+                Slider(
+                    value = value.toFloatOrNull() ?: 0f,
+                    onValueChange = { value = it.toInt().toString() },
+                    steps = 9,
+                    valueRange = 0f..100f
+                )
+            }
         }
-        onValueChange(value)
-    }
-
-    override fun setFocus(focused: Boolean) {
-        if (focused != _focused) {
-            _focused = focused
-            onFocusChanged(focused, state.value?.value ?: "")
-        }
-
     }
 }

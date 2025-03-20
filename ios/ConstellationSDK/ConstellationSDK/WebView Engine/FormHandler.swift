@@ -30,9 +30,10 @@ class FormHandler: NSObject, WKScriptMessageHandler {
             return
         }
         switch type {
-        case "upadateComponentProps": handleUpdateComponent(array)
+        case "updateComponent": handleUpdateComponent(array)
         case "addComponent": handleAddComponent(array)
         case "removeComponent": handleRemoveComponent(array)
+        case "ready": handleFormReady()
         case "finished": handleFormFinished(array)
         case "cancelled": handleFormCancel()
         default:
@@ -44,7 +45,7 @@ class FormHandler: NSObject, WKScriptMessageHandler {
         if
             let cId = input.componentId,
             let props = input[2] as? String {
-            manager?.upadateComponentProps(cId, props)
+            manager?.updateComponent(cId, props)
         } else {
             Logger.current().error("Unexpected parameters types in updateComponent")
         }
@@ -64,6 +65,10 @@ class FormHandler: NSObject, WKScriptMessageHandler {
             return
         }
         manager?.removeComponent(cId)
+    }
+
+    private func handleFormReady() {
+        Logger.current().debug("Form ready.")
     }
 
     private func handleFormFinished(_ input: [Any]) {

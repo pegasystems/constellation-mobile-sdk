@@ -19,7 +19,6 @@ export class EmailComponent {
   helperText;
   placeholder;
 
-  // fieldControl = new FormControl('', null);
   actionsApi;
   propName;
   compId;
@@ -35,20 +34,10 @@ export class EmailComponent {
   }
 
   init() {
-    console.log("Initing custom email component!")
+    console.log("Initiating custom email component!")
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
-
-    // if (this.formGroup$) {
-    //   // add control to formGroup
-    //   this.formGroup$.addControl(this.controlName$, this.fieldControl);
-    //   this.fieldControl.setValue(this.value$);
-    //   this.bHasForm$ = true;
-    // } else {
-    //   this.bReadonly$ = true;
-    //   this.bHasForm$ = false;
-    // }
   }
 
   destroy() {
@@ -63,25 +52,19 @@ export class EmailComponent {
     this.componentsManager.onComponentRemoved(this);
   }
 
-  // Callback passed when subscribing to store change
   onStateChange() {
     this.checkAndUpdate();
   }
 
   checkAndUpdate() {
-    // Should always check the bridge to see if the component should
-    // update itself (re-render)
     const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
 
-    // ONLY call updateSelf when the component should update
     if (bUpdateSelf) {
       this.updateSelf();
     }
   }
 
-  // updateSelf
   updateSelf() {
-    // moved this from ngOnInit() and call this from there instead...
     this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
     this.testId = this.configProps$.testId;
     this.label$ = this.configProps$.label;
@@ -101,15 +84,8 @@ export class EmailComponent {
       this.bVisible$ = getBooleanValue(this.configProps$.visibility);
     }
 
-    // disabled
     if (this.configProps$.disabled != undefined) {
       this.bDisabled$ = getBooleanValue(this.configProps$.disabled);
-    }
-
-    if (this.bDisabled$) {
-      // this.fieldControl.disable();
-    } else {
-      // this.fieldControl.enable();
     }
 
     if (this.configProps$.readOnly != null) {
@@ -121,25 +97,15 @@ export class EmailComponent {
 
     this.componentReference = this.pConn$.getStateProps().value;
 
-    // trigger display of error message with field control
-    if (this.jsComponentPConnectData.validateMessage != null && this.jsComponentPConnectData.validateMessage != '') {
-      // const timer = interval(100).subscribe(() => {
-      //   this.fieldControl.setErrors({ message: true });
-      //   this.fieldControl.markAsTouched();
-
-      //   timer.unsubscribe();
-      // });
-    }
-
     const props = {
       value: this.value$,
-      label: `Custom js - ${this.label$}`,
+      label: this.label$,
       visible: this.bVisible$,
       required: this.bRequired$,
       disabled: this.bDisabled$,
       readOnly: this.bReadonly$,
       helperText: this.helperText,
-      placeholder: this.placeholder,
+      placeholder: "custom@placeholder",
       validateMessage: this.jsComponentPConnectData.validateMessage || ''
     }
     console.log(`sending Email props via bridge, id: ${this.compId}, props: ${props}`);
@@ -166,20 +132,7 @@ export class EmailComponent {
   }
 
   getErrorMessage() {
-    let errMessage = '';
-
-    // look for validation messages for json, pre-defined or just an error pushed from workitem (400)
-    // if (this.fieldControl.hasError('message')) {
-    //   errMessage = this.jsComponentPConnectData.validateMessage ?? '';
-    //   return errMessage;
-    // }
-    // if (this.fieldControl.hasError('required')) {
-    //   errMessage = 'You must enter a value';
-    // } else if (this.fieldControl.errors) {
-    //   errMessage = this.fieldControl.errors.toString();
-    // }
-
-    return errMessage;
+    return '';
   }
 }
 

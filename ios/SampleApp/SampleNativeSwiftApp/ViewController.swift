@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     
     var loadMobileSDKContent: UIButton!
     var oauth: OAuth2?
-    var controller: UIHostingController<PMSDKCreateCaseView>?
+    weak var controller: UIHostingController<PMSDKCreateCaseView>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,22 +73,18 @@ class ViewController: UIViewController {
 
     @objc private func showNewPegaCase(_ sender: UIButton) {
         Task {
-            let authorization = try Authentication(oauthJsonFile: "oauthConfiguration")
-            oauth = try await authorization.prepareOauthClient()
+            let authorization = Authorization(settings: SDKConfiguration.oauth2Configuration)
+            oauth = try await authorization.prepareOAuthClient()
 
             // 3. Create case form creation
-            let caseClass = "DIXL-MediaCo-Work-SDKTesting"
-            //let caseClass = "DIXL-MediaCo-Work-NewService"
-            // let caseClass = "DIXL-MediaCo-Work-CustomComponent"
-
-            // It works only with `DIXL-MediaCo-Work-NewService` case type.
-            // let startingFields = PMSDKCreateCaseStartingFields()
+            let startingFields = PMSDKCreateCaseStartingFields()
+            // Set proper starting fields as defined in casetype model:
             // startingFields.set(value: "Johnny", forKey: "FirstName")
 
             let hostingController = UIHostingController(
                 rootView: PMSDKCreateCaseView(
-                    pegaURL: URL(string: "https://lab-05423-bos.lab.pega.com/prweb")!,
-                    caseClass: caseClass,
+                    pegaURL: SDKConfiguration.environmentURL,
+                    caseClass: SDKConfiguration.caseClassName,
                     startingFields: startingFields,
                     delegate: self
                 )
@@ -131,12 +127,14 @@ extension ViewController: PMSDKCreateCaseViewDelegate {
 extension ViewController: PMSDKNetworkRequestDelegate {
     
     func shouldHandle(request: URLRequest) -> Bool {
-        true
-        /* previously:
-        if (request.url?.host() == SDKConfiguration.environmentURL.host()) {
+        if [
+            "release.constellation.pega.io",
+            "staging-cdn.constellation.pega.io",
+            SDKConfiguration.environmentURL.host()
+        ].contains(request.url?.host()) {
             return true
         }
-        return false*/
+        return false
     }
     
     func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse) {

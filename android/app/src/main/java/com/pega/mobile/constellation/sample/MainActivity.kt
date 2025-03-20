@@ -14,14 +14,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.pega.mobile.constellation.sample.components.CustomEmailComponent
-import com.pega.mobile.constellation.sample.components.CustomSliderComponent
+import com.pega.mobile.constellation.sample.CustomComponents.CustomDefinitions
 import com.pega.mobile.constellation.sample.http.AuthorizationInterceptor
 import com.pega.mobile.constellation.sample.ui.screens.MainScreen
 import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
-import com.pega.mobile.constellation.sdk.ComponentDefinition
-import com.pega.mobile.constellation.sdk.ConstellationMobileSDK
-import com.pega.mobile.constellation.sdk.SDKConfig
+import com.pega.mobile.constellation.sdk.ConstellationSdk
+import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
+import com.pega.mobile.constellation.sdk.components.core.ComponentManager
 import okhttp3.OkHttpClient
 
 class MainActivity : ComponentActivity() {
@@ -29,9 +28,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val config = buildConfig()
-        val httpClient = buildOkHttpClient()
-        val componentsOverrides = buildCustomComponentsMap()
-        val sdk = ConstellationMobileSDK(this, config, httpClient, componentsOverrides)
+
+        val sdk = ConstellationSdk.create(this, config)
 
         setContent {
             SampleSdkTheme {
@@ -44,27 +42,23 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun buildConfig() = SDKConfig(
-        pegaUrl = AppConfig.Pega.URL,
+    private fun buildConfig() = ConstellationSdkConfig(
+        pegaUrl = PegaConfig.URL,
         pegaVersion = "8.24.1",
-        caseClassName = AppConfig.Pega.CASE_CLASS_NAME,
-        startingFields = mapOf()
+        okHttpClient = buildOkHttpClient(),
+        componentManager = buildComponentManager()
     )
 
     private fun buildOkHttpClient() = OkHttpClient.Builder()
         .addInterceptor(AuthorizationInterceptor(this))
-        .addNetworkInterceptor {
-            val request = it.request()
-            Log.d("OkHttpClient", "request: $request")
-            it.proceed(request).also {
-                Log.d("OkHttpClient", "response: $it")
+        .addNetworkInterceptor { chain ->
+            val request = chain.request().also {
+                Log.d("OkHttpClient", "request: [${it.method}] ${it.url}")
+            }
+            chain.proceed(request).also {
+                Log.d("OkHttpClient", "response: [${it.code}] ${it.request.url}")
             }
         }.build()
 
-    // @formatter:off
-    private fun buildCustomComponentsMap() = mapOf(
-        "Email" to ComponentDefinition("components_overrides/email.component.override.js") { CustomEmailComponent(it) },
-        "MyCompany_MyLib_Slider" to ComponentDefinition("components_overrides/slider.component.override.js") { CustomSliderComponent(it) },
-    ) // @formatter:on
+    private fun buildComponentManager() = ComponentManager.create(CustomDefinitions)
 }
-

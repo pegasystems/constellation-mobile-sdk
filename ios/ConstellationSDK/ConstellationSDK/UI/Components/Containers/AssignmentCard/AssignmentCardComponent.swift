@@ -25,7 +25,6 @@ class AssignmentCardComponentProvider: ContainerProvider {
     }
 
     func updateProperties(_ jsonInput: String) throws {
-        properties.loading = false
         try JSONDecoder()
             .decode(DecodableAssignmentCardComponentProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)

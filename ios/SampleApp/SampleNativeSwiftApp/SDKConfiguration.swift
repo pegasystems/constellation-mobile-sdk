@@ -14,13 +14,13 @@ class SDKConfiguration {
         return url
     }()
     
-    static var accessToken: String = {
-        guard let accessToken = Bundle.main.infoDictionary?["PegaOAuth2AccessToken"] as? String else {
-            fatalError("Cannot retrieve Pega OAuth2 access token")
+    static var oauth2Configuration: [String: Any] = {
+        guard let oauth2Config = Bundle.main.infoDictionary?["PegaOAuth2Configuration"] as? [String: Any] else {
+            fatalError("Cannot retrieve OAuth2 configuration.")
         }
-        return accessToken
+        return oauth2Config
     }()
-    
+
     static var caseClassName: String = {
         guard let className = Bundle.main.infoDictionary?["PegaCaseClassName"] as? String else {
             fatalError("Cannot retrieve Case class name.")
