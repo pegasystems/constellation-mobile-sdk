@@ -2,16 +2,11 @@ name: "Perform build and checks"
 on:
   push
 jobs:
-  build-android:
+  validate-android:
     runs-on: 'ubuntu-latest'
-    outputs:
-      android-apk: 'android/app/build/intermediates/apk/debug/app-debug.apk'
     env:
       GRADLE: ./gradlew -Dorg.gradle.console=plain --info --stacktrace --no-daemon
-      EMULATOR: test_emulator
-      # EMULATOR_IMAGE: 'system-images;android-35;google_apis_playstore;x86_64'
       EMULATOR_IMAGE: 'system-images;android-35;google_apis;x86_64'
-      SCRIPTS: .github/workflows/scripts
 
     steps:
       - name: Enable KVM
@@ -29,72 +24,37 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up cache for Android SDK
-        id: cache-android-sdk
-        uses: actions/cache@v4
-        with:
-          path: ./android-sdk/
-          key: android-sdk
-
       - name: Set up cache for Gradle
         id: cache-gradle
         uses: actions/cache@v4
         with:
           path: ~/.gradle
           key: gradle-cache
-
       - name: Setup Android SDK
-        if: steps.cache-android-sdk.outputs.cache-hit != 'true'
-        run: |
-          echo "Downloading Android SDK Command Line Tools"
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-12266719_latest.zip
+        uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: 12266719
+          packages: '${{ env.EMULATOR_IMAGE }} platforms;android-35 platform-tools emulator'
+          log-accepted-android-sdk-licenses: false
 
-          echo "Unpacking Android SDK Command Line Tools"
-          rm -rf android-sdk || true
-          mkdir android-sdk
-          unzip commandlinetools-*.zip -d android-sdk
 
-          echo "Accepting licenses"
-          (while sleep 3; do echo "y"; done) | ./android-sdk/cmdline-tools/bin/sdkmanager --licenses --sdk_root=./android-sdk/
+      - name: Assemble sample application
+        run: cd android && $GRADLE clean assemble
 
-          echo "Updating and installing required tools"
-          ./android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk/ "${EMULATOR_IMAGE}" "platforms;android-35" "platform-tools" "emulator"
-
-      - name: Check tool versions
-        run: |
-          echo '----- Directory list ----'
-          echo "Current dir = ${PWD}"
-          ls -lh
-          echo "Dir = ${PWD}/android-sdk"
-          ls -lh "${PWD}/android-sdk"
-          echo '----- Java version ----'
-          java -version
-          echo '----- ADB version ----'
-          ./android-sdk/platform-tools/adb --version
-
-      - name: Android - gradle assemble
-        run: |
-          export ANDROID_SDK=${PWD}/android_sdk
-          cd android
-          $GRADLE clean assemble
-
-      - name: Android emulator - Set up
-        run: |
-          ${SCRIPTS}/setup_android_emulator.sh
-
-          echo Running tests
-          export ANDROID_SDK=${PWD}/android_sdk
-          cd android
-          $GRADLE connectedCheck
+      - name: Run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: Nexus 6
+          script: cd android && $GRADLE connectedCheck
 
       - name: Upload test artifacts
-        uses: actions/upload-artifact@v4
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: validate-android-artifacts
           path: android/sdk/build/reports/androidTests/connected/debug
           if-no-files-found: warn
           retention-days: 1
-
-
 
