@@ -58,3 +58,15 @@ jobs:
           if-no-files-found: warn
           retention-days: 1
 
+  validate-ios:
+    runs-on: 'macos-latest'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install esbuild
+        run: brew install esbuild
+
+      - name: iOS sample application
+        run: cd ios && xcodebuild -workspace SDK.xcworkspace/ -scheme SampleNativeSwiftApp clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+
