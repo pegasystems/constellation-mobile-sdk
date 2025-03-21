@@ -24,6 +24,7 @@ DerivedData
 ios/DerivedData/
 ios/build/
 ios/PegaReactNativeSDK.xcodeproj/project.pbxproj.orig
+simulator.id
 
 # Android/IntelliJ
 #

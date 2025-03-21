@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>PegaCaseClassName</key>
-	<string>DIXL-MediaCo-UPlusInd-Work-CaseInfo</string>
+	<string>DIXL-MediaCo-Work-SDKTesting</string>
 	<key>PegaOAuth2Configuration</key>
 	<dict>
 		<key>client_id</key>
-		<string></string>
+		<string>77513330016901238555</string>
 		<key>authorize_uri</key>
-		<string>https://mobility.lab.pega.com/prweb/PRRestService/oauth2/v1/authorize</string>
+		<string>https://lab-05423-bos.lab.pega.com/prweb/PRRestService/oauth2/v1/authorize</string>
 		<key>token_uri</key>
-		<string>https://mobility.lab.pega.com/prweb/PRRestService/oauth2/v1/token</string>
+		<string>https://lab-05423-bos.lab.pega.com/prweb/PRRestService/oauth2/v1/token</string>
 		<key>redirect_uris</key>
 		<array>
 			<string>com.pega://redirect</string>
@@ -22,7 +22,7 @@
 		<true/>
 	</dict>
 	<key>PegaSystemURL</key>
-	<string>https://mobility.lab.pega.com/prweb</string>
+	<string>https://lab-05423-bos.lab.pega.com/prweb</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

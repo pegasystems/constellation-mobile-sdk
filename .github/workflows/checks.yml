@@ -59,7 +59,7 @@ jobs:
           retention-days: 1
 
   validate-ios:
-    runs-on: 'macos-latest'
+    runs-on: 'macos-15'
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -67,6 +67,48 @@ jobs:
       - name: Install esbuild
         run: brew install esbuild
 
-      - name: iOS sample application
-        run: cd ios && xcodebuild -workspace SDK.xcworkspace/ -scheme SampleNativeSwiftApp clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+      - name: Create new test simulator
+        run: |
+          xcodebuild -version
+          echo "Listing available devices / iOSes:"
+          xcrun simctl list
+          echo "Deleting simulator SDKTestSimulator (if exists)"
+          xcrun simctl delete SDKTestSimulator || true
+          echo "Creating new SDKTestSimulator"
+          xcrun simctl create SDKTestSimulator com.apple.CoreSimulator.SimDeviceType.iPhone-16 com.apple.CoreSimulator.SimRuntime.iOS-18-2 | tee simulator.id
+
+      - name: iOS sample application UI tests
+        run: |
+          cd ios
+          echo $PWD
+          rm -rf build || true
+          mkdir build
+          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeSwiftApp -destination "platform=iOS Simulator,id=$(cat ../simulator.id)" -resultBundlePath ./build/iOSTests.xcresult clean test
+
+      - name: List xcresults
+        if: always()
+        run: |
+          cd ios
+          find . -iname "*.xcResult"
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validate-ios-artifacts
+          path: ios/build
+          if-no-files-found: warn
+          retention-days: 1
+
+      - name: iOS sample application build
+        run: |
+          cd ios
+          echo $PWD
+          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeSwiftApp clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+
+      - name: Delete test simulator
+        if: always()
+        run: |
+          echo "Deleting simulator SDKTestSimulator (if exists)"
+          xcrun simctl delete SDKTestSimulator || true
 
