@@ -1,43 +1,71 @@
 //
-//  SampleNativeSwiftAppUITests.swift
-//  SampleNativeSwiftAppUITests
-//
-//  Created by Czarny, Piotr on 24/03/2025.
+// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
 //
 
 import XCTest
 
 final class SampleNativeSwiftAppUITests: XCTestCase {
+    private lazy var app: XCUIApplication = XCUIApplication()
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+        try super.setUpWithError()
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app.launchArguments += ["forceLogin"]
+        app.launch()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        screenshot()
+        try super.tearDownWithError()
     }
 
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+    private func acceptAlert() {
+        // addUIInterruptionMonitor does not seem to work anymore, see:
+        // https://developer.apple.com/forums/thread/737880
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let alertButton = springboard.buttons["Continue"].firstMatch
+        if alertButton.waitForExistence(timeout: 10.0) {
+            alertButton.tap()
         }
+    }
+
+    private func screenshot() {
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot, quality: XCTAttachment.ImageQuality.medium)
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    @MainActor
+    func testHappyPath() throws {
+        let timeout = 30.0
+        let sdkLabel = app.staticTexts["Pega Mobile Constellation SDK"].firstMatch
+        let createButton = app.buttons["Create a new Case"].firstMatch
+        let loginField = app.webViews.textFields["User name *"].firstMatch
+        let passField = app.webViews.secureTextFields["Password *"].firstMatch
+        let loginButton = app.webViews.buttons["Log in"].firstMatch
+
+        // !!!!!!!! MOVE THIS TO GITHUB SECRETS !!!!!!!!!
+        let login = "rep@mediaco"
+        let pass = "rules@1234"
+
+        XCTAssertTrue(sdkLabel.waitForExistence(timeout: timeout))
+        XCTAssertTrue(createButton.waitForExistence(timeout: timeout))
+        createButton.tap()
+        acceptAlert()
+
+        XCTAssertTrue(loginField.waitForExistence(timeout: timeout))
+        XCTAssertTrue(passField.waitForExistence(timeout: timeout))
+        XCTAssertTrue(loginButton.waitForExistence(timeout: timeout))
+        loginField.tap()
+        loginField.typeText(login)
+        passField.tap()
+        passField.typeText(pass)
+        loginButton.tap()
+
+        screenshot()
+        sleep(240)
+        screenshot()
+        print("X")
     }
 }

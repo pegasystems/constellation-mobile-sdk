@@ -76,11 +76,6 @@ class ViewController: UIViewController {
             let authorization = Authorization(settings: SDKConfiguration.oauth2Configuration)
             oauth = try await authorization.prepareOAuthClient()
 
-            // Make sure to present login screen every time if argument is passed, used in UI Tests
-            if ProcessInfo.processInfo.arguments.contains("forceLogin") {
-                oauth?.forgetTokens()
-            }
-
             // 3. Create case form creation
             let startingFields = PMSDKCreateCaseStartingFields()
             // Set proper starting fields as defined in casetype model:
