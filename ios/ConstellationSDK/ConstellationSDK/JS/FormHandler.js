@@ -29,7 +29,7 @@ sdkbridge = {
       window.webkit.messageHandlers.formHandler.postMessage(["cancelled"]);
   },
 
-  onError: function(error) {
-      console.error("onError not implemented.");
+  onError: function(errorMessage) {
+      window.webkit.messageHandlers.formHandler.postMessage(["error", errorMessage]);
   }
 };

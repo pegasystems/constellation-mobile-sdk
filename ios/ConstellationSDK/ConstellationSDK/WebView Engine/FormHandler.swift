@@ -36,6 +36,7 @@ class FormHandler: NSObject, WKScriptMessageHandler {
         case "ready": handleFormReady()
         case "finished": handleFormFinished(array)
         case "cancelled": handleFormCancel()
+        case "error": handleFormError(array)
         default:
             Logger.current().error("Unexpected message type: \(type)")
         }
@@ -79,6 +80,12 @@ class FormHandler: NSObject, WKScriptMessageHandler {
     private func handleFormCancel() {
         Logger.current().debug("Form cancelled.")
         resultHandler(.cancelled)
+    }
+
+    private func handleFormError(_ input: [Any]) {
+        let errorMessage = input[1] as? String ?? "Unexpected."
+        Logger.current().debug("Form encountered an error: \(errorMessage)")
+        resultHandler(.error(errorMessage))
     }
 }
 

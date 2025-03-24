@@ -33,6 +33,8 @@ public struct PMSDKCreateCaseView: View {
                     delegate?.createCaseViewDidCancelProcessing(self)
                 case .finished(let message):
                     delegate?.createCaseView(self, didFinishProcessingWith: message)
+                case .error(let message):
+                    delegate?.createCaseView(self, didFailProcessingWith: message)
                 }
             }
         }
@@ -41,5 +43,6 @@ public struct PMSDKCreateCaseView: View {
 
 public protocol PMSDKCreateCaseViewDelegate: AnyObject {
     func createCaseView(_ view: PMSDKCreateCaseView, didFinishProcessingWith message: String?)
+    func createCaseView(_ view: PMSDKCreateCaseView, didFailProcessingWith errorMessage: String)
     func createCaseViewDidCancelProcessing(_ view: PMSDKCreateCaseView)
 }
