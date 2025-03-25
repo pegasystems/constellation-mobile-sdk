@@ -4,8 +4,10 @@
 
 import Foundation
 import ConstellationSDK
+import os
 
 class MockedNetwork: PMSDKNetworkRequestDelegate {
+    lazy var logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "SampleNativeMockedApp", category: "MockedNetwork")
 
     private func loadResponse(name: String, type: String) -> String {
         let path = Bundle.main.path(forResource: name, ofType: type)
@@ -62,7 +64,7 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
             "application/json"
         }
         let urlResponse = createResponse(url: request.url!, contentType: contentType)
-        print("Returning mocked data for \(fileNameWithExt)")
+        logger.log("Returning mocked data for \(fileNameWithExt)")
         return (data, urlResponse)
     }
 

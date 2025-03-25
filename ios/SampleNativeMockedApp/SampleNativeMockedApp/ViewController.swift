@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     let mockedNetwork = MockedNetwork()
 
     override func viewDidLoad() {
-        print("Testujemy!!11")
         super.viewDidLoad()
 
         configurePegaSDK()
