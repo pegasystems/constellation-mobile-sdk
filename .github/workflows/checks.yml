@@ -83,7 +83,7 @@ jobs:
           echo $PWD
           rm -rf build || true
           mkdir build
-          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeSwiftApp -destination "platform=iOS Simulator,id=$(cat ../simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 3 clean test
+          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeMockedApp -destination "platform=iOS Simulator,id=$(cat ../simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 3 clean test
 
       - name: Upload test artifacts
         if: always()

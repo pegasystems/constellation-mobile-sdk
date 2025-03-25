@@ -1,43 +1,72 @@
 //
-//  SampleNativeMockedAppUITests.swift
-//  SampleNativeMockedAppUITests
-//
-//  Created by Czarny, Piotr on 25/03/2025.
+// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
 //
 
 import XCTest
 
 final class SampleNativeMockedAppUITests: XCTestCase {
+    private lazy var app: XCUIApplication = XCUIApplication()
+    private let timeout = 15.0
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        try super.setUpWithError()
+        app.launch()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        screenshot()
+        app.terminate()
+        try super.tearDownWithError()
     }
 
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+    private func acceptAlert() {
+        // addUIInterruptionMonitor does not seem to work anymore, see:
+        // https://developer.apple.com/forums/thread/737880
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let alertButton = springboard.buttons["Continue"].firstMatch
+        if alertButton.waitForExistence(timeout: 10.0) {
+            alertButton.tap()
         }
+    }
+
+    private func screenshot() {
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot, quality: XCTAttachment.ImageQuality.medium)
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    private func verifyMainScreen() {
+        let sdkLabel = app.staticTexts["Pega Mobile Constellation SDK"].firstMatch
+        XCTAssertTrue(sdkLabel.waitForExistence(timeout: timeout))
+    }
+    private func tapCreateButton() {
+        let createButton = app.buttons["Create a new Case"].firstMatch
+        XCTAssertTrue(createButton.waitForExistence(timeout: timeout))
+        createButton.tap()
+    }
+
+    @MainActor
+    func testFormDisplay() throws {
+        let textFieldLabels = ["Name", "Surname", "Url", "description"]
+        verifyMainScreen()
+        tapCreateButton()
+        for index in 0...3 {
+            XCTAssertTrue(app.staticTexts[textFieldLabels[index]].waitForExistence(timeout: timeout))
+            XCTAssertTrue(app.textFields.element(boundBy: index).waitForExistence(timeout: timeout))
+        }
+        // Second text field should have also placeHolder value set
+        XCTAssertEqual(app.textFields.element(boundBy: 1).placeholderValue, "Surname here")
+    }
+
+    @MainActor
+    func testFormValidation() throws {
+        // Button's label contains some extra spaces (padding?)
+        let nextButton = app.buttons["Next   "].firstMatch
+        let validationText = app.staticTexts["Cannot be blank"]
+        tapCreateButton()
+        XCTAssertTrue(nextButton.waitForExistence(timeout: timeout))
+        nextButton.tap()
+        XCTAssertTrue(validationText.waitForExistence(timeout: timeout))
     }
 }
