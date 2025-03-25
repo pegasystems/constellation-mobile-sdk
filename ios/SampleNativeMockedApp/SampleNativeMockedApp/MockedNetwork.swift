@@ -9,13 +9,16 @@ import os
 class MockedNetwork: PMSDKNetworkRequestDelegate {
     lazy var logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "SampleNativeMockedApp", category: "MockedNetwork")
 
-    private func loadResponse(name: String, type: String) -> String {
+    private func loadResponseData(name: String, type: String) -> Data {
         let path = Bundle.main.path(forResource: name, ofType: type)
         if let path = path {
             do {
-                let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
-                return content
-            } catch {}
+                return try Data(contentsOf: URL(fileURLWithPath: path))
+                //let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8).data(using: .utf8)!
+                //return content
+            } catch {
+                fatalError("Incorrect data in response \(name) of type \(type)")
+            }
         }
         fatalError("Cannot load response \(name) of type \(type)")
     }
@@ -30,6 +33,39 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
         return HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
     }
 
+    private func getFileNameAndExt(fromComponent fileNameWithExt: String) -> (String, String) {
+        let splittedFileName = fileNameWithExt.split(separator: ".")
+        var (fileName, fileExt) = if splittedFileName.count >= 2 {
+            (String(splittedFileName.first!), String(splittedFileName.last!))
+        } else {
+            (String(splittedFileName[0]), "json")
+        }
+        if fileName.contains("cases") {
+            fileName = "SDKTesting"
+        }
+        return (fileName, fileExt)
+    }
+
+    private func getContentType(forExt fileExt: String) -> String {
+        return switch fileExt.lowercased() {
+            case "js":
+                "application/javascript"
+            default:
+                "application/json"
+        }
+    }
+
+    func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse) {
+        if let fileNameWithExt = request.url?.pathComponents.last {
+            let (fileName, fileExt) = getFileNameAndExt(fromComponent: fileNameWithExt)
+            let data = loadResponseData(name: fileName, type: fileExt)
+            let urlResponse = createResponse(url: request.url!, contentType: getContentType(forExt: fileExt))
+            logger.log("Returning mocked data for \(fileNameWithExt)")
+            return (data, urlResponse)
+        }
+        fatalError("Cannot get path components for mocked response")
+    }
+
     func shouldHandle(request: URLRequest) -> Bool {
         if [
             "release.constellation.pega.io",
@@ -39,41 +75,5 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
             return true
         }
         return false
-    }
-
-    func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse) {
-        guard let fileNameWithExt = request.url?.pathComponents.last else {
-            fatalError("Cannot get path components for mocked response")
-        }
-        let splittedFileName = fileNameWithExt.split(separator: ".", maxSplits: 1)
-        var (fileName, fileExt) = if splittedFileName.count == 2 {
-            (String(splittedFileName[0]), String(splittedFileName[1]))
-        } else {
-            (String(splittedFileName[0]), "json")
-        }
-        // quick hack for constellation-core.ca97ba62.js
-        if fileExt.contains(".js") {
-            fileExt = "js"
-        } else if fileName.contains("cases") {
-            fileName = "SDKTesting"
-        }
-        let data = loadResponse(name: fileName, type: fileExt).data(using: .utf8)!
-        let contentType = if (fileExt == "js") {
-            "application/javascript"
-        } else {
-            "application/json"
-        }
-        let urlResponse = createResponse(url: request.url!, contentType: contentType)
-        logger.log("Returning mocked data for \(fileNameWithExt)")
-        return (data, urlResponse)
-    }
-
-    private func authorize(_ request: URLRequest) throws -> URLRequest {
-        var mutableRequest = request
-        return mutableRequest
-    }
-
-    private func modifiedData(_ data: Data) -> Data {
-        return data
     }
 }
