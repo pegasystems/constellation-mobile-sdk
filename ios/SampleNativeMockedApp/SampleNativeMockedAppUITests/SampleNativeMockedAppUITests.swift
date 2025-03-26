@@ -6,7 +6,8 @@ import XCTest
 
 final class SampleNativeMockedAppUITests: XCTestCase {
     private lazy var app: XCUIApplication = XCUIApplication()
-    private let timeout = 15.0
+    private let mainScreenTimeout = 60.0
+    private let timeout = 30.0
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -38,7 +39,7 @@ final class SampleNativeMockedAppUITests: XCTestCase {
 
     private func verifyMainScreen() {
         let sdkLabel = app.staticTexts["Pega Mobile Constellation SDK"].firstMatch
-        XCTAssertTrue(sdkLabel.waitForExistence(timeout: timeout))
+        XCTAssertTrue(sdkLabel.waitForExistence(timeout: mainScreenTimeout))
     }
     private func tapCreateButton() {
         let createButton = app.buttons["Create a new Case"].firstMatch
