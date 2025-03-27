@@ -14,6 +14,7 @@ class AssignmentCardComponentProps : ObservableObject, ComponentProps {
 struct DecodableAssignmentCardComponentProps: Decodable {
     let children: [String]
     let actionButtons: String?
+    let loading: Bool?
 
     func apply(to observableProps: AssignmentCardComponentProps) {
         observableProps.children = children.map {
@@ -22,5 +23,6 @@ struct DecodableAssignmentCardComponentProps: Decodable {
         observableProps.actionButtons = actionButtons.map {
             ViewID(stringId: $0)
         }
+        observableProps.loading = loading ?? false
     }
 }

@@ -23,8 +23,7 @@
 		B5ACA2E92D56418F00F7AE9D /* ConstellationSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B5ACA2E72D56418F00F7AE9D /* ConstellationSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B5ACA2EA2D56433700F7AE9D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D1FF512C400C1C0013A71B /* ViewController.swift */; };
 		B5ACA2F22D5650B700F7AE9D /* OAuth2 in Frameworks */ = {isa = PBXBuildFile; productRef = B5ACA2F12D5650B700F7AE9D /* OAuth2 */; };
-		B5ACA2F42D5650F800F7AE9D /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2F32D5650F800F7AE9D /* Authentication.swift */; };
-		B5ACA2F62D56537900F7AE9D /* oauthConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B5ACA2F52D56537900F7AE9D /* oauthConfiguration.json */; };
+		B5ACA2F42D5650F800F7AE9D /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2F32D5650F800F7AE9D /* Authorization.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,8 +63,7 @@
 		B50BA3B42D6CCB0500EBCCE3 /* CustomSliderProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderProps.swift; sourceTree = "<group>"; };
 		B50BA3B52D6CCC3900EBCCE3 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		B5ACA2E72D56418F00F7AE9D /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5ACA2F32D5650F800F7AE9D /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
-		B5ACA2F52D56537900F7AE9D /* oauthConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = oauthConfiguration.json; sourceTree = "<group>"; };
+		B5ACA2F32D5650F800F7AE9D /* Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,7 +131,7 @@
 		65D1FF4C2C400C1C0013A71B /* SampleNativeSwiftApp */ = {
 			isa = PBXGroup;
 			children = (
-				B5ACA2F32D5650F800F7AE9D /* Authentication.swift */,
+				B5ACA2F32D5650F800F7AE9D /* Authorization.swift */,
 				65659C822C4DAA3500D34B2D /* Components */,
 				65659C752C4DA7BA00D34B2D /* Branding */,
 				65D1FF4D2C400C1C0013A71B /* AppDelegate.swift */,
@@ -144,7 +142,6 @@
 				65D1FF562C400C230013A71B /* Assets.xcassets */,
 				65D1FF582C400C230013A71B /* LaunchScreen.storyboard */,
 				65D1FF5B2C400C230013A71B /* Info.plist */,
-				B5ACA2F52D56537900F7AE9D /* oauthConfiguration.json */,
 			);
 			path = SampleNativeSwiftApp;
 			sourceTree = "<group>";
@@ -225,7 +222,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B50BA3B82D6CCC6300EBCCE3 /* slider.component.js in Resources */,
-				B5ACA2F62D56537900F7AE9D /* oauthConfiguration.json in Resources */,
 				65D1FF572C400C230013A71B /* Assets.xcassets in Resources */,
 				65659C7C2C4DA9E600D34B2D /* Images.xcassets in Resources */,
 				65D1FF5A2C400C230013A71B /* Base in Resources */,
@@ -247,7 +243,7 @@
 				B50BA3B72D6CCC5F00EBCCE3 /* CustomSlider.swift in Sources */,
 				65D1FF4E2C400C1C0013A71B /* AppDelegate.swift in Sources */,
 				B5ACA2EA2D56433700F7AE9D /* ViewController.swift in Sources */,
-				B5ACA2F42D5650F800F7AE9D /* Authentication.swift in Sources */,
+				B5ACA2F42D5650F800F7AE9D /* Authorization.swift in Sources */,
 				65D1FF502C400C1C0013A71B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

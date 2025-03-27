@@ -25,7 +25,6 @@ class ViewComponentProvider: ContainerProvider {
     }
 
     func updateProperties(_ jsonInput: String) throws {
-        properties.loading = false
         try JSONDecoder()
             .decode(DecodableViewComponentProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)
@@ -55,11 +54,20 @@ struct ViewComponentView: View {
             if let instructions = properties.instructions?.stripHTML {
                 Text(instructions)
             }
-            if properties.loading {
-                ProgressView()
-            } else {
-                ForEach(properties.children) {
-                    manager?.view(for: $0.stringId)
+            ZStack {
+                VStack {
+                    ForEach(properties.children) {
+                        manager?.view(for: $0.stringId)
+                    }
+                    .blur(radius: properties.loading ? 3 : 0)
+                }
+                
+                if properties.loading {
+                    VStack {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white.opacity(0.2))
                 }
             }
         }

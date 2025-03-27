@@ -19,7 +19,7 @@ class ComponentManager {
         addComponent("1", type: "RootContainer")
     }
 
-    func upadateComponentProps(_ id: String, _ propsJson: String) {
+    func updateComponent(_ id: String, _ propsJson: String) {
         Logger.current().info("Received properties, id=\(id), props=\(propsJson)")
         do {
             try providers[id]?.updateProperties(propsJson)
@@ -29,6 +29,10 @@ class ComponentManager {
     }
 
     func addComponent(_ id: String, type: String) {
+        guard providers[id] == nil else {
+            Logger.current().debug("Provider with id \(id) already exists.")
+            return
+        }
         guard let provider = try? PMSDKComponentManager.shared.create(type) else {
             Logger.current().error("Can not create component provider for \(type)")
             return

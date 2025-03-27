@@ -1,5 +1,5 @@
-import { getComponentFromMap } from '../../bridge/helpers/sdk_component_map.js'
 import { Utils } from '../../helpers/utils.js';
+import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 
 const options = { context: 'app' };
 
@@ -26,7 +26,7 @@ export class RootContainerComponent {
 
     Utils.setHasViewContainer('false');
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
-    console.log(`Native component with id: ${this.compId} and type: 'RootContainer' already present.`)
+    this.componentsManager.onComponentAdded(this);
     this.onStateChange()
   }
 
@@ -39,6 +39,7 @@ export class RootContainerComponent {
     }
 
     this.sendPropsUpdate();
+    this.componentsManager.onComponentRemoved(this);
   }
 
   sendPropsUpdate() {

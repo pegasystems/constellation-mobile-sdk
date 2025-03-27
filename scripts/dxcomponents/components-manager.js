@@ -1,4 +1,4 @@
-import { getComponentFromMap } from './bridge/helpers/sdk_component_map.js'
+import { getComponentFromMap } from './mappings/sdk-component-map.js';
 import { ErrorBoundaryComponent } from './components/containers/error-boundary.component.js';
 
 export class ComponentsManager {

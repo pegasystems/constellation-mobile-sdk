@@ -1,5 +1,5 @@
 import { ReferenceComponent } from './reference.component.js';
-import { getComponentFromMap } from '../../bridge/helpers/sdk_component_map.js';
+import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { Utils } from '../../helpers/utils.js';
 
 // interface AssignmentProps {
@@ -44,6 +44,7 @@ export class AssignmentComponent  {
   rejectCase;
 
   bReInit = false;
+  loading = true;
   localizedVal;
   localeCategory = 'Assignment';
   localeReference;
@@ -61,6 +62,7 @@ export class AssignmentComponent  {
   }
 
   init() {
+    console.debug("JS :: Assignment :: Creating Assignment component");
     // First thing in initialization is registering and subscribing to the AngularPConnect service.
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
     this.componentsManager.onComponentAdded(this);
@@ -104,9 +106,11 @@ export class AssignmentComponent  {
 
   sendPropsUpdate() {
     const props = {
-      children: Utils.getChildrenComponentsIds([this.assignmentCardComponent])
+      children: Utils.getChildrenComponentsIds([this.assignmentCardComponent]),
+      loading: this.loading
     };
-    console.log("sending Assignment props: ", props);
+
+    console.debug("JS :: Assignment :: Sending props: ", props);
     this.componentsManager.onComponentPropsUpdate(this.compId, props);
   }
 
@@ -116,15 +120,8 @@ export class AssignmentComponent  {
 
   checkAndUpdate() {
     const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
-
     if (bUpdateSelf) {
-      let loadingInfo;
-      try {
-        loadingInfo = this.newPConn$.getLoadingStatus();
-        // this.psService.sendMessage(loadingInfo);
-      } catch (ex) {
-        /* empty */
-      }
+      this.setLoading(this.newPConn$.getLoadingStatus());
     }
   }
 
@@ -142,6 +139,7 @@ export class AssignmentComponent  {
       this.assignmentCardComponent = new assignmentCardComponentClass(this.componentsManager, this.newPConn$, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick);
       this.assignmentCardComponent.init();
     }
+    this.loading = this.newPConn$.getLoadingStatus();
     this.sendPropsUpdate();
   }
 
@@ -181,6 +179,11 @@ export class AssignmentComponent  {
     if (this.arChildren$) {
       this.createButtons();
     }
+  }
+
+  setLoading(loading) {
+    this.loading = loading;
+    this.sendPropsUpdate();
   }
 
   createButtons() {
@@ -261,7 +264,7 @@ export class AssignmentComponent  {
 
   onSaveActionSuccess(data) {
     this.actionsAPI.cancelAssignment(this.itemKey$).then(() => {
-      // this.psService.sendMessage(false);
+      this.setLoading(false);
       PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED, data);
     });
   }
@@ -279,16 +282,16 @@ export class AssignmentComponent  {
           // this.erService.sendMessage('publish', '');
           this.blurAllFields();
           this.bReInit = true;
-          // this.psService.sendMessage(true);
+          this.setLoading(true);
 
           const navigatePromise = this.navigateToStep('previous', this.itemKey$);
           navigatePromise
             .then(() => {
               this.updateChanges();
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
             })
             .catch(() => {
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Navigation failed!', this.localeCategory)}`, 'Ok');
             });
           break;
@@ -305,7 +308,7 @@ export class AssignmentComponent  {
               this.onSaveActionSuccess({ caseType, caseID, assignmentID });
             })
             .catch(() => {
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Save failed', this.localeCategory)}`, 'Ok');
             });
 
@@ -322,12 +325,12 @@ export class AssignmentComponent  {
           const cancelPromise = this.cancelAssignment(this.itemKey$);
           cancelPromise
             .then(() => {
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
               PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
             })
             .catch((err) => {
-              console.log("Failed to cancel assignment!", err);
-              // this.psService.sendMessage(false);
+              console.warn("JS :: Assignment :: Failed to cancel assignment!, err");
+              this.setLoading(false);
             });
           break;
 
@@ -337,7 +340,7 @@ export class AssignmentComponent  {
           rejectPromise
             .then(() => {})
             .catch(() => {
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Rejection failed!', this.localeCategory)}`, 'Ok');
             });
 
@@ -353,15 +356,15 @@ export class AssignmentComponent  {
           // this.erService.sendMessage('publish', '');
           this.blurAllFields();
           this.bReInit = true;
-          // this.psService.sendMessage(true);
+          this.setLoading(true);
           const finishPromise = this.finishAssignment(this.itemKey$);
           finishPromise
             .then(() => {
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
               this.updateChanges();
             })
             .catch(() => {
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Submit failed!', this.localeCategory)}`, 'Ok');
             });
 
@@ -373,7 +376,7 @@ export class AssignmentComponent  {
           approvePromise
             .then(() => {})
             .catch(() => {
-              // this.psService.sendMessage(false);
+              this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Approve failed!', this.localeCategory)}`, 'Ok');
             });
 

@@ -30,11 +30,13 @@ class FormHandler: NSObject, WKScriptMessageHandler {
             return
         }
         switch type {
-        case "upadateComponentProps": handleUpdateComponent(array)
+        case "updateComponent": handleUpdateComponent(array)
         case "addComponent": handleAddComponent(array)
         case "removeComponent": handleRemoveComponent(array)
+        case "ready": handleFormReady()
         case "finished": handleFormFinished(array)
         case "cancelled": handleFormCancel()
+        case "error": handleFormError(array)
         default:
             Logger.current().error("Unexpected message type: \(type)")
         }
@@ -44,7 +46,7 @@ class FormHandler: NSObject, WKScriptMessageHandler {
         if
             let cId = input.componentId,
             let props = input[2] as? String {
-            manager?.upadateComponentProps(cId, props)
+            manager?.updateComponent(cId, props)
         } else {
             Logger.current().error("Unexpected parameters types in updateComponent")
         }
@@ -66,6 +68,10 @@ class FormHandler: NSObject, WKScriptMessageHandler {
         manager?.removeComponent(cId)
     }
 
+    private func handleFormReady() {
+        Logger.current().debug("Form ready.")
+    }
+
     private func handleFormFinished(_ input: [Any]) {
         Logger.current().debug("Form finished.")
         resultHandler(.finished(input[1] as? String))
@@ -74,6 +80,12 @@ class FormHandler: NSObject, WKScriptMessageHandler {
     private func handleFormCancel() {
         Logger.current().debug("Form cancelled.")
         resultHandler(.cancelled)
+    }
+
+    private func handleFormError(_ input: [Any]) {
+        let errorMessage = input[1] as? String ?? "Unexpected."
+        Logger.current().debug("Form encountered an error: \(errorMessage)")
+        resultHandler(.error(errorMessage))
     }
 }
 

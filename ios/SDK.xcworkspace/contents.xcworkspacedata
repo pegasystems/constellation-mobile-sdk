@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SampleNativeMockedApp/SampleNativeMockedApp.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SampleApp/SampleNativeSwiftApp.xcodeproj">
    </FileRef>
    <FileRef

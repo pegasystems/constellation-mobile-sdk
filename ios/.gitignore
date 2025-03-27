@@ -2,9 +2,6 @@
 # Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
 #
 
-configuration.json
-oauthConfiguration.json
-
 # 
 Carthage/
 DerivedData/

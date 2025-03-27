@@ -22,6 +22,7 @@ struct DecodableViewComponentProps: Decodable {
     let showLabel: Bool?
     let label: String?
     let visible: Bool?
+    let loading: Bool?
 
     func apply(to observableProps: ViewComponentProps) {
         observableProps.children = children.map {
@@ -32,5 +33,6 @@ struct DecodableViewComponentProps: Decodable {
         observableProps.showLabel = showLabel ?? false
         observableProps.label = label ?? ""
         observableProps.visible = visible ?? true
+        observableProps.loading = loading ?? false
     }
 }

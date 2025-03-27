@@ -1,6 +1,6 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
-import { getComponentFromMap } from '../../bridge/helpers/sdk_component_map.js';
+import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 
 export class AssignmentCardComponent {
   pConn$;

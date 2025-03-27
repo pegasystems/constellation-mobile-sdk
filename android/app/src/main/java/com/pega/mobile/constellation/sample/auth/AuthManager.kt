@@ -12,9 +12,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.lifecycle.lifecycleScope
-import com.pega.mobile.constellation.sample.AppConfig.Pega.Auth.CLIENT_ID
-import com.pega.mobile.constellation.sample.AppConfig.Pega.Auth.REDIRECT_URI
-import com.pega.mobile.constellation.sample.AppConfig.Pega.URL
+import com.pega.mobile.constellation.sample.PegaConfig.Auth.CLIENT_ID
+import com.pega.mobile.constellation.sample.PegaConfig.Auth.REDIRECT_URI
+import com.pega.mobile.constellation.sample.PegaConfig.URL
 import com.pega.mobile.constellation.sample.auth.AuthManager.AuthResult.Failed
 import com.pega.mobile.constellation.sample.auth.AuthManager.AuthResult.Success
 import kotlinx.coroutines.CancellableContinuation

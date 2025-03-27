@@ -524,7 +524,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nexport PATH=\"/opt/homebrew/bin:$PATH\"\nif ! command -v esbuild 2>&1 >/dev/null\nthen\n    echo \"⚠️ esbuild could not be found, you can install it from brew. ⚠️\"\n    exit 1\nfi\nesbuild ../../scripts/index.js --bundle --outfile=$SCRIPT_OUTPUT_FILE_0\n";
+			shellScript = "set -e\nexport PATH=\"/opt/homebrew/bin:$PATH\"\nif ! command -v esbuild 2>&1 >/dev/null\nthen\n    echo \"⚠️ esbuild could not be found, you can install it from brew. ⚠️\"\n    exit 1\nfi\nesbuild ../../scripts/init/init.js --bundle --outfile=$SCRIPT_OUTPUT_FILE_0\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
