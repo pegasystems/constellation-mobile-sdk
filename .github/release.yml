@@ -1,0 +1,6 @@
+# Template for automatic changelog generator for releases
+changelog:
+  categories:
+    - title: Changes
+      labels:
+        - "*"
