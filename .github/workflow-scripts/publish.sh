@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
+DRY_RUN=0
 while [[ $# -gt 0 ]]; do
     case $1 in
+    --dry-run)
+        DRY_RUN=1
+        shift # past argument
+        ;;
     --minor)
         MINOR_VERSION="$2"
         shift # past argument
@@ -9,6 +14,11 @@ while [[ $# -gt 0 ]]; do
         ;;
     --major)
         MAJOR_VERSION="$2"
+        shift # past argument
+        shift # past value
+        ;;
+    --type)
+        TYPE="$2"
         shift # past argument
         shift # past value
         ;;
@@ -42,7 +52,22 @@ else
     echo "Getting patch version from last released version, PATCH_VERSION=${PATCH_VERSION}"
 fi
 
-VERSION="v${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}.snapshot-${TIMESTAMP}"
+if [[ "${TYPE}" == "release" ]]; then
+    echo "Type of release: Final release"
+    VERSION="v${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}"
+    PARAM_PRE=""
+else
+    echo "Type of release: Snapshot"
+    VERSION="v${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}.snapshot-${TIMESTAMP}"
+    PARAM_PRE="--prerelease"
+fi
+
 echo "Will publish artifacts to release with version: ${VERSION}"
 
-gh release create "${VERSION}" --prerelease --generate-notes "ios-release/*.*" "android-release/*.*"
+if [ "${DRY_RUN}" -eq 1 ]; then
+    echo "Dry run enabled, not doing anything, would have run following command:"
+    echo "gh release create \"${VERSION}\" \"${PARAM_PRE}\" --generate-notes \"ios-release/*.*\" \"android-release/*.*\""
+    exit 1
+fi
+
+gh release create "${VERSION}" "${PARAM_PRE}" --generate-notes "ios-release/*.*" "android-release/*.*"
