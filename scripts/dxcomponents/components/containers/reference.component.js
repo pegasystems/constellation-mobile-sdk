@@ -12,7 +12,7 @@ export class ReferenceComponent {
 
   constructor() {
     // With new static method approach, this shouldn't be called any more
-    window.alert(`in ReferenceComponent constructor!`);
+    // window.alert(`in ReferenceComponent constructor!`);
 
     console.error(`in ReferenceComponent constructor!`);
   }

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright © 2018 and Confidential to Pegasystems Inc. All rights reserved.
-  -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <application android:networkSecurityConfig="@xml/network_security_config"
-                 tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-    </application>
+    <application
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon,UnusedAttribute" />
 
 </manifest>

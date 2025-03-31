@@ -9,6 +9,7 @@ export class RootContainerComponent {
   viewContainerComponent;
   compId;
   type;
+  props;
 
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
@@ -37,17 +38,31 @@ export class RootContainerComponent {
     if (this.viewContainerComponent !== undefined && this.viewContainerComponent.destroy !== undefined) {
       this.viewContainerComponent.destroy();
     }
-
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
   }
 
   sendPropsUpdate() {
-    const props = { 
-      children: Utils.getChildrenComponentsIds([this.viewContainerComponent]) 
+    const httpMessages = this.jsComponentPConnectData.httpMessages || []
+    this.props = {
+      viewContainer: this.viewContainerComponent.compId,
+      httpMessages: httpMessages
     };
-    console.log("sending RootContainer props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
+
+    // even if the http issue no longer exists the error is persisted in core js so we need to clear it
+    if (this.jsComponentPConnectData.httpMessages && this.jsComponentPConnectData.httpMessages.length > 0) {
+      this.clearHttpMessages();
+    }
+  }
+
+  clearHttpMessages() {
+    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/${this.pConn$.getContainerName()}`);
+    PCore.getMessageManager().clearMessages({
+      category: 'HTTP',
+      type: 'error',
+      context: context
+    });
   }
 
   onStateChange() {
@@ -63,7 +78,7 @@ export class RootContainerComponent {
       this.generateViewContainerForNoPortal();
     } else  {
       console.error("'noPortal' rendering mode supported only.")
-    } 
+    }
   }
 
   generateViewContainerForNoPortal() {
@@ -81,11 +96,16 @@ export class RootContainerComponent {
       },
       options
     };
-    
     const viewContainerPConn = PCore.createPConnect(viewContConfig).getPConnect();
-    const viewContainerComponentClass = getComponentFromMap(viewContainerPConn.meta.type);
-    this.viewContainerComponent = new viewContainerComponentClass(this.componentsManager, viewContainerPConn);
-    this.viewContainerComponent.init();
+
+    if (this.viewContainerComponent) {
+      this.viewContainerComponent.update(viewContainerPConn);
+    } else {
+      const viewContainerComponentClass = getComponentFromMap(viewContainerPConn.meta.type);
+      this.viewContainerComponent = new viewContainerComponentClass(this.componentsManager, viewContainerPConn);
+      this.viewContainerComponent.init();
+    }
+
 
     if (this.compId !== "1") {
       console.error("RootComponent id must be '1' to match root container on consumer side");

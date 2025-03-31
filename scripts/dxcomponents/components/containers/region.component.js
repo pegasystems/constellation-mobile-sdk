@@ -9,6 +9,7 @@ export class RegionComponent {
   childrenComponents = [];
   compId;
   type;
+  props;
 
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
@@ -24,8 +25,8 @@ export class RegionComponent {
 
   destroy() {
     Utils.destroyChildren(this);
-    this.componentsManager.onComponentRemoved(this);
     this.sendPropsUpdate();
+    this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn) {
@@ -41,11 +42,10 @@ export class RegionComponent {
 
   sendPropsUpdate() {
     const childrenComponents = this.childrenComponents
-    const props = {
+    this.props = {
        children: Utils.getChildrenComponentsIds(childrenComponents)
     };
-    console.log("sending Region props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   updateSelf() {

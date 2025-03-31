@@ -31,17 +31,17 @@ import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sample.CustomComponents.CustomRenderers
 import com.pega.mobile.constellation.sample.PegaConfig
 import com.pega.mobile.constellation.sdk.ConstellationSdk
-import com.pega.mobile.constellation.sdk.ConstellationSdk.SdkState.Cancelled
-import com.pega.mobile.constellation.sdk.ConstellationSdk.SdkState.Error
-import com.pega.mobile.constellation.sdk.ConstellationSdk.SdkState.Finished
-import com.pega.mobile.constellation.sdk.ConstellationSdk.SdkState.Loading
-import com.pega.mobile.constellation.sdk.ConstellationSdk.SdkState.Ready
+import com.pega.mobile.constellation.sdk.ConstellationSdk.State.Cancelled
+import com.pega.mobile.constellation.sdk.ConstellationSdk.State.Error
+import com.pega.mobile.constellation.sdk.ConstellationSdk.State.Finished
+import com.pega.mobile.constellation.sdk.ConstellationSdk.State.Loading
+import com.pega.mobile.constellation.sdk.ConstellationSdk.State.Ready
 import com.pega.mobile.constellation.sdk.components.containers.RootContainerComponent
 import com.pega.mobile.constellation.sdk.components.core.ProvideRenderers
 import com.pega.mobile.constellation.sdk.components.core.Render
 
 @Composable
-fun MainScreen(sdk: ConstellationSdk) {
+fun MainScreen(sdk: ConstellationSdk, caseClassName: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +63,7 @@ fun MainScreen(sdk: ConstellationSdk) {
             Spacer(modifier = Modifier.height(32.dp))
             CreateCaseButton {
                 showPega = true
-                sdk.createCase(PegaConfig.CASE_CLASS_NAME)
+                sdk.createCase(caseClassName)
             }
         }
     }
@@ -98,7 +98,7 @@ fun Render(root: RootContainerComponent) {
 @Composable
 fun CreateCaseButton(onClick: () -> Unit = {}) {
     Button(onClick = onClick) {
-        Text("Create a new Case")
+        Text("Create case")
     }
 }
 

@@ -20,6 +20,7 @@ export class UrlComponent {
 
   actionsApi;
   propName;
+  props;
 
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
@@ -42,6 +43,13 @@ export class UrlComponent {
       this.jsComponentPConnectData.unsubscribeFn();
     }
     this.componentsManager.onComponentRemoved(this);
+  }
+
+  update(pConn) {
+    if (this.pConn$ !== pConn) {
+      this.pConn$ = pConn;
+      this.checkAndUpdate();
+    }
   }
 
   onStateChange() {
@@ -86,7 +94,7 @@ export class UrlComponent {
       this.bReadonly$ = this.utils.getBooleanValue(this.configProps$.readOnly);
     }
 
-    const props = {
+    this.props = {
       value: this.value$,
       label: this.label$,
       visible: this.bVisible$,
@@ -97,8 +105,7 @@ export class UrlComponent {
       placeholder: this.placeholder,
       validateMessage: this.jsComponentPConnectData.validateMessage || '',
     }
-    console.log(`sending Url props via bridge, id: ${this.compId}, props: ${JSON.stringify(props)}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onEvent(event) {
@@ -106,17 +113,12 @@ export class UrlComponent {
   }
 
   fieldOnChange(value) {
-    this.value$ = value
+    this.value$ = value;
   }
 
   fieldOnBlur(value) {
     this.value$ = value || this.value$
     handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
-  }
-
-  clearErrorMessages() {
-    this.pConn$.clearErrorMessages({
-      property: this.propName
-    });
+    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }

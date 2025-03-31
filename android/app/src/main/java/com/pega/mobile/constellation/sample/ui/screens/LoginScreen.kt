@@ -32,7 +32,11 @@ fun LoginScreen(onLogin: () -> Unit) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Text(text = "⚡ Pega Constellation Mobile SDK ⚡", fontSize = 30.sp, modifier = Modifier.align(Alignment.Center))
+            Text(
+                text = "Pega Constellation Mobile SDK",
+                fontSize = 24.sp,
+                modifier = Modifier.align(Alignment.Center)
+            )
             LoginButton(
                 onLogin, modifier = Modifier
                     .align(Alignment.BottomCenter)

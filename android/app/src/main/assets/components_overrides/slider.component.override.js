@@ -1,6 +1,5 @@
 export class SliderComponent {
   pConn$;
-  formGroup$;
 
   jsComponentPConnectData = {};
   configProps$;
@@ -40,10 +39,6 @@ export class SliderComponent {
   }
 
   destroy() {
-    if (this.formGroup$) {
-      this.formGroup$.removeControl(this.controlName$);
-    }
-
     if (this.jsComponentPConnectData.unsubscribeFn) {
       console.log("destroy for slider component - id:  ", this.jsComponentPConnectData.compID);
       this.jsComponentPConnectData.unsubscribeFn();
@@ -97,7 +92,7 @@ export class SliderComponent {
 
     this.componentReference = this.pConn$.getStateProps().value;
 
-    const props = {
+    this.props = {
       value: this.value$,
       label: this.label$,
       visible: this.bVisible$,
@@ -107,8 +102,7 @@ export class SliderComponent {
       helperText: "This is custom component",
       validateMessage: this.jsComponentPConnectData.validateMessage || ''
     }
-    console.log(`sending Slider props via bridge, id: ${this.compId}, props: ${props}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onEvent(event) {
@@ -122,6 +116,7 @@ export class SliderComponent {
   fieldOnBlur(event) {
     const value = event?.target?.value;
     handleEvent(this.actionsApi, 'changeNblur', this.propName, value);
+    clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 
   getErrorMessage() {
@@ -160,3 +155,11 @@ function handleEvent(actions, eventType, propName, value) {
         break;
     }
   }
+
+function clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
+  if (validateMessage || validateMessage === '') {
+    pConn.clearErrorMessages({
+      property: propName
+    });
+  }
+}

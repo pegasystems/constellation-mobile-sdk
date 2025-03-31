@@ -32,6 +32,7 @@ export class TextInputComponent {
   propName;
   compId;
   type;
+  props;
 
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
@@ -98,7 +99,7 @@ export class TextInputComponent {
     }
     this.helperText = this.configProps$.helperText || '';
     this.placeholder = this.configProps$.placeholder || '';
- 
+
     if (this.configProps$.required != null) {
       this.bRequired$ = this.utils.getBooleanValue(this.configProps$.required);
     }
@@ -117,7 +118,7 @@ export class TextInputComponent {
       this.bReadonly$ = this.utils.getBooleanValue(this.configProps$.readOnly);
     }
 
-    const props = {
+    this.props = {
       value: this.value$,
       label: this.label$,
       visible: this.bVisible$,
@@ -128,8 +129,7 @@ export class TextInputComponent {
       placeholder: this.placeholder,
       validateMessage: this.jsComponentPConnectData.validateMessage || ''
     }
-    console.log(`sending TextInput props via bridge, id: ${this.compId}, props: ${JSON.stringify(props)}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onEvent(event) {
@@ -137,17 +137,12 @@ export class TextInputComponent {
   }
 
   fieldOnChange(value) {
-    this.value$ = value
+    this.value$ = value;
   }
 
   fieldOnBlur(value) {
     this.value$ = value || this.value$
     handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
-  }
-
-  clearErrorMessages() {
-    this.pConn$.clearErrorMessages({
-      property: this.propName
-    });
+    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }

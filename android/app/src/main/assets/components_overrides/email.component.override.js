@@ -1,6 +1,5 @@
 export class EmailComponent {
   pConn$;
-  formGroup$;
 
   jsComponentPConnectData = {};
   configProps$;
@@ -41,10 +40,6 @@ export class EmailComponent {
   }
 
   destroy() {
-    if (this.formGroup$) {
-      this.formGroup$.removeControl(this.controlName$);
-    }
-
     if (this.jsComponentPConnectData.unsubscribeFn) {
       console.log("destroy for email component - id:  ", this.jsComponentPConnectData.compID);
       this.jsComponentPConnectData.unsubscribeFn();
@@ -97,7 +92,7 @@ export class EmailComponent {
 
     this.componentReference = this.pConn$.getStateProps().value;
 
-    const props = {
+    this.props = {
       value: this.value$,
       label: this.label$,
       visible: this.bVisible$,
@@ -108,8 +103,7 @@ export class EmailComponent {
       placeholder: "custom@placeholder",
       validateMessage: this.jsComponentPConnectData.validateMessage || ''
     }
-    console.log(`sending Email props via bridge, id: ${this.compId}, props: ${props}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onEvent(event) {
@@ -117,18 +111,13 @@ export class EmailComponent {
   }
 
   fieldOnChange(value) {
-    this.value$ = value
+    this.value$ = value;
   }
 
   fieldOnBlur(value) {
     this.value$ = value || this.value$
     handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
-  }
-
-  clearErrorMessages() {
-    this.pConn$.clearErrorMessages({
-      property: this.propName
-    });
+    clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 
   getErrorMessage() {
@@ -167,4 +156,11 @@ function handleEvent(actions, eventType, propName, value) {
         break;
     }
   }
-  
+
+function clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
+  if (validateMessage || validateMessage === '') {
+    pConn.clearErrorMessages({
+      property: propName
+    });
+  }
+}

@@ -1,13 +1,15 @@
 package com.pega.mobile.constellation.sdk.internal
 
 import android.util.Log
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.UnsupportedNative
 import com.pega.mobile.constellation.sdk.components.Components.DefaultDefinitions
 import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
+import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
-import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedNativeComponent
 import org.json.JSONObject
 
 internal class ComponentManagerImpl(
@@ -38,7 +40,14 @@ internal class ComponentManagerImpl(
 
     private fun produceComponent(context: ComponentContext): Component =
         definitions[context.type]?.producer?.produce(context)
-            ?: UnsupportedComponent.create(context)
+            ?: UnsupportedNativeComponent(
+                context.type.type,
+                ComponentContextImpl(
+                    id = context.id,
+                    type = UnsupportedNative,
+                    componentManager = context.componentManager
+                )
+            )
 
     companion object {
         private const val TAG = "ComponentManager"

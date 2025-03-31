@@ -16,13 +16,16 @@ export class FlowContainerComponent {
 
   pCoreConstants;
   configProps$;
+  props;
 
   formGroup$;
   arChildren$ = [];
   assignmentComponent;
+  alertBannerComponents = [];
   itemKey$ = '';
   containerName$;
   buildName$;
+  bannerMessages;
 
   bHasCancel = false;
 
@@ -30,12 +33,11 @@ export class FlowContainerComponent {
   caseMessages$;
   bHasCaseMessages$ = false;
   bShowConfirm = false;
-  bShowBanner;
+  // bShowBanner; // this is banner for popup confirmation window
   confirm_pconn;
   localizedVal;
   localeCategory = 'Messages';
   localeReference;
-  banners = [];
 
   pConnectOfActiveContainerItem;
   compId;
@@ -49,7 +51,6 @@ export class FlowContainerComponent {
     this.type = pConn$.meta.type
   }
 
-  
   init() {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
     this.componentsManager.onComponentAdded(this);
@@ -79,19 +80,25 @@ export class FlowContainerComponent {
       },
       'cancelPressed'
     );
+
+    PCore.getPubSubUtils().subscribe(
+      'updateBanners',
+      () => {
+        this.updateBanners()
+      },
+      'updateBanners'
+    );
   }
 
   destroy() {
-    this.assignmentComponent.destroy()
     if (this.jsComponentPConnectData.unsubscribeFn) {
       this.jsComponentPConnectData.unsubscribeFn();
     }
+    this.assignmentComponent.destroy();
     this.componentsManager.onComponentRemoved(this);
 
     PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, 'cancelAssignment');
     PCore.getPubSubUtils().unsubscribe('cancelPressed', 'cancelPressed');
-
-    this.sendPropsUpdate();
   }
 
   update(pConn) {
@@ -104,12 +111,12 @@ export class FlowContainerComponent {
   sendPropsUpdate() {
     const caseId = this.pConn$.getCaseSummary().content.pyID;
     const title = caseId ? `${this.containerName$} (${caseId})` : 'Loading ...';
-    const props = {
+    this.props = {
       title: title,
-      children : Utils.getChildrenComponentsIds([this.assignmentComponent])
+      assignment: this.assignmentComponent.compId,
+      alertBanners: this.alertBannerComponents.map(banner => banner.compId)
     };
-    console.log("sending FlowContainer props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   handleCancel() {
@@ -130,10 +137,7 @@ export class FlowContainerComponent {
     const pConn = this.pConnectOfActiveContainerItem || this.pConn$;
     const caseViewModeFromProps = this.jsComponentPConnect.getComponentProp(this, 'caseViewMode');
     const caseViewModeFromRedux = pConn.getValue('context_data.caseViewMode', '');
-
     if (bUpdateSelf || caseViewModeFromProps !== caseViewModeFromRedux) {
-      // don't want to redraw the flow container when there are page messages, because
-      // the redraw causes us to loose the errors on the elements
       const completeProps = this.jsComponentPConnect.getCurrentCompleteProps(this);
       if (!completeProps.pageMessages || completeProps.pageMessages.length == 0) {
         // with a cancel, need to timeout so todo will update correctly
@@ -144,22 +148,57 @@ export class FlowContainerComponent {
           }, 500);
         } else {
           // needs to be called after whole redux events processing for submit is finished (see: TASK-1720886 pulse)
-          setTimeout(() => { 
+          setTimeout(() => {
             this.updateSelf();
           })
         }
-      } else {
-        // this.showPageMessages(completeProps);
       }
     }
   }
 
-  // showPageMessages(completeProps) {
-  //   this.ngZone.run(() => {
-  //     const pageMessages = completeProps.pageMessages;
-  //     this.banners = [{ messages: pageMessages?.map(msg => this.localizedVal(msg.message, 'Messages')), variant: 'urgent' }];
-  //   });
-  // }
+  updateBanners() {
+    const completeProps = this.jsComponentPConnect.getCurrentCompleteProps(this);
+    const newBannerMessages = (completeProps.pageMessages || []).concat(this.getValidationMessages());
+
+    if (JSON.stringify(newBannerMessages) !== JSON.stringify(this.bannerMessages)) {
+      this.bannerMessages = newBannerMessages;
+      this.destroyBanners();
+      this.createBanners();
+      this.sendPropsUpdate();
+    }
+  }
+
+  getValidationMessages() {
+    const messages = [];
+    const fieldValidationMessages = PCore.getMessageManager().getValidationErrorMessages(this.itemKey$);
+    if (fieldValidationMessages) {
+      fieldValidationMessages.forEach(fieldMessage => {
+        const message = `${fieldMessage.label} ${fieldMessage.description}`;
+        messages.push({type: 'error', message: message})
+      });
+    }
+    return messages;
+  }
+
+  createBanners() {
+    const banners = (this.bannerMessages && this.bannerMessages.length > 0)
+      ? [{ messages: this.bannerMessages?.map(msg => this.localizedVal(msg.message, 'Messages')), variant: 'urgent' }]
+      : [];
+    const alertBannerComponentClass = getComponentFromMap("AlertBanner");
+
+    banners.forEach(banner => {
+      const alertBannerComponent = new alertBannerComponentClass(this.componentsManager, banner.variant, banner.messages);
+      alertBannerComponent.init();
+      this.alertBannerComponents.push(alertBannerComponent);
+    });
+  }
+
+  destroyBanners() {
+    this.alertBannerComponents.forEach(bannerComponent => {
+      bannerComponent.destroy();
+    });
+    this.alertBannerComponents = [];
+  }
 
   initContainer() {
     const containerMgr = this.pConn$.getContainerManager();
@@ -183,7 +222,7 @@ export class FlowContainerComponent {
 
   initComponent(bLoadChildren) {
     this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    // this.showPageMessages(this.configProps$);
+    this.createBanners(this.configProps$.pageMessages);
 
     // when true, update arChildren from pConn, otherwise, arChilren will be updated in updateSelf()
     if (bLoadChildren) {
@@ -270,11 +309,8 @@ export class FlowContainerComponent {
 
 
   updateSelf() {
-    const localPConn = this.arChildren$[0].getPConnect();
-
     this.pConnectOfActiveContainerItem = this.getPConnectOfActiveContainerItem(this.pConn$) || this.pConn$;
 
-    
     if (this.assignmentComponent) {
       this.assignmentComponent.update(this.pConnectOfActiveContainerItem, this.arChildren$);
     } else {
@@ -282,7 +318,6 @@ export class FlowContainerComponent {
       this.assignmentComponent = new assignmentComponentClass(this.componentsManager, this.pConnectOfActiveContainerItem, this.arChildren$, this.itemKey$);
       this.assignmentComponent.init();
     }
-   
     this.sendPropsUpdate();
 
     const caseViewMode = this.pConnectOfActiveContainerItem.getValue('context_data.caseViewMode');
@@ -402,7 +437,7 @@ export class FlowContainerComponent {
     const oWorkData = oWorkItem.getDataObject();
 
     this.containerName$ = this.localizedVal(this.getActiveViewLabel() || oWorkData.caseInfo.assignments?.[0].name, undefined, this.localeReference);
-    
+
     this.assignmentComponent.update(this.pConnectOfActiveContainerItem, this.arChildren$, this.itemKey$);
   }
 
@@ -478,19 +513,19 @@ export class FlowContainerComponent {
     const containerName = parentPConnect.getContainerName();
     const { CONTAINER_NAMES } = PCore.getContainerUtils();
     const { CREATE_DETAILS_VIEW_NAME } = PCore.getConstants();
-  
+
     if (accessedOrder && items) {
       const activeContainerItemKey = accessedOrder[accessedOrder.length - 1];
-  
+
       if (items[activeContainerItemKey] && items[activeContainerItemKey].view && Object.keys(items[activeContainerItemKey].view).length > 0) {
         const activeContainerItem = items[activeContainerItemKey];
         const target = activeContainerItemKey.substring(0, activeContainerItemKey.lastIndexOf('_'));
-  
+
         const { view: rootView, context } = activeContainerItem;
         const { viewName, viewContext } = this.processRootViewDetails(rootView, activeContainerItem, { parentPConnect });
-  
+
         if (!viewName) return null;
-  
+
         const config = {
           meta: rootView,
           options: {
@@ -521,10 +556,10 @@ export class FlowContainerComponent {
     const { parentPConnect } = options;
     let resolvedViewName = viewName;
     let resolvedViewContext = viewContext;
-  
+
     const isAnnotedViewName = PCore.getAnnotationUtils().isProperty(viewName);
     const isAnnotedViewContext = PCore.getAnnotationUtils().isProperty(viewContext);
-  
+
     // resolving annoted view context
     if (isAnnotedViewContext) {
       const viewContextProperty = PCore.getAnnotationUtils().getPropertyName(viewContext);
@@ -534,17 +569,17 @@ export class FlowContainerComponent {
         containerContext
       );
     }
-  
+
     if (!resolvedViewContext) {
       resolvedViewContext = parentPConnect.getPageReference();
     }
-  
+
     // resolving annoted view name
     if (isAnnotedViewName) {
       const viewNameProperty = PCore.getAnnotationUtils().getPropertyName(viewName);
       resolvedViewName = PCore.getStoreValue(`.${viewNameProperty}`, resolvedViewContext, containerContext);
     }
-  
+
     /* Special case where context and viewname are dynamic values
       Use case - split for each shape
       Ex - (caseInfo.content.SCRequestWorkQueues[1]):context --> .pyViewName:viewName
@@ -554,7 +589,7 @@ export class FlowContainerComponent {
       resolvedViewName = viewName;
       resolvedViewContext = viewContext;
     }
-  
+
     return {
       viewName: resolvedViewName,
       viewContext: resolvedViewContext

@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: validate-android-artifacts
-          path: android/sdk/build/reports/androidTests/connected/debug
+          path: android/app/build/reports/androidTests/connected/debug
           if-no-files-found: warn
           retention-days: 1
 

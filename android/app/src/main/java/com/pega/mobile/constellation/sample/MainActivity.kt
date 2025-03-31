@@ -28,14 +28,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val config = buildConfig()
-
         val sdk = ConstellationSdk.create(this, config)
 
         setContent {
             SampleSdkTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
                     Box(Modifier.padding(innerPadding)) {
-                        MainScreen(sdk)
+                        MainScreen(sdk, PegaConfig.CASE_CLASS_NAME)
                     }
                 }
             }
@@ -44,9 +43,10 @@ class MainActivity : ComponentActivity() {
 
     private fun buildConfig() = ConstellationSdkConfig(
         pegaUrl = PegaConfig.URL,
-        pegaVersion = "8.24.1",
+        pegaVersion = PegaConfig.VERSION,
         okHttpClient = buildOkHttpClient(),
-        componentManager = buildComponentManager()
+        componentManager = buildComponentManager(),
+        debuggable = true
     )
 
     private fun buildOkHttpClient() = OkHttpClient.Builder()

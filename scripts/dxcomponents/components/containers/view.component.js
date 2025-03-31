@@ -94,7 +94,8 @@ export class ViewComponent {
   visibility$ = true;
   compId;
   type;
-  
+  props;
+
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
     this.compId = componentsManager.getNextComponentId();
@@ -106,18 +107,18 @@ export class ViewComponent {
   init() {
     // First thing in initialization is registering and subscribing to the JsComponentPConnect service
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
-    // save component to map so we can receive events from native 
+    // save component to map so we can receive events from native
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
 
   destroy() {
-    Utils.destroyChildren(this);
     if (this.jsComponentPConnectData.unsubscribeFn) {
       this.jsComponentPConnectData.unsubscribeFn();
     }
-    this.componentsManager.onComponentRemoved(this);
+    Utils.destroyChildren(this);
     this.sendPropsUpdate();
+    this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn) {
@@ -132,14 +133,13 @@ export class ViewComponent {
   }
 
   sendPropsUpdate() {
-    const props = {
+    this.props = {
       children: Utils.getChildrenComponentsIds(this.childrenComponents),
-      visible: this.visibility$,  
+      visible: this.visibility$,
       label: this.label$,
       showLabel: this.showLabel$
     };
-    console.log("sending View props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   // Callback passed when subscribing to store change
@@ -225,7 +225,7 @@ export class ViewComponent {
       this.componentsManager.initReconciledComponents(reconciledComponents);
     }
 
-  
+
     this.sendPropsUpdate();
   }
 

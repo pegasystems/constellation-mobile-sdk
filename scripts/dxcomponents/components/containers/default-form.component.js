@@ -18,6 +18,7 @@ export class DefaultFormComponent {
   compId;
   componentsManager;
   type;
+  props;
 
   constructor(componentsManager, pConn$, childrenPConns) {
     this.pConn$ = pConn$;
@@ -44,10 +45,9 @@ export class DefaultFormComponent {
     // copied from form-template-base.ts
     // this was present in angular sdk but missing in react-sdk, will comment it out for now
     // PCore.getContextTreeManager().removeContextTreeNode(this.pConn$.getContextName());
-
     Utils.destroyChildren(this);
-    this.componentsManager.onComponentRemoved(this);
     this.sendPropsUpdate();
+    this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn, childrenPConns) {
@@ -74,12 +74,11 @@ export class DefaultFormComponent {
 
   sendPropsUpdate() {
     const childrenComponents = this.childrenComponents
-    const props = {
+    this.props = {
        children: Utils.getChildrenComponentsIds(childrenComponents),
        instructions: this.instructions || ''
     };
-    console.log("sending DefaultForm props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   // copied from template-utils.ts

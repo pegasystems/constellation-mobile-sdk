@@ -14,13 +14,14 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.EventViewModel
 import com.pega.mobile.constellation.sdk.components.core.MutableEventFlow
+import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.dxcomponents.compose.containers.Row
 import com.pega.mobile.dxcomponents.compose.controls.form.Button
 import kotlinx.coroutines.flow.asSharedFlow
 import org.json.JSONArray
 import org.json.JSONObject
 
-class ActionButtons(context: ComponentContext) : BaseComponent(context) {
+class ActionButtonsComponent(context: ComponentContext) : BaseComponent(context) {
     override val viewModel = ActionButtonsViewModel()
 
     override fun onUpdate(props: JSONObject) {
@@ -30,7 +31,7 @@ class ActionButtons(context: ComponentContext) : BaseComponent(context) {
         }
     }
 
-    private fun JSONArray.toActionButtons() = List(length()) {
+    private fun JSONArray.toActionButtons() = mapWithIndex {
         getJSONObject(it).run {
             ActionButton(
                 type = getString("type"),

@@ -8,6 +8,7 @@ export class ActionButtonsComponent {
   localeCategory = 'Assignment';
   compId;
   type;
+  props;
 
   constructor(componentsManager, mainButtons, secondaryButtons, actionButtonClick) {
     this.compId = componentsManager.getNextComponentId();
@@ -37,21 +38,20 @@ export class ActionButtonsComponent {
   onEvent(event) {
     this.actionButtonClick(
       {
-        buttonType: event.componentData.buttonType, 
+        buttonType: event.componentData.buttonType,
         action: event.componentData.jsAction
       }
     );
   }
 
   sendProps() {
-    const props = {
+    this.props = {
       mainButtons: this.arMainButtons$.map((button) => this.toButtonProp(button, 'primary') ),
       secondaryButtons: this.arSecondaryButtons$
       .filter((button) => button.jsAction !== 'saveAssignment') // not supported yet
       .map((button) => this.toButtonProp(button, 'secondary'))
     };
-    console.log("sending ActionButtons props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   toButtonProp(button, type) {

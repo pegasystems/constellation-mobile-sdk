@@ -8,7 +8,7 @@ import { Utils } from '../../helpers/utils.js';
 // }
 
 
-export class AssignmentComponent  {
+export class AssignmentComponent {
   pConn$;
   arChildren$;
   assignmentCardComponent;
@@ -16,6 +16,7 @@ export class AssignmentComponent  {
 
   jsComponentPConnectData = {};
   configProps$;
+  props;
 
   newPConn$;
   containerName$;
@@ -77,12 +78,11 @@ export class AssignmentComponent  {
   }
 
   destroy() {
-    this.assignmentCardComponent.destroy();
     if (this.jsComponentPConnectData.unsubscribeFn) {
       this.jsComponentPConnectData.unsubscribeFn();
     }
+    this.assignmentCardComponent.destroy();
     this.componentsManager.onComponentRemoved(this);
-    this.sendPropsUpdate();
   }
 
   update(pConn, pConnChildren, itemKey) {
@@ -105,13 +105,11 @@ export class AssignmentComponent  {
   }
 
   sendPropsUpdate() {
-    const props = {
+    this.props = {
       children: Utils.getChildrenComponentsIds([this.assignmentCardComponent]),
       loading: this.loading
     };
-
-    console.debug("JS :: Assignment :: Sending props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onStateChange() {
@@ -133,7 +131,7 @@ export class AssignmentComponent  {
     }
 
     if (this.assignmentCardComponent) {
-          this.assignmentCardComponent.update(this.newPConn$, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$);
+      this.assignmentCardComponent.update(this.newPConn$, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$);
     } else {
       const assignmentCardComponentClass = getComponentFromMap("AssignmentCard");
       this.assignmentCardComponent = new assignmentCardComponentClass(this.componentsManager, this.newPConn$, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick);
@@ -274,9 +272,10 @@ export class AssignmentComponent  {
   }
 
   buttonClick(sAction, sButtonType) {
-
+    // needed to show client validation on banner
+    PCore.getPubSubUtils().publish('updateBanners');
     if (sButtonType == 'secondary') {
-    
+
       switch (sAction) {
         case 'navigateToStep':
           // this.erService.sendMessage('publish', '');
@@ -293,6 +292,9 @@ export class AssignmentComponent  {
             .catch(() => {
               this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Navigation failed!', this.localeCategory)}`, 'Ok');
+            })
+            .finally(() => {
+              PCore.getPubSubUtils().publish('updateBanners');
             });
           break;
 
@@ -305,11 +307,14 @@ export class AssignmentComponent  {
             .then(() => {
               const caseType = this.pConn$.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
               PCore.getPubSubUtils().publish('cancelPressed');
-              this.onSaveActionSuccess({ caseType, caseID, assignmentID });
+              this.onSaveActionSuccess({caseType, caseID, assignmentID});
             })
             .catch(() => {
               this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Save failed', this.localeCategory)}`, 'Ok');
+            })
+            .finally(() => {
+              PCore.getPubSubUtils().publish('updateBanners');
             });
 
           break;
@@ -319,7 +324,7 @@ export class AssignmentComponent  {
           this.bReInit = true;
           // this.psService.sendMessage(true);
           PCore.getPubSubUtils().publish('cancelPressed');
-          // cancel will never cause case to be deleted. 
+          // cancel will never cause case to be deleted.
           // That could be done with 'cancelCreateStageAssignment' but it needs assignment action to be 'modal'
           // current bootstrap-shell.js does not provide any option to use 'modal'.
           const cancelPromise = this.cancelAssignment(this.itemKey$);
@@ -338,7 +343,8 @@ export class AssignmentComponent  {
           const rejectPromise = this.rejectCase(this.itemKey$);
 
           rejectPromise
-            .then(() => {})
+            .then(() => {
+            })
             .catch(() => {
               this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Rejection failed!', this.localeCategory)}`, 'Ok');
@@ -366,6 +372,9 @@ export class AssignmentComponent  {
             .catch(() => {
               this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Submit failed!', this.localeCategory)}`, 'Ok');
+            })
+            .finally(() => {
+              PCore.getPubSubUtils().publish('updateBanners');
             });
 
           break;
@@ -374,10 +383,14 @@ export class AssignmentComponent  {
           const approvePromise = this.approveCase(this.itemKey$);
 
           approvePromise
-            .then(() => {})
+            .then(() => {
+            })
             .catch(() => {
               this.setLoading(false);
               // this.snackBar.open(`${this.localizedVal('Approve failed!', this.localeCategory)}`, 'Ok');
+            })
+            .finally(() => {
+              PCore.getPubSubUtils().publish('updateBanners');
             });
 
           break;

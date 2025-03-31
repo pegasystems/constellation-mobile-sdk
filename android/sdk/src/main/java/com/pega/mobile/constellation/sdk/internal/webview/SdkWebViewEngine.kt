@@ -21,6 +21,7 @@ import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.
 import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.RemoveComponent
 import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.SetRequestBody
 import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.UpdateComponent
+import com.pega.mobile.constellation.sdk.internal.webview.SdkWebViewEngine.EngineEvent.Error
 import com.pega.mobile.constellation.sdk.internal.webview.interceptor.WebViewAssetInterceptor
 import com.pega.mobile.constellation.sdk.internal.webview.interceptor.WebViewNetworkInterceptor
 import kotlinx.coroutines.CoroutineScope
@@ -35,6 +36,10 @@ internal class SdkWebViewEngine(
     private val config: ConstellationSdkConfig,
     private val handler: EngineEventHandler
 ) {
+    init {
+        setWebContentsDebuggingEnabled(config.debuggable)
+    }
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val componentManager = config.componentManager
 
@@ -52,17 +57,29 @@ internal class SdkWebViewEngine(
     }
 
     private fun onPageLoad(caseClassName: String, startingFields: Map<String, Any>) {
-        val sdkConfig = JSONObject().apply {
-            put("url", config.pegaUrl)
-            put("version", config.pegaVersion)
-            put("caseClassName", caseClassName)
-            put("startingFields", JSONObject(startingFields))
-        }.toString()
-        val scripts = componentManager.getComponentDefinitions()
-            .filter { it.jsFile != null }
-            .associate { it.type.type to it.jsFile }
-        val scriptsJson = JSONObject(scripts).toString()
-        webView.evaluateJavascript("window.init('$sdkConfig', '$scriptsJson')", null)
+        evaluateInit(
+            sdkConfig = JSONObject().apply {
+                put("url", config.pegaUrl)
+                put("version", config.pegaVersion)
+                put("caseClassName", caseClassName)
+                put("startingFields", JSONObject(startingFields))
+            }.toString(),
+            scripts = componentManager.getComponentDefinitions()
+                .filter { it.jsFile != null }
+                .associate { it.type.type to it.jsFile }
+                .let { JSONObject(it) }
+                .toString()
+        )
+    }
+
+    private fun evaluateInit(sdkConfig: String, scripts: String) {
+        webView.evaluateJavascript("typeof window.init") { result ->
+            if (result == "\"function\"") {
+                webView.evaluateJavascript("window.init('$sdkConfig', '$scripts')", null)
+            } else {
+                handler.handle(Error("Engine failed to load init scripts"))
+            }
+        }
     }
 
     fun onBridgeEvent(event: BridgeEvent) {
@@ -74,7 +91,7 @@ internal class SdkWebViewEngine(
             is SetRequestBody -> networkInterceptor.setRequestBody(event.body)
             is OnReady -> handler.handle(EngineEvent.Ready)
             is OnFinished -> handler.handle(EngineEvent.Finished(event.successMessage))
-            is OnError -> handler.handle(EngineEvent.Error(event.error))
+            is OnError -> handler.handle(Error(event.error))
             is OnCancelled -> handler.handle(EngineEvent.Cancelled)
         }
     }
@@ -100,11 +117,10 @@ internal class SdkWebViewEngine(
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun createWebView(webViewClient: WebViewClient) = WebView(context).apply {
+    private fun createWebView(client: WebViewClient) = WebView(context).apply {
         settings.javaScriptEnabled = true
-        webChromeClient = SdkWebChromeClient()
-        setWebViewClient(webViewClient)
-        setWebContentsDebuggingEnabled(config.debuggable)
+        webViewClient = client
+        webChromeClient = SdkWebViewConsole(config.debuggable)
         val bridge = SdkBridge(::onBridgeEvent)
         addJavascriptInterface(bridge, "sdkbridge")
     }

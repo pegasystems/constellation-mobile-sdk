@@ -10,12 +10,13 @@ export class UnsupportedComponent {
   compId;
   type;
   utils;
-  
+  props;
+
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
     this.compId = componentsManager.getNextComponentId();
     this.componentsManager = componentsManager;
-    this.type = pConn$.meta.type
+    this.type = "Unsupported";
     this.utils = new Utils();
   }
 
@@ -28,12 +29,11 @@ export class UnsupportedComponent {
     console.log(`Unsupported component ${this.type} for property ${this.propName} inited`);
     this.componentsManager.onComponentAdded(this);
 
-    const props = {
-      type: this.type,
+    this.props = {
+      type: this.pConn$.meta.type,
       visible: this.bVisible$
     }
-    console.log(`sending Unsupported props via bridge, id: ${this.compId}, props: ${JSON.stringify(props)}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   destroy() {

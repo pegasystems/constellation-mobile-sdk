@@ -6,8 +6,9 @@ package com.pega.mobile.constellation.sample
 
 object PegaConfig {
     const val URL = "https://lab-05423-bos.lab.pega.com/prweb"
-    const val CASE_CLASS_NAME = "DIXL-MediaCo-Work-SDKTesting"
-//    const val CASE_CLASS_NAME = "DIXL-MediaCo-Work-NewService"
+    const val VERSION = "8.24.1"
+
+    const val CASE_CLASS_NAME = "DIXL-MediaCo-Work-NewService"
 
     object Auth {
         const val CLIENT_ID = "77513330016901238555"

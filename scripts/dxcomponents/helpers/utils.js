@@ -90,7 +90,7 @@ export class Utils {
     const dataPage = configProps.datasource;
 
     if (dataObject && dataObject[dataPage]) {
-      alert('need to handle data page');
+      // alert('need to handle data page');
       return [];
     }
 
@@ -438,6 +438,14 @@ export class Utils {
 
   static setOkToInitFlowContainer(okToInit) {
     sdkSessionStorage.setItem('okToInitFlowContainer', okToInit)
+  }
+
+  static clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
+    if (!validateMessage || validateMessage === '') {
+      pConn.clearErrorMessages({
+        property: propName
+      });
+    }
   }
 }
 

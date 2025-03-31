@@ -23,3 +23,4 @@ rootProject.name = "constellation-mobile-sdk"
 include(":app")
 include(":sdk")
 include(":dxcomponents")
+include(":mock")

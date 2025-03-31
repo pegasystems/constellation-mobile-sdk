@@ -2,7 +2,7 @@ package com.pega.mobile.constellation.sdk.internal
 
 import android.content.Context
 import com.pega.mobile.constellation.sdk.ConstellationSdk
-import com.pega.mobile.constellation.sdk.ConstellationSdk.SdkState
+import com.pega.mobile.constellation.sdk.ConstellationSdk.State
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
 import com.pega.mobile.constellation.sdk.components.containers.RootContainerComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
@@ -18,7 +18,7 @@ internal class ConstellationSdkImpl(
     private val engine = SdkWebViewEngine(context, config, ::onEngineEvent)
     private val componentManager = config.componentManager
 
-    private val _state = MutableStateFlow<SdkState>(SdkState.Loading)
+    private val _state = MutableStateFlow<State>(State.Loading)
     override val state = _state.asStateFlow()
 
     override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
@@ -27,11 +27,11 @@ internal class ConstellationSdkImpl(
 
     private fun onEngineEvent(event: EngineEvent) {
         _state.value = when (event) {
-            is EngineEvent.Loading -> SdkState.Loading
-            is EngineEvent.Ready -> SdkState.Ready(findRootComponent())
-            is EngineEvent.Finished -> SdkState.Finished(event.successMessage)
-            is EngineEvent.Cancelled -> SdkState.Cancelled
-            is EngineEvent.Error -> SdkState.Error(event.error)
+            is EngineEvent.Loading -> State.Loading
+            is EngineEvent.Ready -> State.Ready(findRootComponent())
+            is EngineEvent.Finished -> State.Finished(event.successMessage)
+            is EngineEvent.Cancelled -> State.Cancelled
+            is EngineEvent.Error -> State.Error(event.error)
         }
     }
 

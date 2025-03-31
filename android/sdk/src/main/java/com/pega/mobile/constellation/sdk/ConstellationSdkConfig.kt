@@ -7,7 +7,7 @@ package com.pega.mobile.constellation.sdk
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
 import okhttp3.OkHttpClient
 
-class ConstellationSdkConfig(
+data class ConstellationSdkConfig(
     val pegaUrl: String,
     val pegaVersion: String,
     val okHttpClient: OkHttpClient = OkHttpClient(),
