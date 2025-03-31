@@ -1,0 +1,33 @@
+name: "Publish github release with SDK"
+description: "Publish github release with SDK"
+inputs:
+  version-major:
+    description: 'Major version of release (first number e.g.: 1 in 1.2.3)'
+    required: true
+  version-minor:
+    description: 'Minor version of release (second number e.g.: 2 in 1.2.3)'
+    required: true
+  release-type:
+    description: 'Type of release, either snapshot or release'
+    required: true
+    default: 'snapshot'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Download all workflow artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Publish release
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+        VERSION_MAJOR: ${{ inputs.version-major }}
+        VERSION_MINOR: ${{ inputs.version-minor }}
+        RELEASE_TYPE: ${{ inputs.release-type }}
+      shell: bash
+      run: .github/workflow-scripts/publish.sh --major ${VERSION_MAJOR} --minor ${VERSION_MINOR} --type ${RELEASE_TYPE}
+

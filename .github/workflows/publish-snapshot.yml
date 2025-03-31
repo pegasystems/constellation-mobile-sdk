@@ -2,11 +2,10 @@ name: "Publish snapshot to github"
 permissions:
   contents: write
 on:
-  push
   # push to main is only allowed from PRs so this is defacto triggered on PR merge
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
 env:
   # Bump those versions when needed
   VERSION_MAJOR: 1
@@ -15,49 +14,13 @@ env:
 jobs:
   build-android:
     runs-on: 'ubuntu-latest'
-    env:
-      GRADLE: ./gradlew -Dorg.gradle.console=plain --info --stacktrace --no-daemon
-      EMULATOR_IMAGE: 'system-images;android-35;google_apis;x86_64'
 
     steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'corretto'
-
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up cache for Gradle
-        id: cache-gradle
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle
-          key: gradle-cache
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          cmdline-tools-version: 12266719
-          packages: '${{ env.EMULATOR_IMAGE }} platforms;android-35 platform-tools emulator'
-          log-accepted-android-sdk-licenses: false
-
-      - name: Assemble AARs
-        run: |
-          rm -rf release || true
-          mkdir release
-          cd android
-          $GRADLE clean assembleRelease
-          find . -iname "*-release.aar" | xargs -I {} cp {} ../release
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: android-release
-          path: release
-          retention-days: 1
-          compression-level: 0
-          if-no-files-found: error
+      - name: Build
+        uses: ./.github/actions/build-android
 
   build-ios:
     runs-on: 'macos-15'
@@ -65,25 +28,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install esbuild
-        run: brew install esbuild
-
-      - name: Build .xcframework
-        run: |
-          rm -rf release || true
-          mkdir release
-          cd ios
-          ../.github/workflow-scripts/build-ios.sh
-          cd build
-          zip -r ../../release/ConstellationSDK.xcframework.zip ConstellationSDK.xcframework
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ios-release
-          path: release
-          retention-days: 1
-          compression-level: 0
-          if-no-files-found: error
+      - name: Build
+        uses: ./.github/actions/build-ios
 
   publish-release:
     runs-on: 'ubuntu-latest'
@@ -92,12 +38,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Download all workflow artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Publish release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: .github/workflow-scripts/publish.sh --major ${VERSION_MAJOR} --minor ${VERSION_MINOR}
-
+      - name: Publish
+        uses: ./.github/actions/publish
+        with:
+          version-major: ${{ env.VERSION_MAJOR }}
+          version-minor: ${{ env.VERSION_MINOR }}
+          release-type: 'snapshot'

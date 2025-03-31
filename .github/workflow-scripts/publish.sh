@@ -49,6 +49,8 @@ else
     # Split string by '.'
     IFS='.' read -ra ADDR <<< "${LAST_VERSION}"
     PATCH_VERSION=${ADDR[2]}
+    # Increment patch version
+    PATCH_VERSION=$((PATCH_VERSION + 1))
     echo "Getting patch version from last released version, PATCH_VERSION=${PATCH_VERSION}"
 fi
 
