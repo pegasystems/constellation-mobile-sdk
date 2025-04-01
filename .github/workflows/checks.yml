@@ -47,6 +47,7 @@ jobs:
           api-level: 35
           arch: x86_64
           profile: Nexus 6
+          # Run tests for second time if first time we have failed
           script: cd android && ( $GRADLE connectedCheck || $GRADLE connectedCheck )
 
       - name: Upload test artifacts for failures
@@ -56,7 +57,7 @@ jobs:
           name: validate-android-artifacts
           path: android/app/build/reports/androidTests/connected/debug
           if-no-files-found: warn
-          retention-days: 1
+          retention-days: 3
 
   validate-ios:
     runs-on: 'macos-15'
@@ -92,7 +93,7 @@ jobs:
           name: validate-ios-artifacts
           path: ios/build
           if-no-files-found: warn
-          retention-days: 1
+          retention-days: 3
 
       - name: iOS sample application build
         run: |
