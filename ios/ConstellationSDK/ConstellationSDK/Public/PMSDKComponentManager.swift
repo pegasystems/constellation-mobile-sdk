@@ -42,13 +42,14 @@ public class PMSDKComponentManager {
         "Region": ViewComponentProvider.self,
         "View": ViewComponentProvider.self,
         "ViewContainer": ViewComponentProvider.self,
-        "FlowContainer": ViewComponentProvider.self,
+        "FlowContainer": FlowContainerComponentProvider.self,
         "Assignment": ViewComponentProvider.self,
         "AssignmentCard": AssignmentCardComponentProvider.self,
-        "RootContainer": ViewComponentProvider.self,
+        "RootContainer": RootContainerComponentProvider.self,
         "DefaultForm": ViewComponentProvider.self,
 
-        "ActionButtons": ActionButtonsProvider.self
+        "ActionButtons": ActionButtonsProvider.self,
+        "AlertBanner": AlertBannerComponentProvider.self
     ]
 
     func create(_ type: String) throws -> any ComponentProvider {

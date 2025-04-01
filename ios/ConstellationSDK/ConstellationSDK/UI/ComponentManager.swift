@@ -14,6 +14,10 @@ class ComponentManager {
 
     private var providers = [String: any ComponentProvider]()
     private var context = [String: AnyCancellable]()
+    
+    var rootComponent: RootContainerComponentProvider {
+        return providers["1"] as! RootContainerComponentProvider
+    }
 
     init () {
         addComponent("1", type: "RootContainer")

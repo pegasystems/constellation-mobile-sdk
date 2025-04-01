@@ -15,6 +15,12 @@
 		651EF97B2D807D2200227F57 /* TextAreaComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349A22D53AD010042F27B /* TextAreaComponentProvider.swift */; };
 		651EF97C2D807D3000227F57 /* TextAreaProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349A42D53AD010042F27B /* TextAreaProps.swift */; };
 		651EF97D2D807D4C00227F57 /* TextAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349A52D53AD010042F27B /* TextAreaView.swift */; };
+		657370882D8DB98A001CC458 /* FlowContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370872D8DB98A001CC458 /* FlowContainerComponent.swift */; };
+		6573708A2D8DB99B001CC458 /* FlowContainerComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370892D8DB99B001CC458 /* FlowContainerComponentProps.swift */; };
+		6573708D2D8DBE82001CC458 /* AlertBannerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573708C2D8DBE82001CC458 /* AlertBannerComponent.swift */; };
+		6573708F2D8DBE8F001CC458 /* AlertBannerComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573708E2D8DBE8F001CC458 /* AlertBannerComponentProps.swift */; };
+		657370922D8DC3DD001CC458 /* RootContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370912D8DC3DD001CC458 /* RootContainerComponent.swift */; };
+		657370942D8DC3EB001CC458 /* RootContainerComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370932D8DC3EB001CC458 /* RootContainerComponentProps.swift */; };
 		657D9D612D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657D9D602D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift */; };
 		B52348AF2D53A31D0042F27B /* ConstellationSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = B52348AE2D53A31D0042F27B /* ConstellationSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B52349882D53ACD80042F27B /* ComponentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523497E2D53ACD70042F27B /* ComponentEvent.swift */; };
@@ -62,6 +68,12 @@
 		65038CEB2D81C1D90070D125 /* TextInputBasedComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputBasedComponentProvider.swift; sourceTree = "<group>"; };
 		65038CED2D81C8B40070D125 /* UrlComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlComponentProvider.swift; sourceTree = "<group>"; };
 		65038CEF2D81C94A0070D125 /* UrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlView.swift; sourceTree = "<group>"; };
+		657370872D8DB98A001CC458 /* FlowContainerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowContainerComponent.swift; sourceTree = "<group>"; };
+		657370892D8DB99B001CC458 /* FlowContainerComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowContainerComponentProps.swift; sourceTree = "<group>"; };
+		6573708C2D8DBE82001CC458 /* AlertBannerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBannerComponent.swift; sourceTree = "<group>"; };
+		6573708E2D8DBE8F001CC458 /* AlertBannerComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBannerComponentProps.swift; sourceTree = "<group>"; };
+		657370912D8DC3DD001CC458 /* RootContainerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootContainerComponent.swift; sourceTree = "<group>"; };
+		657370932D8DC3EB001CC458 /* RootContainerComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootContainerComponentProps.swift; sourceTree = "<group>"; };
 		657D9D602D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMSDKCreateCaseStartingFields.swift; sourceTree = "<group>"; };
 		B52348AB2D53A31D0042F27B /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52348AE2D53A31D0042F27B /* ConstellationSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstellationSDK.h; sourceTree = "<group>"; };
@@ -166,6 +178,33 @@
 				65038CE52D81BF350070D125 /* Url */,
 			);
 			path = TextInputBased;
+			sourceTree = "<group>";
+		};
+		657370862D8DB95E001CC458 /* FlowContainer */ = {
+			isa = PBXGroup;
+			children = (
+				657370872D8DB98A001CC458 /* FlowContainerComponent.swift */,
+				657370892D8DB99B001CC458 /* FlowContainerComponentProps.swift */,
+			);
+			path = FlowContainer;
+			sourceTree = "<group>";
+		};
+		6573708B2D8DBE49001CC458 /* AlertBanner */ = {
+			isa = PBXGroup;
+			children = (
+				6573708C2D8DBE82001CC458 /* AlertBannerComponent.swift */,
+				6573708E2D8DBE8F001CC458 /* AlertBannerComponentProps.swift */,
+			);
+			path = AlertBanner;
+			sourceTree = "<group>";
+		};
+		657370902D8DC3C3001CC458 /* RootContainer */ = {
+			isa = PBXGroup;
+			children = (
+				657370912D8DC3DD001CC458 /* RootContainerComponent.swift */,
+				657370932D8DC3EB001CC458 /* RootContainerComponentProps.swift */,
+			);
+			path = RootContainer;
 			sourceTree = "<group>";
 		};
 		B52348A12D53A31D0042F27B = {
@@ -347,6 +386,8 @@
 			children = (
 				B53C2D0C2D81CDD600DB47FB /* ViewID.swift */,
 				B53C2D072D81CD5D00DB47FB /* AssignmentCard */,
+				657370862D8DB95E001CC458 /* FlowContainer */,
+				657370902D8DC3C3001CC458 /* RootContainer */,
 				B58637C92D71E31A007E3020 /* View */,
 			);
 			path = Containers;
@@ -414,6 +455,7 @@
 			children = (
 				B53C2D062D81CD5300DB47FB /* Containers */,
 				B58637D02D786C5D007E3020 /* ActionButtons */,
+				6573708B2D8DBE49001CC458 /* AlertBanner */,
 				B52349952D53AD010042F27B /* Checkbox */,
 				B52349BA2D53AD010042F27B /* Date */,
 				B52349B12D53AD010042F27B /* Dropdown */,
@@ -546,6 +588,7 @@
 				B57789DC2D8083B20036B039 /* CaseProcessingResult.swift in Sources */,
 				B52349CC2D53AD010042F27B /* CheckboxProps.swift in Sources */,
 				B52349F62D53AD5D0042F27B /* Logger+Subsystem.swift in Sources */,
+				6573708F2D8DBE8F001CC458 /* AlertBannerComponentProps.swift in Sources */,
 				B56F83732D5B879A0093E00D /* WebViewOverride.swift in Sources */,
 				B52349EE2D53AD010042F27B /* EmailView.swift in Sources */,
 				651EF97C2D807D3000227F57 /* TextAreaProps.swift in Sources */,
@@ -558,6 +601,7 @@
 				B58637CC2D71E3CA007E3020 /* ViewComponent.swift in Sources */,
 				B52349ED2D53AD010042F27B /* EmailProps.swift in Sources */,
 				657D9D612D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift in Sources */,
+				6573708D2D8DBE82001CC458 /* AlertBannerComponent.swift in Sources */,
 				B52349CD2D53AD010042F27B /* CheckboxView.swift in Sources */,
 				B58637CD2D75F63D007E3020 /* ViewComponentProps.swift in Sources */,
 				B5ACA2ED2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift in Sources */,
@@ -567,13 +611,17 @@
 				B5F1A39A2D6767820026527C /* ConsoleHandler.swift in Sources */,
 				65038CEE2D81C8B40070D125 /* UrlComponentProvider.swift in Sources */,
 				B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetwork.swift in Sources */,
+				6573708A2D8DB99B001CC458 /* FlowContainerComponentProps.swift in Sources */,
 				651EF97B2D807D2200227F57 /* TextAreaComponentProvider.swift in Sources */,
+				657370922D8DC3DD001CC458 /* RootContainerComponent.swift in Sources */,
 				B58637D62D79D82B007E3020 /* String+NilIfEmpty.swift in Sources */,
 				B56F83712D5B861F0093E00D /* WKWebView+PMS.m in Sources */,
 				B52349E52D53AD010042F27B /* TextInputComponentProvider.swift in Sources */,
 				65038CEA2D81C0F40070D125 /* TextInputBasedProps.swift in Sources */,
+				657370882D8DB98A001CC458 /* FlowContainerComponent.swift in Sources */,
 				B5F1A3982D6761B80026527C /* ScriptInjector.swift in Sources */,
 				B52349FE2D53ADF40042F27B /* ComponentManager.swift in Sources */,
+				657370942D8DC3EB001CC458 /* RootContainerComponentProps.swift in Sources */,
 				B52349D62D53AD010042F27B /* PMSDKComponentManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
