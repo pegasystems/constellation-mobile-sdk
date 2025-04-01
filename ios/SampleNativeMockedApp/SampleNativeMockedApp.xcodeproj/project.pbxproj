@@ -24,7 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		59E9D21C2D92A51B00A051A1 /* PBXContainerItemProxy */ = {
+		59947F4A2D9C2636009AB8D2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 59E9D1F92D92A51800A051A1 /* Project object */;
 			proxyType = 1;
@@ -49,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		599160342D92B131004FCB5E /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		59947F442D9C2636009AB8D2 /* SampleNativeMockedAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleNativeMockedAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C298872D9BE36B00074296 /* bootstrap-shell.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "bootstrap-shell.js"; sourceTree = "<group>"; };
 		59C298882D9BE36B00074296 /* constellation-core.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "constellation-core.js"; sourceTree = "<group>"; };
 		59C298892D9BE36B00074296 /* lib_asset.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lib_asset.json; sourceTree = "<group>"; };
@@ -63,7 +64,6 @@
 		59C298952D9BE36B00074296 /* D_pxBootstrapConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = D_pxBootstrapConfig.json; sourceTree = "<group>"; };
 		59C298982D9BE36B00074296 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		59E9D2012D92A51800A051A1 /* SampleNativeMockedApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleNativeMockedApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		59E9D21B2D92A51B00A051A1 /* SampleNativeMockedAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleNativeMockedAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -95,55 +95,35 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		590A42062D9BEADE005E953F /* Exceptions for "SampleNativeMockedApp" folder in "Copy Bundle Resources" phase from "SampleNativeMockedApp" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 59E9D1FF2D92A51800A051A1 /* Resources */;
-			membershipExceptions = (
-				Components/CustomButton.swift,
-				Components/CustomDate.swift,
-				Components/CustomDropdown.swift,
-				Components/CustomFlexView.swift,
-				Components/CustomLabel.swift,
-				Components/CustomOneColumnPage.swift,
-				Components/CustomTextArea.swift,
-				Components/CustomTextInput.swift,
-				Components/Slider/CustomSlider.swift,
-				Components/Slider/CustomSliderProps.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		59947F452D9C2636009AB8D2 /* SampleNativeMockedAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SampleNativeMockedAppUITests;
+			sourceTree = "<group>";
+		};
 		59E9D2032D92A51800A051A1 /* SampleNativeMockedApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				599160322D92AFFA004FCB5E /* Exceptions for "SampleNativeMockedApp" folder in "SampleNativeMockedApp" target */,
-				590A42062D9BEADE005E953F /* Exceptions for "SampleNativeMockedApp" folder in "Copy Bundle Resources" phase from "SampleNativeMockedApp" target */,
 			);
 			path = SampleNativeMockedApp;
-			sourceTree = "<group>";
-		};
-		59E9D21E2D92A51B00A051A1 /* SampleNativeMockedAppUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SampleNativeMockedAppUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		59947F412D9C2636009AB8D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		59E9D1FE2D92A51800A051A1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				599160352D92B131004FCB5E /* ConstellationSDK.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		59E9D2182D92A51B00A051A1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,7 +204,7 @@
 			children = (
 				59C298992D9BE36B00074296 /* responses */,
 				59E9D2032D92A51800A051A1 /* SampleNativeMockedApp */,
-				59E9D21E2D92A51B00A051A1 /* SampleNativeMockedAppUITests */,
+				59947F452D9C2636009AB8D2 /* SampleNativeMockedAppUITests */,
 				599160332D92B131004FCB5E /* Frameworks */,
 				59E9D2022D92A51800A051A1 /* Products */,
 			);
@@ -234,7 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				59E9D2012D92A51800A051A1 /* SampleNativeMockedApp.app */,
-				59E9D21B2D92A51B00A051A1 /* SampleNativeMockedAppUITests.xctest */,
+				59947F442D9C2636009AB8D2 /* SampleNativeMockedAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -242,6 +222,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		59947F432D9C2636009AB8D2 /* SampleNativeMockedAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 59947F4C2D9C2636009AB8D2 /* Build configuration list for PBXNativeTarget "SampleNativeMockedAppUITests" */;
+			buildPhases = (
+				59947F402D9C2636009AB8D2 /* Sources */,
+				59947F412D9C2636009AB8D2 /* Frameworks */,
+				59947F422D9C2636009AB8D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				59947F4B2D9C2636009AB8D2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				59947F452D9C2636009AB8D2 /* SampleNativeMockedAppUITests */,
+			);
+			name = SampleNativeMockedAppUITests;
+			packageProductDependencies = (
+			);
+			productName = SampleNativeMockedAppUITests;
+			productReference = 59947F442D9C2636009AB8D2 /* SampleNativeMockedAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		59E9D2002D92A51800A051A1 /* SampleNativeMockedApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 59E9D2252D92A51B00A051A1 /* Build configuration list for PBXNativeTarget "SampleNativeMockedApp" */;
@@ -265,29 +268,6 @@
 			productReference = 59E9D2012D92A51800A051A1 /* SampleNativeMockedApp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		59E9D21A2D92A51B00A051A1 /* SampleNativeMockedAppUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 59E9D22B2D92A51B00A051A1 /* Build configuration list for PBXNativeTarget "SampleNativeMockedAppUITests" */;
-			buildPhases = (
-				59E9D2172D92A51B00A051A1 /* Sources */,
-				59E9D2182D92A51B00A051A1 /* Frameworks */,
-				59E9D2192D92A51B00A051A1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				59E9D21D2D92A51B00A051A1 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				59E9D21E2D92A51B00A051A1 /* SampleNativeMockedAppUITests */,
-			);
-			name = SampleNativeMockedAppUITests;
-			packageProductDependencies = (
-			);
-			productName = SampleNativeMockedAppUITests;
-			productReference = 59E9D21B2D92A51B00A051A1 /* SampleNativeMockedAppUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -298,12 +278,12 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
-					59E9D2002D92A51800A051A1 = {
-						CreatedOnToolsVersion = 16.0;
-					};
-					59E9D21A2D92A51B00A051A1 = {
+					59947F432D9C2636009AB8D2 = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 59E9D2002D92A51800A051A1;
+					};
+					59E9D2002D92A51800A051A1 = {
+						CreatedOnToolsVersion = 16.0;
 					};
 				};
 			};
@@ -322,12 +302,19 @@
 			projectRoot = "";
 			targets = (
 				59E9D2002D92A51800A051A1 /* SampleNativeMockedApp */,
-				59E9D21A2D92A51B00A051A1 /* SampleNativeMockedAppUITests */,
+				59947F432D9C2636009AB8D2 /* SampleNativeMockedAppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		59947F422D9C2636009AB8D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		59E9D1FF2D92A51800A051A1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -347,24 +334,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		59E9D2192D92A51B00A051A1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		59E9D1FD2D92A51800A051A1 /* Sources */ = {
+		59947F402D9C2636009AB8D2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		59E9D2172D92A51B00A051A1 /* Sources */ = {
+		59E9D1FD2D92A51800A051A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -374,14 +354,46 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		59E9D21D2D92A51B00A051A1 /* PBXTargetDependency */ = {
+		59947F4B2D9C2636009AB8D2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 59E9D2002D92A51800A051A1 /* SampleNativeMockedApp */;
-			targetProxy = 59E9D21C2D92A51B00A051A1 /* PBXContainerItemProxy */;
+			targetProxy = 59947F4A2D9C2636009AB8D2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		59947F4D2D9C2636009AB8D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pega.mobilesdk.example.mockedapp.SampleNativeMockedAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SampleNativeMockedApp;
+			};
+			name = Debug;
+		};
+		59947F4E2D9C2636009AB8D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pega.mobilesdk.example.mockedapp.SampleNativeMockedAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SampleNativeMockedApp;
+			};
+			name = Release;
+		};
 		59E9D2232D92A51B00A051A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -587,41 +599,18 @@
 			};
 			name = Release;
 		};
-		59E9D22C2D92A51B00A051A1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pega.mobilesdk.example.mockedapp.SampleNativeMockedAppUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SampleNativeMockedApp;
-			};
-			name = Debug;
-		};
-		59E9D22D2D92A51B00A051A1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pega.mobilesdk.example.mockedapp.SampleNativeMockedAppUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SampleNativeMockedApp;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		59947F4C2D9C2636009AB8D2 /* Build configuration list for PBXNativeTarget "SampleNativeMockedAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59947F4D2D9C2636009AB8D2 /* Debug */,
+				59947F4E2D9C2636009AB8D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		59E9D1FC2D92A51800A051A1 /* Build configuration list for PBXProject "SampleNativeMockedApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -636,15 +625,6 @@
 			buildConfigurations = (
 				59E9D2262D92A51B00A051A1 /* Debug */,
 				59E9D2272D92A51B00A051A1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		59E9D22B2D92A51B00A051A1 /* Build configuration list for PBXNativeTarget "SampleNativeMockedAppUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				59E9D22C2D92A51B00A051A1 /* Debug */,
-				59E9D22D2D92A51B00A051A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

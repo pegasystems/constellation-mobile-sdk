@@ -55,7 +55,7 @@ struct ViewComponentView: View {
                 Text(instructions)
             }
             ZStack {
-                VStack {
+                VStack(spacing: 15) {
                     ForEach(properties.children) {
                         manager?.view(for: $0.stringId)
                     }

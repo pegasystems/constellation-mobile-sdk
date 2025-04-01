@@ -38,6 +38,7 @@ public class PMSDKComponentManager {
         "URL": UrlComponentProvider.self,
         "Email": DefaultEmailComponentProvider.self,
         "Checkbox": DefaultCheckboxComponentProvider.self,
+        "Date": DefaultDateComponentProvider.self,
 
         "Region": ViewComponentProvider.self,
         "View": ViewComponentProvider.self,

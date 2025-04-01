@@ -15,6 +15,9 @@
 		651EF97B2D807D2200227F57 /* TextAreaComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349A22D53AD010042F27B /* TextAreaComponentProvider.swift */; };
 		651EF97C2D807D3000227F57 /* TextAreaProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349A42D53AD010042F27B /* TextAreaProps.swift */; };
 		651EF97D2D807D4C00227F57 /* TextAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349A52D53AD010042F27B /* TextAreaView.swift */; };
+		6538731B2D9AC54F00FB29AF /* DateProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349B82D53AD010042F27B /* DateProps.swift */; };
+		6538731C2D9AC55800FB29AF /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349B92D53AD010042F27B /* DateView.swift */; };
+		6538731D2D9AC84F00FB29AF /* DateComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349B62D53AD010042F27B /* DateComponentProvider.swift */; };
 		657370882D8DB98A001CC458 /* FlowContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370872D8DB98A001CC458 /* FlowContainerComponent.swift */; };
 		6573708A2D8DB99B001CC458 /* FlowContainerComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370892D8DB99B001CC458 /* FlowContainerComponentProps.swift */; };
 		6573708D2D8DBE82001CC458 /* AlertBannerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573708C2D8DBE82001CC458 /* AlertBannerComponent.swift */; };
@@ -110,7 +113,6 @@
 		B52349B32D53AD010042F27B /* TextInputProps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInputProps.swift; sourceTree = "<group>"; };
 		B52349B42D53AD010042F27B /* TextInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		B52349B62D53AD010042F27B /* DateComponentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateComponentProvider.swift; sourceTree = "<group>"; };
-		B52349B72D53AD010042F27B /* DateComponentWrapperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateComponentWrapperView.swift; sourceTree = "<group>"; };
 		B52349B82D53AD010042F27B /* DateProps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateProps.swift; sourceTree = "<group>"; };
 		B52349B92D53AD010042F27B /* DateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		B52349BB2D53AD010042F27B /* EmailComponentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailComponentProvider.swift; sourceTree = "<group>"; };
@@ -353,7 +355,6 @@
 			isa = PBXGroup;
 			children = (
 				B52349B62D53AD010042F27B /* DateComponentProvider.swift */,
-				B52349B72D53AD010042F27B /* DateComponentWrapperView.swift */,
 				B52349B82D53AD010042F27B /* DateProps.swift */,
 				B52349B92D53AD010042F27B /* DateView.swift */,
 			);
@@ -575,6 +576,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6538731C2D9AC55800FB29AF /* DateView.swift in Sources */,
 				65038CF02D81C94A0070D125 /* UrlView.swift in Sources */,
 				B52349CB2D53AD010042F27B /* CheckboxComponentProvider.swift in Sources */,
 				B56F836A2D5B66BC0093E00D /* WebViewEngine.swift in Sources */,
@@ -604,6 +606,7 @@
 				6573708D2D8DBE82001CC458 /* AlertBannerComponent.swift in Sources */,
 				B52349CD2D53AD010042F27B /* CheckboxView.swift in Sources */,
 				B58637CD2D75F63D007E3020 /* ViewComponentProps.swift in Sources */,
+				6538731D2D9AC84F00FB29AF /* DateComponentProvider.swift in Sources */,
 				B5ACA2ED2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift in Sources */,
 				B53C2D0A2D81CD9900DB47FB /* AssignmentCardComponent.swift in Sources */,
 				B53C2D0B2D81CD9900DB47FB /* AssignmentCardComponentProps.swift in Sources */,
@@ -621,6 +624,7 @@
 				657370882D8DB98A001CC458 /* FlowContainerComponent.swift in Sources */,
 				B5F1A3982D6761B80026527C /* ScriptInjector.swift in Sources */,
 				B52349FE2D53ADF40042F27B /* ComponentManager.swift in Sources */,
+				6538731B2D9AC54F00FB29AF /* DateProps.swift in Sources */,
 				657370942D8DC3EB001CC458 /* RootContainerComponentProps.swift in Sources */,
 				B52349D62D53AD010042F27B /* PMSDKComponentManager.swift in Sources */,
 			);

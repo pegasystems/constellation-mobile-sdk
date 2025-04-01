@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 and Confidential to Pegasystems Inc. All rights reserved.
+// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
 //
 
 import SwiftUI
@@ -10,31 +10,30 @@ struct DateView: View {
     
     init(properties: DateProps) {
         self.properties = properties
-        self.formatter = DateFormatter()
-        self.formatter.dateStyle = .long
     }
-    
-    private let formatter: DateFormatter
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            HStack {
-                if let label = properties.label, !properties.hideLabel {
-                    Text(label).foregroundStyle(Color.black).font(.system(size: 12, weight: .light, design: .rounded))
+            
+            DatePicker(selection: $properties.selectedDate,
+                       displayedComponents: [.date]) {
+                HStack {
+                    if let label = properties.label {
+                        Text(label).foregroundStyle(Color.black).font(.system(size: 12, weight: .light, design: .rounded))
+                    }
+                    if properties.required {
+                        Text("*").foregroundColor(.red).fontWeight(.semibold)
+                    }
                 }
-                if properties.required {
-                    Text("*").foregroundColor(.red).fontWeight(.semibold)
+                if let message = properties.validateMessage ?? properties.helperText {
+                    Text(message)
+                        .font(.system(size: 12, weight: .light, design: .rounded))
+                        .foregroundColor(properties.validateMessage != nil ? .red : .gray)
+                        .padding(.leading, 4)
+                        .padding(.bottom, 4)
                 }
             }
-            
-            DatePicker("Select a date", selection: properties.date, displayedComponents: .date)
-                .datePickerStyle(GraphicalDatePickerStyle())
-                .padding()
-            Text("Selected date: \(properties.date.wrappedValue, formatter: formatter)")
-                .font(.system(size: 12, weight: .light, design: .rounded))
         }
-        .background(Color(red: 0.6, green: 0.7, blue: 0.9))
-        .cornerRadius(10)
-        .padding()
+        .observe(properties: properties)
     }
 }

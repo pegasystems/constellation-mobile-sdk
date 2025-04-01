@@ -11,7 +11,7 @@ struct AlertInfo {
     let type: AlertType
     var onClose: (() -> Void)? = nil
     var onConfirm: ((Bool) -> Void)? = nil
-    
+
     enum AlertType {
         case alert
         case confirm
@@ -34,7 +34,7 @@ struct DecodableRootContainerComponentProps: Decodable {
 
     func apply(to observableProps: RootContainerComponentProps) {
         observableProps.viewContainer = ViewID(stringId: viewContainer)
-        
+
         if (!httpMessages.isEmpty) {
             let alertInfo = AlertInfo(
                 title: "Unexpected server response",
