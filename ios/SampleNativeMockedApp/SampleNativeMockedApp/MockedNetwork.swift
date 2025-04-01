@@ -9,18 +9,22 @@ import os
 class MockedNetwork: PMSDKNetworkRequestDelegate {
     lazy var logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "SampleNativeMockedApp", category: "MockedNetwork")
 
-    private func loadResponseData(name: String, type: String) -> Data {
-        let path = Bundle.main.path(forResource: name, ofType: type)
+    private func loadResponseData(name: String, type: String, method: String) -> Data {
+        let path = if name == "SDKTesting" || name == "NewService" {
+            Bundle.main.path(forResource: "\(name)-\(method)", ofType: type)
+        } else {
+            Bundle.main.path(forResource: "\(name)", ofType: type)
+        }
         if let path = path {
             do {
                 return try Data(contentsOf: URL(fileURLWithPath: path))
                 //let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8).data(using: .utf8)!
                 //return content
             } catch {
-                fatalError("Incorrect data in response \(name) of type \(type)")
+                fatalError("Incorrect data in response \(name) of type \(type) for \(method)")
             }
         }
-        fatalError("Cannot load response \(name) of type \(type)")
+        fatalError("Cannot load response \(name) of type \(type) for \(method)")
     }
 
     private func createResponse(url: URL, contentType: String) -> URLResponse {
@@ -57,8 +61,9 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
 
     func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse) {
         if let fileNameWithExt = request.url?.pathComponents.last {
+            let method = request.httpMethod ?? "GET"
             let (fileName, fileExt) = getFileNameAndExt(fromComponent: fileNameWithExt)
-            let data = loadResponseData(name: fileName, type: fileExt)
+            let data = loadResponseData(name: fileName, type: fileExt, method: method)
             let urlResponse = createResponse(url: request.url!, contentType: getContentType(forExt: fileExt))
             logger.log("Returning mocked data for \(fileNameWithExt)")
             return (data, urlResponse)

@@ -62,6 +62,7 @@ final class SampleNativeMockedAppUITests: XCTestCase {
 
     @MainActor
     func testFormValidation() throws {
+        verifyMainScreen()
         // Button's label contains some extra spaces (padding?)
         let nextButton = app.buttons["Next   "].firstMatch
         let validationText = app.staticTexts["Cannot be blank"]

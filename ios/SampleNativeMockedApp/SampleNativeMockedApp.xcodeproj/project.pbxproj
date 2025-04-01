@@ -9,6 +9,18 @@
 /* Begin PBXBuildFile section */
 		599160352D92B131004FCB5E /* ConstellationSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 599160342D92B131004FCB5E /* ConstellationSDK.framework */; };
 		599160362D92B131004FCB5E /* ConstellationSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 599160342D92B131004FCB5E /* ConstellationSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		59C2989A2D9BE38000074296 /* bootstrap-shell.js in Resources */ = {isa = PBXBuildFile; fileRef = 59C298872D9BE36B00074296 /* bootstrap-shell.js */; };
+		59C2989B2D9BE38000074296 /* constellation-core.js in Resources */ = {isa = PBXBuildFile; fileRef = 59C298882D9BE36B00074296 /* constellation-core.js */; };
+		59C2989C2D9BE38000074296 /* lib_asset.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C298892D9BE36B00074296 /* lib_asset.json */; };
+		59C2989D2D9BE38600074296 /* NewService-1-Customer.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C2988B2D9BE36B00074296 /* NewService-1-Customer.json */; };
+		59C2989E2D9BE38600074296 /* NewService-2-Address.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C2988C2D9BE36B00074296 /* NewService-2-Address.json */; };
+		59C2989F2D9BE38600074296 /* NewService-3-Service.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C2988D2D9BE36B00074296 /* NewService-3-Service.json */; };
+		59C298A02D9BE38600074296 /* NewService-4-OtherNotes.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C2988E2D9BE36B00074296 /* NewService-4-OtherNotes.json */; };
+		59C298A12D9BE38600074296 /* SDKTesting-1-Create.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C2988F2D9BE36B00074296 /* SDKTesting-1-Create.json */; };
+		59C298A22D9BE38A00074296 /* NewService-POST.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C298912D9BE36B00074296 /* NewService-POST.json */; };
+		59C298A32D9BE38A00074296 /* SDKTesting-DELETE.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C298922D9BE36B00074296 /* SDKTesting-DELETE.json */; };
+		59C298A42D9BE38A00074296 /* SDKTesting-POST.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C298932D9BE36B00074296 /* SDKTesting-POST.json */; };
+		59C298A52D9BE38E00074296 /* D_pxBootstrapConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 59C298952D9BE36B00074296 /* D_pxBootstrapConfig.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +49,19 @@
 
 /* Begin PBXFileReference section */
 		599160342D92B131004FCB5E /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		59C298872D9BE36B00074296 /* bootstrap-shell.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "bootstrap-shell.js"; sourceTree = "<group>"; };
+		59C298882D9BE36B00074296 /* constellation-core.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "constellation-core.js"; sourceTree = "<group>"; };
+		59C298892D9BE36B00074296 /* lib_asset.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lib_asset.json; sourceTree = "<group>"; };
+		59C2988B2D9BE36B00074296 /* NewService-1-Customer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "NewService-1-Customer.json"; sourceTree = "<group>"; };
+		59C2988C2D9BE36B00074296 /* NewService-2-Address.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "NewService-2-Address.json"; sourceTree = "<group>"; };
+		59C2988D2D9BE36B00074296 /* NewService-3-Service.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "NewService-3-Service.json"; sourceTree = "<group>"; };
+		59C2988E2D9BE36B00074296 /* NewService-4-OtherNotes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "NewService-4-OtherNotes.json"; sourceTree = "<group>"; };
+		59C2988F2D9BE36B00074296 /* SDKTesting-1-Create.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "SDKTesting-1-Create.json"; sourceTree = "<group>"; };
+		59C298912D9BE36B00074296 /* NewService-POST.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "NewService-POST.json"; sourceTree = "<group>"; };
+		59C298922D9BE36B00074296 /* SDKTesting-DELETE.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "SDKTesting-DELETE.json"; sourceTree = "<group>"; };
+		59C298932D9BE36B00074296 /* SDKTesting-POST.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "SDKTesting-POST.json"; sourceTree = "<group>"; };
+		59C298952D9BE36B00074296 /* D_pxBootstrapConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = D_pxBootstrapConfig.json; sourceTree = "<group>"; };
+		59C298982D9BE36B00074296 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		59E9D2012D92A51800A051A1 /* SampleNativeMockedApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleNativeMockedApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E9D21B2D92A51B00A051A1 /* SampleNativeMockedAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleNativeMockedAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -52,16 +77,49 @@
 				Components/CustomLabel.swift,
 				Components/CustomOneColumnPage.swift,
 				Info.plist,
+				"MockedResponses/responses/cdn/bootstrap-shell.js",
+				"MockedResponses/responses/cdn/constellation-core.js",
+				MockedResponses/responses/cdn/lib_asset.json,
+				"MockedResponses/responses/dx/assignments/NewService-1-Customer.json",
+				"MockedResponses/responses/dx/assignments/NewService-2-Address.json",
+				"MockedResponses/responses/dx/assignments/NewService-3-Service.json",
+				"MockedResponses/responses/dx/assignments/NewService-4-OtherNotes.json",
+				"MockedResponses/responses/dx/assignments/SDKTesting-1-Create.json",
+				"MockedResponses/responses/dx/cases/NewService-POST.json",
+				"MockedResponses/responses/dx/cases/SDKTesting-DELETE.json",
+				"MockedResponses/responses/dx/cases/SDKTesting-POST.json",
+				MockedResponses/responses/dx/data_views/D_pxBootstrapConfig.json,
+				MockedResponses/responses/README.md,
 			);
 			target = 59E9D2002D92A51800A051A1 /* SampleNativeMockedApp */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		590A42062D9BEADE005E953F /* Exceptions for "SampleNativeMockedApp" folder in "Copy Bundle Resources" phase from "SampleNativeMockedApp" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 59E9D1FF2D92A51800A051A1 /* Resources */;
+			membershipExceptions = (
+				Components/CustomButton.swift,
+				Components/CustomDate.swift,
+				Components/CustomDropdown.swift,
+				Components/CustomFlexView.swift,
+				Components/CustomLabel.swift,
+				Components/CustomOneColumnPage.swift,
+				Components/CustomTextArea.swift,
+				Components/CustomTextInput.swift,
+				Components/Slider/CustomSlider.swift,
+				Components/Slider/CustomSliderProps.swift,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		59E9D2032D92A51800A051A1 /* SampleNativeMockedApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				599160322D92AFFA004FCB5E /* Exceptions for "SampleNativeMockedApp" folder in "SampleNativeMockedApp" target */,
+				590A42062D9BEADE005E953F /* Exceptions for "SampleNativeMockedApp" folder in "Copy Bundle Resources" phase from "SampleNativeMockedApp" target */,
 			);
 			path = SampleNativeMockedApp;
 			sourceTree = "<group>";
@@ -100,9 +158,71 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		59C2988A2D9BE36B00074296 /* cdn */ = {
+			isa = PBXGroup;
+			children = (
+				59C298872D9BE36B00074296 /* bootstrap-shell.js */,
+				59C298882D9BE36B00074296 /* constellation-core.js */,
+				59C298892D9BE36B00074296 /* lib_asset.json */,
+			);
+			path = cdn;
+			sourceTree = "<group>";
+		};
+		59C298902D9BE36B00074296 /* assignments */ = {
+			isa = PBXGroup;
+			children = (
+				59C2988B2D9BE36B00074296 /* NewService-1-Customer.json */,
+				59C2988C2D9BE36B00074296 /* NewService-2-Address.json */,
+				59C2988D2D9BE36B00074296 /* NewService-3-Service.json */,
+				59C2988E2D9BE36B00074296 /* NewService-4-OtherNotes.json */,
+				59C2988F2D9BE36B00074296 /* SDKTesting-1-Create.json */,
+			);
+			path = assignments;
+			sourceTree = "<group>";
+		};
+		59C298942D9BE36B00074296 /* cases */ = {
+			isa = PBXGroup;
+			children = (
+				59C298912D9BE36B00074296 /* NewService-POST.json */,
+				59C298922D9BE36B00074296 /* SDKTesting-DELETE.json */,
+				59C298932D9BE36B00074296 /* SDKTesting-POST.json */,
+			);
+			path = cases;
+			sourceTree = "<group>";
+		};
+		59C298962D9BE36B00074296 /* data_views */ = {
+			isa = PBXGroup;
+			children = (
+				59C298952D9BE36B00074296 /* D_pxBootstrapConfig.json */,
+			);
+			path = data_views;
+			sourceTree = "<group>";
+		};
+		59C298972D9BE36B00074296 /* dx */ = {
+			isa = PBXGroup;
+			children = (
+				59C298902D9BE36B00074296 /* assignments */,
+				59C298942D9BE36B00074296 /* cases */,
+				59C298962D9BE36B00074296 /* data_views */,
+			);
+			path = dx;
+			sourceTree = "<group>";
+		};
+		59C298992D9BE36B00074296 /* responses */ = {
+			isa = PBXGroup;
+			children = (
+				59C2988A2D9BE36B00074296 /* cdn */,
+				59C298972D9BE36B00074296 /* dx */,
+				59C298982D9BE36B00074296 /* README.md */,
+			);
+			name = responses;
+			path = SampleNativeMockedApp/MockedResponses/responses;
+			sourceTree = "<group>";
+		};
 		59E9D1F82D92A51800A051A1 = {
 			isa = PBXGroup;
 			children = (
+				59C298992D9BE36B00074296 /* responses */,
 				59E9D2032D92A51800A051A1 /* SampleNativeMockedApp */,
 				59E9D21E2D92A51B00A051A1 /* SampleNativeMockedAppUITests */,
 				599160332D92B131004FCB5E /* Frameworks */,
@@ -212,6 +332,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59C298A52D9BE38E00074296 /* D_pxBootstrapConfig.json in Resources */,
+				59C298A22D9BE38A00074296 /* NewService-POST.json in Resources */,
+				59C298A32D9BE38A00074296 /* SDKTesting-DELETE.json in Resources */,
+				59C298A42D9BE38A00074296 /* SDKTesting-POST.json in Resources */,
+				59C2989D2D9BE38600074296 /* NewService-1-Customer.json in Resources */,
+				59C2989E2D9BE38600074296 /* NewService-2-Address.json in Resources */,
+				59C2989F2D9BE38600074296 /* NewService-3-Service.json in Resources */,
+				59C298A02D9BE38600074296 /* NewService-4-OtherNotes.json in Resources */,
+				59C298A12D9BE38600074296 /* SDKTesting-1-Create.json in Resources */,
+				59C2989A2D9BE38000074296 /* bootstrap-shell.js in Resources */,
+				59C2989B2D9BE38000074296 /* constellation-core.js in Resources */,
+				59C2989C2D9BE38000074296 /* lib_asset.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

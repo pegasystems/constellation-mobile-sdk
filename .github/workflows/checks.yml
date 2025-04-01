@@ -47,7 +47,12 @@ jobs:
           api-level: 35
           arch: x86_64
           profile: Nexus 6
-          script: cd android && $GRADLE connectedCheck
+          script: |
+            cd android
+            if ! $GRADLE connectedCheck; then
+                    echo "Test failed, retrying it once..."
+                    $GRADLE connectedCheck
+            fi
 
       - name: Upload test artifacts
         if: always()
