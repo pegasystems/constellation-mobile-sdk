@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "59E9D2002D92A51800A051A1"
-               BuildableName = "SampleNativeMockedApp.app"
-               BlueprintName = "SampleNativeMockedApp"
-               ReferencedContainer = "container:SampleNativeMockedApp.xcodeproj">
+               BlueprintIdentifier = "594E50F92D9C3ED3005DD047"
+               BuildableName = "SampleMockedApp.app"
+               BlueprintName = "SampleMockedApp"
+               ReferencedContainer = "container:SampleMockedApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -27,18 +27,23 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      shouldAutocreateTestPlan = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <TestPlans>
+         <TestPlanReference
+            reference = "container:SampleMockedApp.xctestplan"
+            default = "YES">
+         </TestPlanReference>
+      </TestPlans>
       <Testables>
          <TestableReference
             skipped = "NO"
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "59E9D21A2D92A51B00A051A1"
-               BuildableName = "SampleNativeMockedAppUITests.xctest"
-               BlueprintName = "SampleNativeMockedAppUITests"
-               ReferencedContainer = "container:SampleNativeMockedApp.xcodeproj">
+               BlueprintIdentifier = "594E51192D9C3ED7005DD047"
+               BuildableName = "SampleMockedAppUITests.xctest"
+               BlueprintName = "SampleMockedAppUITests"
+               ReferencedContainer = "container:SampleMockedApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,10 +62,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "59E9D2002D92A51800A051A1"
-            BuildableName = "SampleNativeMockedApp.app"
-            BlueprintName = "SampleNativeMockedApp"
-            ReferencedContainer = "container:SampleNativeMockedApp.xcodeproj">
+            BlueprintIdentifier = "594E50F92D9C3ED3005DD047"
+            BuildableName = "SampleMockedApp.app"
+            BlueprintName = "SampleMockedApp"
+            ReferencedContainer = "container:SampleMockedApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -74,10 +79,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "59E9D2002D92A51800A051A1"
-            BuildableName = "SampleNativeMockedApp.app"
-            BlueprintName = "SampleNativeMockedApp"
-            ReferencedContainer = "container:SampleNativeMockedApp.xcodeproj">
+            BlueprintIdentifier = "594E50F92D9C3ED3005DD047"
+            BuildableName = "SampleMockedApp.app"
+            BlueprintName = "SampleMockedApp"
+            ReferencedContainer = "container:SampleMockedApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

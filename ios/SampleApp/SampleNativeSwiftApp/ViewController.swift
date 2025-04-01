@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 and Confidential to Pegasystems Inc. All rights reserved.
+// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
 //
 
 import UIKit
@@ -57,12 +57,6 @@ class ViewController: UIViewController {
         PMSDKNetwork.shared.requestDelegate = self
         
         // 2. Registering custom SwiftUI controls
-        PMSDKComponentManager.shared.register("TextArea") {
-            CustomTextAreaComponentProvider()
-        }
-        PMSDKComponentManager.shared.register("TextInput") {
-            CustomTextInputComponentProvider()
-        }
         try? PMSDKComponentManager.shared.register(
             "MyCompany_MyLib_Slider",
             jsFile: Bundle.main.url(forResource: "slider.component", withExtension: "js")!

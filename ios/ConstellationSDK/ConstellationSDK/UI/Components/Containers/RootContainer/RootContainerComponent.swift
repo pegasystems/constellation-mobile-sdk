@@ -7,37 +7,37 @@ import SwiftUI
 
 class RootContainerComponentProvider: ContainerProvider {
     var eventSubject: AnyPublisher<ComponentEvent, Never>
-
+    
     lazy var view: AnyView = {
         AnyView(RootContainerComponentView(properties: properties, manager: manager))
     }()
-
+    
     let properties = RootContainerComponentProps()
-
+    
     private weak var manager: ComponentManager?
-
+    
     required init() {
         eventSubject = PassthroughSubject().eraseToAnyPublisher()
     }
-
+    
     func presentAlert(message: String, onClose: @escaping () -> Void) {
         properties.alertInfo = AlertInfo(
             message: message,
             type: .alert,
             onClose: onClose)
     }
-
+    
     func presentConfirm(message: String, onResult: @escaping (Bool) -> Void) {
         properties.alertInfo = AlertInfo(
             message: message,
             type: .confirm,
             onConfirm: onResult)
     }
-
+    
     func useManager(_ manager: ComponentManager) {
         self.manager = manager
     }
-
+    
     func updateProperties(_ jsonInput: String) throws {
         try JSONDecoder()
             .decode(DecodableRootContainerComponentProps.self, from: Data(jsonInput.utf8))
@@ -46,15 +46,15 @@ class RootContainerComponentProvider: ContainerProvider {
 }
 
 struct RootContainerComponentView: View {
-
+    
     @ObservedObject var properties: RootContainerComponentProps
     weak var manager: ComponentManager?
-
+    
     init (properties: RootContainerComponentProps, manager: ComponentManager?) {
         self.manager = manager
         self.properties = properties
     }
-
+    
     var body: some View {
         VStack {
             if let viewContainerId = properties.viewContainer?.stringId {
@@ -70,14 +70,14 @@ struct RootContainerComponentView: View {
             return Text(message)
         }
     }
-
+    
     private var showAlert: Binding<Bool> {
         Binding(
             get: { properties.alertInfo != nil },
             set: { if !$0 { properties.alertInfo = nil } }
         )
     }
-
+    
     @ViewBuilder
     private var alertButtons: some View {
         if let alert = properties.alertInfo {

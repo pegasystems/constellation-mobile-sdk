@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 and Confidential to Pegasystems Inc. All rights reserved.
+// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
 //
 
 import UIKit
@@ -7,7 +7,7 @@ import SwiftUI
 import ConstellationSDK
 
 class ViewController: UIViewController {
-    
+
     var loadMobileSDKContent: UIButton!
     weak var controller: UIHostingController<PMSDKCreateCaseView>?
     let mockedNetwork = MockedNetwork()
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         welcomeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120).isActive = true
         welcomeLabel.widthAnchor.constraint(equalToConstant: 300).isActive = true
         welcomeLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
+
         let button: UIButton = {
             let button = UIButton(type: .system)
             button.setTitle("Create a new Case", for: .normal)
@@ -49,31 +49,15 @@ class ViewController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.addTarget(self, action: #selector(showNewPegaCase), for: .touchUpInside)
     }
-    
-    private func configurePegaSDK() {
 
+    private func configurePegaSDK() {
         // 1. Registering HTTP interceptor
         PMSDKNetwork.shared.requestDelegate = mockedNetwork
-
-        // 2. Registering custom SwiftUI controls
-        PMSDKComponentManager.shared.register("TextArea") {
-            CustomTextAreaComponentProvider()
-        }
-        PMSDKComponentManager.shared.register("TextInput") {
-            CustomTextInputComponentProvider()
-        }
-        try? PMSDKComponentManager.shared.register(
-            "MyCompany_MyLib_Slider",
-            jsFile: Bundle.main.url(forResource: "slider.component", withExtension: "js")!
-        ) {
-            CustomSliderProvider()
-        }
     }
 
     @objc private func showNewPegaCase(_ sender: UIButton) {
         Task {
-
-            // 3. Create case form creation
+            // 2. Create case form creation
             let startingFields = PMSDKCreateCaseStartingFields()
             // Set proper starting fields as defined in casetype model:
             // startingFields.set(value: "Johnny", forKey: "FirstName")
@@ -94,7 +78,7 @@ class ViewController: UIViewController {
     }
 }
 
-// 4. Reacting on CreateCaseController lifecycle events (finish/closure)
+// 3. Reacting on CreateCaseController lifecycle events (finish/closure)
 
 extension ViewController: PMSDKCreateCaseViewDelegate {
     func createCaseView(_ view: PMSDKCreateCaseView, didFinishProcessingWith message: String?) {

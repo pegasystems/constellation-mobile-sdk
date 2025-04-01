@@ -7,7 +7,7 @@ import ConstellationSDK
 import os
 
 class MockedNetwork: PMSDKNetworkRequestDelegate {
-    lazy var logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "SampleNativeMockedApp", category: "MockedNetwork")
+    lazy var logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "SampleMockedApp", category: "MockedNetwork")
 
     private func loadResponseData(name: String, type: String, method: String) -> Data {
         let path = if name == "SDKTesting" || name == "NewService" {
@@ -18,8 +18,6 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
         if let path = path {
             do {
                 return try Data(contentsOf: URL(fileURLWithPath: path))
-                //let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8).data(using: .utf8)!
-                //return content
             } catch {
                 fatalError("Incorrect data in response \(name) of type \(type) for \(method)")
             }
@@ -32,7 +30,7 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
             "Content-Type": contentType,
             "Cache-Control": "public, max-age=15",
             "Etag": "W/\"927172e94be5d264437adfde6870ba61\"",
-            "Access-Control-Allow-Origin": "https://mocked.example"
+            "Access-Control-Allow-Origin": "https://url.example"
         ]
         return HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
     }

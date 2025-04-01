@@ -4,10 +4,10 @@
 
 import XCTest
 
-final class SampleNativeMockedAppUITests: XCTestCase {
+final class SampleMockedAppUITests: XCTestCase {
     private lazy var app: XCUIApplication = XCUIApplication()
     private let mainScreenTimeout = 90.0
-    private let appInstallTimeout = 240.0
+    private let appInstallTimeout = 600.0
     private let timeout = 60.0
 
     override func setUpWithError() throws {
@@ -16,7 +16,7 @@ final class SampleNativeMockedAppUITests: XCTestCase {
         // when running test locally, but on CI app launch sometimes fails
         // because we are trying to launch app before it has been installed
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        if springboard.icons["SampleNativeMockedApp"].waitForExistence(timeout: appInstallTimeout) {
+        if springboard.icons["SampleMockedApp"].waitForExistence(timeout: appInstallTimeout) {
             app.launch()
         } else {
             XCTFail("Test app is still not installed")
