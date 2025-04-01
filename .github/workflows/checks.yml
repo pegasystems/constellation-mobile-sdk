@@ -30,6 +30,7 @@ jobs:
         with:
           path: ~/.gradle
           key: gradle-cache
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
@@ -37,8 +38,7 @@ jobs:
           packages: '${{ env.EMULATOR_IMAGE }} platforms;android-35 platform-tools emulator'
           log-accepted-android-sdk-licenses: false
 
-
-      - name: Assemble sample application
+      - name: Assemble SDK
         run: cd android && $GRADLE clean assemble
 
       - name: Run tests

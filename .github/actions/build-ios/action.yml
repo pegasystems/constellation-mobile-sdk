@@ -1,0 +1,31 @@
+name: "Build SDK for iOS"
+description: "Build SDK for iOS platform"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install esbuild
+      shell: bash
+      run: brew install esbuild
+
+    - name: Build .xcframework
+      shell: bash
+      run: |
+        rm -rf release || true
+        mkdir release
+        cd ios
+        ../.github/workflow-scripts/build-ios.sh
+        cd build
+        zip -r ../../release/ConstellationSDK.xcframework.zip ConstellationSDK.xcframework
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ios-release
+        path: release
+        retention-days: 1
+        compression-level: 0
+        if-no-files-found: error
+

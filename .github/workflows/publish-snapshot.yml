@@ -1,0 +1,46 @@
+name: "Publish snapshot to github"
+permissions:
+  contents: write
+on:
+  # push to main is only allowed from PRs so this is defacto triggered on PR merge
+  push:
+    branches:
+      - main
+env:
+  # Bump those versions when needed
+  VERSION_MAJOR: 1
+  VERSION_MINOR: 0
+
+jobs:
+  build-android:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build
+        uses: ./.github/actions/build-android
+
+  build-ios:
+    runs-on: 'macos-15'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build
+        uses: ./.github/actions/build-ios
+
+  publish-release:
+    runs-on: 'ubuntu-latest'
+    needs: [build-android, build-ios]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Publish
+        uses: ./.github/actions/publish
+        with:
+          version-major: ${{ env.VERSION_MAJOR }}
+          version-minor: ${{ env.VERSION_MINOR }}
+          release-type: 'snapshot'
