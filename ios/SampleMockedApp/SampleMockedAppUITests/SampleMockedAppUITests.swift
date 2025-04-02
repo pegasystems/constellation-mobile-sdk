@@ -7,26 +7,34 @@ import XCTest
 final class SampleMockedAppUITests: XCTestCase {
     private lazy var app: XCUIApplication = XCUIApplication()
     private let mainScreenTimeout = 90.0
-    private let appInstallTimeout = 600.0
+    private let appInstallTimeout = 300.0
     private let timeout = 60.0
 
     override func setUpWithError() throws {
+        // Check if app has been installed, this is needed on CI especially, where tests are running much slower
+        // We are expecting at least two apps with below text, because one will be test runner itself
+        waitForIconContaining(text: "SampleMockedApp", timeout: appInstallTimeout, count: 2)
+        app.launch()
         try super.setUpWithError()
-        // Check if app has been installed, this is generally not needed
-        // when running test locally, but on CI app launch sometimes fails
-        // because we are trying to launch app before it has been installed
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        if springboard.icons["SampleMockedApp"].waitForExistence(timeout: appInstallTimeout) {
-            app.launch()
-        } else {
-            XCTFail("Test app is still not installed")
-        }
     }
 
     override func tearDownWithError() throws {
         screenshot()
         app.terminate()
         try super.tearDownWithError()
+    }
+
+    private func waitForIconContaining(text: String, timeout: TimeInterval, count: Int) {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let predicate = NSPredicate(format: "label CONTAINS[c] %@", text)
+        let getIconCount = { () -> Int in
+            springboard.icons.containing(predicate).allElementsBoundByIndex.count
+        }
+        let startTime = NSDate().timeIntervalSince1970
+        while getIconCount() < count && NSDate().timeIntervalSince1970 - startTime < timeout {
+            usleep(100_000)
+        }
+        XCTAssertGreaterThanOrEqual(getIconCount(), count, "Cannot find at least \(count) icon(s) with text: \(text)")
     }
 
     private func acceptAlert() {
