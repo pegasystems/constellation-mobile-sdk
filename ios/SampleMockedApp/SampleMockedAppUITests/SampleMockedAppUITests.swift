@@ -6,9 +6,9 @@ import XCTest
 
 final class SampleMockedAppUITests: XCTestCase {
     private lazy var app: XCUIApplication = XCUIApplication()
-    private let mainScreenTimeout = 90.0
+    private let mainScreenTimeout = 120.0
     private let appInstallTimeout = 300.0
-    private let timeout = 60.0
+    private let timeout = 120.0
 
     override func setUpWithError() throws {
         // Check if app has been installed, this is needed on CI especially, where tests are running much slower

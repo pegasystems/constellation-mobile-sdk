@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
+# Add error handler so we know where error has occurred
+set -eE -o functrace
+failure() {
+  local lineno=$1
+  local msg=$2
+  echo "Failed at $lineno: $msg"
+}
+trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
+
 DRY_RUN=0
+
+# Parse parameters
 while [[ $# -gt 0 ]]; do
     case $1 in
     --dry-run)
@@ -33,12 +44,13 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Require both --minor and --major params
 if [ -z "${MINOR_VERSION}" ] || [ -z "${MAJOR_VERSION}" ]; then
     echo "Provide minor and major version e.g. $0 --major 1 --minor 0"
     exit 1
 fi
-
 TIMESTAMP=$(date -u +%Y-%m-%d-%H-%M)
+# Get last ONE non-draft non-prerelease version (sorted by data created desc)
 LAST_VERSION=$(gh release list --exclude-drafts --exclude-pre-releases --json name --jq '.[0].name' --limit 1 | tr -d '[:space:]')
 
 echo "Last non-snapshot version: ${LAST_VERSION}"
@@ -68,8 +80,8 @@ echo "Will publish artifacts to release with version: ${VERSION}"
 
 if [ "${DRY_RUN}" -eq 1 ]; then
     echo "Dry run enabled, not doing anything, would have run following command:"
-    echo "gh release create \"${VERSION}\" \"${PARAM_PRE}\" --generate-notes \"ios-release/*.*\" \"android-release/*.*\""
+    echo "gh release create \"${VERSION}\" ${PARAM_PRE} --generate-notes \"ios-release/*.*\" \"android-release/*.*\""
     exit 1
 fi
 
-gh release create "${VERSION}" "${PARAM_PRE}" --generate-notes "ios-release/*.*" "android-release/*.*"
+gh release create "${VERSION}" ${PARAM_PRE} --generate-notes "ios-release/*.*" "android-release/*.*"
