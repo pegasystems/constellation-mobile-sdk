@@ -51,7 +51,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(platform(libs.androidx.compose.bom))
