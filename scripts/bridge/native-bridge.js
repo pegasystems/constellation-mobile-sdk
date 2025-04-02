@@ -79,7 +79,7 @@ class NativeBridge {
       return;
     }
     const props = JSON.stringify(component.props)
-    console.log(`[Bridge] Updating component ${this.type}#${id}, props: ${props}`);
+    console.log(`[Bridge] Updating component ${component.type}#${id}, props: ${props}`);
     sdkbridge.updateComponent(id, props);
   }
 }

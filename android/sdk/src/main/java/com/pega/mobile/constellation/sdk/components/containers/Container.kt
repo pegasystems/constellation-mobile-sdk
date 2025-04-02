@@ -8,7 +8,7 @@ import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
-import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
+import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import org.json.JSONObject
 
@@ -27,6 +27,6 @@ abstract class ContainerComponent(context: ComponentContext) : BaseComponent(con
     }
 }
 
-abstract class ContainerViewModel : ComponentViewModel {
+abstract class ContainerViewModel : BaseViewModel() {
     var children: List<Component> by mutableStateOf(emptyList())
 }

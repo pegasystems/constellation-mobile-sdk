@@ -6,9 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
+import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
 import com.pega.mobile.dxcomponents.compose.controls.form.Unsupported
 import org.json.JSONObject
 
@@ -19,7 +19,7 @@ class UnsupportedNativeComponent(componentType: String, context: ComponentContex
     override fun onUpdate(props: JSONObject) {}
 }
 
-class UnsupportedNativeViewModel(initialState: String) : ComponentViewModel {
+class UnsupportedNativeViewModel(initialState: String) : BaseViewModel() {
     var componentType by mutableStateOf(initialState)
 }
 

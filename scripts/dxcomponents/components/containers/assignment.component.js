@@ -291,6 +291,7 @@ export class AssignmentComponent {
             })
             .catch(() => {
               this.setLoading(false);
+              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
               // this.snackBar.open(`${this.localizedVal('Navigation failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -311,6 +312,7 @@ export class AssignmentComponent {
             })
             .catch(() => {
               this.setLoading(false);
+              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
               // this.snackBar.open(`${this.localizedVal('Save failed', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -334,8 +336,8 @@ export class AssignmentComponent {
               PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
             })
             .catch((err) => {
-              console.warn("JS :: Assignment :: Failed to cancel assignment!, err");
               this.setLoading(false);
+              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
             });
           break;
 
@@ -347,6 +349,7 @@ export class AssignmentComponent {
             })
             .catch(() => {
               this.setLoading(false);
+              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
               // this.snackBar.open(`${this.localizedVal('Rejection failed!', this.localeCategory)}`, 'Ok');
             });
 
@@ -371,6 +374,7 @@ export class AssignmentComponent {
             })
             .catch(() => {
               this.setLoading(false);
+              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
               // this.snackBar.open(`${this.localizedVal('Submit failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -387,6 +391,7 @@ export class AssignmentComponent {
             })
             .catch(() => {
               this.setLoading(false);
+              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
               // this.snackBar.open(`${this.localizedVal('Approve failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {

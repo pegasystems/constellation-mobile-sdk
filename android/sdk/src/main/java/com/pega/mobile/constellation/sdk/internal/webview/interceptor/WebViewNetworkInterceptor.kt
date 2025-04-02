@@ -23,7 +23,15 @@ internal class WebViewNetworkInterceptor(
         }.getOrElse {
             val message = it.message.orEmpty()
             Log.e(TAG, "Network error: $message", it)
-            WebResourceResponse("text/html", "utf-8", ByteArrayInputStream(message.toByteArray()))
+            // simulating http error to make JS code to throw exception
+            WebResourceResponse(
+                "text/html",
+                "utf-8",
+                499,
+                "Network error",
+                emptyMap(),
+                ByteArrayInputStream(message.toByteArray())
+            )
         }
 
     fun setRequestBody(body: String) {

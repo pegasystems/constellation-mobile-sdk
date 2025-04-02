@@ -5,6 +5,7 @@ import { createCase } from './create-case.js';
 import { getSdkComponentMap } from '../dxcomponents/mappings/sdk-component-map.js';
 import { bridge } from '../bridge/native-bridge.js';
 import { subscribeForEvents } from './init-events.js';
+import { localSdkComponentMap } from '../dxcomponents/mappings/sdk-local-component-map.js';
 
 async function init(sdkConfig, componentsOverridesStr) {
   try {
@@ -24,7 +25,7 @@ async function init(sdkConfig, componentsOverridesStr) {
 
 async function onPCoreReady(renderObj) {
   console.log("PCore ready!");
-  await getSdkComponentMap();
+  await getSdkComponentMap(localSdkComponentMap);
   console.log("SdkComponentMap initialized");
   const root = initialRender(renderObj);
   subscribeForEvents(root);

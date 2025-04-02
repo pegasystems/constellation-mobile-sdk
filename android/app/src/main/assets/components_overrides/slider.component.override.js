@@ -26,7 +26,7 @@ export class SliderComponent {
     this.pConn$ = pConn$;
     this.componentsManager = componentsManager;
     this.compId = this.componentsManager.getNextComponentId();
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect
+    this.jsComponentPConnect = this.componentsManager.jsComponentPConnect
     this.controlName$ = this.jsComponentPConnect.getComponentID(this);
     this.type = pConn$.meta.type
   }
@@ -43,7 +43,14 @@ export class SliderComponent {
       console.log("destroy for slider component - id:  ", this.jsComponentPConnectData.compID);
       this.jsComponentPConnectData.unsubscribeFn();
     }
-    componentsManager.onComponentRemoved(this);
+    this.componentsManager.onComponentRemoved(this);
+  }
+
+  update(pConn) {
+    if (this.pConn$ !== pConn) {
+      this.pConn$ = pConn;
+      this.checkAndUpdate();
+    }
   }
 
   onStateChange() {
@@ -157,7 +164,7 @@ function handleEvent(actions, eventType, propName, value) {
   }
 
 function clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
-  if (validateMessage || validateMessage === '') {
+  if (!validateMessage || validateMessage === '') {
     pConn.clearErrorMessages({
       property: propName
     });

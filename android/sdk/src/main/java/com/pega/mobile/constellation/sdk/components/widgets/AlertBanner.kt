@@ -5,9 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
+import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
 import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerVariant.URGENT
 import com.pega.mobile.dxcomponents.compose.controls.form.Banner
@@ -26,7 +26,7 @@ class AlertBannerComponent(context: ComponentContext) : BaseComponent(context) {
     }
 }
 
-class AlertBannerViewModel : ComponentViewModel {
+class AlertBannerViewModel : BaseViewModel() {
     var variant: AlertBannerVariant by mutableStateOf(URGENT)
     var messages: List<String> by mutableStateOf(emptyList())
 }

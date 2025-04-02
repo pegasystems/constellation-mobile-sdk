@@ -8,16 +8,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 
 @Composable
 internal fun HelperText(text: String, validateMessage: String, disabled: Boolean, readOnly: Boolean) {
     when {
         validateMessage.isNotEmpty() && !disabled && !readOnly ->
-            Text(text = validateMessage, color = Color.Red)
+            Text(text = validateMessage, color = Color.Red, fontSize = 12.sp)
 
         text.isNotEmpty() -> {
             val color = if (disabled) Color.Gray else Color.Black
-            Text(text = text, color = color)
+            Text(text = text, color = color, fontSize = 12.sp)
         }
     }
 }

@@ -14,7 +14,7 @@ import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
+import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.Render
 import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.dxcomponents.compose.controls.form.Snackbar
@@ -35,7 +35,7 @@ class RootContainerComponent(context: ComponentContext) : BaseComponent(context)
     }
 }
 
-class RootContainerViewModel : ComponentViewModel {
+class RootContainerViewModel : BaseViewModel() {
     var viewContainer: Component? by mutableStateOf(null)
     var httpMessages: List<HttpMessage> by mutableStateOf(emptyList())
 }

@@ -44,7 +44,7 @@ class ComposeTest {
     fun test_case_processing_sdk_testing() = with(composeTestRule) {
         setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
 
-        onNodeWithText("Create case").performClick()
+        onNodeWithText(CREATE_CASE_TEXT).performClick()
         waitForNode("Create")
 
         onNodeWithText("Name", substring = true).performTextInput("Jan")
@@ -58,14 +58,14 @@ class ComposeTest {
         onNodeWithText("Url").assertTextContains("https://pega.com")
 
         onNodeWithText("Cancel").performClick()
-        waitForNode("Create case")
+        waitForNode(CREATE_CASE_TEXT)
     }
 
     @Test
     fun test_case_processing_service() = with(composeTestRule) {
         setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
 
-        onNodeWithText("Create case").performClick()
+        onNodeWithText(CREATE_CASE_TEXT).performClick()
         waitForNode("Customer")
 
         onNodeWithText("First Name").performTextInput("Jan")
@@ -94,7 +94,7 @@ class ComposeTest {
         onNodeWithText("Notes").performTextInput("Lorem ipsum")
         onNodeWithText("Submit").performClick()
 
-        waitForNode("Create case")
+        waitForNode(CREATE_CASE_TEXT)
     }
 
     private fun setupApp(caseClassName: String) = with(composeTestRule) {
@@ -130,7 +130,11 @@ class ComposeTest {
     private fun ComposeContentTestRule.waitForNode(text: String) {
         waitUntilExactlyOneExists(
             hasText(text, substring = true),
-            timeoutMillis = 30000
+            timeoutMillis = 10000
         )
+    }
+
+    companion object {
+        private const val CREATE_CASE_TEXT = "New Service"
     }
 }
