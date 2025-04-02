@@ -31,6 +31,7 @@ export class TextAreaComponent {
   // fieldControl = new FormControl('', null);
   actionsApi;
   propName;
+  props;
 
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
@@ -114,7 +115,7 @@ export class TextAreaComponent {
 
     this.componentReference = this.pConn$.getStateProps().value;
 
-    const props = {
+    this.props = {
       value: this.value$,
       label: this.label$,
       visible: this.bVisible$,
@@ -126,8 +127,7 @@ export class TextAreaComponent {
       validateMessage: this.jsComponentPConnectData.validateMessage || '',
       maxLength: this.nMaxLength$
     }
-    console.log(`sending TextArea props via bridge, id: ${this.compId}, props: ${JSON.stringify(props)}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onEvent(event) {
@@ -135,17 +135,12 @@ export class TextAreaComponent {
   }
 
   fieldOnChange(value) {
-    this.value$ = value
+    this.value$ = value;
   }
 
   fieldOnBlur(value) {
     this.value$ = value || this.value$
     handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
-  }
-
-  clearErrorMessages() {
-    this.pConn$.clearErrorMessages({
-      property: this.propName
-    });
+    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }

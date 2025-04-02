@@ -14,6 +14,8 @@ export class ViewContainerComponent {
     routingInfo: Object,
     readOnly: Boolean
   }
+  props;
+
   arChildren$ =[];
   childComponent;
   title$ = '';
@@ -52,7 +54,7 @@ export class ViewContainerComponent {
         /* NOTE: setContainerLimit use is temporary. It is a non-public, unsupported API. */
         PCore.getContainerUtils().setContainerLimit(`${APP.APP}/${name}`, limit);
       }
-      
+
       if (!PCore.checkIfSemanticURL()) {
         // PCore.checkIfSemanticURL() logic inside c11n-core-js is that it compares app path and path in url.
         // If they are equal then it returns false. In code these values are set to be equal.
@@ -68,24 +70,29 @@ export class ViewContainerComponent {
   }
 
   destroy() {
-    if (this.childComponent !== undefined && this.childComponent.destroy !== undefined) {
-      this.childComponent.destroy();
-    }
     if (this.jsComponentPConnectData.unsubscribeFn) {
       console.log("destroy for view container - id:  ", this.jsComponentPConnectData.compID);
       this.jsComponentPConnectData.unsubscribeFn();
     }
+    if (this.childComponent !== undefined && this.childComponent.destroy !== undefined) {
+      this.childComponent.destroy();
+    }
+    this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
+  }
 
-    this.sendPropsUpdate()
+  update(pConn) {
+    if (this.pConn$ !== pConn) {
+      this.pConn$ = pConn;
+      this.checkAndUpdate();
+    }
   }
 
   sendPropsUpdate() {
-    const props = {
+    this.props = {
       children: Utils.getChildrenComponentsIds([this.childComponent])
     };
-    console.log("sending ViewContainer props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onStateChange() {
@@ -107,7 +114,7 @@ export class ViewContainerComponent {
     }
     // routingInfo was added as component prop in populateAdditionalProps
     const routingInfo = this.jsComponentPConnect.getComponentProp(this, 'routingInfo');
-    
+
     if (!routingInfo) {
       console.error("routingInfo is not available.")
       return;

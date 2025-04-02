@@ -18,10 +18,13 @@ object ComponentTypes {
     val Checkbox = ComponentType("Checkbox")
     val TextArea = ComponentType("TextArea")
     val URL = ComponentType("URL")
+    val Date = ComponentType("Date")
 
     // widgets
     val ActionButtons = ComponentType("ActionButtons")
+    val AlertBanner = ComponentType("AlertBanner")
 
     // unsupported
-    val Unsupported = ComponentType("Unsupported")
+    val UnsupportedJs = ComponentType("Unsupported")
+    val UnsupportedNative = ComponentType("UnsupportedNative")
 }

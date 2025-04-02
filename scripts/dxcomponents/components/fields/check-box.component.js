@@ -20,7 +20,6 @@ import { handleEvent } from '../../helpers/event-util.js';
 
 export class CheckBoxComponent {
   pConn$;
-  formGroup$;
 
   // Used with JsComponentPConnect
   jsComponentPConnectData = {};
@@ -57,7 +56,8 @@ export class CheckBoxComponent {
   propName;
   compId;
   type;
-  
+  props;
+
   // fieldControl = new FormControl('', null);
 
   constructor(componentsManager, pConn$) {
@@ -82,10 +82,6 @@ export class CheckBoxComponent {
   }
 
   destroy() {
-    if (this.formGroup$) {
-      this.formGroup$.removeControl(this.controlName$);
-    }
-
     if (this.jsComponentPConnectData.unsubscribeFn) {
       console.log("destroy for checkbox component - id:  ", this.jsComponentPConnectData.compID);
       this.jsComponentPConnectData.unsubscribeFn();
@@ -154,10 +150,10 @@ export class CheckBoxComponent {
       this.helperText = this.configProps$.helperText || '';
       this.trueLabel$ = this.configProps$.trueLabel || 'Yes';
       this.falseLabel$ = this.configProps$.falseLabel || 'No';
-   
+
       if (this.configProps$.required != null) {
         this.bRequired$ = this.utils.getBooleanValue(this.configProps$.required);
-      }    
+      }
 
       if (this.configProps$.visibility != null) {
         this.bVisible$ = this.utils.getBooleanValue(this.configProps$.visibility);
@@ -180,9 +176,8 @@ export class CheckBoxComponent {
       this.componentReference = this.pConn$.getStateProps().value;
     }
 
-    const props = {
+    this.props = {
       value: this.value$,
-      caption: this.caption$,
       label: this.label$,
       visible: this.bVisible$,
       required: this.bRequired$,
@@ -192,8 +187,7 @@ export class CheckBoxComponent {
       validateMessage: this.jsComponentPConnectData.validateMessage || '',
       caption: this.caption$
     }
-    console.log(`sending Checkbox props via bridge, id: ${this.compId}, props: ${JSON.stringify(props)}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onEvent(event) {
@@ -202,7 +196,6 @@ export class CheckBoxComponent {
 
   fieldOnChange(value) {
     this.value$ = value
-    this.clearErrorMessages();
     const checked = this.value$ === 'true' || this.value$ === true;
     handleEvent(this.actionsApi, 'changeNblur', this.propName, checked);
   }
@@ -214,6 +207,7 @@ export class CheckBoxComponent {
     } else {
       this.pConn$.getValidationApi().validate(this.value$ === 'true');
     }
+    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 
   handleChangeMultiMode(event, element) {
@@ -232,12 +226,6 @@ export class CheckBoxComponent {
       property: this.selectionList,
       category: '',
       context: ''
-    });
-  }
-
-  clearErrorMessages() {
-    this.pConn$.clearErrorMessages({
-      property: this.propName
     });
   }
 

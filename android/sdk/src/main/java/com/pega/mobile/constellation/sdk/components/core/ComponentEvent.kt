@@ -10,7 +10,7 @@ package com.pega.mobile.constellation.sdk.components.core
  */
 data class ComponentEvent(
     val type: String,
-    val componentData: Map<String, String>,
+    val componentData: Map<String, String> = emptyMap(),
     val eventData: Map<String, String> = emptyMap()
 ) {
 

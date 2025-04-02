@@ -23,12 +23,12 @@ extension WebViewEngine {
     }
 }
 
-class WebViewEngine {
+class WebViewEngine: NSObject {
     private var webView: WKWebView?
     let bundle = Bundle(for: ComponentManager.self)
     private(set) var manager = ComponentManager()
 
-    init() {}
+    override init() {}
 
     deinit {
         Logger.current().debug("Engine deinit.")
@@ -81,6 +81,7 @@ class WebViewEngine {
 
         let webView = createWebView(with: resourceHandler, formHandler: formHandler)
         self.webView = webView
+        self.webView?.uiDelegate = self
 
         webView.isInspectable = true
 
@@ -131,6 +132,44 @@ class WebViewEngine {
             "window.init('\(configString)', '\(overrideString)');0"
         )
     }
+}
+
+extension WebViewEngine : WKUIDelegate {
+    
+    @MainActor
+    func webView(
+        _ webView: WKWebView,
+        runJavaScriptAlertPanelWithMessage message: String,
+        initiatedByFrame frame: WKFrameInfo,
+        completionHandler: @escaping @MainActor () -> Void
+    ) {
+        self.manager.rootComponent.presentAlert(message: message) {
+            completionHandler()
+        }
+    }
+
+    @MainActor
+    func webView(
+        _ webView: WKWebView,
+        runJavaScriptConfirmPanelWithMessage message: String,
+        initiatedByFrame frame: WKFrameInfo,
+        completionHandler: @escaping @MainActor (Bool) -> Void
+    ) {
+        self.manager.rootComponent.presentConfirm(message: message) { result in
+            completionHandler(result)
+        }
+    }
+    
+//    @MainActor
+//    func webView(
+//        _ webView: WKWebView,
+//        runJavaScriptTextInputPanelWithPrompt prompt: String,
+//        defaultText: String?,
+//        initiatedByFrame frame: WKFrameInfo,
+//        completionHandler: @escaping @MainActor (String?) -> Void
+//    ) {
+//        // TODO: implement
+//    }
 }
 
 extension URL {

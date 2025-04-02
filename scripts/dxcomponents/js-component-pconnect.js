@@ -295,21 +295,26 @@ export class JsComponentPConnectService {
 
     const incomingProps = this.getComponentProps(inComp);
 
-    // if have pageMessages, and it is blank, remove it.  This causes issues of making it appear
-    // that a will cause an update, when there is no change
+    // pageMessages/httpMessages are sometimes undefined (when no errors) and sometimes [] (after clearing)
+    // if pageMessages/httpMessages are [] then remove them to not trigger unnecessary component update
     if (this.isPageMessagesEmpty(incomingProps)) {
       inComp.jsComponentPConnectData.pageMessages = incomingProps.pageMessages;
       delete incomingProps.pageMessages;
     }
-
-    if (incomingProps.httpMessages) {
+    if(this.isHttpMessagesEmpty(incomingProps)) {
       inComp.jsComponentPConnectData.httpMessages = incomingProps.httpMessages;
-      incomingProps.httpMessages = undefined;
+      delete incomingProps.httpMessages
     }
-
+  
     const incomingPropsAsStr = JSON.stringify(incomingProps);
 
     bRet = currentPropsAsStr != incomingPropsAsStr;
+
+    if (incomingProps.httpMessages) {
+      inComp.jsComponentPConnectData.httpMessages = incomingProps.httpMessages;
+      // httpMessages should not be stored in incomingProps in order to force component update if httpMessages does not change
+      delete incomingProps.httpMessages
+    }
 
     // Below piece of code is needed to re-render the component since we wanna evaluate the Visibility expression within View component in such cases
     if (inComp.pConn$.meta.config.context?.length > 0 && inComp.pConn$.getPageReference().length > 'caseInfo.content'.length) {
@@ -365,6 +370,10 @@ export class JsComponentPConnectService {
 
   isPageMessagesEmpty(incomingProps) {
     return incomingProps.pageMessages && incomingProps.pageMessages.length === 0;
+  }
+
+  isHttpMessagesEmpty(incomingProps) {
+    return incomingProps.httpMessages && incomingProps.httpMessages.length === 0;
   }
 
   /**

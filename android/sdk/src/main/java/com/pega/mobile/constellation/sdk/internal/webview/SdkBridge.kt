@@ -27,9 +27,9 @@ internal class SdkBridge(private val handler: BridgeEventHandler) {
     fun removeComponent(id: Int) = handle(RemoveComponent(ComponentId(id)))
 
     @JavascriptInterface
-    fun updateComponent(id: String, propsJson: String) = handle(
+    fun updateComponent(id: Int, propsJson: String) = handle(
         UpdateComponent(
-            id = ComponentId(id.toInt()),
+            id = ComponentId(id),
             propsJson = JSONObject(propsJson)
         )
     )

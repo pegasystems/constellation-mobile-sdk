@@ -11,6 +11,7 @@ export class AssignmentCardComponent {
   updateToken$;
   compId;
   type;
+  props;
 
   childrenComponents = [];
   actionButtonsComponent;
@@ -33,7 +34,7 @@ export class AssignmentCardComponent {
     const reconciledComponents = this.componentsManager.reconcileChildren(this, []);
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.componentsManager.initReconciledComponents(reconciledComponents);
-  
+
     const actionButtonsComponentClass = getComponentFromMap("ActionButtons");
     this.actionButtonsComponent = new actionButtonsComponentClass(this.componentsManager, this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
     this.actionButtonsComponent.init();
@@ -43,8 +44,8 @@ export class AssignmentCardComponent {
 
   destroy() {
     Utils.destroyChildren(this);
-    this.componentsManager.onComponentRemoved(this);
     this.sendPropsUpdate();
+    this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn, pConnChildren, mainButtons, secondaryButtons) {
@@ -63,11 +64,11 @@ export class AssignmentCardComponent {
     const assignmentCardPConn = this.pConn$;
 
     // TODO quick hack to submit form
-    window.submitForm = function() { 
-      assignmentCardPConn.getActionsApi().finishAssignment(assignmentCardPConn.options.context); 
+    window.submitForm = function() {
+      assignmentCardPConn.getActionsApi().finishAssignment(assignmentCardPConn.options.context);
       // actionButtonClick({action: mainButtons[0].jsAction, buttonType: 'primary'}); // TODO: will be used in next US with buttons
     }
-    
+
     this.actionButtonsComponent.update(this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
   }
 
@@ -76,11 +77,10 @@ export class AssignmentCardComponent {
   }
 
   sendPropsUpdate() {
-    const props = {
+    this.props = {
       children: Utils.getChildrenComponentsIds(this.childrenComponents),
       actionButtons: this.actionButtonsComponent.compId
     }
-    console.log("sending AssignmentCard props: ", props);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 }

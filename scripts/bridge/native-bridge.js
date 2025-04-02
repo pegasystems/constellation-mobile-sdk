@@ -11,8 +11,8 @@ class NativeBridge {
     this.removeNativeComponent(component)
   }
 
-  updateComponentProps(id, props) {
-    sdkbridge.updateComponent(id, JSON.stringify(props));
+  updateComponent(component) {
+    this.updateNativeComponent(component)
   }
 
   setRequestBody(body) {
@@ -45,18 +45,42 @@ class NativeBridge {
   }
 
   addNativeComponent(component) {
+    if (component.compId === undefined) {
+      console.error(`[Bridge] Cannot add component - missing id.`);
+      return;
+    }
     const id = parseInt(component.compId);
     if (component.type === undefined) {
-      console.error(`[Bridge] Component #{id} is missing type.`);
+      console.error(`[Bridge] Cannot add component #${id} - missing type.`);
+      return;
     }
     console.log(`[Bridge] Adding component ${component.type}#${id}`)
     sdkbridge.addComponent(id, component.type);
   }
 
   removeNativeComponent(component) {
+    if (component.compId === undefined) {
+      console.error(`[Bridge] Cannot remove component - missing id.`);
+      return;
+    }
     const id = parseInt(component.compId);
     console.log(`[Bridge] Removing component #${id}`)
     sdkbridge.removeComponent(id);
+  }
+
+  updateNativeComponent(component) {
+    if (component.compId === undefined) {
+      console.error(`[Bridge] Cannot update component - missing id.`);
+      return;
+    }
+    const id = parseInt(component.compId);
+    if (component.props === undefined) {
+      console.error(`[Bridge] Cannot update component #${id} - missing props.`);
+      return;
+    }
+    const props = JSON.stringify(component.props)
+    console.log(`[Bridge] Updating component ${this.type}#${id}, props: ${props}`);
+    sdkbridge.updateComponent(id, props);
   }
 }
 

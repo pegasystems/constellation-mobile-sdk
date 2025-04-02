@@ -14,7 +14,7 @@ export function initialRender(renderObj) {
     jsComponentPConnect,
     (component) => { bridge.addComponent(component) },
     (component) => { bridge.removeComponent(component) },
-    (id, props) => { bridge.updateComponentProps(id, props) }
+    (component) => { bridge.updateNativeComponent(component) }
   );
 
   const rootComponentClass = getComponentFromMap(pconn.meta.type);

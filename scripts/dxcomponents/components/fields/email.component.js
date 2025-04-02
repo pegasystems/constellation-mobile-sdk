@@ -7,7 +7,6 @@ import { Utils } from '../../helpers/utils.js';
 
 export class EmailComponent {
   pConn$;
-  formGroup$;
 
   jsComponentPConnectData = {};
   configProps$;
@@ -31,7 +30,8 @@ export class EmailComponent {
   propName;
   compId;
   type;
-  
+  props;
+
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;
     this.utils = new Utils();
@@ -49,10 +49,6 @@ export class EmailComponent {
   }
 
   destroy() {
-    if (this.formGroup$) {
-      this.formGroup$.removeControl(this.controlName$);
-    }
-
     if (this.jsComponentPConnectData.unsubscribeFn) {
       console.log("destroy for email component - id:  ", this.jsComponentPConnectData.compID);
       this.jsComponentPConnectData.unsubscribeFn();
@@ -90,7 +86,7 @@ export class EmailComponent {
     }
     this.helperText = this.configProps$.helperText || '';
     this.placeholder = this.configProps$.placeholder || '';
- 
+
     if (this.configProps$.required != null) {
       this.bRequired$ = this.utils.getBooleanValue(this.configProps$.required);
     }
@@ -129,7 +125,7 @@ export class EmailComponent {
       // });
     }
 
-    const props = {
+    this.props = {
       value: this.value$,
       label: this.label$,
       visible: this.bVisible$,
@@ -140,8 +136,7 @@ export class EmailComponent {
       placeholder: this.placeholder,
       validateMessage: this.jsComponentPConnectData.validateMessage || ''
     }
-    console.log(`sending Email props via bridge, id: ${this.compId}, props: ${JSON.stringify(props)}`);
-    this.componentsManager.onComponentPropsUpdate(this.compId, props);
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   onEvent(event) {
@@ -149,18 +144,13 @@ export class EmailComponent {
   }
 
   fieldOnChange(value) {
-    this.value$ = value
+    this.value$ = value;
   }
 
   fieldOnBlur(value) {
     this.value$ = value || this.value$
     handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
-  }
-
-  clearErrorMessages() {
-    this.pConn$.clearErrorMessages({
-      property: this.propName
-    });
+    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 
   getErrorMessage() {

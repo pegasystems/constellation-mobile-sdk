@@ -4,7 +4,7 @@ import { AssignmentCardComponent } from '../components/containers/assignment-car
 import { AssignmentComponent } from '../components/containers/assignment.component.js';
 // import { DashboardFilterComponent } from './_components/infra/dashboard-filter/dashboard-filter.component';
 // import { DeferLoadComponent } from './_components/infra/defer-load/defer-load.component';
-import { ErrorBoundaryComponent } from '../components/containers/error-boundary.component.js';
+// import { ErrorBoundaryComponent } from '../components/containers/error-boundary.component.js';
 import { FlowContainerComponent } from '../components/containers/flow-container.component.js';
 // import { ModalViewContainerComponent } from './_components/infra/Containers/modal-view-container/modal-view-container.component';
 // import { MultiStepComponent } from './_components/infra/multi-step/multi-step.component';
@@ -22,7 +22,7 @@ import { ViewContainerComponent } from '../components/containers/view-container.
 // import { CancelAlertComponent } from './_components/field/cancel-alert/cancel-alert.component';
 import { CheckBoxComponent } from '../components/fields/check-box.component.js';
 // import { CurrencyComponent } from './_components/field/currency/currency.component';
-// import { DateComponent } from './_components/field/date/date.component';
+import { DateComponent } from '../components/fields/date.component.js';
 // import { DateTimeComponent } from './_components/field/date-time/date-time.component';
 // import { DecimalComponent } from './_components/field/decimal/decimal.component';
 // import { DropdownComponent } from './_components/field/dropdown/dropdown.component';
@@ -100,7 +100,7 @@ import { DefaultFormComponent } from '../components/containers/default-form.comp
 // import { TodoComponent } from './_components/widget/todo/todo.component';
 
 // Design System components
-// import { AlertBannerComponent } from './_components/designSystemExtension/alert-banner/alert-banner.component';
+import { AlertBannerComponent } from '../components/widgets/alert-banner.component.js';
 // import { AlertComponent } from './_components/designSystemExtension/alert/alert.component';
 // import { BannerComponent } from './_components/designSystemExtension/banner/banner.component';
 // import { CaseCreateStageComponent } from './_components/designSystemExtension/case-create-stage/case-create-stage.component';
@@ -129,7 +129,7 @@ import { DefaultFormComponent } from '../components/containers/default-form.comp
 const pegaSdkComponentMap = {
   ActionButtons: ActionButtonsComponent,
   // Alert: AlertComponent,
-  // AlertBanner: AlertBannerComponent,
+  AlertBanner: AlertBannerComponent,
   // //   'ActionButtonsForFileUtil': ActionButtonsForFileUtil,
   // AppAnnouncement: AppAnnouncementComponent,
   // AppShell: AppShellComponent,
@@ -151,7 +151,7 @@ const pegaSdkComponentMap = {
   // Currency: CurrencyComponent,
   // DashboardFilter: DashboardFilterComponent,
   // DataReference: DataReferenceComponent,
-  // Date: DateComponent,
+  Date: DateComponent,
   // DateTime: DateTimeComponent,
   // Decimal: DecimalComponent,
   DefaultForm: DefaultFormComponent,
@@ -165,7 +165,7 @@ const pegaSdkComponentMap = {
   // Dropdown: DropdownComponent,
   // DynamicTabs: DynamicTabsComponent,
   Email: EmailComponent,
-  ErrorBoundary: ErrorBoundaryComponent,
+  // ErrorBoundary: ErrorBoundaryComponent,
   // FeedContainer: FeedContainerComponent,
   // FieldGroup: FieldGroupComponent,
   // FieldGroupList: FieldGroupListComponent,

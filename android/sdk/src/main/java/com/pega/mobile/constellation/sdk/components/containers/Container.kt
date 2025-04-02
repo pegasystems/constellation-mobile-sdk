@@ -9,6 +9,7 @@ import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
+import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import org.json.JSONObject
 
 abstract class ContainerComponent(context: ComponentContext) : BaseComponent(context) {
@@ -21,7 +22,7 @@ abstract class ContainerComponent(context: ComponentContext) : BaseComponent(con
 
     private fun getChildren(props: JSONObject): List<Component> {
         val children = props.getJSONArray("children")
-        val ids = List(children.length()) { children.getString(it).toInt() }
+        val ids = children.mapWithIndex { getString(it).toInt() }
         return context.componentManager.getComponents(ids.map { ComponentId(it) })
     }
 }

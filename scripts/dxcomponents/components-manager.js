@@ -1,21 +1,20 @@
 import { getComponentFromMap } from './mappings/sdk-component-map.js';
-import { ErrorBoundaryComponent } from './components/containers/error-boundary.component.js';
 
 export class ComponentsManager {
-    
-  constructor(jsComponentPConnect, onComponentAdded, onComponentRemoved, onComponentPropsUpdate) {
-      this.jsComponentPConnect = jsComponentPConnect;
-      this.onComponentAdded = onComponentAdded;
-      this.onComponentRemoved = onComponentRemoved;
-      this.onComponentPropsUpdate = onComponentPropsUpdate;
-    }
 
-    /**
-     * Variable used to compute the next componentID
-     */
-    counterComponentID = 0;
-    
-    /**
+  constructor(jsComponentPConnect, onComponentAdded, onComponentRemoved, onComponentPropsUpdate) {
+    this.jsComponentPConnect = jsComponentPConnect;
+    this.onComponentAdded = onComponentAdded;
+    this.onComponentRemoved = onComponentRemoved;
+    this.onComponentPropsUpdate = onComponentPropsUpdate;
+  }
+
+  /**
+   * Variable used to compute the next componentID
+   */
+  counterComponentID = 0;
+
+  /**
    * Returns a unique (for this session) ComponentID that should
    * be used for that component to update its most recent props
    * (which can also be compared against its previous value
@@ -30,34 +29,35 @@ export class ComponentsManager {
     return this.counterComponentID.toString();
   }
 
-    /*
+  /*
     Reconciliation logic
-    - Iterate all new children pConns. 
-        - For each of them find exisitng child pConn with the same name and type (e.g.: "TextInput", "Name")
-        - If exisiting pConn is found then update respective component (with the same index) with new pConn, push into newChildrenComponents array and remove from oldChildrenComponents
+    - Iterate all new children pConns.
+        - For each of them find existing child pConn with the same name and type (e.g.: "TextInput", "Name")
+        - If existing pConn is found then update respective component (with the same index as found pConn) with new pConn, push into newChildrenComponents array and remove from oldChildrenComponents
         - If there is no pConn with the same name and type then create new component, push into newChildrenComponents and initiate it
     - Iterate children which left in oldChildrenComponents and destroy them.
     - return newChildrenComponents
   */
-  reconcileChildren(component, oldChidlrenPConns) {
+  reconcileChildren(component, oldChidlren) {
     const newChildren = component.arChildren$;
+    if (component.childrenComponents === undefined) {
+      throw new Error("Cannot reconcile children on component without childrenComponents");
+    }
     const oldChildrenComponents = component.childrenComponents;
-
     const reconciledComponents = [];
-    newChildren.forEach((newChild, index) => {
-      const newChildPConn = newChild.getPConnect();
-      const oldChildToReuse = oldChidlrenPConns.find((oldChild) => {
-        return this.isEqualNameType(oldChild.getPConnect(), newChildPConn);
+
+    newChildren.forEach((newChild) => {
+      const oldChildToReuseIndex = oldChidlren.findIndex((oldChild) => {
+        return this.isEqualNameType(oldChild.getPConnect(), newChild.getPConnect());
       });
-      if (oldChildToReuse !== undefined) {
-        this.updateComponentPconn(oldChildrenComponents[index], newChildPConn);
-        reconciledComponents.push({component: oldChildrenComponents[index], shouldInit: false});
-        oldChildrenComponents.splice(index, 1);
+      if (oldChildToReuseIndex !== -1) {
+        const oldComponent = oldChildrenComponents[oldChildToReuseIndex];
+        this.updateComponentPconn(oldComponent, newChild.getPConnect());
+        reconciledComponents.push({component: oldComponent, shouldInit: false});
+        oldChildrenComponents.splice(oldChildToReuseIndex, 1);
       } else {
-        const newChildComponent = this.createNewChildComponent(component.componentsManager, newChildPConn);
-        if (!(newChildComponent instanceof ErrorBoundaryComponent)) {
-          reconciledComponents.push({component: newChildComponent, shouldInit: true});
-        } 
+        const newChildComponent = this.createNewChildComponent(component.componentsManager, newChild.getPConnect());
+        reconciledComponents.push({component: newChildComponent, shouldInit: true});
       }
     })
     oldChildrenComponents.forEach((oldChildComponent) => {
@@ -65,21 +65,24 @@ export class ComponentsManager {
     });
     return reconciledComponents;
   }
-  
+
   destroyOldChildComponent(childComponent) {
-    if (childComponent !== undefined && childComponent.destroy !== undefined) {
-      childComponent.destroy();
+    if (childComponent === undefined) {
+      throw new Error("Reconciliation failed, child component is 'undefined'");
     }
+    if (childComponent.destroy === undefined) {
+      throw new Error("Reconciliation failed, child component is missing 'destroy' function");
+    }
+    childComponent.destroy();
   }
 
   createNewChildComponent(componentsManager, childPConn) {
     const childComponentClass = getComponentFromMap(childPConn.meta.type);
-    const childComponent = new childComponentClass(componentsManager, childPConn);
-    return childComponent;
+    return new childComponentClass(componentsManager, childPConn);
   }
 
   initReconciledComponents(reconciledComponents) {
-    reconciledComponents.forEach(item => {
+    reconciledComponents.forEach((item) => {
       if (item.shouldInit) {
         item.component.init();
       }
@@ -87,9 +90,13 @@ export class ComponentsManager {
   }
 
   updateComponentPconn(childComponent, newChildPConn) {
-    if (childComponent !== undefined && childComponent.updatePConn !== undefined) {
-      childComponent.update(newChildPConn);
+    if (childComponent === undefined) {
+      throw new Error("Reconciliation failed, child component is 'undefined'");
     }
+    if (childComponent.update === undefined) {
+      throw new Error("Reconciliation failed, child component is missing 'update' function");
+    }
+    childComponent.update(newChildPConn);
   }
 
   isEqualNameType(oldChildPConn, newChildPConn) {
@@ -99,7 +106,7 @@ export class ComponentsManager {
   handleNativeEvent(component, event) {
     const value = event.componentData !== undefined ? event.componentData.value : undefined;
     const focused = event.eventData !== undefined ? event.eventData.focused : undefined
-    switch(event.type) {
+    switch (event.type) {
       case 'FieldChange':
         console.log(`FieldChange for ${component.compId}, value: ${value}`);
         this.updateComponentValue(component, value)
@@ -116,12 +123,10 @@ export class ComponentsManager {
   updateComponentValue(component, value) {
     component.fieldOnChange(value);
   }
-  
+
   updateComponentFocus(component, value, focused) {
     if (focused === "false" || focused === false) {
       component.fieldOnBlur(value)
-    } else {
-      component.clearErrorMessages();
     }
   }
 }
