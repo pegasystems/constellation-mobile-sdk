@@ -17,38 +17,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         configurePegaSDK()
-
-        let welcomeLabel: UILabel = {
-            let label = UILabel()
-            label.text = "Pega Mobile Constellation SDK"
-            label.textColor = .black
-            label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: 20)
-            return label
-        }()
-        welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(welcomeLabel)
-        welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        welcomeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120).isActive = true
-        welcomeLabel.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        welcomeLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        let button: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitle("Create a new Case", for: .normal)
-            button.backgroundColor = UIColor.systemBlue
-            button.setTitleColor(.white, for: .normal)
-            button.layer.cornerRadius = 10
-            button.clipsToBounds = true
-            return button
-        }()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.addTarget(self, action: #selector(showNewPegaCase), for: .touchUpInside)
     }
     
     private func configurePegaSDK() {
@@ -65,7 +33,8 @@ class ViewController: UIViewController {
         }
     }
 
-    @objc private func showNewPegaCase(_ sender: UIButton) {
+    @IBAction
+    private func showNewPegaCase(_ sender: UIButton) {
         Task {
             let authorization = Authorization(settings: SDKConfiguration.oauth2Configuration)
             oauth = try await authorization.prepareOAuthClient()
