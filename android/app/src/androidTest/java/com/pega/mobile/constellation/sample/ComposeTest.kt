@@ -18,6 +18,7 @@ import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
+import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pega.mobile.constellation.mock.MockHttpClient
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.MOCK_SERVER
@@ -71,6 +72,7 @@ class ComposeTest {
         onNodeWithText("First Name").performTextInput("Jan")
         onNodeWithText("Last Name").performTextInput("Kowalski")
         onNodeWithText("Email").performTextInput("invalid email")
+        Espresso.closeSoftKeyboard()
         onNodeWithText("Service date").performClick()
         onNodeWithText("Today", substring = true).performClick()
         onNodeWithText("OK").performClick()
