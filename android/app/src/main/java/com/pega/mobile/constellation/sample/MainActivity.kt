@@ -9,11 +9,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import com.pega.mobile.constellation.sample.CustomComponents.CustomDefinitions
 import com.pega.mobile.constellation.sample.http.AuthorizationInterceptor
 import com.pega.mobile.constellation.sample.ui.screens.MainScreen
@@ -32,11 +27,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SampleSdkTheme {
-                Scaffold(Modifier.fillMaxSize()) { innerPadding ->
-                    Box(Modifier.padding(innerPadding)) {
-                        MainScreen(sdk, PegaConfig.CASE_CLASS_NAME)
-                    }
-                }
+                MainScreen(sdk, PegaConfig.CASE_CLASS_NAME)
             }
         }
     }
@@ -49,7 +40,7 @@ class MainActivity : ComponentActivity() {
         debuggable = true
     )
 
-    private fun buildOkHttpClient() = OkHttpClient.Builder()
+    private fun buildOkHttpClient() = ConstellationSdkConfig.defaultHttpClient().newBuilder()
         .addInterceptor(AuthorizationInterceptor(this))
         .addNetworkInterceptor { chain ->
             val request = chain.request().also {

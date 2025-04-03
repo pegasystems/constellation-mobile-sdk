@@ -26,6 +26,7 @@ export class DateComponent {
   propName;
   compId;
   type;
+  props;
 
   constructor(componentsManager, pConn$) {
     this.pConn$ = pConn$;

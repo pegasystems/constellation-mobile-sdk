@@ -1,7 +1,7 @@
-import { isAndroid, isIOS } from '../../init/ostype.js';
-import { localSdkComponentMap } from './sdk-local-component-map.js';
+import {isAndroid, isIOS} from '../../init/ostype.js';
+import {localSdkComponentMap} from './sdk-local-component-map.js';
 
-export function installComponentsOverrides(componentsOverridesStr, assetsPath) { 
+export function installComponentsOverrides(componentsOverridesStr, assetsPath) {
   if (isIOS()) {
     installComponentsOverridesiOS(componentsOverridesStr, assetsPath)
   } else if (isAndroid()) {
@@ -24,6 +24,10 @@ function installComponentsOverridesAndroid(componentsOverridesStr, assetsPath) {
               localSdkComponentMap[key] = Object.values(component)[0];
             })
           })
+        }
+      )
+      .catch((err) => {
+          console.error(`Failed to load ${key}: ${value} component, err: `, err);
         }
       )
   })

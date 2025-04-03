@@ -29,7 +29,7 @@ class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
     override fun Render(viewModel: EmailViewModel) {
         with(viewModel) {
             Column {
-                Text("CustomEmailComponent")
+                Text("[Custom Email Native Renderer]")
                 Email(
                     value = value,
                     label = label,

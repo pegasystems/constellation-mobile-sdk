@@ -11,7 +11,6 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
-import com.pega.mobile.constellation.sdk.components.core.EventViewModel
 import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent
 import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.AddComponent
 import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.OnCancelled
@@ -99,8 +98,7 @@ internal class SdkWebViewEngine(
     private fun onAddComponent(id: ComponentId, type: ComponentType) {
         val context = ComponentContextImpl(id, type, componentManager)
         val component = componentManager.addComponent(context)
-        val viewModel = component.viewModel as? EventViewModel ?: return
-        viewModel.events
+        component.viewModel.events
             .onEach { sendComponentEvent(id, it) }
             .launchIn(scope)
     }

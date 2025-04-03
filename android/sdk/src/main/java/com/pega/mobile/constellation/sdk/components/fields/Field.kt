@@ -10,7 +10,7 @@ import androidx.compose.runtime.snapshotFlow
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
-import com.pega.mobile.constellation.sdk.components.core.EventViewModel
+import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -36,7 +36,7 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
     }
 }
 
-abstract class FieldViewModel : EventViewModel {
+abstract class FieldViewModel : ComponentViewModel {
     override val events = merge(
         snapshotFlow { value }.drop(1).map { ComponentEvent.forFieldChange(it) },
         snapshotFlow { focused }.drop(1).map { ComponentEvent.forFieldChangeWithFocus(value, it) }
