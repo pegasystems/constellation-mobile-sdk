@@ -10,7 +10,7 @@ failure() {
 trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
 DRY_RUN=0
-
+CUSTOM_RELEASE_NOTES=0
 # Parse parameters
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -33,8 +33,20 @@ while [[ $# -gt 0 ]]; do
         shift # past argument
         shift # past value
         ;;
+    --custom-release-notes)
+        CUSTOM_RELEASE_NOTES=1
+        shift # past argument
+        ;;
     -*)
         echo "Unknown option $1"
+        echo
+        echo "$0 usage:"
+        echo "  --dry-run  : do not do anything, just print gh command which will be used"
+        echo "  --major    : MAJOR version to use e.g. 1 in 1.2.3."
+        echo "  --minor    : MINOR version to use e.g. 2 in 1.2.3."
+        echo "  note       : PATCH version will be AUTO-incremented"
+        echo "  --type     : type of release, either 'snapshot' (default) or 'release'"
+        echo "  --custom-release-notes : use release notes from docs/releases for publish, default is github's auto-generated notes"
         exit 1
         ;;
     *)
@@ -78,10 +90,33 @@ fi
 
 echo "Will publish artifacts to release with version: ${VERSION}"
 
-if [ "${DRY_RUN}" -eq 1 ]; then
-    echo "Dry run enabled, not doing anything, would have run following command:"
-    echo "gh release create \"${VERSION}\" ${PARAM_PRE} --generate-notes \"ios-release/*.*\" \"android-release/*.*\""
-    exit 1
+PARAM_NOTES="--generate-notes"
+if [ "${CUSTOM_RELEASE_NOTES}" -eq 1 ]; then
+    NOTES_FILE="docs/releases/${VERSION}.md"
+    if [ ! -f "${NOTES_FILE}" ]; then
+        echo "Expected file with release notes NOT FOUND at: ${NOTES_FILE}"
+        exit 1
+    fi
+    echo "Will use custom release notes:"
+    if command -v glow > /dev/null; then
+        glow "${NOTES_FILE}"
+    else
+        cat "${NOTES_FILE}"
+    fi
+    echo
+    PARAM_NOTES="-F ${NOTES_FILE}"
 fi
 
-gh release create "${VERSION}" ${PARAM_PRE} --generate-notes "ios-release/*.*" "android-release/*.*"
+PRE_COMMAND=""
+if [ "${DRY_RUN}" -eq 1 ]; then
+    echo "Dry run enabled, not doing anything, would have run following command:"
+    PRE_COMMAND="echo"
+fi
+
+# We need to split below (as -F param is passed, hence below missing double quote lint for below command)
+# shellcheck disable=SC2086
+${PRE_COMMAND} gh release create "${VERSION}" ${PARAM_PRE} --fail-on-no-commits ${PARAM_NOTES} --title "${VERSION}" "ios-release/*.*" "android-release/*.*"
+
+if [ "${DRY_RUN}" -eq 1 ]; then
+    exit 1
+fi

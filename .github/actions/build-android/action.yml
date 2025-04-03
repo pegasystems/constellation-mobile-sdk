@@ -43,6 +43,7 @@ runs:
         cd android
         $GRADLE clean assembleRelease
         find . -iname "*-release.aar" | xargs -I {} cp {} ../release
+        rm ../release/mock*.*
 
     - uses: actions/upload-artifact@v4
       with:

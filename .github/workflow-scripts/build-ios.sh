@@ -1,4 +1,6 @@
 #!/bin/sh
+# shellcheck disable=SC2181
+# Following this lint would made below xcodebuild invocations less readable
 
 set -e
 
