@@ -5,14 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.SampleSdk"
-        tools:targetApi="31">
+        android:theme="@style/Theme.MediaCo"
+        tools:targetApi="35">
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -21,10 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SampleSdk" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
