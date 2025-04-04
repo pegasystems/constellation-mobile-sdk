@@ -4,7 +4,12 @@ permissions:
 on:
   # allow manual trigger of release
   # this event only works from 'main'
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      custom-release-notes:
+        description: 'Use custom release notes - they needs to be included in e.g.: docs/releases/v1.0.0.md file for v1.0.0 release etc.'
+        type: boolean
+        default: true
 env:
   # Bump those versions when needed
   VERSION_MAJOR: 1
@@ -43,3 +48,4 @@ jobs:
           version-major: ${{ env.VERSION_MAJOR }}
           version-minor: ${{ env.VERSION_MINOR }}
           release-type: 'release'
+          custom-release-notes: ${{ inputs.custom-release-notes }}

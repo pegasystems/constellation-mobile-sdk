@@ -11,6 +11,12 @@ inputs:
     description: 'Type of release, either snapshot or release'
     required: true
     default: 'snapshot'
+  custom-release-notes:
+    # custom actions do NOT support booleans
+    # see https://stackoverflow.com/questions/76292948/github-action-boolean-input-with-default-value
+    description: 'true = use custom release notes, false = autogenerate release notes'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -28,6 +34,12 @@ runs:
         VERSION_MAJOR: ${{ inputs.version-major }}
         VERSION_MINOR: ${{ inputs.version-minor }}
         RELEASE_TYPE: ${{ inputs.release-type }}
+        CUSTOM_RELEASE_NOTES: ${{ inputs.custom-release-notes }}
       shell: bash
-      run: .github/workflow-scripts/publish.sh --major ${VERSION_MAJOR} --minor ${VERSION_MINOR} --type ${RELEASE_TYPE}
+      run: |
+        NOTES_PARAM=""
+        if [ "${CUSTOM_RELEASE_NOTES}" = "true" ]; then
+          NOTES_PARAM="--custom-release-notes"
+        fi
+        .github/workflow-scripts/publish.sh --major ${VERSION_MAJOR} --minor ${VERSION_MINOR} --type ${RELEASE_TYPE} ${NOTES_PARAM}
 
