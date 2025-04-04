@@ -47,6 +47,8 @@ jobs:
           api-level: 35
           arch: x86_64
           profile: Nexus 6
+          enable-hw-keyboard: true
+          disable-spellchecker: true
           # Run tests for second time if first time we have failed
           script: cd android && ( $GRADLE connectedCheck || $GRADLE connectedCheck )
 

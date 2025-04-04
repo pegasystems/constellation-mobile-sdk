@@ -18,8 +18,8 @@ import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
-import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.pega.mobile.constellation.mock.MockHttpClient
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.MOCK_SERVER
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.REAL_SERVER
@@ -29,6 +29,7 @@ import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
 import okhttp3.OkHttpClient
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -40,6 +41,11 @@ class ComposeTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+
+    @Before
+    fun setUp() {
+        hideKeyboard()
+    }
 
     @Test
     fun test_case_processing_sdk_testing() = with(composeTestRule) {
@@ -72,7 +78,7 @@ class ComposeTest {
         onNodeWithText("First Name").performTextInput("Jan")
         onNodeWithText("Last Name").performTextInput("Kowalski")
         onNodeWithText("Email").performTextInput("invalid email")
-        Espresso.closeSoftKeyboard()
+
         onNodeWithText("Service date").performClick()
         onNodeWithText("Today", substring = true).performClick()
         onNodeWithText("OK").performClick()
@@ -134,6 +140,11 @@ class ComposeTest {
             hasText(text, substring = true),
             timeoutMillis = 10000
         )
+    }
+
+    private fun hideKeyboard() {
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+            .executeShellCommand("settings put secure show_ime_with_hard_keyboard 0")
     }
 
     companion object {
