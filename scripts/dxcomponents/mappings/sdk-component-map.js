@@ -148,7 +148,7 @@ export function getComponentFromMap(inComponentName) {
       console.log(`Requested component found ${inComponentName}: Pega-provided`);
       theComponentImplementation = thePegaProvidedComponent;
     } else {
-      console.error(`Requested component has neither Local nor Pega-provided implementation: ${inComponentName}`);
+      console.warn(`Requested component has neither Local nor Pega-provided implementation: ${inComponentName}`);
       theComponentImplementation = getComponentFromMap('Unsupported');
     }
   }

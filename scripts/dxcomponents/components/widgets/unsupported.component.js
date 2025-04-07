@@ -21,6 +21,22 @@ export class UnsupportedComponent {
   }
 
   init() {
+    this.updateSelf()
+  }
+
+  destroy() {
+    console.log(`Unsupported component ${this.type} for property ${this.propName} destroyed`);
+    this.componentsManager.onComponentRemoved(this);
+  }
+
+  update(pConn) {
+    if (this.pConn$ !== pConn) {
+      this.pConn$ = pConn;
+      this.updateSelf();
+    }
+  }
+
+  updateSelf() {
     this.propName = this.pConn$.getStateProps().value;
     this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
     if (this.configProps$.visibility != null) {

@@ -29,51 +29,65 @@ export class ComponentsManager {
     return this.counterComponentID.toString();
   }
 
-  /*
-    Reconciliation logic
-    - Iterate all new children pConns.
-        - For each of them find existing child pConn with the same name and type (e.g.: "TextInput", "Name")
-        - If existing pConn is found then update respective component (with the same index as found pConn) with new pConn, push into newChildrenComponents array and remove from oldChildrenComponents
-        - If there is no pConn with the same name and type then create new component, push into newChildrenComponents and initiate it
-    - Iterate children which left in oldChildrenComponents and destroy them.
-    - return newChildrenComponents
-  */
-  reconcileChildren(component, oldChidlren) {
+  /**
+   * Reconciliation logic
+   * - Iterate all new children pConns.
+   *    - For each of them find existing component with child pConn with the same name and type (e.g.: "TextInput", "Name")
+   *    - If existing component is found then update it with new pConn, push into reconciledComponents with shouldInit: false and remove from oldChildrenComponents
+   *    - If there is no component found then create new component, push into reconciledComponents with shouldInit: true
+   *- Iterate children which left in oldChildrenComponents and destroy them.
+   *- return newChildrenComponents
+   *
+   * @param component
+   * @return [] reconciledComponents - array of elements: { component: component, shouldInit: true/false }
+   *
+    */
+  reconcileChildren(component) {
+    this.assertComponent(component);
     const newChildren = component.arChildren$;
-    if (component.childrenComponents === undefined) {
-      throw new Error("Cannot reconcile children on component without childrenComponents");
-    }
-    const oldChildrenComponents = component.childrenComponents;
+    const oldChildrenComponents = component.childrenComponents
     const reconciledComponents = [];
 
     newChildren.forEach((newChild) => {
-      const oldChildToReuseIndex = oldChidlren.findIndex((oldChild) => {
-        return this.isEqualNameType(oldChild.getPConnect(), newChild.getPConnect());
-      });
-      if (oldChildToReuseIndex !== -1) {
-        const oldComponent = oldChildrenComponents[oldChildToReuseIndex];
-        this.updateComponentPconn(oldComponent, newChild.getPConnect());
-        reconciledComponents.push({component: oldComponent, shouldInit: false});
-        oldChildrenComponents.splice(oldChildToReuseIndex, 1);
+      const oldComponentToReuse = this.getComponentToReuse(oldChildrenComponents, newChild.getPConnect());
+      if (oldComponentToReuse !== undefined) {
+        this.updateComponentPconn(oldComponentToReuse, newChild.getPConnect());
+        reconciledComponents.push({component: oldComponentToReuse, shouldInit: false});
+        oldChildrenComponents.splice(oldChildrenComponents.indexOf(oldComponentToReuse), 1);
       } else {
         const newChildComponent = this.createNewChildComponent(component.componentsManager, newChild.getPConnect());
         reconciledComponents.push({component: newChildComponent, shouldInit: true});
       }
     })
-    oldChildrenComponents.forEach((oldChildComponent) => {
-      this.destroyOldChildComponent(oldChildComponent);
-    });
+    this.destroyOldChildrenComponents(oldChildrenComponents);
     return reconciledComponents;
   }
 
-  destroyOldChildComponent(childComponent) {
-    if (childComponent === undefined) {
-      throw new Error("Reconciliation failed, child component is 'undefined'");
+  assertComponent(component) {
+    if (component.childrenComponents === undefined) {
+      throw new Error("Cannot reconcile children on component without childrenComponents");
     }
-    if (childComponent.destroy === undefined) {
-      throw new Error("Reconciliation failed, child component is missing 'destroy' function");
+    if (component.arChildren$ === undefined) {
+      throw new Error("Cannot reconcile children on component without children pConns");
     }
-    childComponent.destroy();
+  }
+
+  getComponentToReuse(oldChildrenComponents, newChildPconn) {
+    return oldChildrenComponents.find((component) => {
+      return this.isEqualNameType(component.pConn$, newChildPconn);
+    })
+  }
+
+  destroyOldChildrenComponents(oldChildrenComponents) {
+    oldChildrenComponents.forEach((component) => {
+      if (component === undefined) {
+        throw new Error("Reconciliation failed, child component is 'undefined'");
+      }
+      if (component.destroy === undefined) {
+        throw new Error("Reconciliation failed, child component is missing 'destroy' function");
+      }
+      component.destroy();
+    });
   }
 
   createNewChildComponent(componentsManager, childPConn) {
@@ -100,7 +114,7 @@ export class ComponentsManager {
   }
 
   isEqualNameType(oldChildPConn, newChildPConn) {
-    return newChildPConn.meta.name == oldChildPConn.meta.name && newChildPConn.meta.type === oldChildPConn.meta.type
+    return newChildPConn.meta.name === oldChildPConn.meta.name && newChildPConn.meta.type === oldChildPConn.meta.type
   }
 
   handleNativeEvent(component, event) {
