@@ -29,10 +29,9 @@ class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
     override fun Render(viewModel: EmailViewModel) {
         with(viewModel) {
             Column {
-                Text("[Custom Email Native Renderer]")
                 Email(
                     value = value,
-                    label = label,
+                    label = "Custom $label",
                     helperText = helperText,
                     validateMessage = validateMessage,
                     placeholder = placeholder,
