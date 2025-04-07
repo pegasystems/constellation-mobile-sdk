@@ -24,6 +24,6 @@ Currently SDK supports creating new case of given type and processing assignment
 
 ## Get started ##
 
-### [Integration with Android applications](https://git.pega.io/projects/MX/repos/constellation-mobile-sdk/browse/android/README.md) ###
+### [Integration with Android applications](android/README.md) ###
 
 ### Integration with iOS applications ###
