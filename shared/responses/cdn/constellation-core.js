@@ -1,4 +1,4 @@
-/*! For license information please see constellation-core.ca97ba62.js.LICENSE.txt */
+/*! For license information please see shared/responses/cdn/LICENSE file in the repository */
 var e = {
 		62: (e, t, n) => {
 			var r = n(969);
