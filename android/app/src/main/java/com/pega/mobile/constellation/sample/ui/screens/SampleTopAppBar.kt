@@ -35,7 +35,7 @@ fun SampleTopAppBar(modifier: Modifier = Modifier) {
         navigationIcon = {
             Icon(
                 painterResource(R.drawable.settings_icon),
-                "navigation icon",
+                "settings icon",
                 modifier = Modifier
                     .padding(12.dp)
                     .height(24.dp)
@@ -44,7 +44,7 @@ fun SampleTopAppBar(modifier: Modifier = Modifier) {
         actions = {
             Icon(
                 painterResource(R.drawable.profile_icon),
-                "navigation icon",
+                "profile icon",
                 modifier = Modifier
                     .padding(12.dp)
                     .height(24.dp)

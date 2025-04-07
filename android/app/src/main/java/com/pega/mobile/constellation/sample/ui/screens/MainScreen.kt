@@ -49,7 +49,7 @@ fun MainScreenPreview() {
         }
 
     }
-    SampleSdkTheme(dynamicColor = false) {
+    SampleSdkTheme {
         MainScreen(sdk, "")
     }
 }

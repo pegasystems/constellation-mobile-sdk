@@ -41,7 +41,7 @@ fun OpenFormFab(onClick: () -> Unit) {
 @Preview
 @Composable
 fun OpenFormButtonPreview() {
-    SampleSdkTheme(dynamicColor = false) {
+    SampleSdkTheme {
         OpenFormFab { }
     }
 }

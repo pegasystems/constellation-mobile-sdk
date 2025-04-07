@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         val sdk = ConstellationSdk.create(this, config)
 
         setContent {
-            SampleSdkTheme(dynamicColor = false) {
+            SampleSdkTheme {
                 MainScreen(sdk, PegaConfig.CASE_CLASS_NAME)
             }
         }

@@ -48,7 +48,7 @@ fun RowScope.NavItem(
 @Preview(widthDp = 500)
 @Composable
 fun SampleBottomBarPreview() {
-    SampleSdkTheme(dynamicColor = false) {
+    SampleSdkTheme {
         SampleBottomAppBar()
     }
 }
