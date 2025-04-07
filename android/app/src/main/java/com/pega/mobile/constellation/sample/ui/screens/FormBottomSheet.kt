@@ -23,10 +23,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.pega.mobile.constellation.sample.CustomComponents.CustomRenderers
-import com.pega.mobile.constellation.sample.PegaConfig
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdk.State.Cancelled
 import com.pega.mobile.constellation.sdk.ConstellationSdk.State.Error
@@ -53,7 +53,7 @@ fun FormBottomSheet(sdk: ConstellationSdk, caseClassName: String, sheetState: Sh
                     .width(50.dp)
                     .height(6.dp)
                     .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(Color.Black)
             )
         }
     ) {

@@ -16,7 +16,6 @@ import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
-import okhttp3.OkHttpClient
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +25,7 @@ class MainActivity : ComponentActivity() {
         val sdk = ConstellationSdk.create(this, config)
 
         setContent {
-            SampleSdkTheme {
+            SampleSdkTheme(dynamicColor = false) {
                 MainScreen(sdk, PegaConfig.CASE_CLASS_NAME)
             }
         }
