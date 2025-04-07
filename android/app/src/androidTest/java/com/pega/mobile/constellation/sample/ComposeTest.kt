@@ -80,7 +80,7 @@ class ComposeTest {
         onNodeWithText("Email").performTextInput("invalid email")
 
         onNodeWithText("Service date").performClick()
-        onNodeWithText("Today", substring = true).performClick()
+        onNodeWithText("10", substring = true).performClick()
         onNodeWithText("OK").performClick()
         onNodeWithText("Submit").performClick()
 
