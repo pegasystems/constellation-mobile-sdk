@@ -27,6 +27,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("debugAar") {
+            initWith(buildTypes["debug"])
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -61,5 +64,11 @@ dependencies {
 
     implementation(libs.okhttp)
     implementation(libs.appauth)
-    implementation(project(":sdk"))
+    // for debug variant
+    debugImplementation(project(":sdk"))
+    // for release variant
+    releaseImplementation(project(":sdk"))
+    // for debug variant using aar files.
+    "debugAarImplementation"(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+    "debugAarImplementation"(libs.androidx.webkit)
 }
