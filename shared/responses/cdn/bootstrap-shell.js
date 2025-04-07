@@ -1,3 +1,4 @@
+/*! For license information please see shared/responses/cdn/LICENSE file in the repository */
 const viewConfig = "@P .viewConfig",
 	routingInfo = "@ROUTING_INFO",
 	rootContainerWithHybrid = {

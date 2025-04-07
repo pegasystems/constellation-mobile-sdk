@@ -27,3 +27,7 @@ Currently SDK supports creating new case of given type and processing assignment
 ### [Integration with Android applications](https://git.pega.io/projects/MX/repos/constellation-mobile-sdk/browse/android/README.md) ###
 
 ### Integration with iOS applications ###
+
+## License
+
+Sources of this repository are licensed using [**Apache 2 license**](./LICENSE), with **exception** of JS files used for mocked http responses (for testing) which are available under [**Cosmos License**](./shared/responses/cdn/LICENSE).
