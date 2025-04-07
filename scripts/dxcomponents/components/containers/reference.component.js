@@ -145,6 +145,10 @@ export class ReferenceComponent {
   //    Its value is passed to normalizePConn
 
   static normalizePConnArray(inPConnArray) {
+    if (!inPConnArray) {
+      return [];
+    }
+
     if (!(inPConnArray?.length > 0)) {
       // null or empty array, return what was passed in
       return inPConnArray;

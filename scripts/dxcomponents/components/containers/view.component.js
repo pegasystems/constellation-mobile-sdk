@@ -241,7 +241,7 @@ export class ViewComponent {
       // These uses are adapted from Nebula/Constellation CaseSummary.additionalProps
       switch (this.templateName$) {
         case 'CaseSummary':
-          allFields = getAllFields(getPConnect);
+          allFields = this.getAllFields(getPConnect);
           // eslint-disable-next-line no-case-declarations
           const unresFields = {
             primaryFields: allFields[0],
@@ -251,7 +251,7 @@ export class ViewComponent {
           break;
 
         case 'Details':
-          allFields = getAllFields(getPConnect);
+          allFields = this.getAllFields(getPConnect);
           propObj = { fields: allFields[0] };
           break;
         default:
