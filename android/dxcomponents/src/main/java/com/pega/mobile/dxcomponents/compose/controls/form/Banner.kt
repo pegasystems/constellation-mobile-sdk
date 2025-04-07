@@ -1,16 +1,13 @@
 package com.pega.mobile.dxcomponents.compose.controls.form
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -20,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,56 +29,39 @@ fun Banner(
     modifier: Modifier = Modifier,
     onClose: (() -> Unit)? = null
 ) {
-
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .padding(4.dp),
-        border = BorderStroke(1.dp, Color.Gray)
-
+        modifier = modifier.padding(4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        Row(modifier = Modifier.background(Color.White)) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .background(colorResource(variant.colorRes))
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
+        Row(
+            modifier = Modifier
+                .background(colorResource(variant.colorRes))
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(Modifier.padding(8.dp), contentAlignment = Alignment.Center) {
                 Icon(
                     painter = painterResource(variant.iconRes),
-                    "banner icon",
+                    contentDescription = "banner icon",
                     modifier = Modifier.height(24.dp),
                     tint = Color.White
                 )
             }
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = variant.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
+            Column(Modifier.weight(1f)) {
                 messages.forEach {
-                    Row(verticalAlignment = Alignment.Top
-                    ) {
-                        Text("• ")
-                        Text(text = it, fontSize = 16.sp)
+                    Row {
+                        if (messages.size > 1) Text("• ", color = Color.White)
+                        Text(text = it, fontSize = 16.sp, color = Color.White)
                     }
-
                 }
             }
             onClose?.let {
                 IconButton(onClose) {
                     Icon(
                         painter = painterResource(R.drawable.baseline_close_48),
-                        "close banner",
+                        tint = Color.White,
+                        contentDescription = "close banner",
                         modifier = Modifier.height(24.dp)
                     )
                 }
@@ -117,7 +96,7 @@ fun BannerWarningPreview() {
     Banner(
         BannerVariant.WARNING,
         listOf("Warning message"),
-    ) {}
+    )
 }
 
 @Preview(showBackground = true)
@@ -126,7 +105,7 @@ fun BannerInfoPreview() {
     Banner(
         BannerVariant.INFO,
         listOf("Information content")
-    ) {}
+    )
 }
 
 @Preview(showBackground = true)

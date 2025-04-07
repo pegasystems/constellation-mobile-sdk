@@ -1,9 +1,12 @@
 package com.pega.mobile.constellation.sdk.components.widgets
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
@@ -36,7 +39,8 @@ class AlertBannerRenderer : ComponentRenderer<AlertBannerViewModel> {
     override fun Render(viewModel: AlertBannerViewModel) {
         Banner(
             variant = BannerVariant.valueOf(viewModel.variant.name),
-            messages = viewModel.messages
+            messages = viewModel.messages,
+            modifier = Modifier.padding(top = 16.dp)
         )
     }
 }
