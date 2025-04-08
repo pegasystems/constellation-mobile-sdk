@@ -12,6 +12,8 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
     private func loadResponseData(name: String, type: String, method: String) -> Data {
         let path = if name == "SDKTesting" || name == "NewService" {
             Bundle.main.path(forResource: "\(name)-\(method)", ofType: type)
+        } else if name == "Create" {
+            Bundle.main.path(forResource: "SDKTesting-\(method)", ofType: type)
         } else {
             Bundle.main.path(forResource: "\(name)", ofType: type)
         }

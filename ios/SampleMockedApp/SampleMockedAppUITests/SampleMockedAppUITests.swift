@@ -8,7 +8,6 @@ final class SampleMockedAppUITests: XCTestCase {
     private lazy var app: XCUIApplication = XCUIApplication()
     private let mainScreenTimeout = 120.0
     private let appInstallTimeout = 600.0
-    private let timeout = 120.0
 
     override func setUpWithError() throws {
         // Check if app has been installed, this is needed on CI especially, where tests are running much slower
@@ -26,9 +25,8 @@ final class SampleMockedAppUITests: XCTestCase {
 
     private func waitForIconContaining(text: String, timeout: TimeInterval, count: Int) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let predicate = NSPredicate(format: "label CONTAINS[c] %@", text)
         let getIconCount = { () -> Int in
-            springboard.icons.containing(predicate).allElementsBoundByIndex.count
+            springboard.icons.allContainingLabel(text: text).count
         }
         let startTime = NSDate().timeIntervalSince1970
         while getIconCount() < count && NSDate().timeIntervalSince1970 - startTime < timeout {
@@ -56,36 +54,95 @@ final class SampleMockedAppUITests: XCTestCase {
 
     private func verifyMainScreen() {
         let sdkLabel = app.staticTexts["Pega Mobile Constellation SDK"].firstMatch
-        XCTAssertTrue(sdkLabel.waitForExistence(timeout: mainScreenTimeout))
+        sdkLabel.assertExists()
     }
     private func tapCreateButton() {
         let createButton = app.buttons["Create a new Case"].firstMatch
-        XCTAssertTrue(createButton.waitForExistence(timeout: timeout))
+        createButton.assertExists()
+        sleep(1)
         createButton.tap()
     }
 
     @MainActor
-    func testFormDisplay() throws {
-        let textFieldLabels = ["Name", "Surname", "Url", "description"]
+    func testFormDisplayAndInteraction() throws {
+        let fillTextField = { (index: Int, label: String, textToEnter: String) -> () in
+            let labelField = self.app.staticTexts[label]
+            labelField.assertExists()
+            let textField = self.app.textFields.element(boundBy: index)
+            textField.assertExists().tap()
+            textField.typeText(textToEnter)
+        }
+        // Button's label contains some extra spaces (padding?)
+        let nextButton = app.buttons.firstContainingLabel(text: "Next")
         verifyMainScreen()
         tapCreateButton()
-        for index in 0...3 {
-            XCTAssertTrue(app.staticTexts[textFieldLabels[index]].waitForExistence(timeout: timeout))
-            XCTAssertTrue(app.textFields.element(boundBy: index).waitForExistence(timeout: timeout))
-        }
-        // Second text field should have also placeHolder value set
+
+        fillTextField(0, "Name", "Jan")
+        fillTextField(1, "Surname", "Kowalski")
+        // Second text field has also placeholder text set
         XCTAssertEqual(app.textFields.element(boundBy: 1).placeholderValue, "Surname here")
+
+        // Set date picker to January 1st 2022
+        app.datePickers.assertExists().tap()
+        app.datePickers.buttons["Show year picker"].assertExists().tap()
+        app.datePickers.pickerWheels.element(boundBy: 0)
+            .assertExists()
+            .adjust(toPickerWheelValue: "January")
+        app.datePickers.pickerWheels.element(boundBy: 1)
+            .assertExists()
+            .adjust(toPickerWheelValue: "2022")
+        app.datePickers.buttons["Hide year picker"].assertExists().tap()
+        app.datePickers.buttons["Saturday, January 1"].assertExists().tap()
+        // force tap required, as element is not hittable when data picker is shown
+        // and we need this tap to hide data picker
+        app.staticTexts.firstContainingLabel(text: "Step instructions").assertExists().forceTap()
+        nextButton.assertExists().tap()
+        
+        app.staticTexts["Case ID"].assertExists()
+        let caseID = app.textFields.firstMatch.assertExists().value as? String
+        XCTAssertEqual(caseID, "S-24001")
     }
 
     @MainActor
     func testFormValidation() throws {
         verifyMainScreen()
         // Button's label contains some extra spaces (padding?)
-        let nextButton = app.buttons["Next   "].firstMatch
+        let nextButton = app.buttons.firstContainingLabel(text: "Next")
         let validationText = app.staticTexts["Cannot be blank"]
         tapCreateButton()
-        XCTAssertTrue(nextButton.waitForExistence(timeout: timeout))
-        nextButton.tap()
-        XCTAssertTrue(validationText.waitForExistence(timeout: timeout))
+        nextButton.assertExists().tap()
+        validationText.assertExists()
+    }
+}
+
+extension XCUIElementQuery {
+    @discardableResult
+    func assertExists(timeout: TimeInterval = 180.0) -> XCUIElement {
+        self.firstMatch.assertExists(timeout: timeout)
+    }
+
+    @discardableResult
+    func allContainingLabel(text: String) -> [XCUIElement] {
+        let predicate = NSPredicate(format: "label CONTAINS[c] %@", text)
+        return containing(predicate).allElementsBoundByIndex
+    }
+
+    @discardableResult
+    func firstContainingLabel(text: String) -> XCUIElement {
+        let predicate = NSPredicate(format: "label CONTAINS[c] %@", text)
+        return containing(predicate).firstMatch
+    }
+}
+
+extension XCUIElement {
+    @discardableResult
+    func assertExists(timeout: TimeInterval = 180.0) -> XCUIElement {
+        XCTAssertTrue(waitForExistence(timeout: timeout), "Element \(self) still does not exists after \(timeout)s")
+        // for method chaining
+        return self
+    }
+
+    func forceTap(offsetX: CGFloat = 0.1, offsetY: CGFloat = 0.1) {
+        coordinate(withNormalizedOffset: CGVector(dx: offsetX, dy: offsetY)).tap()
     }
 }
