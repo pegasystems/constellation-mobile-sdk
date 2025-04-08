@@ -77,7 +77,7 @@ class ComposeTest {
 
         onNodeWithText("First Name").performTextInput("Jan")
         onNodeWithText("Last Name").performTextInput("Kowalski")
-        onNodeWithText("Email").performTextInput("invalid email")
+        onNodeWithText("Custom Email").performTextInput("invalid email")
 
         onNodeWithText("Service date").performClick()
         onNodeWithText("10", substring = true).performClick()
@@ -85,7 +85,7 @@ class ComposeTest {
         onNodeWithText("Submit").performClick()
 
         waitForNode("Email: Enter a valid email address")
-        onNodeWithText("Email").performTextReplacement("jan.kowalski@pega.com")
+        onNodeWithText("Custom Email").performTextReplacement("jan.kowalski@pega.com")
         onNodeWithText("Submit").performClick()
 
         waitForNode("Street")

@@ -34,7 +34,7 @@ runs:
 
     - name: Assemble AARs
       env:
-        GRADLE: ./gradlew -Dorg.gradle.console=plain --info --stacktrace --no-daemon
+        GRADLE: ./gradlew -Dorg.gradle.console=plain --info --no-daemon
         EMULATOR_IMAGE: 'system-images;android-${{ inputs.android-version }};google_apis;x86_64'
       shell: bash
       run: |

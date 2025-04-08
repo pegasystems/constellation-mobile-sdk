@@ -75,7 +75,7 @@ export class EmailComponent {
     if (configProps.value != undefined) {
       this.props.value = configProps.value;
     }
-    this.props.helperText = `[custom js email component] ${configProps.helperText || ''}`;
+    this.props.helperText = `This is overridden email component ${configProps.helperText || ''}`;
     this.props.placeholder = configProps.placeholder || '';
 
     if (configProps.required != null) {
