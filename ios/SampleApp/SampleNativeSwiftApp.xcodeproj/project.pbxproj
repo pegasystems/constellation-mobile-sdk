@@ -19,6 +19,7 @@
 		B50BA3B62D6CCC5B00EBCCE3 /* CustomSliderProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BA3B42D6CCB0500EBCCE3 /* CustomSliderProps.swift */; };
 		B50BA3B72D6CCC5F00EBCCE3 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BA3B52D6CCC3900EBCCE3 /* CustomSlider.swift */; };
 		B50BA3B82D6CCC6300EBCCE3 /* slider.component.js in Resources */ = {isa = PBXBuildFile; fileRef = B50BA3B32D6CCAEB00EBCCE3 /* slider.component.js */; };
+		B58C945F2D9EBD1600B978E6 /* RoundedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C945E2D9EBD0F00B978E6 /* RoundedCornerView.swift */; };
 		B5ACA2E82D56418F00F7AE9D /* ConstellationSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ACA2E72D56418F00F7AE9D /* ConstellationSDK.framework */; };
 		B5ACA2E92D56418F00F7AE9D /* ConstellationSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B5ACA2E72D56418F00F7AE9D /* ConstellationSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B5ACA2EA2D56433700F7AE9D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D1FF512C400C1C0013A71B /* ViewController.swift */; };
@@ -62,6 +63,7 @@
 		B50BA3B32D6CCAEB00EBCCE3 /* slider.component.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = slider.component.js; sourceTree = "<group>"; };
 		B50BA3B42D6CCB0500EBCCE3 /* CustomSliderProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderProps.swift; sourceTree = "<group>"; };
 		B50BA3B52D6CCC3900EBCCE3 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
+		B58C945E2D9EBD0F00B978E6 /* RoundedCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornerView.swift; sourceTree = "<group>"; };
 		B5ACA2E72D56418F00F7AE9D /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5ACA2F32D5650F800F7AE9D /* Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,6 +133,7 @@
 		65D1FF4C2C400C1C0013A71B /* SampleNativeSwiftApp */ = {
 			isa = PBXGroup;
 			children = (
+				B58C945E2D9EBD0F00B978E6 /* RoundedCornerView.swift */,
 				B5ACA2F32D5650F800F7AE9D /* Authorization.swift */,
 				65659C822C4DAA3500D34B2D /* Components */,
 				65659C752C4DA7BA00D34B2D /* Branding */,
@@ -241,6 +244,7 @@
 				6543469B2CD2838600849AA8 /* SDKConfiguration.swift in Sources */,
 				651EF97E2D80837000227F57 /* CustomTextArea.swift in Sources */,
 				B50BA3B72D6CCC5F00EBCCE3 /* CustomSlider.swift in Sources */,
+				B58C945F2D9EBD1600B978E6 /* RoundedCornerView.swift in Sources */,
 				65D1FF4E2C400C1C0013A71B /* AppDelegate.swift in Sources */,
 				B5ACA2EA2D56433700F7AE9D /* ViewController.swift in Sources */,
 				B5ACA2F42D5650F800F7AE9D /* Authorization.swift in Sources */,

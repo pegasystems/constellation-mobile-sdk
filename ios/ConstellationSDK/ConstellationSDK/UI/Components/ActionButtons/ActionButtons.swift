@@ -45,10 +45,10 @@ struct ActionButtonsView: View {
     }
 
     var body: some View {
-        VStack {
-            buildButtons(isPrimary: true)
+        HStack {
             buildButtons(isPrimary: false)
-        }.padding(.vertical)
+            buildButtons(isPrimary: true)
+        }
     }
 
     @ViewBuilder
@@ -61,8 +61,7 @@ struct ActionButtonsView: View {
                     eventSubject.send(buttonInfo.clickEvent)
                 }) {
                     Text(buttonInfo.name)
-                        .font(.system(size: 12, weight: .bold, design: .rounded))
-                        .padding()
+                        .padding(8)
                         .frame(maxWidth: .infinity)
                         .foregroundColor(.white)
                         .background(isPrimary ? .blue : .gray)
