@@ -50,7 +50,9 @@ public class PMSDKComponentManager {
         "DefaultForm": ViewComponentProvider.self,
 
         "ActionButtons": ActionButtonsProvider.self,
-        "AlertBanner": AlertBannerComponentProvider.self
+        "AlertBanner": AlertBannerComponentProvider.self,
+
+        "Unsupported": UnsupportedComponentProvider.self
     ]
 
     func create(_ type: String) throws -> any ComponentProvider {

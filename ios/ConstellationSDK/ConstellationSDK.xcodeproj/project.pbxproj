@@ -58,6 +58,8 @@
 		B58637D32D786E6E007E3020 /* ActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58637D12D786C75007E3020 /* ActionButtons.swift */; };
 		B58637D42D786E77007E3020 /* ActionButtonsProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58637D22D786C7E007E3020 /* ActionButtonsProps.swift */; };
 		B58637D62D79D82B007E3020 /* String+NilIfEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58637D52D79D826007E3020 /* String+NilIfEmpty.swift */; };
+		B58C94DB2DA5516A00B978E6 /* UnsupportedComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C94DA2DA5516300B978E6 /* UnsupportedComponentProvider.swift */; };
+		B58C94DF2DA551A500B978E6 /* UnsupportedComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C94DE2DA551A200B978E6 /* UnsupportedComponentProps.swift */; };
 		B5ACA2ED2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2EC2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift */; };
 		B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetwork.swift */; };
 		B5ACA2FA2D56626E00F7AE9D /* c11n.js in Resources */ = {isa = PBXBuildFile; fileRef = B5ACA2F92D56626E00F7AE9D /* c11n.js */; };
@@ -141,6 +143,8 @@
 		B58637D12D786C75007E3020 /* ActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtons.swift; sourceTree = "<group>"; };
 		B58637D22D786C7E007E3020 /* ActionButtonsProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonsProps.swift; sourceTree = "<group>"; };
 		B58637D52D79D826007E3020 /* String+NilIfEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NilIfEmpty.swift"; sourceTree = "<group>"; };
+		B58C94DA2DA5516300B978E6 /* UnsupportedComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedComponentProvider.swift; sourceTree = "<group>"; };
+		B58C94DE2DA551A200B978E6 /* UnsupportedComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedComponentProps.swift; sourceTree = "<group>"; };
 		B5ACA2EC2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMSDKCreateCaseView.swift; sourceTree = "<group>"; };
 		B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMSDKNetwork.swift; sourceTree = "<group>"; };
 		B5ACA2F92D56626E00F7AE9D /* c11n.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = c11n.js; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -440,6 +444,15 @@
 			path = ActionButtons;
 			sourceTree = "<group>";
 		};
+		B58C94D92DA5192C00B978E6 /* UnsupportedComponent */ = {
+			isa = PBXGroup;
+			children = (
+				B58C94DE2DA551A200B978E6 /* UnsupportedComponentProps.swift */,
+				B58C94DA2DA5516300B978E6 /* UnsupportedComponentProvider.swift */,
+			);
+			path = UnsupportedComponent;
+			sourceTree = "<group>";
+		};
 		B5ACA2EB2D56496300F7AE9D /* Public */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +467,7 @@
 		B5F1A39B2D6775DE0026527C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B58C94D92DA5192C00B978E6 /* UnsupportedComponent */,
 				B53C2D062D81CD5300DB47FB /* Containers */,
 				B58637D02D786C5D007E3020 /* ActionButtons */,
 				6573708B2D8DBE49001CC458 /* AlertBanner */,
@@ -593,9 +607,11 @@
 				6573708F2D8DBE8F001CC458 /* AlertBannerComponentProps.swift in Sources */,
 				B56F83732D5B879A0093E00D /* WebViewOverride.swift in Sources */,
 				B52349EE2D53AD010042F27B /* EmailView.swift in Sources */,
+				B58C94DF2DA551A500B978E6 /* UnsupportedComponentProps.swift in Sources */,
 				651EF97C2D807D3000227F57 /* TextAreaProps.swift in Sources */,
 				65038CE72D81BF810070D125 /* UrlProps.swift in Sources */,
 				B52349E02D53AD010042F27B /* ComponentProps.swift in Sources */,
+				B58C94DB2DA5516A00B978E6 /* UnsupportedComponentProvider.swift in Sources */,
 				B58637D42D786E77007E3020 /* ActionButtonsProps.swift in Sources */,
 				65038CEC2D81C1D90070D125 /* TextInputBasedComponentProvider.swift in Sources */,
 				B52349D72D53AD010042F27B /* ComponentProvider.swift in Sources */,
