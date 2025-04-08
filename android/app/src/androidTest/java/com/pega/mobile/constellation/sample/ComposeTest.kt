@@ -23,9 +23,9 @@ import androidx.test.uiautomator.UiDevice
 import com.pega.mobile.constellation.mock.MockHttpClient
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.MOCK_SERVER
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.REAL_SERVER
-import com.pega.mobile.constellation.sample.http.AuthorizationInterceptor
-import com.pega.mobile.constellation.sample.ui.screens.MainScreen
-import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
+import com.pega.mobile.constellation.sample.auth.AuthorizationInterceptor
+import com.pega.mobile.constellation.sample.ui.screens.home.HomeScreen
+import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
 import okhttp3.OkHttpClient
@@ -110,10 +110,10 @@ class ComposeTest {
         val config = buildSdkConfig(composeTestRule.activity)
         val sdk = runOnUiThread { ConstellationSdk.create(appContext, config) }
         setContent {
-            SampleSdkTheme {
+            MediaCoTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
                     Box(Modifier.padding(innerPadding)) {
-                        MainScreen(sdk, caseClassName)
+                        HomeScreen(sdk, caseClassName)
                     }
                 }
             }

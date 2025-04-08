@@ -43,7 +43,7 @@ class AuthManager(private val context: Context) {
     private val authState: AuthState
         get() = store.read()
 
-    val isAuthorized: Boolean
+    val isAuthenticated: Boolean
         get() = authState.isAuthorized
 
     fun register(activity: ComponentActivity) {

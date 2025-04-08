@@ -1,4 +1,4 @@
-package com.pega.mobile.constellation.sample.ui.screens
+package com.pega.mobile.constellation.sample.ui.screens.app
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -17,11 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pega.mobile.constellation.sample.R
-import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
+import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SampleTopAppBar(modifier: Modifier = Modifier) {
+fun MediaCoTopAppBar(modifier: Modifier = Modifier) {
     TopAppBar(
         title = {
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -60,8 +60,8 @@ fun SampleTopAppBar(modifier: Modifier = Modifier) {
 
 @Preview(widthDp = 500)
 @Composable
-fun SampleTopAppBarPreview() {
-    SampleSdkTheme {
-        SampleTopAppBar()
+fun MediaCoTopAppBarPreview() {
+    MediaCoTheme {
+        MediaCoTopAppBar()
     }
 }

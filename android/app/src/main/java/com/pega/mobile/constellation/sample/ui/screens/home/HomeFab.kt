@@ -1,4 +1,4 @@
-package com.pega.mobile.constellation.sample.ui.screens
+package com.pega.mobile.constellation.sample.ui.screens.home
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -16,10 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sample.R
-import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
+import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
 @Composable
-fun OpenFormFab(onClick: () -> Unit) {
+fun HomeFab(onClick: () -> Unit) {
     ExtendedFloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
@@ -41,7 +41,7 @@ fun OpenFormFab(onClick: () -> Unit) {
 @Preview
 @Composable
 fun OpenFormButtonPreview() {
-    SampleSdkTheme {
-        OpenFormFab { }
+    MediaCoTheme {
+        HomeFab { }
     }
 }

@@ -18,7 +18,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun SampleSdkTheme(content: @Composable () -> Unit) {
+fun MediaCoTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = LightColorScheme,
         typography = Typography,
