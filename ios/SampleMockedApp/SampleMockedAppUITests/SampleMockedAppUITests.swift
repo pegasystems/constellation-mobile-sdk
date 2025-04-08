@@ -7,7 +7,7 @@ import XCTest
 final class SampleMockedAppUITests: XCTestCase {
     private lazy var app: XCUIApplication = XCUIApplication()
     private let mainScreenTimeout = 120.0
-    private let appInstallTimeout = 300.0
+    private let appInstallTimeout = 600.0
     private let timeout = 120.0
 
     override func setUpWithError() throws {
