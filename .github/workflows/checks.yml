@@ -24,12 +24,26 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Git clean
+        run: git clean -fdx
+
       - name: Set up cache for Gradle
         id: cache-gradle
         uses: actions/cache@v4
         with:
           path: ~/.gradle
           key: gradle-cache
+
+      - name: Set up cache for CDN files
+        id: cdn-cache-android
+        uses: actions/cache@v4
+        with:
+          path: android/sdk/src/androidTest/assets/responses/cdn
+          key: cdn-cache-android
+
+      - name: Download CDN files
+        if: steps.cdn-cache-android.outputs.cache-hit != 'true'
+        run: cd shared/responses && ./download_js_files.sh
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -50,7 +64,7 @@ jobs:
           enable-hw-keyboard: true
           disable-spellchecker: true
           # Run tests for second time if first time we have failed
-          script: cd android && ( $GRADLE connectedCheck || $GRADLE connectedCheck )
+          script: cd android && ( $GRADLE clean connectedCheck || $GRADLE clean connectedCheck )
 
       - name: Upload test artifacts for failures
         if: failure()
@@ -67,8 +81,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Set up cache for CDN files
+        id: cdn-cache-ios
+        uses: actions/cache@v4
+        with:
+          path: shared/responses/cdn
+          key: cdn-cache-ios
+
+      - name: Download CDN files
+        if: steps.cdn-cache-ios.outputs.cache-hit != 'true'
+        run: cd shared/responses && ./download_js_files.sh
+
       - name: Install esbuild
-        run: brew install esbuild || true
+        run: brew install esbuild
 
       - name: Create new test simulator
         run: |
@@ -82,11 +107,12 @@ jobs:
 
       - name: iOS sample application UI tests
         run: |
+          set -o pipefail
           cd ios
           echo $PWD
           rm -rf build || true
           mkdir build
-          xcodebuild -workspace SDK.xcworkspace -scheme SampleMockedApp -destination "platform=iOS Simulator,id=$(cat ../simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 2 clean test
+          xcodebuild -workspace SDK.xcworkspace -scheme SampleMockedApp -destination "platform=iOS Simulator,id=$(cat ../simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 2 clean test | xcbeautify --is-ci --renderer github-actions
 
       - name: Upload test artifacts for failures
         if: failure()
@@ -99,9 +125,10 @@ jobs:
 
       - name: iOS sample application build
         run: |
+          set -o pipefail
           cd ios
           echo $PWD
-          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeSwiftApp clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeSwiftApp clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcbeautify --is-ci --renderer github-actions
 
       - name: Delete test simulator
         if: always()
