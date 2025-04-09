@@ -1,7 +1,3 @@
-//
-// Copyright (c) 2024 and Confidential to Pegasystems Inc. All rights reserved.
-//
-
 import SwiftUI
 
 @objcMembers public class FlexComponentWrapperView: UIView, PMSDKWrapperView, FlexPropsProtocol  {
