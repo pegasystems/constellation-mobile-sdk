@@ -1,9 +1,3 @@
-/*
- *
- *  * Copyright © 2024 and Confidential to Pegasystems Inc. All rights reserved.
- *
- */
-
 package com.pega.mobile.dxcomponents.compose.controls.form.utils
 
 internal object CountryCodes {

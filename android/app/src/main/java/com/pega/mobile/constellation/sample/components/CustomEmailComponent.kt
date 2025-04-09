@@ -1,7 +1,3 @@
-/*
- * Copyright © 2024 and Confidential to Pegasystems Inc. All rights reserved.
- */
-
 package com.pega.mobile.constellation.sample.components
 
 import androidx.compose.foundation.layout.Column

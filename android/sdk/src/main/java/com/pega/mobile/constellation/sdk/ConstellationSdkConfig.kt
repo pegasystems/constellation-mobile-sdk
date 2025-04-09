@@ -1,7 +1,3 @@
-/*
- * Copyright © 2025 and Confidential to Pegasystems Inc. All rights reserved.
- */
-
 package com.pega.mobile.constellation.sdk
 
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
