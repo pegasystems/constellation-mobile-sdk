@@ -34,15 +34,7 @@ jobs:
           path: ~/.gradle
           key: gradle-cache
 
-      - name: Set up cache for CDN files
-        id: cdn-cache-android
-        uses: actions/cache@v4
-        with:
-          path: android/sdk/src/androidTest/assets/responses/cdn
-          key: cdn-cache-android
-
       - name: Download CDN files
-        if: steps.cdn-cache-android.outputs.cache-hit != 'true'
         run: cd shared/responses && ./download_js_files.sh
 
       - name: Setup Android SDK
