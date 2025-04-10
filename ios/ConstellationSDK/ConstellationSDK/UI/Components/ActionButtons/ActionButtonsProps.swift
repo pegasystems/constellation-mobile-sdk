@@ -1,7 +1,3 @@
-//
-// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
-//
-
 class ActionButtonsProps: ObservableObject, ComponentProps {
     class ButtonProps: ObservableObject, Identifiable {
         @Published var type: String = ""

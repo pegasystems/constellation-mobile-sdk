@@ -1,7 +1,3 @@
-//
-// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
-//
-
 import Foundation
 import ConstellationSDK
 import os
@@ -12,6 +8,8 @@ class MockedNetwork: PMSDKNetworkRequestDelegate {
     private func loadResponseData(name: String, type: String, method: String) -> Data {
         let path = if name == "SDKTesting" || name == "NewService" {
             Bundle.main.path(forResource: "\(name)-\(method)", ofType: type)
+        } else if name == "Create" {
+            Bundle.main.path(forResource: "SDKTesting-\(method)", ofType: type)
         } else {
             Bundle.main.path(forResource: "\(name)", ofType: type)
         }

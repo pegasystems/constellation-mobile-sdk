@@ -61,14 +61,6 @@ export class AssignmentCardComponent {
     this.componentsManager.initReconciledComponents(reconciledComponents);
 
     this.sendPropsUpdate()
-    const assignmentCardPConn = this.pConn$;
-
-    // TODO quick hack to submit form
-    window.submitForm = function() {
-      assignmentCardPConn.getActionsApi().finishAssignment(assignmentCardPConn.options.context);
-      // actionButtonClick({action: mainButtons[0].jsAction, buttonType: 'primary'}); // TODO: will be used in next US with buttons
-    }
-
     this.actionButtonsComponent.update(this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
   }
 

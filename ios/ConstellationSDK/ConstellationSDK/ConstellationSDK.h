@@ -1,7 +1,3 @@
-//
-// Copyright (c) 2024 and Confidential to Pegasystems Inc. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 //! Project version number for ConstellationSDK.

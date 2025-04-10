@@ -81,3 +81,5 @@ yarn-error.log
 .vscode
 
 release/
+
+**/cdn/*

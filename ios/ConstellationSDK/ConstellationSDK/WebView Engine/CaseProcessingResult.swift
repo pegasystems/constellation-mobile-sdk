@@ -1,7 +1,3 @@
-//
-// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
-//
-
 typealias CaseProcessingResultHandler = (CaseProcessingResult) -> Void
 
 enum CaseProcessingResult {
