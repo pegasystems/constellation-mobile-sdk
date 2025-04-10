@@ -112,7 +112,10 @@ export class EmailComponent {
   // helper function called by component manager for event of changing field value with focus (FieldChangeWithFocus event)
   fieldOnBlur(value) {
     this.props.value = value || this.props.value
-    handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
+    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
+    if (this.props.value !== submittedValue) {
+      handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
+    }
     clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }

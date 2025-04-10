@@ -32,7 +32,7 @@ import { EmailComponent } from '../components/fields/email.component.js';
 // import { ListViewActionButtonsComponent } from './_components/field/list-view-action-buttons/list-view-action-buttons.component';
 // import { PercentageComponent } from './_components/field/percentage/percentage.component';
 // import { PhoneComponent } from './_components/field/phone/phone.component';
-// import { RadioButtonsComponent } from './_components/field/radio-buttons/radio-buttons.component';
+import { RadioButtonsComponent } from '../components/fields/radio-buttons.component.js';
 // import { SemanticLinkComponent } from './_components/field/semantic-link/semantic-link.component';
 import { TextAreaComponent } from '../components/fields/text-area.component.js';
 // import { TextComponent } from './_components/field/text/text.component';
@@ -205,7 +205,7 @@ const pegaSdkComponentMap = {
   // Pulse: PulseComponent,
   // QuickCreate: QuickCreateComponent,
   reference: ReferenceComponent,
-  // RadioButtons: RadioButtonsComponent,
+  RadioButtons: RadioButtonsComponent,
   Region: RegionComponent,
   // RichText: RichTextComponent,
   // RichTextEditor: RichTextEditorComponent,

@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.HelperText
+import com.pega.mobile.dxcomponents.compose.controls.form.internal.SelectableOption
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +31,7 @@ fun Dropdown(
     required: Boolean = false,
     disabled: Boolean = false,
     readOnly: Boolean = false,
-    options: List<DropdownOption> = emptyList(),
+    options: List<SelectableOption> = emptyList(),
     onValueChange: (String) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -44,7 +45,7 @@ fun Dropdown(
             }
         ) {
             OutlinedTextField(
-                value = options.firstOrNull { it.value == value }?.label ?: "",
+                value = options.firstOrNull { it.key == value }?.label ?: "",
                 onValueChange = {},
                 enabled = !disabled,
                 readOnly = true,
@@ -69,7 +70,7 @@ fun Dropdown(
                         text = { Text(option.label) },
                         onClick = {
                             expanded = false
-                            onValueChange(option.value)
+                            onValueChange(option.key)
                         }
                     )
                 }
@@ -84,17 +85,15 @@ fun Dropdown(
     }
 }
 
-data class DropdownOption(val value: String, val label: String)
-
 @Preview(showBackground = true, heightDp = 300)
 @Composable
 fun DropdownPreview() {
     var value by remember { mutableStateOf("") }
     val options = listOf(
-        DropdownOption("", "Select..."),
-        DropdownOption("value1", "label1"),
-        DropdownOption("value2", "label2"),
-        DropdownOption("value3", "label3")
+        SelectableOption("", "Select..."),
+        SelectableOption("value1", "label1"),
+        SelectableOption("value2", "label2"),
+        SelectableOption("value3", "label3")
     )
     Dropdown(
         value = value,
@@ -111,9 +110,9 @@ fun DropdownPreview() {
 fun DropdownPreviewRequired() {
     var value by remember { mutableStateOf("value2") }
     val options = listOf(
-        DropdownOption("value1", "label1"),
-        DropdownOption("value2", "label2"),
-        DropdownOption("value3", "label3")
+        SelectableOption("value1", "label1"),
+        SelectableOption("value2", "label2"),
+        SelectableOption("value3", "label3")
     )
     Dropdown(
         value = value,
@@ -132,9 +131,9 @@ fun DropdownPreviewRequired() {
 fun DropdownPreviewDisabled() {
     var value by remember { mutableStateOf("value2") }
     val options = listOf(
-        DropdownOption("value1", "label1"),
-        DropdownOption("value2", "label2"),
-        DropdownOption("value3", "label3")
+        SelectableOption("value1", "label1"),
+        SelectableOption("value2", "label2"),
+        SelectableOption("value3", "label3")
     )
     Dropdown(
         value = value,
@@ -152,9 +151,9 @@ fun DropdownPreviewDisabled() {
 fun DropdownPreviewReadOnly() {
     var value by remember { mutableStateOf("value2") }
     val options = listOf(
-        DropdownOption("value1", "label1"),
-        DropdownOption("value2", "label2"),
-        DropdownOption("value3", "label3")
+        SelectableOption("value1", "label1"),
+        SelectableOption("value2", "label2"),
+        SelectableOption("value3", "label3")
     )
     Dropdown(
         value = value,
