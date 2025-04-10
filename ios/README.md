@@ -2,19 +2,24 @@
 Constellation SDK
 =================
 
-Pega Constellation Mobile SDK 
+Pega Constellation Mobile SDK
+
+- [Project Structure](#project-structure)
+- [Integration](#integration)
+- [Overriding Component Providers](#overriding-component-providers)
+- [Creating New Components](#creating-new-components)
 
 Project Structure
 -----------------
 
 Pega Constellation Mobile SDK exposes following classes to be used as main integration points:
 
-* `PMSDKNetwork` - controls network communications, holds weak reference to the delegate, which will perform network requests on behalf of SDK
+* `PMSDKNetwork` - controls network communication, holds weak reference to the delegate, which will perform network requests on behalf of SDK
 * `PMSDKComponentManager` - singleton, which holds registry of default and custom component providers
 * `PMSDKCreateCaseStartingFields` - responsible for storage and coding of starting fields
 * `PMSDKCreateCaseView` - SwiftUI view which handles case processing lifecycle.
 
-Other public classes, like properties, views and providers are present to perform handling of main inputs and to demonstrate reference implementation of various view components.
+Other public classes, like properties, views and providers are present to perform handling of main inputs and to demonstrate reference implementation of various components.
 
 Integration
 -----------
@@ -22,11 +27,11 @@ Integration
 Before case processing can be started, application needs to provide network request delegate. To do so, an instance of class implementing `PMSDKNetworkRequestDelegate` protocol shall be created.
 
 `PMSDKNetworkRequestDelegate` requires two methods:
-* `func shouldHandle(request: URLRequest) -> Bool` - decides if request should be handled. Main purpose of this function, to reject unwanted requests.
+* `func shouldHandle(request: URLRequest) -> Bool` - decides whether or not the request should be handled. Main purpose of this function is to reject unwanted requests.
 * `func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse)` - handles network requests asynchronously and returns data and response.
    It is responsibility of enclosing application to handle authorisation. Most Pega instances use OAuth2 protocol, so this method shall authorize requests with proper tokens and handle token expiration and refreshment processes.
 
-Prepared network delegate shall be assigned to the `PMSDKNetwork` classh shared instance:
+Prepared network delegate shall be assigned to the `PMSDKNetwork` shared instance:
 ```swift
 PMSDKNetwork.shared.requestDelegate = self
 ```
