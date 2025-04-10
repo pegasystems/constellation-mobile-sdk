@@ -26,7 +26,7 @@ Currently SDK supports creating new case of given type and processing assignment
 
 ### [Integration with Android applications](android/README.md) ###
 
-### Integration with iOS applications ###
+### [Integration with iOS applications](ios/README.md) ###
 
 ## License
 
