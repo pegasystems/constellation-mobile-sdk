@@ -7,6 +7,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.AssignmentCar
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
@@ -41,6 +42,8 @@ import com.pega.mobile.constellation.sdk.components.fields.CheckboxComponent
 import com.pega.mobile.constellation.sdk.components.fields.CheckboxRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DateComponent
 import com.pega.mobile.constellation.sdk.components.fields.DateRenderer
+import com.pega.mobile.constellation.sdk.components.fields.DropdownComponent
+import com.pega.mobile.constellation.sdk.components.fields.DropdownRenderer
 import com.pega.mobile.constellation.sdk.components.fields.EmailComponent
 import com.pega.mobile.constellation.sdk.components.fields.EmailRenderer
 import com.pega.mobile.constellation.sdk.components.fields.RadioButtonsComponent
@@ -79,6 +82,7 @@ object Components {
         Def(AlertBanner) { AlertBannerComponent(it) },
         Def(Date) { DateComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },
+        Def(Dropdown) { DropdownComponent(it) },
         Def(UnsupportedJs) { UnsupportedJsComponent(it)}
     )
 
@@ -98,6 +102,7 @@ object Components {
         URL to UrlRenderer(),
         Date to DateRenderer(),
         RadioButtons to RadioButtonsRenderer(),
+        Dropdown to DropdownRenderer(),
         ActionButtons to ActionButtonsRenderer(),
         AlertBanner to AlertBannerRenderer(),
         UnsupportedJs to UnsupportedJsRenderer(),

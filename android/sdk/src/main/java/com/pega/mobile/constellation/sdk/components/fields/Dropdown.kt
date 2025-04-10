@@ -3,15 +3,15 @@ package com.pega.mobile.constellation.sdk.components.fields
 import androidx.compose.runtime.Composable
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.dxcomponents.compose.controls.form.RadioButtons
+import com.pega.mobile.dxcomponents.compose.controls.form.Dropdown
 
-class RadioButtonsComponent(context: ComponentContext) : SelectableComponent(context)
+class DropdownComponent(context: ComponentContext) : SelectableComponent(context)
 
-class RadioButtonsRenderer : ComponentRenderer<SelectableViewModel> {
+class DropdownRenderer : ComponentRenderer<SelectableViewModel> {
     @Composable
     override fun Render(viewModel: SelectableViewModel) {
         WithVisibility(viewModel) {
-            RadioButtons(
+            Dropdown(
                 value = value,
                 label = label,
                 helperText = helperText,

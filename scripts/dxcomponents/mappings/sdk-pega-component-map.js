@@ -25,7 +25,7 @@ import { CheckBoxComponent } from '../components/fields/check-box.component.js';
 import { DateComponent } from '../components/fields/date.component.js';
 // import { DateTimeComponent } from './_components/field/date-time/date-time.component';
 // import { DecimalComponent } from './_components/field/decimal/decimal.component';
-// import { DropdownComponent } from './_components/field/dropdown/dropdown.component';
+import { DropdownComponent } from '../components/fields/dropdown.component.js';
 import { EmailComponent } from '../components/fields/email.component.js';
 // import { GroupComponent } from './_components/field/group/group.component';
 // import { IntegerComponent } from './_components/field/integer/integer.component';
@@ -162,7 +162,7 @@ const pegaSdkComponentMap = {
   // DetailsSubTabs: DetailsSubTabsComponent,
   // DetailsThreeColumn: DetailsThreeColumnComponent,
   // DetailsTwoColumn: DetailsTwoColumnComponent,
-  // Dropdown: DropdownComponent,
+  Dropdown: DropdownComponent,
   // DynamicTabs: DynamicTabsComponent,
   Email: EmailComponent,
   // ErrorBoundary: ErrorBoundaryComponent,
