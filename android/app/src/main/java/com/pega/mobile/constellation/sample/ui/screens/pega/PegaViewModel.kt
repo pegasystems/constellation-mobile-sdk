@@ -35,14 +35,12 @@ class PegaViewModel(
 
     fun createCase(onFailure: (String) -> Unit) {
         dismissed = false
-        authenticate(
+        authManager.authenticate(
+            scope = viewModelScope,
             onSuccess = { sdk.createCase(caseClassName) },
             onFailure = onFailure
         )
     }
-
-    private fun authenticate(onSuccess: () -> Unit, onFailure: (String) -> Unit) =
-        authManager.authenticate(viewModelScope, onSuccess, onFailure)
 
     companion object {
         val Factory = viewModelFactory {
