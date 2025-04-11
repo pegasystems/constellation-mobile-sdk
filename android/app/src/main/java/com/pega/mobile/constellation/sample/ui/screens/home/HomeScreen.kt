@@ -27,7 +27,6 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Snackbar
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
     pegaViewModel: PegaViewModel = viewModel(factory = PegaViewModel.Factory),
-    caseClassName: String
 ) {
     val news by homeViewModel.news.collectAsState()
     val authState by homeViewModel.authState.collectAsState()
@@ -42,7 +41,7 @@ fun HomeScreen(
         snackbarMessages = homeViewModel.snackbarMessages,
         onSnackbarMessage = showSnackbar,
         onSnackbarClose = { homeViewModel.snackbarMessages = emptyList() },
-        onFabClick = { pegaViewModel.createCase(caseClassName, onFailure = showSnackbar) },
+        onFabClick = { pegaViewModel.createCase(onFailure = showSnackbar) },
     )
 }
 

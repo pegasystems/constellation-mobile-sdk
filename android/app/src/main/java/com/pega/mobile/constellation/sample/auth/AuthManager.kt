@@ -119,8 +119,11 @@ class AuthManager(private val context: Context) {
         service?.dispose()
     }
 
-    private fun initialState() = if (openIdState.isAuthorized) Authenticated else Unauthenticated
+    internal fun authenticateForTesting() {
+        _authState.value = Authenticated
+    }
 
+    private fun initialState() = if (openIdState.isAuthorized) Authenticated else Unauthenticated
 
     private fun initializeAuthService(activity: ComponentActivity) {
         activity.lifecycleScope.launch {

@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setupAuth()
         setContent {
             MediaCoTheme {
-                HomeScreen(caseClassName = PegaConfig.CASE_CLASS_NAME)
+                HomeScreen()
             }
         }
     }
