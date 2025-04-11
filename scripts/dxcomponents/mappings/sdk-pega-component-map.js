@@ -28,7 +28,7 @@ import { DateComponent } from '../components/fields/date.component.js';
 // import { DropdownComponent } from './_components/field/dropdown/dropdown.component';
 import { EmailComponent } from '../components/fields/email.component.js';
 // import { GroupComponent } from './_components/field/group/group.component';
-// import { IntegerComponent } from './_components/field/integer/integer.component';
+import { IntegerComponent } from '../components/fields/integer.component.js';
 // import { ListViewActionButtonsComponent } from './_components/field/list-view-action-buttons/list-view-action-buttons.component';
 // import { PercentageComponent } from './_components/field/percentage/percentage.component';
 // import { PhoneComponent } from './_components/field/phone/phone.component';
@@ -177,7 +177,7 @@ const pegaSdkComponentMap = {
   // //   'Followers': Followers,
   // InlineDashboard: InlineDashboardComponent,
   // InlineDashboardPage: InlineDashboardPageComponent,
-  // Integer: IntegerComponent,
+  Integer: IntegerComponent,
   // //   'LeftAlignVerticalTabs': LeftAlignVerticalTabs,
   // ListPage: ListPageComponent,
   // ListUtility: ListUtilityComponent,

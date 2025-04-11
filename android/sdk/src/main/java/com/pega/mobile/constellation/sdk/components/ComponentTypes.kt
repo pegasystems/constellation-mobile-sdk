@@ -15,6 +15,7 @@ object ComponentTypes {
     // fields
     val TextInput = ComponentType("TextInput")
     val Email = ComponentType("Email")
+    val Integer = ComponentType("Integer")
     val Checkbox = ComponentType("Checkbox")
     val TextArea = ComponentType("TextArea")
     val URL = ComponentType("URL")
