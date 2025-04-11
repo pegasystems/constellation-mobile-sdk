@@ -1,10 +1,9 @@
 package com.pega.mobile.constellation.sample.data
 
 import com.pega.mobile.constellation.sample.R
-import kotlinx.coroutines.flow.flowOf
 
 class NewsRepository {
-    fun fetchNews() = flowOf(
+    fun fetchNews() =
         listOf(
             News(
                 title = "5G is here! Free now!",
@@ -27,5 +26,4 @@ class NewsRepository {
                 photoResId = R.drawable.list_image_4
             )
         )
-    )
 }

@@ -23,7 +23,8 @@ import androidx.test.uiautomator.UiDevice
 import com.pega.mobile.constellation.mock.MockHttpClient
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.MOCK_SERVER
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.REAL_SERVER
-import com.pega.mobile.constellation.sample.auth.AuthorizationInterceptor
+import com.pega.mobile.constellation.sample.auth.AuthInterceptor
+import com.pega.mobile.constellation.sample.auth.AuthManager
 import com.pega.mobile.constellation.sample.ui.screens.home.HomeScreen
 import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 import com.pega.mobile.constellation.sdk.ConstellationSdk
@@ -113,7 +114,7 @@ class ComposeTest {
             MediaCoTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
                     Box(Modifier.padding(innerPadding)) {
-                        HomeScreen(sdk, caseClassName)
+                        HomeScreen(caseClassName = caseClassName)
                     }
                 }
             }
@@ -130,7 +131,7 @@ class ComposeTest {
     private fun buildHttpClient(activity: Activity) = when (mode) {
         MOCK_SERVER -> MockHttpClient(InstrumentationRegistry.getInstrumentation().context)
         REAL_SERVER -> OkHttpClient().newBuilder()
-            .addInterceptor(AuthorizationInterceptor(activity))
+            .addInterceptor(AuthInterceptor(AuthManager(activity)))
             .build()
     }
 

@@ -23,10 +23,10 @@ fun MediaCoBottomAppBar() {
         containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp
     ) {
-        NavItem("Home", R.drawable.home_icon, selected = true)
-        NavItem("Services", R.drawable.services_icon)
-        NavItem("Offers", R.drawable.offers_icon)
-        NavItem("Contact", R.drawable.contact_icon)
+        NavItem("Home", R.drawable.icon_home, selected = true)
+        NavItem("Services", R.drawable.icon_services)
+        NavItem("Offers", R.drawable.icon_offers)
+        NavItem("Contact", R.drawable.icon_contact)
     }
 }
 

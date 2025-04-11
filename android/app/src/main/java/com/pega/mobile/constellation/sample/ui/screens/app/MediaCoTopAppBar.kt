@@ -26,7 +26,7 @@ fun MediaCoTopAppBar(modifier: Modifier = Modifier) {
         title = {
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Image(
-                    painterResource(R.drawable.mediaco_logo),
+                    painterResource(R.drawable.logo_mediaco),
                     "MediaCo logo",
                     modifier = modifier.height(24.dp)
                 )
@@ -34,7 +34,7 @@ fun MediaCoTopAppBar(modifier: Modifier = Modifier) {
         },
         navigationIcon = {
             Icon(
-                painterResource(R.drawable.settings_icon),
+                painterResource(R.drawable.icon_settings),
                 "settings icon",
                 modifier = Modifier
                     .padding(12.dp)
@@ -43,7 +43,7 @@ fun MediaCoTopAppBar(modifier: Modifier = Modifier) {
         },
         actions = {
             Icon(
-                painterResource(R.drawable.profile_icon),
+                painterResource(R.drawable.icon_profile),
                 "profile icon",
                 modifier = Modifier
                     .padding(12.dp)

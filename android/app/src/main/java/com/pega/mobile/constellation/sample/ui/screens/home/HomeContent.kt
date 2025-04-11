@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -60,7 +58,7 @@ private fun ContentHeader(modifier: Modifier = Modifier) {
             fontSize = 22.sp
         )
         Image(
-            painterResource(R.drawable.right_arrow_icon),
+            painterResource(R.drawable.icon_right_arrow),
             contentDescription = "right arrow",
             modifier = Modifier.height(24.dp)
         )
@@ -71,7 +69,7 @@ private fun ContentHeader(modifier: Modifier = Modifier) {
 @Composable
 fun SampleContentPreview() {
     MediaCoTheme {
-        val news by NewsRepository().fetchNews().collectAsState(emptyList())
+        val news = NewsRepository().fetchNews()
         HomeContent(PaddingValues(16.dp), news)
     }
 }
@@ -80,7 +78,7 @@ fun SampleContentPreview() {
 @Composable
 fun SampleContentPreview2() {
     MediaCoTheme {
-        val news by NewsRepository().fetchNews().collectAsState(emptyList())
+        val news = NewsRepository().fetchNews()
         HomeContent(PaddingValues(16.dp), news)
     }
 }
@@ -89,7 +87,7 @@ fun SampleContentPreview2() {
 @Composable
 fun SampleContentPreview3() {
     MediaCoTheme {
-        val news by NewsRepository().fetchNews().collectAsState(emptyList())
+        val news = NewsRepository().fetchNews()
         HomeContent(PaddingValues(16.dp), news)
     }
 }

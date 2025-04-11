@@ -15,14 +15,21 @@ import androidx.lifecycle.lifecycleScope
 import com.pega.mobile.constellation.sample.PegaConfig.Auth.CLIENT_ID
 import com.pega.mobile.constellation.sample.PegaConfig.Auth.REDIRECT_URI
 import com.pega.mobile.constellation.sample.PegaConfig.URL
-import com.pega.mobile.constellation.sample.auth.AuthManager.AuthResult.Failed
-import com.pega.mobile.constellation.sample.auth.AuthManager.AuthResult.Success
+import com.pega.mobile.constellation.sample.auth.AuthState.AuthError
+import com.pega.mobile.constellation.sample.auth.AuthState.Authenticated
+import com.pega.mobile.constellation.sample.auth.AuthState.Authenticating
+import com.pega.mobile.constellation.sample.auth.AuthState.TokenExpired
+import com.pega.mobile.constellation.sample.auth.AuthState.Unauthenticated
 import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors.OTHER
 import net.openid.appauth.AuthorizationRequest
@@ -32,32 +39,67 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.ResponseTypeValues
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
+import net.openid.appauth.AuthState as OpenIdState
 
 class AuthManager(private val context: Context) {
     private val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     private val store = AuthStore(context)
     private var service: AuthorizationService? = null
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private var continuation: CancellableContinuation<AuthResult>? = null
+    private var continuation: CancellableContinuation<Result<String>>? = null
+    private var authJob: Job? = null
 
-    private val authState: AuthState
-        get() = store.read()
+    private val openIdState: OpenIdState get() = store.read()
 
-    val isAuthenticated: Boolean
-        get() = authState.isAuthorized
+    private val _authState = MutableStateFlow(initialState())
+    val authState = _authState.asStateFlow()
 
+    val accessToken: String?
+        get() = openIdState.accessToken
+
+    /**
+     * Registers activity result launcher for authentication purposes.
+     */
     fun register(activity: ComponentActivity) {
         launcher = activity.registerForActivityResult(StartActivityForResult()) { proceed(it.data) }
         initializeAuthService(activity)
     }
 
-    suspend fun authorize(): AuthResult {
+    /**
+     * Authenticates the user using OAuth 2.0.
+     */
+    fun authenticate(scope: CoroutineScope, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        if (authState.value != Authenticated) {
+            authJob?.cancel()
+            authJob = scope.launch {
+                _authState.value = Authenticating
+                delay(500)
+                authenticate()
+                    .onSuccess { onSuccess() }
+                    .onFailure { onFailure(it.errorMessage) }
+            }
+        } else {
+            onSuccess()
+        }
+    }
+
+    private suspend fun authenticate(): Result<String> {
+        _authState.value = Authenticating
+        delay(1000)
+        return authorize()
+            .onSuccess { _authState.value = Authenticated }
+            .onFailure { _authState.value = AuthError(it.errorMessage) }
+    }
+
+    private suspend fun authorize(): Result<String> {
         val launcher = requireNotNull(launcher) { "Launcher not initialized" }
         val service = requireNotNull(service) { "AuthorizationService not initialized" }
-        val config = AuthorizationServiceConfiguration(Uri.parse(AUTHORIZATION_ENDPOINT), Uri.parse(
-            TOKEN_ENDPOINT
-        ))
-        val request = AuthorizationRequest.Builder(config, CLIENT_ID, ResponseTypeValues.CODE, Uri.parse(REDIRECT_URI))
+        val config = AuthorizationServiceConfiguration(
+            Uri.parse(AUTHORIZATION_ENDPOINT),
+            Uri.parse(TOKEN_ENDPOINT)
+        )
+        val request = AuthorizationRequest
+            .Builder(config, CLIENT_ID, ResponseTypeValues.CODE, Uri.parse(REDIRECT_URI))
             .build()
 
         val authIntent = service.getAuthorizationRequestIntent(request)
@@ -68,9 +110,17 @@ class AuthManager(private val context: Context) {
         }
     }
 
+    fun onTokenExpired() {
+        OpenIdState().store()
+        _authState.value = TokenExpired
+    }
+
     fun dispose() {
         service?.dispose()
     }
+
+    private fun initialState() = if (openIdState.isAuthorized) Authenticated else Unauthenticated
+
 
     private fun initializeAuthService(activity: ComponentActivity) {
         activity.lifecycleScope.launch {
@@ -84,15 +134,15 @@ class AuthManager(private val context: Context) {
         if (data != null) {
             val response = AuthorizationResponse.fromIntent(data)
             val exception = AuthorizationException.fromIntent(data)
-            authState.updateAndStore { update(response, exception) }
+            openIdState.apply { update(response, exception) }.store()
 
             if (response != null) {
                 exchangeAuthorizationCode(response)
             } else {
-                resume(Failed(requireNotNull(exception)))
+                resume(Result.failure(exception!!))
             }
         } else {
-            resume(Failed(OTHER))
+            resume(Result.failure(OTHER))
         }
     }
 
@@ -100,33 +150,30 @@ class AuthManager(private val context: Context) {
         val service = requireNotNull(service) { "AuthorizationService not initialized" }
         val tokenRequest = response.createTokenExchangeRequest()
         service.performTokenRequest(tokenRequest) { tokenResponse, exception ->
-            authState.updateAndStore { update(tokenResponse, exception) }
+            openIdState.apply { update(tokenResponse, exception) }.store()
 
             if (tokenResponse != null) {
-                resume(Success)
+                resume(Result.success("Auth code exchanged"))
             } else {
-                resume(Failed(requireNotNull(exception)))
+                resume(Result.failure(exception!!))
             }
         }
     }
 
-    private fun AuthState.updateAndStore(update: AuthState.() -> Unit) {
-        update()
+    private fun OpenIdState.store() {
         store.write(this)
     }
 
-    private fun resume(result: AuthResult) {
-        when (result) {
-            is Success -> Log.i(TAG, "Authenticated successfully")
-            is Failed -> Log.e(TAG, "Authentication error", result.exception)
+    private fun resume(result: Result<String>) {
+        with(result) {
+            onSuccess { Log.i(TAG, "Authenticated successfully") }
+            onFailure { Log.e(TAG, "Authentication error", it) }
         }
         continuation?.resume(result)
     }
 
-    sealed class AuthResult {
-        data object Success : AuthResult()
-        class Failed(val exception: AuthorizationException) : AuthResult()
-    }
+    private val Throwable.errorMessage
+        get() = message ?: "Unknown error"
 
     companion object {
         private const val TAG = "AuthManager"
@@ -135,3 +182,4 @@ class AuthManager(private val context: Context) {
         const val TOKEN_ENDPOINT = "$URL/PRRestService/oauth2/v1/token"
     }
 }
+

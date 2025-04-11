@@ -54,7 +54,7 @@ fun HomeNewsCard(
                 )
                 Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.Bottom) {
                     Icon(
-                        painterResource(R.drawable.plus_today_icon),
+                        painterResource(R.drawable.icon_plus_today),
                         "plus today icon",
                         modifier = Modifier.height(24.dp)
                     )

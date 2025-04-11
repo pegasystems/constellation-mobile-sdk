@@ -19,15 +19,13 @@ class MainActivity : ComponentActivity() {
         setupAuth()
         setContent {
             MediaCoTheme {
-                HomeScreen()
+                HomeScreen(caseClassName = PegaConfig.CASE_CLASS_NAME)
             }
         }
     }
 
     private fun setupAuth() {
-        with(application.authManager) {
-            if (!isAuthenticated) register(this@MainActivity)
-        }
+        application.authManager.register(this@MainActivity)
     }
 
     override fun onDestroy() {

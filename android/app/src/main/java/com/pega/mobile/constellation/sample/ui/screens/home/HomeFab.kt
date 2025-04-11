@@ -1,8 +1,9 @@
 package com.pega.mobile.constellation.sample.ui.screens.home
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,29 +20,50 @@ import com.pega.mobile.constellation.sample.R
 import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
 @Composable
-fun HomeFab(onClick: () -> Unit) {
+fun HomeFab(loader: Boolean, onClick: () -> Unit) {
     ExtendedFloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = Color.White
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painterResource(R.drawable.plus_icon),
-                "plus icon",
-                modifier = Modifier
-                    .height(24.dp)
-                    .padding(end = 8.dp)
-            )
+            if (loader) IconLoader() else IconPlus()
+            Spacer(Modifier.size(8.dp))
             Text("New Service", fontSize = 14.sp)
         }
     }
 }
 
+@Composable
+private fun IconLoader() {
+    CircularProgressIndicator(
+        color = Color.White,
+        strokeWidth = 3.dp,
+        modifier = Modifier.size(24.dp)
+    )
+}
+
+@Composable
+private fun IconPlus() {
+    Icon(
+        painterResource(R.drawable.icon_plus),
+        "plus icon",
+        modifier = Modifier.size(24.dp)
+    )
+}
+
 @Preview
 @Composable
-fun OpenFormButtonPreview() {
+fun OpenFormButtonPreview1() {
     MediaCoTheme {
-        HomeFab { }
+        HomeFab(false) { }
+    }
+}
+
+@Preview
+@Composable
+fun OpenFormButtonPreview2() {
+    MediaCoTheme {
+        HomeFab(true) { }
     }
 }

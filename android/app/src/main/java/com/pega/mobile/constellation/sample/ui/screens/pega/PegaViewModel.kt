@@ -1,8 +1,10 @@
 package com.pega.mobile.constellation.sample.ui.screens.pega
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
@@ -11,73 +13,50 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.pega.mobile.constellation.sample.CustomComponents.CustomDefinitions
 import com.pega.mobile.constellation.sample.MediaCoApplication.Companion.authManager
 import com.pega.mobile.constellation.sample.PegaConfig
-import com.pega.mobile.constellation.sample.auth.AuthManager
-import com.pega.mobile.constellation.sample.auth.AuthManager.AuthResult.Failed
-import com.pega.mobile.constellation.sample.auth.AuthManager.AuthResult.Success
-import com.pega.mobile.constellation.sample.auth.AuthorizationInterceptor
-import com.pega.mobile.constellation.sample.ui.screens.pega.PegaViewModel.AuthState.AuthError
-import com.pega.mobile.constellation.sample.ui.screens.pega.PegaViewModel.AuthState.Authenticated
-import com.pega.mobile.constellation.sample.ui.screens.pega.PegaViewModel.AuthState.Unauthenticated
+import com.pega.mobile.constellation.sample.auth.AuthInterceptor
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.Response
+import com.pega.mobile.constellation.sdk.ConstellationSdk.State as SdkState
 
-class PegaViewModel(private val context: Application) : ViewModel() {
-    private val config = buildConfig(context)
+class PegaViewModel(context: Application) : ViewModel() {
+    private val authManager = context.authManager
+    private val config = buildConfig()
     private val sdk = ConstellationSdk.create(context, config)
 
-    private val _authState = MutableStateFlow(context.authManager.state())
-    val authState: StateFlow<AuthState> = _authState.asStateFlow()
-    val sdkState: StateFlow<ConstellationSdk.State> = sdk.state
+    var dismissed by mutableStateOf(false)
+    val sdkState: StateFlow<SdkState> = sdk.state
 
-    fun createCase() {
-        sdk.createCase(PegaConfig.CASE_CLASS_NAME)
+    fun createCase(caseClassName: String, onFailure: (String) -> Unit) {
+        dismissed = false
+        authenticate(
+            onSuccess = { sdk.createCase(caseClassName) },
+            onFailure = { onFailure(it) }
+        )
     }
 
-    fun authenticate() = viewModelScope.launch {
-        _authState.value = AuthState.Authenticating
-        delay(2000)
-        _authState.value = when (val result = context.authManager.authorize()) {
-            is Success -> Authenticated
-            is Failed -> AuthError(result.exception.errorDescription)
-        }
-    }
+    private fun authenticate(onSuccess: () -> Unit, onFailure: (String) -> Unit) =
+        authManager.authenticate(viewModelScope, onSuccess, onFailure)
 
-    fun reset() {
-        _authState.value = context.authManager.state()
-    }
-
-    private fun buildConfig(context: Context) = ConstellationSdkConfig(
+    private fun buildConfig() = ConstellationSdkConfig(
         pegaUrl = PegaConfig.URL,
         pegaVersion = PegaConfig.VERSION,
-        okHttpClient = buildOkHttpClient(context),
+        okHttpClient = buildOkHttpClient(),
         componentManager = buildComponentManager(),
         debuggable = true
     )
 
-    private fun buildOkHttpClient(context: Context) =
+    private fun buildOkHttpClient() =
         ConstellationSdkConfig.defaultHttpClient().newBuilder()
-            .addInterceptor(AuthorizationInterceptor(context))
+            .addInterceptor(AuthInterceptor(authManager))
             .addNetworkInterceptor(LoggingInterceptor())
             .build()
 
     private fun buildComponentManager() = ComponentManager.create(CustomDefinitions)
 
-    private fun AuthManager.state() = if (isAuthenticated) Authenticated else Unauthenticated
-
-    sealed class AuthState {
-        data object Authenticating : AuthState()
-        data object Authenticated : AuthState()
-        data object Unauthenticated : AuthState()
-        data class AuthError(val message: String?) : AuthState()
-    }
 
     companion object {
         val Factory = viewModelFactory {
