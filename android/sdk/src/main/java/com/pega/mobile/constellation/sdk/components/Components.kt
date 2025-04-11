@@ -5,6 +5,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.AlertBanner
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Assignment
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.AssignmentCard
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Currency
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
@@ -39,6 +40,8 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
 import com.pega.mobile.constellation.sdk.components.fields.CheckboxComponent
 import com.pega.mobile.constellation.sdk.components.fields.CheckboxRenderer
+import com.pega.mobile.constellation.sdk.components.fields.CurrencyComponent
+import com.pega.mobile.constellation.sdk.components.fields.CurrencyRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DateComponent
 import com.pega.mobile.constellation.sdk.components.fields.DateRenderer
 import com.pega.mobile.constellation.sdk.components.fields.EmailComponent
@@ -73,6 +76,7 @@ object Components {
         Def(TextInput) { TextInputComponent(it) },
         Def(Email) { EmailComponent(it) },
         Def(Integer) { IntegerComponent(it) },
+        Def(Currency) { CurrencyComponent(it) },
         Def(Checkbox) { CheckboxComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(URL) { UrlComponent(it) },
@@ -94,6 +98,7 @@ object Components {
         TextInput to TextInputRenderer(),
         Email to EmailRenderer(),
         Integer to IntegerRenderer(),
+        Currency to CurrencyRenderer(),
         Checkbox to CheckboxRenderer(),
         TextArea to TextAreaRenderer(),
         URL to UrlRenderer(),

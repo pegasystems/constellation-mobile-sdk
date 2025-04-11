@@ -50,8 +50,8 @@ fun IntegerPreview() {
     Integer(
         value = value,
         label = "Age",
-        helperText = "Write your name",
-        placeholder = "Name placeholder",
+        helperText = "What is your age",
+        placeholder = "Age placeholder",
         onValueChange = { value = it }
     )
 }
