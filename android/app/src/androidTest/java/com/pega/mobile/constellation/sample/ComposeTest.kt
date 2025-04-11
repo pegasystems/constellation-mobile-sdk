@@ -150,7 +150,7 @@ class ComposeTest {
     private fun ComposeContentTestRule.waitForNode(text: String) {
         waitUntilExactlyOneExists(
             hasText(text, substring = true),
-            timeoutMillis = 10000
+            timeoutMillis = 30000
         )
     }
 

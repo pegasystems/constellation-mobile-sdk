@@ -26,8 +26,8 @@ Currently SDK supports creating new case of given type and processing assignment
 
 ### [Integration with Android applications](android/README.md) ###
 
-### Integration with iOS applications ###
+### [Integration with iOS applications](ios/README.md) ###
 
 ## License
 
-Sources of this repository are licensed using [**Apache 2 license**](./LICENSE), with **exception** of JS files used for mocked http responses (for testing) which are available under [**Cosmos License**](./shared/responses/cdn/LICENSE).
+Sources of this repository are licensed using [**Apache 2 license**](./LICENSE).

@@ -1,7 +1,3 @@
-//
-// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
-//
-
 import Foundation
 
 public typealias ComponentProviderBlock = (() -> any ComponentProvider)
@@ -50,7 +46,9 @@ public class PMSDKComponentManager {
         "DefaultForm": ViewComponentProvider.self,
 
         "ActionButtons": ActionButtonsProvider.self,
-        "AlertBanner": AlertBannerComponentProvider.self
+        "AlertBanner": AlertBannerComponentProvider.self,
+
+        "Unsupported": UnsupportedComponentProvider.self
     ]
 
     func create(_ type: String) throws -> any ComponentProvider {
