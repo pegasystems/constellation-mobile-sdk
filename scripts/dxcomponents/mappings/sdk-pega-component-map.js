@@ -21,14 +21,14 @@ import { ViewContainerComponent } from '../components/containers/view-container.
 // import { AutoCompleteComponent } from './_components/field/auto-complete/auto-complete.component';
 // import { CancelAlertComponent } from './_components/field/cancel-alert/cancel-alert.component';
 import { CheckBoxComponent } from '../components/fields/check-box.component.js';
-// import { CurrencyComponent } from './_components/field/currency/currency.component';
+import { CurrencyComponent } from '../components/fields/currency.component.js';
 import { DateComponent } from '../components/fields/date.component.js';
 // import { DateTimeComponent } from './_components/field/date-time/date-time.component';
 // import { DecimalComponent } from './_components/field/decimal/decimal.component';
 // import { DropdownComponent } from './_components/field/dropdown/dropdown.component';
 import { EmailComponent } from '../components/fields/email.component.js';
 // import { GroupComponent } from './_components/field/group/group.component';
-// import { IntegerComponent } from './_components/field/integer/integer.component';
+import { IntegerComponent } from '../components/fields/integer.component.js';
 // import { ListViewActionButtonsComponent } from './_components/field/list-view-action-buttons/list-view-action-buttons.component';
 // import { PercentageComponent } from './_components/field/percentage/percentage.component';
 // import { PhoneComponent } from './_components/field/phone/phone.component';
@@ -148,7 +148,7 @@ const pegaSdkComponentMap = {
   // //   'CaseViewActionsMenu': CaseViewActionsMenu,
   Checkbox: CheckBoxComponent,
   // Confirmation: ConfirmationComponent,
-  // Currency: CurrencyComponent,
+  Currency: CurrencyComponent,
   // DashboardFilter: DashboardFilterComponent,
   // DataReference: DataReferenceComponent,
   Date: DateComponent,
@@ -177,7 +177,7 @@ const pegaSdkComponentMap = {
   // //   'Followers': Followers,
   // InlineDashboard: InlineDashboardComponent,
   // InlineDashboardPage: InlineDashboardPageComponent,
-  // Integer: IntegerComponent,
+  Integer: IntegerComponent,
   // //   'LeftAlignVerticalTabs': LeftAlignVerticalTabs,
   // ListPage: ListPageComponent,
   // ListUtility: ListUtilityComponent,
