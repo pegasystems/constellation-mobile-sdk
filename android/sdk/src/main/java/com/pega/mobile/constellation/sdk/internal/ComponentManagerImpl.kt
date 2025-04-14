@@ -51,5 +51,9 @@ internal class ComponentManagerImpl(
 
     companion object {
         private const val TAG = "ComponentManager"
+
+        @Suppress("unchecked_cast")
+        fun <T : Component> ComponentManager.getComponentTyped(id: ComponentId) =
+            getComponent(id) as? T
     }
 }

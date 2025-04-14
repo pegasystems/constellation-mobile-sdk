@@ -1,6 +1,5 @@
-package com.pega.mobile.constellation.sample.ui.screens
+package com.pega.mobile.constellation.sample.ui.screens.home
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,23 +19,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sample.R
-import com.pega.mobile.constellation.sample.data.SampleRepository
-import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
+import com.pega.mobile.constellation.sample.data.News
+import com.pega.mobile.constellation.sample.data.NewsRepository
+import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
 @Composable
-fun SampleContent(innerPadding: PaddingValues) {
+fun HomeContent(innerPadding: PaddingValues, news: List<News>) {
     LazyColumn(
         modifier = Modifier
             .padding(innerPadding)
             .padding(16.dp)
             .fillMaxSize()
     ) {
-        val news = SampleRepository().fetchNews()
         item {
             ContentHeader()
         }
-        items(4) {
-            SampleNewsCard(
+        items(news.size) {
+            HomeNewsCard(
                 title = news[it].title,
                 content = news[it].content,
                 photoResId = news[it].photoResId
@@ -46,19 +45,21 @@ fun SampleContent(innerPadding: PaddingValues) {
 }
 
 @Composable
-fun ContentHeader(modifier: Modifier = Modifier) {
+private fun ContentHeader(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(bottom = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            "Stay connected",
+            text = "Stay connected",
             fontSize = 22.sp
         )
         Image(
-            painterResource(R.drawable.right_arrow_icon),
-            "right arrow",
+            painterResource(R.drawable.icon_right_arrow),
+            contentDescription = "right arrow",
             modifier = Modifier.height(24.dp)
         )
     }
@@ -67,31 +68,34 @@ fun ContentHeader(modifier: Modifier = Modifier) {
 @Preview(showBackground = true, device = Devices.PIXEL_3)
 @Composable
 fun SampleContentPreview() {
-    SampleSdkTheme {
-        SampleContent(PaddingValues(16.dp))
+    MediaCoTheme {
+        val news = NewsRepository().fetchNews()
+        HomeContent(PaddingValues(16.dp), news)
     }
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL_7)
 @Composable
 fun SampleContentPreview2() {
-    SampleSdkTheme {
-        SampleContent(PaddingValues(16.dp))
+    MediaCoTheme {
+        val news = NewsRepository().fetchNews()
+        HomeContent(PaddingValues(16.dp), news)
     }
 }
 
 @Preview(showBackground = true, device = Devices.PIXEL_7_PRO)
 @Composable
 fun SampleContentPreview3() {
-    SampleSdkTheme {
-        SampleContent(PaddingValues(16.dp))
+    MediaCoTheme {
+        val news = NewsRepository().fetchNews()
+        HomeContent(PaddingValues(16.dp), news)
     }
 }
 
 @Preview(showBackground = true, widthDp = 500)
 @Composable
 fun ContentHeaderPreview() {
-    SampleSdkTheme {
+    MediaCoTheme {
         ContentHeader()
     }
 }

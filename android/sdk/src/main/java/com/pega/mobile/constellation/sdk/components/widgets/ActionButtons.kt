@@ -69,19 +69,18 @@ class ActionButtonsRenderer : ComponentRenderer<ActionButtonsViewModel> {
                     title = it.name,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White, contentColor = Color.Black
-                    )
-                ) {
-                    viewModel.onClick(it)
-                }
+                        containerColor = Color.White,
+                        contentColor = Color.Black
+                    ),
+                    onClick = { viewModel.onClick(it) }
+                )
             }
             viewModel.primaryButtons.forEach {
                 Button(
                     title = it.name.trimEnd(),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    viewModel.onClick(it)
-                }
+                    modifier = Modifier.weight(1f),
+                    onClick = { viewModel.onClick(it) }
+                )
             }
         }
     }

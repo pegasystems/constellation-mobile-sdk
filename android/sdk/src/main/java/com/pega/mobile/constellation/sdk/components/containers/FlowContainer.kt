@@ -11,32 +11,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
-import com.pega.mobile.constellation.sdk.components.core.Component
+import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.Render
 import com.pega.mobile.constellation.sdk.components.mapWithIndex
+import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerComponent
+import com.pega.mobile.constellation.sdk.internal.ComponentManagerImpl.Companion.getComponentTyped
 import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class FlowContainerComponent(context: ComponentContext) : BaseComponent(context) {
     override val viewModel = FlowContainerViewModel()
     override fun onUpdate(props: JSONObject) {
-        viewModel.title = props.getString("title")
+        val manager = context.componentManager
         val assignmentId = ComponentId(props.getString("assignment").toInt())
-        viewModel.assignment = context.componentManager.getComponent(assignmentId)
         val banners = props.getJSONArray("alertBanners")
-        val ids = banners.mapWithIndex { getString(it).toInt() }
-        viewModel.alertBanners = context.componentManager.getComponents(ids.map { ComponentId(it) })
+        val bannersIds = banners.mapWithIndex { getString(it).toInt() }
+        with(viewModel) {
+            title = props.getString("title")
+            assignment = manager.getComponentTyped(assignmentId)
+            alertBanners = bannersIds.mapNotNull { manager.getComponentTyped(ComponentId(it)) }
+        }
     }
 }
 
 class FlowContainerViewModel : BaseViewModel() {
     var title: String by mutableStateOf("")
-    var assignment: Component? by mutableStateOf(null)
-    var alertBanners: List<Component> by mutableStateOf(emptyList())
+    var assignment: AssignmentComponent? by mutableStateOf(null)
+    var alertBanners: List<AlertBannerComponent> by mutableStateOf(emptyList())
 }
 
 class FlowContainerRenderer : ComponentRenderer<FlowContainerViewModel> {
@@ -51,12 +55,9 @@ class FlowContainerRenderer : ComponentRenderer<FlowContainerViewModel> {
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left
                 )
-                alertBanners.forEach {
-                    it.Render()
-                }
+                alertBanners.forEach { it.Render() }
                 assignment?.Render()
             }
         }
     }
 }
-

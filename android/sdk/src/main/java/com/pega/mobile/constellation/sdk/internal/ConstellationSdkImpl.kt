@@ -18,7 +18,7 @@ internal class ConstellationSdkImpl(
     private val engine = SdkWebViewEngine(context, config, ::onEngineEvent)
     private val componentManager = config.componentManager
 
-    private val _state = MutableStateFlow<State>(State.Loading)
+    private val _state = MutableStateFlow<State>(State.Initial)
     override val state = _state.asStateFlow()
 
     override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {

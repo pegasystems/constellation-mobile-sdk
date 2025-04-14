@@ -5,12 +5,14 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.AlertBanner
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Assignment
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.AssignmentCard
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Currency
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Integer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextArea
@@ -40,12 +42,16 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
 import com.pega.mobile.constellation.sdk.components.fields.CheckboxComponent
 import com.pega.mobile.constellation.sdk.components.fields.CheckboxRenderer
+import com.pega.mobile.constellation.sdk.components.fields.CurrencyComponent
+import com.pega.mobile.constellation.sdk.components.fields.CurrencyRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DateComponent
 import com.pega.mobile.constellation.sdk.components.fields.DateRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DropdownComponent
 import com.pega.mobile.constellation.sdk.components.fields.DropdownRenderer
 import com.pega.mobile.constellation.sdk.components.fields.EmailComponent
 import com.pega.mobile.constellation.sdk.components.fields.EmailRenderer
+import com.pega.mobile.constellation.sdk.components.fields.IntegerComponent
+import com.pega.mobile.constellation.sdk.components.fields.IntegerRenderer
 import com.pega.mobile.constellation.sdk.components.fields.RadioButtonsComponent
 import com.pega.mobile.constellation.sdk.components.fields.RadioButtonsRenderer
 import com.pega.mobile.constellation.sdk.components.fields.TextAreaComponent
@@ -75,6 +81,8 @@ object Components {
         Def(DefaultForm) { DefaultFormComponent(it) },
         Def(TextInput) { TextInputComponent(it) },
         Def(Email) { EmailComponent(it) },
+        Def(Integer) { IntegerComponent(it) },
+        Def(Currency) { CurrencyComponent(it) },
         Def(Checkbox) { CheckboxComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(URL) { UrlComponent(it) },
@@ -97,6 +105,8 @@ object Components {
         DefaultForm to DefaultFormRenderer(),
         TextInput to TextInputRenderer(),
         Email to EmailRenderer(),
+        Integer to IntegerRenderer(),
+        Currency to CurrencyRenderer(),
         Checkbox to CheckboxRenderer(),
         TextArea to TextAreaRenderer(),
         URL to UrlRenderer(),

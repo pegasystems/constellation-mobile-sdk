@@ -1,9 +1,9 @@
 package com.pega.mobile.constellation.sample
 
-import com.pega.mobile.constellation.sample.components.CustomEmailComponent
-import com.pega.mobile.constellation.sample.components.CustomEmailRenderer
-import com.pega.mobile.constellation.sample.components.CustomSliderComponent
-import com.pega.mobile.constellation.sample.components.CustomSliderRenderer
+import com.pega.mobile.constellation.sample.ui.components.CustomEmailComponent
+import com.pega.mobile.constellation.sample.ui.components.CustomEmailRenderer
+import com.pega.mobile.constellation.sample.ui.components.CustomSliderComponent
+import com.pega.mobile.constellation.sample.ui.components.CustomSliderRenderer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
 import com.pega.mobile.constellation.sdk.components.core.ComponentType

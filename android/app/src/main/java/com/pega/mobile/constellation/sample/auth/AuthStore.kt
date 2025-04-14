@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import net.openid.appauth.AuthState
 
-class AuthStore(context: Context) {
+internal class AuthStore(context: Context) {
     private val prefs = context.getSharedPreferences("auth", MODE_PRIVATE)
 
     fun read(): AuthState =

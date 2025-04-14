@@ -28,9 +28,10 @@ class ConstellationSdkTest {
     @Test
     fun test_initialization() = runTest {
         val sdk = ConstellationSdk.create(context, config)
-        assertEquals(State.Loading, sdk.state.value)
+        assertEquals(State.Initial, sdk.state.value)
 
         sdk.createCase(CASE_CLASS)
+        sdk.assertState<State.Loading>()
         sdk.assertState<State.Ready>()
     }
 
@@ -38,8 +39,9 @@ class ConstellationSdkTest {
     fun test_initialization_with_invalid_url() = runTest {
         val invalidConfig = config.copy(pegaUrl = "https://invalid.url")
         val sdk = ConstellationSdk.create(context, invalidConfig)
-        assertEquals(State.Loading, sdk.state.value)
+        assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
+        sdk.assertState<State.Loading>()
         sdk.assertError { it == "Engine failed to load init scripts" }
     }
 
@@ -47,8 +49,9 @@ class ConstellationSdkTest {
     fun test_initialization_with_invalid_version() = runTest {
         val invalidConfig = config.copy(pegaVersion = "1.2.3")
         val sdk = ConstellationSdk.create(context, invalidConfig)
-        assertEquals(State.Loading, sdk.state.value)
+        assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
+        sdk.assertState<State.Loading>()
         sdk.assertError { it.contains("Constellation SDK initialization failed! Failed to fetch") }
     }
 

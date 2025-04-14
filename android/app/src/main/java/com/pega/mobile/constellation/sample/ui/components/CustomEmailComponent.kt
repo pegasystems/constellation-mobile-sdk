@@ -1,7 +1,6 @@
-package com.pega.mobile.constellation.sample.components
+package com.pega.mobile.constellation.sample.ui.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
@@ -18,7 +17,6 @@ class CustomEmailComponent(context: ComponentContext) : FieldComponent(context) 
         viewModel.placeholder = props.getString("placeholder")
     }
 }
-
 
 class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
     @Composable

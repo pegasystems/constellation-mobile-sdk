@@ -1,4 +1,4 @@
-package com.pega.mobile.constellation.sample.ui.screens
+package com.pega.mobile.constellation.sample.ui.screens.app
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.RowScope
@@ -15,18 +15,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sample.R
-import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
+import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
 @Composable
-fun SampleBottomAppBar() {
+fun MediaCoBottomAppBar() {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp
     ) {
-        NavItem("Home", R.drawable.home_icon, selected = true)
-        NavItem("Services", R.drawable.services_icon)
-        NavItem("Offers", R.drawable.offers_icon)
-        NavItem("Contact", R.drawable.contact_icon)
+        NavItem("Home", R.drawable.icon_home, selected = true)
+        NavItem("Services", R.drawable.icon_services)
+        NavItem("Offers", R.drawable.icon_offers)
+        NavItem("Contact", R.drawable.icon_contact)
     }
 }
 
@@ -48,7 +48,7 @@ fun RowScope.NavItem(
 @Preview(widthDp = 500)
 @Composable
 fun SampleBottomBarPreview() {
-    SampleSdkTheme {
-        SampleBottomAppBar()
+    MediaCoTheme {
+        MediaCoBottomAppBar()
     }
 }
