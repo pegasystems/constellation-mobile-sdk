@@ -13,6 +13,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Integer
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Phone
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextArea
@@ -52,6 +53,8 @@ import com.pega.mobile.constellation.sdk.components.fields.EmailComponent
 import com.pega.mobile.constellation.sdk.components.fields.EmailRenderer
 import com.pega.mobile.constellation.sdk.components.fields.IntegerComponent
 import com.pega.mobile.constellation.sdk.components.fields.IntegerRenderer
+import com.pega.mobile.constellation.sdk.components.fields.PhoneComponent
+import com.pega.mobile.constellation.sdk.components.fields.PhoneRenderer
 import com.pega.mobile.constellation.sdk.components.fields.RadioButtonsComponent
 import com.pega.mobile.constellation.sdk.components.fields.RadioButtonsRenderer
 import com.pega.mobile.constellation.sdk.components.fields.TextAreaComponent
@@ -91,6 +94,7 @@ object Components {
         Def(Date) { DateComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },
         Def(Dropdown) { DropdownComponent(it) },
+        Def(Phone) { PhoneComponent(it) },
         Def(UnsupportedJs) { UnsupportedJsComponent(it)}
     )
 
@@ -113,6 +117,7 @@ object Components {
         Date to DateRenderer(),
         RadioButtons to RadioButtonsRenderer(),
         Dropdown to DropdownRenderer(),
+        Phone to PhoneRenderer(),
         ActionButtons to ActionButtonsRenderer(),
         AlertBanner to AlertBannerRenderer(),
         UnsupportedJs to UnsupportedJsRenderer(),
