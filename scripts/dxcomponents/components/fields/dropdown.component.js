@@ -109,11 +109,6 @@ export class DropdownComponent {
       return { key: option.key, label: localizedValue };
     });
 
-    // this.localizedValue = this.pConn$.getLocalizedValue(
-    //   this.props.value,
-    //   localePath,
-    //   this.pConn$.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-    // );
     this.props.validateMessage = this.jsComponentPConnectData.validateMessage || ''
     this.propName = this.pConn$.getStateProps().value;
     this.componentsManager.onComponentPropsUpdate(this);
