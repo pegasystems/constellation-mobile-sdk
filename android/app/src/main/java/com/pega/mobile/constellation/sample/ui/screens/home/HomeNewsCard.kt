@@ -1,4 +1,4 @@
-package com.pega.mobile.constellation.sample.ui.screens
+package com.pega.mobile.constellation.sample.ui.screens.home
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sample.R
-import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
+import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
 @Composable
-fun SampleNewsCard(
+fun HomeNewsCard(
     title: String,
     content: String,
     @DrawableRes photoResId: Int,
@@ -54,7 +54,7 @@ fun SampleNewsCard(
                 )
                 Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.Bottom) {
                     Icon(
-                        painterResource(R.drawable.plus_today_icon),
+                        painterResource(R.drawable.icon_plus_today),
                         "plus today icon",
                         modifier = Modifier.height(24.dp)
                     )
@@ -68,9 +68,9 @@ fun SampleNewsCard(
 
 @Preview(showBackground = true, widthDp = 500, heightDp = 500)
 @Composable
-fun SampleNewsCardPreview() {
-    SampleSdkTheme {
-        SampleNewsCard(
+fun HomeNewsCardPreview() {
+    MediaCoTheme {
+        HomeNewsCard(
             title = "5G is here! Free now!",
             content = "Our 5G network will enable you to stay connected anywhere, anytime.",
             photoResId = R.drawable.list_image_1

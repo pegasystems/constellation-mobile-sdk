@@ -1,6 +1,5 @@
 package com.pega.mobile.constellation.sample
 
-import android.app.Activity
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,14 +17,21 @@ import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.pega.mobile.constellation.mock.MockHttpClient
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.MOCK_SERVER
 import com.pega.mobile.constellation.sample.ComposeTest.Mode.REAL_SERVER
-import com.pega.mobile.constellation.sample.http.AuthorizationInterceptor
-import com.pega.mobile.constellation.sample.ui.screens.MainScreen
-import com.pega.mobile.constellation.sample.ui.theme.SampleSdkTheme
+import com.pega.mobile.constellation.sample.MediaCoApplication.Companion.authManager
+import com.pega.mobile.constellation.sample.auth.AuthInterceptor
+import com.pega.mobile.constellation.sample.auth.AuthManager
+import com.pega.mobile.constellation.sample.ui.screens.home.HomeScreen
+import com.pega.mobile.constellation.sample.ui.screens.pega.PegaViewModel
+import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
 import okhttp3.OkHttpClient
@@ -106,31 +112,37 @@ class ComposeTest {
     }
 
     private fun setupApp(caseClassName: String) = with(composeTestRule) {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        val config = buildSdkConfig(composeTestRule.activity)
-        val sdk = runOnUiThread { ConstellationSdk.create(appContext, config) }
         setContent {
-            SampleSdkTheme {
+            MediaCoTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
                     Box(Modifier.padding(innerPadding)) {
-                        MainScreen(sdk, caseClassName)
+                        HomeScreen(pegaViewModel = viewModel(factory = testFactory(caseClassName)))
                     }
                 }
             }
         }
     }
 
-    private fun buildSdkConfig(activity: Activity) = ConstellationSdkConfig(
+    private fun testFactory(caseClassName: String) = viewModelFactory {
+        initializer {
+            val application = checkNotNull(this[APPLICATION_KEY])
+            val authManager = application.authManager.apply { authenticateForTesting() }
+            val sdk = ConstellationSdk.create(application, buildSdkConfig(authManager))
+            PegaViewModel(application, sdk, caseClassName)
+        }
+    }
+
+    private fun buildSdkConfig(authManager: AuthManager) = ConstellationSdkConfig(
         pegaUrl = "https://lab-05423-bos.lab.pega.com/prweb",
         pegaVersion = "8.24.1",
         debuggable = true,
-        okHttpClient = buildHttpClient(activity)
+        okHttpClient = buildHttpClient(authManager)
     )
 
-    private fun buildHttpClient(activity: Activity) = when (mode) {
+    private fun buildHttpClient(authManager: AuthManager) = when (mode) {
         MOCK_SERVER -> MockHttpClient(InstrumentationRegistry.getInstrumentation().context)
         REAL_SERVER -> OkHttpClient().newBuilder()
-            .addInterceptor(AuthorizationInterceptor(activity))
+            .addInterceptor(AuthInterceptor(authManager))
             .build()
     }
 

@@ -1,4 +1,4 @@
-package com.pega.mobile.constellation.sample.components
+package com.pega.mobile.constellation.sample.ui.components
 
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
