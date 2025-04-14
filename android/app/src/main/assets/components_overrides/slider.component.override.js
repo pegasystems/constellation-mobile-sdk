@@ -121,13 +121,12 @@ export class SliderComponent {
   }
 
   fieldOnBlur(event) {
-    const value = event?.target?.value;
-    handleEvent(this.actionsApi, 'changeNblur', this.propName, value);
+    this.value$ = event?.target?.value || this.value$;
+    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
+    if (this.value$ !== submittedValue) {
+      handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
+    }
     clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
-  }
-
-  getErrorMessage() {
-    return '';
   }
 }
 

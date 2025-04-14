@@ -141,12 +141,10 @@ export class DateComponent {
 
   fieldOnBlur(value) {
     this.value$ = value || this.value$
-    handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
-  }
-
-  clearErrorMessages() {
-    this.pConn$.clearErrorMessages({
-      property: this.propName
-    });
+    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
+    if (submittedValue !== this.value$) {
+      handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
+    }
+    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }
