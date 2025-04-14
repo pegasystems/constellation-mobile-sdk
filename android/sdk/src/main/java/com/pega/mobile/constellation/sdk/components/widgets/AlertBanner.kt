@@ -8,38 +8,37 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
-import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
+import com.pega.mobile.constellation.sdk.components.core.ComponentState
 import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerVariant.URGENT
 import com.pega.mobile.dxcomponents.compose.controls.form.Banner
 import com.pega.mobile.dxcomponents.compose.controls.form.BannerVariant
-
 import org.json.JSONObject
 
 class AlertBannerComponent(context: ComponentContext) : BaseComponent(context) {
-    override val viewModel = AlertBannerViewModel()
+    override val state = AlertBannerState()
 
     override fun onUpdate(props: JSONObject) {
-        viewModel.variant = AlertBannerVariant.valueOf(props.getString("variant").uppercase())
+        state.variant = AlertBannerVariant.valueOf(props.getString("variant").uppercase())
         val messagesJsonArray = props.getJSONArray("messages")
         val messages = messagesJsonArray.mapWithIndex { getString(it) }
-        viewModel.messages = messages
+        state.messages = messages
     }
 }
 
-class AlertBannerViewModel : BaseViewModel() {
+class AlertBannerState : ComponentState {
     var variant: AlertBannerVariant by mutableStateOf(URGENT)
     var messages: List<String> by mutableStateOf(emptyList())
 }
 
-class AlertBannerRenderer : ComponentRenderer<AlertBannerViewModel> {
+class AlertBannerRenderer : ComponentRenderer<AlertBannerComponent> {
     @Composable
-    override fun Render(viewModel: AlertBannerViewModel) {
+    override fun Render(component: AlertBannerComponent) {
         Banner(
-            variant = BannerVariant.valueOf(viewModel.variant.name),
-            messages = viewModel.messages,
+            variant = BannerVariant.valueOf(component.state.variant.name),
+            messages = component.state.messages,
             modifier = Modifier.padding(top = 16.dp)
         )
     }

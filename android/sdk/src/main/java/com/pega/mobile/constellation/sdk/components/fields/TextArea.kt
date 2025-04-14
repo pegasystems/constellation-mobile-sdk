@@ -11,26 +11,26 @@ import com.pega.mobile.dxcomponents.compose.controls.form.TextArea
 import org.json.JSONObject
 
 class TextAreaComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = TextAreaViewModel()
+    override val state = TextAreaState(context)
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        with(viewModel) {
+        with(state) {
             placeholder = props.getString("placeholder")
             maxLength = props.getString("maxLength").toInt()
         }
     }
 }
 
-class TextAreaViewModel : FieldViewModel() {
+class TextAreaState(context: ComponentContext) : FieldState(context) {
     var placeholder: String by mutableStateOf("")
     var maxLength: Int by mutableIntStateOf(0)
 }
 
-class TextAreaRenderer : ComponentRenderer<TextAreaViewModel> {
+class TextAreaRenderer : ComponentRenderer<TextAreaComponent> {
     @Composable
-    override fun Render(viewModel: TextAreaViewModel) {
-        WithVisibility(viewModel) {
+    override fun Render(component: TextAreaComponent) {
+        WithVisibility(component.state) {
             TextArea(
                 value = value,
                 label = label,

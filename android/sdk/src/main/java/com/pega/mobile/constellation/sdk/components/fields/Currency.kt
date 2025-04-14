@@ -11,28 +11,28 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Currency
 import org.json.JSONObject
 
 class CurrencyComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = CurrencyViewModel()
+    override val state = CurrencyState(context)
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
-        viewModel.isoCode = props.getString("currencyISOCode")
-        viewModel.showIsoCode = props.getBoolean("showISOCode")
-        viewModel.decimalPrecision = props.getInt("decimalPrecision")
+        state.placeholder = props.getString("placeholder")
+        state.isoCode = props.getString("currencyISOCode")
+        state.showIsoCode = props.getBoolean("showISOCode")
+        state.decimalPrecision = props.getInt("decimalPrecision")
     }
 }
 
-class CurrencyViewModel : FieldViewModel() {
+class CurrencyState(context: ComponentContext) : FieldState(context) {
     var placeholder: String by mutableStateOf("")
     var isoCode: String by mutableStateOf("")
     var showIsoCode: Boolean by mutableStateOf(false)
     var decimalPrecision: Int by mutableIntStateOf(2)
 }
 
-class CurrencyRenderer : ComponentRenderer<CurrencyViewModel> {
+class CurrencyRenderer : ComponentRenderer<CurrencyComponent> {
     @Composable
-    override fun Render(viewModel: CurrencyViewModel) {
-        WithVisibility(viewModel) {
+    override fun Render(component: CurrencyComponent) {
+        WithVisibility(component.state) {
             Currency(
                 value = value,
                 label = label,

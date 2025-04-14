@@ -4,7 +4,7 @@ import org.json.JSONObject
 
 interface Component {
     val context: ComponentContext
-    val viewModel: ComponentViewModel
+    val state: ComponentState
 
     fun onUpdate(props: JSONObject)
 }

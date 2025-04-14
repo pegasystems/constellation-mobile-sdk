@@ -5,11 +5,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pega.mobile.constellation.mock.MockHttpClient
 import com.pega.mobile.constellation.sdk.ConstellationSdk.State
-import com.pega.mobile.constellation.sdk.components.containers.ContainerViewModel
-import com.pega.mobile.constellation.sdk.components.containers.FlowContainerViewModel
-import com.pega.mobile.constellation.sdk.components.containers.RootContainerViewModel
+import com.pega.mobile.constellation.sdk.components.containers.ContainerState
+import com.pega.mobile.constellation.sdk.components.containers.FlowContainerState
+import com.pega.mobile.constellation.sdk.components.containers.RootContainerState
 import com.pega.mobile.constellation.sdk.components.core.Component
-import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
+import com.pega.mobile.constellation.sdk.components.core.ComponentState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -125,14 +125,14 @@ class ConstellationSdkTest {
 
         private fun Component.structure(indent: String = ""): String {
             val self = indent + this + "\n"
-            val children = viewModel.children().joinToString("") { it.structure("$indent-") }
+            val children = state.children().joinToString("") { it.structure("$indent-") }
             return self + children
         }
 
-        private fun ComponentViewModel.children() = when (this) {
-            is ContainerViewModel -> children
-            is RootContainerViewModel -> listOfNotNull(viewContainer)
-            is FlowContainerViewModel -> listOfNotNull(assignment) + alertBanners
+        private fun ComponentState.children() = when (this) {
+            is ContainerState -> children
+            is RootContainerState -> listOfNotNull(viewContainer)
+            is FlowContainerState -> listOfNotNull(assignment) + alertBanners
             else -> emptyList()
         }
     }

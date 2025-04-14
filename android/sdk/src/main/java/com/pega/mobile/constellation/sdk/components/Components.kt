@@ -83,7 +83,7 @@ object Components {
         Def(ActionButtons) { ActionButtonsComponent(it) },
         Def(AlertBanner) { AlertBannerComponent(it) },
         Def(Date) { DateComponent(it) },
-        Def(UnsupportedJs) { UnsupportedJsComponent(it)}
+        Def(UnsupportedJs) { UnsupportedJsComponent(it) }
     )
 
     val DefaultRenderers: Map<ComponentType, ComponentRenderer<*>> = mapOf(

@@ -4,24 +4,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.fields.EmailViewModel
+import com.pega.mobile.constellation.sdk.components.fields.EmailState
 import com.pega.mobile.constellation.sdk.components.fields.FieldComponent
 import com.pega.mobile.dxcomponents.compose.controls.form.Email
 import org.json.JSONObject
 
 class CustomEmailComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = EmailViewModel()
+    override val state = EmailState(context)
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
+        state.placeholder = props.getString("placeholder")
     }
 }
 
-class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
+class CustomEmailRenderer : ComponentRenderer<CustomEmailComponent> {
     @Composable
-    override fun Render(viewModel: EmailViewModel) {
-        with(viewModel) {
+    override fun Render(component: CustomEmailComponent) {
+        with(component.state) {
             Column {
                 Email(
                     value = value,

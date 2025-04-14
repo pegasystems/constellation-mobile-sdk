@@ -9,10 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
-import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
+import com.pega.mobile.constellation.sdk.components.core.ComponentState
 import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.dxcomponents.compose.containers.Row
 import com.pega.mobile.dxcomponents.compose.controls.form.Button
@@ -20,10 +20,10 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class ActionButtonsComponent(context: ComponentContext) : BaseComponent(context) {
-    override val viewModel = ActionButtonsViewModel()
+    override val state = ActionButtonsState(context)
 
     override fun onUpdate(props: JSONObject) {
-        with(viewModel) {
+        with(state) {
             primaryButtons = props.getJSONArray(MAIN_BUTTONS).toActionButtons()
             secondaryButtons = props.getJSONArray(SECONDARY_BUTTONS).toActionButtons()
         }
@@ -45,12 +45,14 @@ class ActionButtonsComponent(context: ComponentContext) : BaseComponent(context)
     }
 }
 
-class ActionButtonsViewModel : BaseViewModel() {
+class ActionButtonsState(val context: ComponentContext) : ComponentState {
     var primaryButtons: List<ActionButton> by mutableStateOf(emptyList())
     var secondaryButtons: List<ActionButton> by mutableStateOf(emptyList())
 
     fun onClick(button: ActionButton) {
-        _events.tryEmit(ComponentEvent.forActionButtonClick(button.type, button.jsAction))
+        context.sendComponentEvent(
+            ComponentEvent.forActionButtonClick(button.type, button.jsAction)
+        )
     }
 }
 
@@ -60,11 +62,11 @@ data class ActionButton(
     val jsAction: String,
 )
 
-class ActionButtonsRenderer : ComponentRenderer<ActionButtonsViewModel> {
+class ActionButtonsRenderer : ComponentRenderer<ActionButtonsComponent> {
     @Composable
-    override fun Render(viewModel: ActionButtonsViewModel) {
+    override fun Render(component: ActionButtonsComponent) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            viewModel.secondaryButtons.forEach {
+            component.state.secondaryButtons.forEach {
                 Button(
                     title = it.name,
                     modifier = Modifier.weight(1f),
@@ -72,14 +74,14 @@ class ActionButtonsRenderer : ComponentRenderer<ActionButtonsViewModel> {
                         containerColor = Color.White,
                         contentColor = Color.Black
                     ),
-                    onClick = { viewModel.onClick(it) }
+                    onClick = { component.state.onClick(it) }
                 )
             }
-            viewModel.primaryButtons.forEach {
+            component.state.primaryButtons.forEach {
                 Button(
                     title = it.name.trimEnd(),
                     modifier = Modifier.weight(1f),
-                    onClick = { viewModel.onClick(it) }
+                    onClick = { component.state.onClick(it) }
                 )
             }
         }

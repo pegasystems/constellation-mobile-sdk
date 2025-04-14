@@ -5,8 +5,8 @@
 - [Running SDK](#running-sdk-)
 - [Overriding components UI](#overriding-components-ui-)
 - [Creating new components](#creating-new-components-)
-  - [Defining Kotlin Component](#defining-kotlin-component-)
-  - [Defining JavaScript component](#defining-javascript-component-)
+    - [Defining Kotlin Component](#defining-kotlin-component-)
+    - [Defining JavaScript component](#defining-javascript-component-)
 
 Lets go step by step of how to quickly integrate SDK with android application.
 
@@ -33,8 +33,8 @@ implementation(libs.androidx.webkit)
 
 **1. ConstellationSdk creation**
 
-At first we need to create *ConstellationSdk* object by calling 
-*create* static method 
+At first we need to create *ConstellationSdk* object by calling
+*create* static method
 
 ```kotlin
 val sdk = ConstellationSdk.create(context, config)
@@ -67,12 +67,12 @@ data class ConstellationSdkConfig(
 
 - **componentManager** (optional) - instance of ComponentManager which is responsible for providing component definitions and manages them in the runtime
 
-- **debuggable** (optional) - flag which allows for debugging of underlying WebView engine 
+- **debuggable** (optional) - flag which allows for debugging of underlying WebView engine
 
 After sdk is created we need to call *createCase* method to create actual Pega case:
 
 ```kotlin
-sdk.createCase("DIXL-MediaCo-Work-SDKTesting")
+sdk.createCase("DIXL-MediaCo-Work-NewService")
 ```
 
 createCase method definition:
@@ -90,12 +90,12 @@ e.g.: startingFields = mapOf("name" to "John", "surname" to "Smith")
 ```
 
 Its values are type of *Any* because we can pass more advanced data structures there like map of maps.
-e.g.: 
+e.g.:
 ```kotlin
 startingFields = mapOf(
-    "name" to "John", 
+    "name" to "John",
     "Vehicle" to mapOf(
-        "make" to "Honda", 
+        "make" to "Honda",
         "model" to "Civic"
     )
 )
@@ -112,6 +112,7 @@ val state: StateFlow<State>
 
 ```kotlin
 sealed class State {
+    data object Initial : State()
     data object Loading : State()
     data class Ready(val root: RootContainerComponent) : State()
     data class Error(val error: String?) : State()
@@ -123,15 +124,11 @@ sealed class State {
 We can listen on this flow to get *State* objects and respond e.g:
 ```kotlin
 @Composable
-fun PegaContent(sdk: ConstellationSdk, onClose: () -> Unit) {
-    val context = LocalContext.current
-    val state by sdk.state.collectAsState()
-    when (val s = state) {
-        is Error -> Text("ConstellationSdk failed to load")
-        is Loading -> PegaLoader()
-        is Ready -> Render(s.root)
-        is Cancelled -> context.toast("Cancelled").also { onClose() }
-        is Finished -> context.toast("Done!").also { onClose() }
+fun PegaForm(state: State) {
+    when (state) {
+        is Loading -> Loader()
+        is Ready -> Render(state.root)
+        else -> ...
     }
 }
 ```
@@ -162,7 +159,7 @@ e.g.:
 
 ```kotlin
 @Composable
-fun RenderForm(root: RootContainerComponent) {
+fun Render(root: RootContainerComponent) {
     ProvideRenderers(customRenderers) { root.Render() }
 }
 ```
@@ -201,23 +198,22 @@ val Email = ComponentType("Email")
 
 *ComponentRenderer* is generic interface which should be implemented by component renderer:
 ```kotlin
-interface ComponentRenderer<out VM : ComponentViewModel> {
+interface ComponentRenderer<C : Component> {
     @Composable
-    fun Render(viewModel: @UnsafeVariance VM)
+    fun Render(component: C)
 }
 ```
 Example of custom renderer:
 
 ```kotlin
-class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
+class CustomEmailRenderer : ComponentRenderer<CustomEmailComponent> {
     @Composable
-    override fun Render(viewModel: EmailViewModel) {
-        with(viewModel) {
+    override fun Render(component: CustomEmailComponent) {
+        with(component.state) {
             Column {
-                Text("CustomEmailComponent")
                 Email(
                     value = value,
-                    label = label,
+                    label = "Custom $label",
                     helperText = helperText,
                     validateMessage = validateMessage,
                     placeholder = placeholder,
@@ -231,7 +227,6 @@ class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
         }
     }
 }
-
 ```
 *EmailViewModel* passed as type to *ComponentRenderer* is viewModel used in  *EmailComponent*
 
@@ -248,11 +243,11 @@ ConstellationSdk.create(this, config)
 ```
 ```kotlin
 val config = ConstellationSdkConfig(
-        pegaUrl = PegaConfig.URL,
-        pegaVersion = "8.24.1",
-        okHttpClient = buildOkHttpClient(),
-        componentManager = ComponentManager.create(CustomDefinitions)
-    )
+    pegaUrl = PegaConfig.URL,
+    pegaVersion = "8.24.1",
+    okHttpClient = buildOkHttpClient(),
+    componentManager = ComponentManager.create(CustomDefinitions)
+)
 ```
 *ComponentManager* can be created by *create* static method.
 
@@ -273,8 +268,8 @@ class ComponentDefinition(
 - **type** - instance of *ComponentType*
 
 - **jsFile** - relative path to JavaScript file which is js implementation of component.<br>
-It is possible to overrride native implementation of already existing component. 
-In that case *jsFile* should be set to *null* (js file from SDK will be used)
+  It is possible to overrride native implementation of already existing component.
+  In that case *jsFile* should be set to *null* (js file from SDK will be used)
 
 - **producer** - instance of *ComponentProducer*
 

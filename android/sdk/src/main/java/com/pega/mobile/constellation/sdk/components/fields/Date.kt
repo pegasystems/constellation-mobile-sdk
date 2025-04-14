@@ -12,22 +12,22 @@ import org.json.JSONObject
 import java.time.LocalDate
 
 class DateComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = DateViewModel()
+    override val state = DateState(context)
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
+        state.placeholder = props.getString("placeholder")
     }
 }
 
-class DateViewModel : FieldViewModel() {
+class DateState(context: ComponentContext) : FieldState(context) {
     var placeholder: String by mutableStateOf("")
 }
 
-class DateRenderer : ComponentRenderer<DateViewModel> {
+class DateRenderer : ComponentRenderer<DateComponent> {
     @Composable
-    override fun Render(viewModel: DateViewModel) {
-        WithVisibility(viewModel) {
+    override fun Render(component: DateComponent) {
+        WithVisibility(component.state) {
             val localDate = value.asLocalDateOrNull()
             Date(
                 value = localDate,

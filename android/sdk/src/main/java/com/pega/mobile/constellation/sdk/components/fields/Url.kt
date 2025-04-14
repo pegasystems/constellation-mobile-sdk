@@ -10,22 +10,22 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Url
 import org.json.JSONObject
 
 class UrlComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = UrlViewModel()
+    override val state = UrlState(context)
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
+        state.placeholder = props.getString("placeholder")
     }
 }
 
-class UrlViewModel : FieldViewModel() {
+class UrlState(context: ComponentContext) : FieldState(context) {
     var placeholder: String by mutableStateOf("")
 }
 
-class UrlRenderer : ComponentRenderer<UrlViewModel> {
+class UrlRenderer : ComponentRenderer<UrlComponent> {
     @Composable
-    override fun Render(viewModel: UrlViewModel) {
-        WithVisibility(viewModel) {
+    override fun Render(component: UrlComponent) {
+        WithVisibility(component.state) {
             Url(
                 value = value,
                 label = label,

@@ -7,14 +7,17 @@ import com.pega.mobile.constellation.sdk.components.Components
 
 private val LocalRenderers = compositionLocalOf { Components.DefaultRenderers }
 
-interface ComponentRenderer<out VM : ComponentViewModel> {
+/**
+ * Allows to render components using Jetpack Compose.
+ */
+interface ComponentRenderer<out C : Component> {
     @Composable
-    fun Render(viewModel: @UnsafeVariance VM)
+    fun Render(component: @UnsafeVariance C)
 }
 
 @Composable
 fun Component.Render() {
-    LocalRenderers.current[context.type]?.Render(viewModel)
+    LocalRenderers.current[context.type]?.Render(this)
         ?: error("Cannot find component renderer for type ${context.type}")
 }
 

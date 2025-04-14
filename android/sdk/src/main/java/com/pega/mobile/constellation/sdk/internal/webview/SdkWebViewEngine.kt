@@ -26,8 +26,6 @@ import com.pega.mobile.constellation.sdk.internal.webview.interceptor.WebViewNet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.json.JSONObject
 
 internal class SdkWebViewEngine(
@@ -96,11 +94,9 @@ internal class SdkWebViewEngine(
     }
 
     private fun onAddComponent(id: ComponentId, type: ComponentType) {
-        val context = ComponentContextImpl(id, type, componentManager)
-        val component = componentManager.addComponent(context)
-        component.viewModel.events
-            .onEach { sendComponentEvent(id, it) }
-            .launchIn(scope)
+        val onComponentEvent: (ComponentEvent) -> Unit = { sendComponentEvent(id, it) }
+        val context = ComponentContextImpl(id, type, scope, componentManager, onComponentEvent)
+        componentManager.addComponent(context)
     }
 
     private fun sendComponentEvent(id: ComponentId, event: ComponentEvent) {

@@ -5,20 +5,20 @@ import androidx.compose.runtime.Composable
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.fields.FieldComponent
-import com.pega.mobile.constellation.sdk.components.fields.FieldViewModel
+import com.pega.mobile.constellation.sdk.components.fields.FieldState
 import com.pega.mobile.dxcomponents.compose.containers.Column
 import com.pega.mobile.dxcomponents.compose.controls.form.Label
 
 class CustomSliderComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = SliderViewModel()
+    override val state = SliderState(context)
 }
 
-class SliderViewModel : FieldViewModel()
+class SliderState(context: ComponentContext) : FieldState(context)
 
-class CustomSliderRenderer : ComponentRenderer<SliderViewModel> {
+class CustomSliderRenderer : ComponentRenderer<CustomSliderComponent> {
     @Composable
-    override fun Render(viewModel: SliderViewModel) {
-        with(viewModel) {
+    override fun Render(component: CustomSliderComponent) {
+        with(component.state) {
             Column {
                 Label(
                     label = label,

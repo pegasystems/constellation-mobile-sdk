@@ -10,22 +10,22 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Integer
 import org.json.JSONObject
 
 class IntegerComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = IntegerViewModel()
+    override val state = IntegerState(context)
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
+        state.placeholder = props.getString("placeholder")
     }
 }
 
-class IntegerViewModel : FieldViewModel() {
+class IntegerState(context: ComponentContext) : FieldState(context) {
     var placeholder: String by mutableStateOf("")
 }
 
-class IntegerRenderer : ComponentRenderer<IntegerViewModel> {
+class IntegerRenderer : ComponentRenderer<IntegerComponent> {
     @Composable
-    override fun Render(viewModel: IntegerViewModel) {
-        WithVisibility(viewModel) {
+    override fun Render(component: IntegerComponent) {
+        WithVisibility(component.state) {
             Integer(
                 value = value,
                 label = label,

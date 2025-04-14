@@ -10,18 +10,20 @@ import androidx.compose.runtime.snapshotFlow
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
-import com.pega.mobile.constellation.sdk.components.core.ComponentViewModel
+import com.pega.mobile.constellation.sdk.components.core.ComponentState
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import org.json.JSONObject
 
 abstract class FieldComponent(context: ComponentContext) : BaseComponent(context) {
-    abstract override val viewModel: FieldViewModel
+    abstract override val state: FieldState
 
     @CallSuper
     override fun onUpdate(props: JSONObject) {
-        with(viewModel) {
+        with(state) {
             with(props) {
                 value = getString("value")
                 label = getString("label")
@@ -36,11 +38,12 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
     }
 }
 
-abstract class FieldViewModel : ComponentViewModel {
-    override val events = merge(
-        snapshotFlow { value }.drop(1).map { ComponentEvent.forFieldChange(it) },
-        snapshotFlow { focused }.drop(1).map { ComponentEvent.forFieldChangeWithFocus(value, it) }
-    )
+abstract class FieldState(context: ComponentContext) : ComponentState {
+    init {
+        merge(valueEvents(), focusEvents())
+            .onEach { context.sendComponentEvent(it) }
+            .launchIn(context.scope)
+    }
 
     var value: String by mutableStateOf("")
     var label: String by mutableStateOf("")
@@ -51,9 +54,15 @@ abstract class FieldViewModel : ComponentViewModel {
     var helperText: String by mutableStateOf("")
     var validateMessage: String by mutableStateOf("")
     var focused: Boolean by mutableStateOf(false)
+
+    private fun valueEvents() = snapshotFlow { value }.drop(1)
+        .map { ComponentEvent.forFieldChange(it) }
+
+    private fun focusEvents() = snapshotFlow { focused }.drop(1)
+        .map { ComponentEvent.forFieldChangeWithFocus(value, it) }
 }
 
 @Composable
-fun <T : FieldViewModel> WithVisibility(viewModel: T, content: @Composable T.() -> Unit) {
-    AnimatedVisibility(viewModel.visible) { content.invoke(viewModel) }
+fun <T : FieldState> WithVisibility(state: T, content: @Composable T.() -> Unit) {
+    AnimatedVisibility(state.visible) { content.invoke(state) }
 }

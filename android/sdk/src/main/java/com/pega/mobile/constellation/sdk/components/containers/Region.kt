@@ -7,16 +7,16 @@ import com.pega.mobile.constellation.sdk.components.core.Render
 import com.pega.mobile.dxcomponents.compose.containers.Column
 
 class RegionComponent(context: ComponentContext) : ContainerComponent(context) {
-    override val viewModel = RegionViewModel()
+    override val state = RegionState()
 }
 
-class RegionViewModel : ContainerViewModel()
+class RegionState : ContainerState()
 
-class RegionRenderer : ComponentRenderer<RegionViewModel> {
+class RegionRenderer : ComponentRenderer<RegionComponent> {
     @Composable
-    override fun Render(viewModel: RegionViewModel) {
+    override fun Render(component: RegionComponent) {
         Column {
-            viewModel.children.forEach { it.Render() }
+            component.state.children.forEach { it.Render() }
         }
     }
 }

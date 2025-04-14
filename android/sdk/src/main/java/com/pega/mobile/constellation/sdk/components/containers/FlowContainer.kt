@@ -11,10 +11,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
-import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
+import com.pega.mobile.constellation.sdk.components.core.ComponentState
 import com.pega.mobile.constellation.sdk.components.core.Render
 import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerComponent
@@ -23,13 +23,13 @@ import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class FlowContainerComponent(context: ComponentContext) : BaseComponent(context) {
-    override val viewModel = FlowContainerViewModel()
+    override val state = FlowContainerState()
     override fun onUpdate(props: JSONObject) {
         val manager = context.componentManager
         val assignmentId = ComponentId(props.getString("assignment").toInt())
         val banners = props.getJSONArray("alertBanners")
         val bannersIds = banners.mapWithIndex { getString(it).toInt() }
-        with(viewModel) {
+        with(state) {
             title = props.getString("title")
             assignment = manager.getComponentTyped(assignmentId)
             alertBanners = bannersIds.mapNotNull { manager.getComponentTyped(ComponentId(it)) }
@@ -37,16 +37,16 @@ class FlowContainerComponent(context: ComponentContext) : BaseComponent(context)
     }
 }
 
-class FlowContainerViewModel : BaseViewModel() {
+class FlowContainerState : ComponentState {
     var title: String by mutableStateOf("")
     var assignment: AssignmentComponent? by mutableStateOf(null)
     var alertBanners: List<AlertBannerComponent> by mutableStateOf(emptyList())
 }
 
-class FlowContainerRenderer : ComponentRenderer<FlowContainerViewModel> {
+class FlowContainerRenderer : ComponentRenderer<FlowContainerComponent> {
     @Composable
-    override fun Render(viewModel: FlowContainerViewModel) {
-        with(viewModel) {
+    override fun Render(component: FlowContainerComponent) {
+        with(component.state) {
             Column {
                 Text(
                     text = title,

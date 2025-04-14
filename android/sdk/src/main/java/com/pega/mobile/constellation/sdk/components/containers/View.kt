@@ -19,10 +19,10 @@ import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class ViewComponent(context: ComponentContext) : ContainerComponent(context) {
-    override val viewModel = ViewViewModel()
+    override val state = ViewState()
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        with(viewModel) {
+        with(state) {
             visible = props.getString("visible").toBoolean()
             label = props.getString("label")
             showLabel = props.getString("showLabel").toBoolean()
@@ -30,16 +30,16 @@ class ViewComponent(context: ComponentContext) : ContainerComponent(context) {
     }
 }
 
-class ViewViewModel : ContainerViewModel() {
+class ViewState : ContainerState() {
     var visible: Boolean by mutableStateOf(false)
     var label: String by mutableStateOf("")
     var showLabel: Boolean by mutableStateOf(false)
 }
 
-class ViewRenderer : ComponentRenderer<ViewViewModel> {
+class ViewRenderer : ComponentRenderer<ViewComponent> {
     @Composable
-    override fun Render(viewModel: ViewViewModel) {
-        with(viewModel) {
+    override fun Render(component: ViewComponent) {
+        with(component.state) {
             if (!visible) return
             Column(modifier = Modifier.padding(vertical = 8.dp)) {
                 if (showLabel && label.isNotEmpty()) {

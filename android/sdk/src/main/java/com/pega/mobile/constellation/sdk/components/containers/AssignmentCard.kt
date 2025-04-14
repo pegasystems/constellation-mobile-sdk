@@ -25,25 +25,25 @@ import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class AssignmentCardComponent(context: ComponentContext) : ContainerComponent(context) {
-    override val viewModel = AssignmentCardViewModel()
+    override val state = AssignmentCardState()
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
         val actionButtonsId = ComponentId(props.getString("actionButtons").toInt())
-        viewModel.actionButtons = context.componentManager.getComponentTyped(actionButtonsId)
-        viewModel.loading = props.optBoolean("loading", false)
+        state.actionButtons = context.componentManager.getComponentTyped(actionButtonsId)
+        state.loading = props.optBoolean("loading", false)
     }
 }
 
-class AssignmentCardViewModel : ContainerViewModel() {
+class AssignmentCardState : ContainerState() {
     var actionButtons: ActionButtonsComponent? by mutableStateOf(null)
     var loading by mutableStateOf(true)
 }
 
-class AssignmentCardRenderer : ComponentRenderer<AssignmentCardViewModel> {
+class AssignmentCardRenderer : ComponentRenderer<AssignmentCardComponent> {
     @Composable
-    override fun Render(viewModel: AssignmentCardViewModel) {
-        with(viewModel) {
+    override fun Render(component: AssignmentCardComponent) {
+        with(component.state) {
             val alpha by animateFloatAsState(if (loading) 0.5f else 1f)
             Box(
                 modifier = Modifier
