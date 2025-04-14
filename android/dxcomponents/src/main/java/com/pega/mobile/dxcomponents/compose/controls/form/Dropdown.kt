@@ -16,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.HelperText
-import com.pega.mobile.dxcomponents.compose.controls.form.internal.SelectableOption
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

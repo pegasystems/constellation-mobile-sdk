@@ -22,7 +22,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.HelperText
-import com.pega.mobile.dxcomponents.compose.controls.form.internal.SelectableOption
 
 @Composable
 fun RadioButtons(

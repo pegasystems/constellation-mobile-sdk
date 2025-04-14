@@ -3,7 +3,7 @@ package com.pega.mobile.constellation.sdk.components.fields
 import androidx.compose.runtime.Composable
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.dxcomponents.compose.controls.form.internal.SelectableOption
+import com.pega.mobile.dxcomponents.compose.controls.form.SelectableOption
 import com.pega.mobile.dxcomponents.compose.controls.form.RadioButtons
 
 class RadioButtonsComponent(context: ComponentContext) : SelectableComponent(context)
