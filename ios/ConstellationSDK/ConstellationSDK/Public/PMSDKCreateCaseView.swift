@@ -33,6 +33,8 @@ public struct PMSDKCreateCaseView: View {
                     delegate?.createCaseView(self, didFailProcessingWith: message)
                 }
             }
+        }.onDisappear {
+            engine.stop()
         }
     }
 }
