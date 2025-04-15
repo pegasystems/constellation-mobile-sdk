@@ -15,7 +15,7 @@
         window.webkit.messageHandlers.consoleHandler.postMessage([level, logMessage]);
     }
 
-    console = {
+    window.console = {
         assert: function () {
             realConsole.assert.apply(realConsole, arguments);
         },

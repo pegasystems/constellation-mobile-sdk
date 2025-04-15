@@ -21,6 +21,9 @@ extension WebViewEngine {
 
 class WebViewEngine: NSObject {
     private var webView: WKWebView?
+    private var initialNavigation: WKNavigation?
+    private var configuration: Configuration?
+
     let bundle = Bundle(for: ComponentManager.self)
     private(set) var manager = ComponentManager()
 
@@ -68,6 +71,8 @@ class WebViewEngine: NSObject {
             return
         }
 
+        self.configuration = configuration
+
         let resourceHandler = ResourceHandler(baseURL: baseURL)
 
         let formHandler = FormHandler(manager: manager) { [weak self] result in
@@ -76,12 +81,13 @@ class WebViewEngine: NSObject {
         }
 
         let webView = createWebView(with: resourceHandler, formHandler: formHandler)
+        webView.uiDelegate = self
+        webView.navigationDelegate = self
         self.webView = webView
-        self.webView?.uiDelegate = self
 
         webView.isInspectable = true
 
-        webView.loadSimulatedRequest(
+        initialNavigation = webView.loadSimulatedRequest(
             URLRequest(url: baseURL),
             responseHTML: "<html><header></header><body></body></html>"
         )
@@ -94,44 +100,18 @@ class WebViewEngine: NSObject {
         manager.formSubmitCallback = { [weak webView] in
             webView?.evaluateJavaScript("submitForm()")
         }
-
-        let injector = ScriptInjector(for: webView)
-        Task { @MainActor in
-            do {
-                try await Task.sleep(for: .seconds(0.5))
-                try await injector.inject("Console")
-
-                try await Task.sleep(for: .seconds(0.5))
-                try await injector.inject("FormHandler")
-
-                try await Task.sleep(for: .seconds(0.5))
-                try await injector.inject("c11n")
-
-                try await Task.sleep(for: .seconds(0.5))
-                try await callInit(configuration)
-            } catch {
-                Logger.current().error("Error during engine initialisation: \(error)")
-            }
-        }
     }
 
-    private func stop() {
+    func stop() {
         webView = nil
+        initialNavigation = nil
+        configuration = nil
         manager = ComponentManager()
-    }
-
-    @MainActor
-    private func callInit(_ configuration: Configuration) async throws {
-        let overrideString = PMSDKComponentManager.shared.componentOverrideString
-        let configString = try configuration.toString()
-        try await webView?.evaluateJavaScript(
-            "window.init('\(configString)', '\(overrideString)');0"
-        )
     }
 }
 
 extension WebViewEngine : WKUIDelegate {
-    
+
     @MainActor
     func webView(
         _ webView: WKWebView,
@@ -155,7 +135,7 @@ extension WebViewEngine : WKUIDelegate {
             completionHandler(result)
         }
     }
-    
+
 //    @MainActor
 //    func webView(
 //        _ webView: WKWebView,
@@ -166,6 +146,37 @@ extension WebViewEngine : WKUIDelegate {
 //    ) {
 //        // TODO: implement
 //    }
+}
+
+extension WebViewEngine: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard navigation == initialNavigation else {
+            return
+        }
+        guard let configuration else {
+            Logger.current().error("Unknown configuration.")
+            return
+        }
+        Logger.current().info("Initial navigation completed, injecting scripts.")
+        let injector = ScriptInjector()
+        Task {
+            do {
+                try injector.load("Console")
+                try injector.load("FormHandler")
+                try injector.load("c11n")
+                injector.append(script: try initScript(configuration))
+                try await injector.inject(into: webView)
+            } catch {
+                Logger.current().error("Error during engine initialisation: \(error)")
+            }
+        }
+    }
+
+    private func initScript(_ configuration: Configuration) throws -> String {
+        let overrideString = PMSDKComponentManager.shared.componentOverrideString
+        let configString = try configuration.toString()
+        return "window.init('\(configString)', '\(overrideString)');"
+    }
 }
 
 extension URL {
