@@ -45,7 +45,6 @@ internal class ComponentManagerImpl(
                 ComponentContextImpl(
                     id = context.id,
                     type = UnsupportedNative,
-                    scope = context.scope,
                     componentManager = context.componentManager,
                     onComponentEvent = { Log.w(TAG, "Cannot send event $it") }
                 )

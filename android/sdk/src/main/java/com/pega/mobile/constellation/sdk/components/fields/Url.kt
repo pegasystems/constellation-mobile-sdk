@@ -10,22 +10,19 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Url
 import org.json.JSONObject
 
 class UrlComponent(context: ComponentContext) : FieldComponent(context) {
-    override val state = UrlState(context)
+    var placeholder: String by mutableStateOf("")
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        state.placeholder = props.getString("placeholder")
+        placeholder = props.getString("placeholder")
     }
-}
-
-class UrlState(context: ComponentContext) : FieldState(context) {
-    var placeholder: String by mutableStateOf("")
 }
 
 class UrlRenderer : ComponentRenderer<UrlComponent> {
     @Composable
-    override fun Render(component: UrlComponent) {
-        WithVisibility(component.state) {
+    override fun UrlComponent.Render() {
+        WithVisibility {
             Url(
                 value = value,
                 label = label,
@@ -35,8 +32,8 @@ class UrlRenderer : ComponentRenderer<UrlComponent> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                onValueChange = { value = it },
-                onFocusChange = { focused = it }
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

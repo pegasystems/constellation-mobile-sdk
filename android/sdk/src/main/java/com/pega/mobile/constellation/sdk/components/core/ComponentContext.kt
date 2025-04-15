@@ -1,7 +1,5 @@
 package com.pega.mobile.constellation.sdk.components.core
 
-import kotlinx.coroutines.CoroutineScope
-
 
 /**
  * Represents the context of a component.
@@ -14,9 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 interface ComponentContext {
     val id: ComponentId
     val type: ComponentType
-    val scope: CoroutineScope
     val componentManager: ComponentManager
-
 
     /**
      * Sends an event to the SDK engine related to the component.
@@ -28,7 +24,6 @@ interface ComponentContext {
 internal class ComponentContextImpl(
     override val id: ComponentId,
     override val type: ComponentType,
-    override val scope: CoroutineScope,
     override val componentManager: ComponentManager,
     val onComponentEvent: (ComponentEvent) -> Unit,
 ) : ComponentContext {

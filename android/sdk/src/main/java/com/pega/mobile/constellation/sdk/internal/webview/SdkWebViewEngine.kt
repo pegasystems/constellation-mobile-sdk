@@ -23,9 +23,6 @@ import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.
 import com.pega.mobile.constellation.sdk.internal.webview.SdkWebViewEngine.EngineEvent.Error
 import com.pega.mobile.constellation.sdk.internal.webview.interceptor.WebViewAssetInterceptor
 import com.pega.mobile.constellation.sdk.internal.webview.interceptor.WebViewNetworkInterceptor
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.json.JSONObject
 
 internal class SdkWebViewEngine(
@@ -37,7 +34,6 @@ internal class SdkWebViewEngine(
         setWebContentsDebuggingEnabled(config.debuggable)
     }
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val componentManager = config.componentManager
 
     private val networkInterceptor = WebViewNetworkInterceptor(config.okHttpClient)
@@ -95,7 +91,7 @@ internal class SdkWebViewEngine(
 
     private fun onAddComponent(id: ComponentId, type: ComponentType) {
         val onComponentEvent: (ComponentEvent) -> Unit = { sendComponentEvent(id, it) }
-        val context = ComponentContextImpl(id, type, scope, componentManager, onComponentEvent)
+        val context = ComponentContextImpl(id, type, componentManager, onComponentEvent)
         componentManager.addComponent(context)
     }
 

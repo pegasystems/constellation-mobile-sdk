@@ -11,26 +11,22 @@ import com.pega.mobile.dxcomponents.compose.controls.form.TextArea
 import org.json.JSONObject
 
 class TextAreaComponent(context: ComponentContext) : FieldComponent(context) {
-    override val state = TextAreaState(context)
+    var placeholder: String by mutableStateOf("")
+        private set
+    var maxLength: Int by mutableIntStateOf(0)
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        with(state) {
-            placeholder = props.getString("placeholder")
-            maxLength = props.getString("maxLength").toInt()
-        }
+        placeholder = props.getString("placeholder")
+        maxLength = props.getString("maxLength").toInt()
     }
-}
-
-class TextAreaState(context: ComponentContext) : FieldState(context) {
-    var placeholder: String by mutableStateOf("")
-    var maxLength: Int by mutableIntStateOf(0)
 }
 
 class TextAreaRenderer : ComponentRenderer<TextAreaComponent> {
     @Composable
-    override fun Render(component: TextAreaComponent) {
-        WithVisibility(component.state) {
+    override fun TextAreaComponent.Render() {
+        WithVisibility {
             TextArea(
                 value = value,
                 label = label,
@@ -40,8 +36,8 @@ class TextAreaRenderer : ComponentRenderer<TextAreaComponent> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                onValueChange = { value = it },
-                onFocusChange = { focused = it }
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

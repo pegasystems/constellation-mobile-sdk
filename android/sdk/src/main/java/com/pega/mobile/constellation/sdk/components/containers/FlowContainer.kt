@@ -14,50 +14,44 @@ import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.core.ComponentState
 import com.pega.mobile.constellation.sdk.components.core.Render
-import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerComponent
 import com.pega.mobile.constellation.sdk.internal.ComponentManagerImpl.Companion.getComponentTyped
 import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class FlowContainerComponent(context: ComponentContext) : BaseComponent(context) {
-    override val state = FlowContainerState()
+    var title: String by mutableStateOf("")
+        private set
+    var assignment: AssignmentComponent? by mutableStateOf(null)
+        private set
+    var alertBanners: List<AlertBannerComponent> by mutableStateOf(emptyList())
+        private set
+
     override fun onUpdate(props: JSONObject) {
         val manager = context.componentManager
         val assignmentId = ComponentId(props.getString("assignment").toInt())
         val banners = props.getJSONArray("alertBanners")
         val bannersIds = banners.mapWithIndex { getString(it).toInt() }
-        with(state) {
-            title = props.getString("title")
-            assignment = manager.getComponentTyped(assignmentId)
-            alertBanners = bannersIds.mapNotNull { manager.getComponentTyped(ComponentId(it)) }
-        }
+        title = props.getString("title")
+        assignment = manager.getComponentTyped(assignmentId)
+        alertBanners = bannersIds.mapNotNull { manager.getComponentTyped(ComponentId(it)) }
     }
-}
-
-class FlowContainerState : ComponentState {
-    var title: String by mutableStateOf("")
-    var assignment: AssignmentComponent? by mutableStateOf(null)
-    var alertBanners: List<AlertBannerComponent> by mutableStateOf(emptyList())
 }
 
 class FlowContainerRenderer : ComponentRenderer<FlowContainerComponent> {
     @Composable
-    override fun Render(component: FlowContainerComponent) {
-        with(component.state) {
-            Column {
-                Text(
-                    text = title,
-                    modifier = Modifier.fillMaxWidth(),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Left
-                )
-                alertBanners.forEach { it.Render() }
-                assignment?.Render()
-            }
+    override fun FlowContainerComponent.Render() {
+        Column {
+            Text(
+                text = title,
+                modifier = Modifier.fillMaxWidth(),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Left
+            )
+            alertBanners.forEach { it.Render() }
+            assignment?.Render()
         }
     }
 }

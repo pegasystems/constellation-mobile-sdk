@@ -12,25 +12,21 @@ import org.json.JSONObject
 import java.time.LocalDate
 
 class DateComponent(context: ComponentContext) : FieldComponent(context) {
-    override val state = DateState(context)
+    var placeholder: String by mutableStateOf("")
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        state.placeholder = props.getString("placeholder")
+        placeholder = props.getString("placeholder")
     }
-}
-
-class DateState(context: ComponentContext) : FieldState(context) {
-    var placeholder: String by mutableStateOf("")
 }
 
 class DateRenderer : ComponentRenderer<DateComponent> {
     @Composable
-    override fun Render(component: DateComponent) {
-        WithVisibility(component.state) {
-            val localDate = value.asLocalDateOrNull()
+    override fun DateComponent.Render() {
+        WithVisibility {
             Date(
-                value = localDate,
+                value = value.asLocalDateOrNull(),
                 label = label,
                 helperText = helperText,
                 validateMessage = validateMessage,
@@ -38,8 +34,8 @@ class DateRenderer : ComponentRenderer<DateComponent> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                onValueChange = { value = it?.toString() ?: "" },
-                onFocusChange = { focused = it }
+                onValueChange = { updateValue(it?.toString() ?: "") },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

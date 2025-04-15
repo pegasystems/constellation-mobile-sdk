@@ -5,11 +5,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pega.mobile.constellation.mock.MockHttpClient
 import com.pega.mobile.constellation.sdk.ConstellationSdk.State
-import com.pega.mobile.constellation.sdk.components.containers.ContainerState
-import com.pega.mobile.constellation.sdk.components.containers.FlowContainerState
-import com.pega.mobile.constellation.sdk.components.containers.RootContainerState
+import com.pega.mobile.constellation.sdk.components.containers.ContainerComponent
+import com.pega.mobile.constellation.sdk.components.containers.FlowContainerComponent
+import com.pega.mobile.constellation.sdk.components.containers.RootContainerComponent
 import com.pega.mobile.constellation.sdk.components.core.Component
-import com.pega.mobile.constellation.sdk.components.core.ComponentState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -125,14 +124,14 @@ class ConstellationSdkTest {
 
         private fun Component.structure(indent: String = ""): String {
             val self = indent + this + "\n"
-            val children = state.children().joinToString("") { it.structure("$indent-") }
+            val children = children().joinToString("") { it.structure("$indent-") }
             return self + children
         }
 
-        private fun ComponentState.children() = when (this) {
-            is ContainerState -> children
-            is RootContainerState -> listOfNotNull(viewContainer)
-            is FlowContainerState -> listOfNotNull(assignment) + alertBanners
+        private fun Component.children() = when (this) {
+            is ContainerComponent -> children
+            is RootContainerComponent -> listOfNotNull(viewContainer)
+            is FlowContainerComponent -> listOfNotNull(assignment) + alertBanners
             else -> emptyList()
         }
     }

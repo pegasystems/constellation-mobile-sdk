@@ -12,19 +12,23 @@ private val LocalRenderers = compositionLocalOf { Components.DefaultRenderers }
  *
  * @see [com.pega.mobile.constellation.sdk.components.Components.DefaultRenderers]
  */
-interface ComponentRenderer<out C : Component> {
+interface ComponentRenderer<C : Component> {
     @Composable
-    fun Render(component: @UnsafeVariance C)
+    fun C.Render()
 }
 
 /**
  * Helper extension method to render any component.
- * It uses map of renderers stored in [LocalRenderers], which can be modified with [ProvideRenderers].
+ * It uses map of renderers stored in [LocalRenderers], which can be customized with [ProvideRenderers].
  */
 @Composable
-fun Component.Render() {
-    LocalRenderers.current[context.type]?.Render(this)
-        ?: error("Cannot find component renderer for type ${context.type}")
+@Suppress("unchecked_cast")
+fun <T : Component> T.Render() {
+    val component = this
+    val renderers = LocalRenderers.current
+    val renderer = renderers[context.type] as? ComponentRenderer<T>
+    renderer?.run { component.Render() }
+        ?: error("Cannot find renderer for type ${context.type}")
 }
 
 /**

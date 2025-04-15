@@ -10,35 +10,29 @@ import androidx.compose.ui.unit.dp
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.core.ComponentState
-import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerVariant.URGENT
 import com.pega.mobile.dxcomponents.compose.controls.form.Banner
 import com.pega.mobile.dxcomponents.compose.controls.form.BannerVariant
 import org.json.JSONObject
 
 class AlertBannerComponent(context: ComponentContext) : BaseComponent(context) {
-    override val state = AlertBannerState()
+    var variant: AlertBannerVariant by mutableStateOf(URGENT)
+        private set
+    var messages: List<String> by mutableStateOf(emptyList())
+        private set
 
     override fun onUpdate(props: JSONObject) {
-        state.variant = AlertBannerVariant.valueOf(props.getString("variant").uppercase())
-        val messagesJsonArray = props.getJSONArray("messages")
-        val messages = messagesJsonArray.mapWithIndex { getString(it) }
-        state.messages = messages
+        variant = AlertBannerVariant.valueOf(props.getString("variant").uppercase())
+        messages = props.getJSONArray("messages").mapWithIndex { getString(it) }
     }
-}
-
-class AlertBannerState : ComponentState {
-    var variant: AlertBannerVariant by mutableStateOf(URGENT)
-    var messages: List<String> by mutableStateOf(emptyList())
 }
 
 class AlertBannerRenderer : ComponentRenderer<AlertBannerComponent> {
     @Composable
-    override fun Render(component: AlertBannerComponent) {
+    override fun AlertBannerComponent.Render() {
         Banner(
-            variant = BannerVariant.valueOf(component.state.variant.name),
-            messages = component.state.messages,
+            variant = BannerVariant.valueOf(variant.name),
+            messages = messages,
             modifier = Modifier.padding(top = 16.dp)
         )
     }
