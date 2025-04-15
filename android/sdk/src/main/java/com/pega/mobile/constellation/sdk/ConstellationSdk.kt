@@ -29,7 +29,7 @@ interface ConstellationSdk {
         /**
          * Allows to create [ConstellationSdk] object.
          *
-         * @param context Android context
+         * @param context Android application context
          * @param config Constellation SDK configuration
          */
         @MainThread
@@ -40,9 +40,9 @@ interface ConstellationSdk {
     /**
      * Represents all possible states of [ConstellationSdk]:
      * - Initial - initial state
-     * - Loading - loading state
-     * - Ready - form ready to be displayed. Use [ComponentRenderer] for built-in rendering.
-     * - Error - error state, e.g. when form could not be loaded due to network issues
+     * - Loading - form is loading
+     * - Ready - form ready to be displayed. Use ComponentRenderer and *Component.Render()* extension for built-in rendering.
+     * - Error - form could not be loaded, e.g. due to configuration or network issues
      * - Finished - form processing finished
      * - Cancelled - form processing cancelled
      */
