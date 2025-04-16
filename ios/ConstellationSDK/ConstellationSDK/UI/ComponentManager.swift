@@ -33,14 +33,20 @@ class ComponentManager {
             Logger.current().debug("Provider with id \(id) already exists.")
             return
         }
-        guard let provider = try? PMSDKComponentManager.shared.create(type) else {
-            Logger.current().error("Can not create component provider for \(type)")
+        var componentProvider = try? PMSDKComponentManager.shared.create(type)
+        if componentProvider == nil {
+            Logger.current().warning("Cannot create component provider for \(type), falling back to `UnsupportedComponent`.")
+            let unsupported = UnsupportedComponentProvider()
+            unsupported.properties.type = type
+            componentProvider = unsupported
+        }
+
+        guard let provider = componentProvider else {
+            Logger.current().error("Unexpected error during component creation.")
             return
         }
-        Logger.current().debug("Adding \(type) with id \(id)")
 
         providers[id] = provider
-
         (provider as? ContainerProvider)?.useManager(self)
 
         let coder = JSONEncoder()

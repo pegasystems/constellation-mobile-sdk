@@ -10,8 +10,8 @@ struct DropdownView: View {
     
     func pickerOptions() -> some View {
         ForEach(properties.options, id: \.self) { option in
-            if let key = option["key"], let value = option["value"] {
-                Text(key).tag(value)
+            if let key = option["key"], let label = option["label"] {
+                Text(label).tag(key)
             }
         }
     }
