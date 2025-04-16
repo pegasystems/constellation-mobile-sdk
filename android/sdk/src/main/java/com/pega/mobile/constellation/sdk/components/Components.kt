@@ -7,20 +7,20 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.AssignmentCar
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Currency
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Decimal
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
-import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Integer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Phone
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextArea
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextInput
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.URL
-import com.pega.mobile.constellation.sdk.components.ComponentTypes.UnsupportedJs
-import com.pega.mobile.constellation.sdk.components.ComponentTypes.UnsupportedNative
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Unsupported
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.View
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.ViewContainer
 import com.pega.mobile.constellation.sdk.components.containers.AssignmentCardComponent
@@ -47,6 +47,8 @@ import com.pega.mobile.constellation.sdk.components.fields.CurrencyComponent
 import com.pega.mobile.constellation.sdk.components.fields.CurrencyRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DateComponent
 import com.pega.mobile.constellation.sdk.components.fields.DateRenderer
+import com.pega.mobile.constellation.sdk.components.fields.DecimalComponent
+import com.pega.mobile.constellation.sdk.components.fields.DecimalRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DropdownComponent
 import com.pega.mobile.constellation.sdk.components.fields.DropdownRenderer
 import com.pega.mobile.constellation.sdk.components.fields.EmailComponent
@@ -67,9 +69,8 @@ import com.pega.mobile.constellation.sdk.components.widgets.ActionButtonsCompone
 import com.pega.mobile.constellation.sdk.components.widgets.ActionButtonsRenderer
 import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerComponent
 import com.pega.mobile.constellation.sdk.components.widgets.AlertBannerRenderer
-import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedJsComponent
-import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedJsRenderer
-import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedNativeRenderer
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition as Def
 
 /**
@@ -80,56 +81,57 @@ object Components {
      * Supported component definitions
      */
     val DefaultDefinitions = listOf(
-        Def(RootContainer) { RootContainerComponent(it) },
-        Def(ViewContainer) { ViewContainerComponent(it) },
-        Def(FlowContainer) { FlowContainerComponent(it) },
-        Def(View) { ViewComponent(it) },
-        Def(Region) { RegionComponent(it) },
-        Def(Assignment) { AssignmentComponent(it) },
-        Def(AssignmentCard) { AssignmentCardComponent(it) },
-        Def(DefaultForm) { DefaultFormComponent(it) },
-        Def(TextInput) { TextInputComponent(it) },
-        Def(Email) { EmailComponent(it) },
-        Def(Integer) { IntegerComponent(it) },
-        Def(Currency) { CurrencyComponent(it) },
-        Def(Checkbox) { CheckboxComponent(it) },
-        Def(TextArea) { TextAreaComponent(it) },
-        Def(URL) { UrlComponent(it) },
         Def(ActionButtons) { ActionButtonsComponent(it) },
         Def(AlertBanner) { AlertBannerComponent(it) },
+        Def(Assignment) { AssignmentComponent(it) },
+        Def(AssignmentCard) { AssignmentCardComponent(it) },
+        Def(Checkbox) { CheckboxComponent(it) },
+        Def(Currency) { CurrencyComponent(it) },
         Def(Date) { DateComponent(it) },
-        Def(RadioButtons) { RadioButtonsComponent(it) },
+        Def(Decimal) { DecimalComponent(it) },
+        Def(DefaultForm) { DefaultFormComponent(it) },
         Def(Dropdown) { DropdownComponent(it) },
+        Def(Email) { EmailComponent(it) },
+        Def(FlowContainer) { FlowContainerComponent(it) },
+        Def(Integer) { IntegerComponent(it) },
         Def(Phone) { PhoneComponent(it) },
-        Def(UnsupportedJs) { UnsupportedJsComponent(it) }
+        Def(RadioButtons) { RadioButtonsComponent(it) },
+        Def(Region) { RegionComponent(it) },
+        Def(RootContainer) { RootContainerComponent(it) },
+        Def(TextArea) { TextAreaComponent(it) },
+        Def(TextInput) { TextInputComponent(it) },
+        Def(URL) { UrlComponent(it) },
+        Def(Unsupported) { UnsupportedComponent(it) },
+        Def(View) { ViewComponent(it) },
+        Def(ViewContainer) { ViewContainerComponent(it) },
     )
 
     /**
      * Supported component renderers
      */
     val DefaultRenderers: Map<ComponentType, ComponentRenderer<*>> = mapOf(
-        RootContainer to RootContainerRenderer(),
-        ViewContainer to ViewContainerRenderer(),
-        FlowContainer to FlowContainerRenderer(),
-        View to ViewRenderer(),
-        Region to RegionRenderer(),
-        Assignment to AssignmentRenderer(),
-        AssignmentCard to AssignmentCardRenderer(),
-        DefaultForm to DefaultFormRenderer(),
-        TextInput to TextInputRenderer(),
-        Email to EmailRenderer(),
-        Integer to IntegerRenderer(),
-        Currency to CurrencyRenderer(),
-        Checkbox to CheckboxRenderer(),
-        TextArea to TextAreaRenderer(),
-        URL to UrlRenderer(),
-        Date to DateRenderer(),
-        RadioButtons to RadioButtonsRenderer(),
-        Dropdown to DropdownRenderer(),
-        Phone to PhoneRenderer(),
         ActionButtons to ActionButtonsRenderer(),
         AlertBanner to AlertBannerRenderer(),
-        UnsupportedJs to UnsupportedJsRenderer(),
-        UnsupportedNative to UnsupportedNativeRenderer()
+        Assignment to AssignmentRenderer(),
+        AssignmentCard to AssignmentCardRenderer(),
+        Checkbox to CheckboxRenderer(),
+        Currency to CurrencyRenderer(),
+        Date to DateRenderer(),
+        Decimal to DecimalRenderer(),
+        DefaultForm to DefaultFormRenderer(),
+        Dropdown to DropdownRenderer(),
+        Email to EmailRenderer(),
+        FlowContainer to FlowContainerRenderer(),
+        Integer to IntegerRenderer(),
+        Phone to PhoneRenderer(),
+        RadioButtons to RadioButtonsRenderer(),
+        Region to RegionRenderer(),
+        RootContainer to RootContainerRenderer(),
+        TextArea to TextAreaRenderer(),
+        TextInput to TextInputRenderer(),
+        URL to UrlRenderer(),
+        Unsupported to UnsupportedRenderer(),
+        View to ViewRenderer(),
+        ViewContainer to ViewContainerRenderer(),
     )
 }

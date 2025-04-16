@@ -6,33 +6,34 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentType
  * Object that holds all known component types.
  */
 object ComponentTypes {
-    val RootContainer = ComponentType("RootContainer")
-    val ViewContainer = ComponentType("ViewContainer")
-    val FlowContainer = ComponentType("FlowContainer")
-    val View = ComponentType("View")
-    val Region = ComponentType("Region")
+    // containers
     val Assignment = ComponentType("Assignment")
     val AssignmentCard = ComponentType("AssignmentCard")
     val DefaultForm = ComponentType("DefaultForm")
+    val FlowContainer = ComponentType("FlowContainer")
+    val Region = ComponentType("Region")
+    val RootContainer = ComponentType("RootContainer")
+    val View = ComponentType("View")
+    val ViewContainer = ComponentType("ViewContainer")
 
     // fields
-    val TextInput = ComponentType("TextInput")
+    val Checkbox = ComponentType("Checkbox")
+    val Currency = ComponentType("Currency")
+    val Date = ComponentType("Date")
+    val Decimal = ComponentType("Decimal")
+    val Dropdown = ComponentType("Dropdown")
     val Email = ComponentType("Email")
     val Integer = ComponentType("Integer")
-    val Currency = ComponentType("Currency")
-    val Checkbox = ComponentType("Checkbox")
-    val TextArea = ComponentType("TextArea")
-    val URL = ComponentType("URL")
-    val Date = ComponentType("Date")
-    val RadioButtons = ComponentType("RadioButtons")
-    val Dropdown = ComponentType("Dropdown")
     val Phone = ComponentType("Phone")
+    val RadioButtons = ComponentType("RadioButtons")
+    val TextArea = ComponentType("TextArea")
+    val TextInput = ComponentType("TextInput")
+    val URL = ComponentType("URL")
 
     // widgets
     val ActionButtons = ComponentType("ActionButtons")
     val AlertBanner = ComponentType("AlertBanner")
 
     // unsupported
-    val UnsupportedJs = ComponentType("Unsupported")
-    val UnsupportedNative = ComponentType("UnsupportedNative")
+    val Unsupported = ComponentType("Unsupported")
 }

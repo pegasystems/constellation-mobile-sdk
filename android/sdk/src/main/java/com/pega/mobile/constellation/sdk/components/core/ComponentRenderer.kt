@@ -1,10 +1,14 @@
 package com.pega.mobile.constellation.sdk.components.core
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Unsupported
 import com.pega.mobile.constellation.sdk.components.Components
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent
 
+private const val TAG = "ComponentRenderer"
 private val LocalRenderers = compositionLocalOf { Components.DefaultRenderers }
 
 /**
@@ -22,13 +26,18 @@ interface ComponentRenderer<C : Component> {
  * It uses map of renderers stored in [LocalRenderers], which can be customized with [ProvideRenderers].
  */
 @Composable
-@Suppress("unchecked_cast")
-fun <T : Component> T.Render() {
+fun <C : Component> C.Render() {
     val component = this
     val renderers = LocalRenderers.current
-    val renderer = renderers[context.type] as? ComponentRenderer<T>
-    renderer?.run { component.Render() }
-        ?: error("Cannot find renderer for type ${context.type}")
+    renderers[context.type]?.Render(component)
+        ?: renderers.getValue(Unsupported).Render(UnsupportedComponent.create(context))
+}
+
+@Composable
+@Suppress("unchecked_cast")
+private fun <C : Component> ComponentRenderer<*>.Render(component: C) {
+    (this as ComponentRenderer<C>).runCatching { component.Render() }
+        .onFailure { Log.e(TAG, "Component rendering failed: $component", it) }
 }
 
 /**

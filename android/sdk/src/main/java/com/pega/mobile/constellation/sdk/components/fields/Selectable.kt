@@ -23,5 +23,4 @@ abstract class SelectableComponent(context: ComponentContext) : FieldComponent(c
     }
 }
 
-
 data class SelectableOption(val key: String, val label: String)
