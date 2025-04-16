@@ -10,24 +10,22 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Phone
 import org.json.JSONObject
 
 class PhoneComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = PhoneViewModel()
+    var placeholder: String by mutableStateOf("")
+        private set
+    var showCountryCode: Boolean by mutableStateOf(true)
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
-        viewModel.showCountryCode = props.getBoolean("showCountryCode")
+        placeholder = props.getString("placeholder")
+        showCountryCode = props.getBoolean("showCountryCode")
     }
 }
 
-class PhoneViewModel : FieldViewModel() {
-    var placeholder: String by mutableStateOf("")
-    var showCountryCode: Boolean by mutableStateOf(true)
-}
-
-class PhoneRenderer : ComponentRenderer<PhoneViewModel> {
+class PhoneRenderer : ComponentRenderer<PhoneComponent> {
     @Composable
-    override fun Render(viewModel: PhoneViewModel) {
-        WithVisibility(viewModel) {
+    override fun PhoneComponent.Render() {
+        WithVisibility {
             Phone(
                 value = value,
                 label = label,
@@ -38,8 +36,8 @@ class PhoneRenderer : ComponentRenderer<PhoneViewModel> {
                 disabled = disabled,
                 readOnly = readOnly,
                 showCountryFlag = showCountryCode,
-                onValueChange = { value = it },
-                onFocusChange = { focused = it }
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }
