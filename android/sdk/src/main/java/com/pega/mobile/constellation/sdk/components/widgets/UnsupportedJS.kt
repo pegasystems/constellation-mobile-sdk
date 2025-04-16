@@ -6,28 +6,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
-import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.dxcomponents.compose.controls.form.Unsupported
 import org.json.JSONObject
 
 class UnsupportedJsComponent(context: ComponentContext) : BaseComponent(context) {
-    override val viewModel = UnsupportedJsViewModel()
+    var componentType by mutableStateOf("")
+        private set
 
     override fun onUpdate(props: JSONObject) {
-        viewModel.componentType = props.getString("type")
+        componentType = props.getString("type")
     }
 }
 
-class UnsupportedJsViewModel : BaseViewModel() {
-    var componentType by mutableStateOf("")
-}
-
-class UnsupportedJsRenderer : ComponentRenderer<UnsupportedJsViewModel> {
+class UnsupportedJsRenderer : ComponentRenderer<UnsupportedJsComponent> {
     @Composable
-    override fun Render(viewModel: UnsupportedJsViewModel) {
-        Log.w("UnsupportedJSComponent", "Component unsupported - not implemented in JavaScript code.")
-        Unsupported("Unsupported component '${viewModel.componentType}'")
+    override fun UnsupportedJsComponent.Render() {
+        val message = "Unsupported component '$componentType'"
+        Log.w("UnsupportedJsComponent", "$message - not implemented in JS")
+        Unsupported(message)
     }
 }

@@ -8,10 +8,10 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Dropdown
 
 class DropdownComponent(context: ComponentContext) : SelectableComponent(context)
 
-class DropdownRenderer : ComponentRenderer<SelectableViewModel> {
+class DropdownRenderer : ComponentRenderer<SelectableComponent> {
     @Composable
-    override fun Render(viewModel: SelectableViewModel) {
-        WithVisibility(viewModel) {
+    override fun SelectableComponent.Render() {
+        WithVisibility {
             Dropdown(
                 value = value,
                 label = label,
@@ -22,7 +22,7 @@ class DropdownRenderer : ComponentRenderer<SelectableViewModel> {
                 disabled = disabled,
                 readOnly = readOnly,
                 options = options.map { SelectableOption(it.key, it.label) },
-                onValueChange = { value = it }
+                onValueChange = { updateValue(it) }
             )
         }
     }

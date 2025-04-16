@@ -2,6 +2,9 @@ package com.pega.mobile.constellation.sdk.components
 
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
 
+/**
+ * Object that holds all known component types.
+ */
 object ComponentTypes {
     val RootContainer = ComponentType("RootContainer")
     val ViewContainer = ComponentType("ViewContainer")
@@ -23,6 +26,7 @@ object ComponentTypes {
     val Date = ComponentType("Date")
     val RadioButtons = ComponentType("RadioButtons")
     val Dropdown = ComponentType("Dropdown")
+    val Phone = ComponentType("Phone")
 
     // widgets
     val ActionButtons = ComponentType("ActionButtons")

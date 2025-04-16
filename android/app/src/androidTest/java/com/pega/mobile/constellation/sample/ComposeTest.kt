@@ -29,16 +29,19 @@ import com.pega.mobile.constellation.sample.ComposeTest.Mode.REAL_SERVER
 import com.pega.mobile.constellation.sample.MediaCoApplication.Companion.authManager
 import com.pega.mobile.constellation.sample.auth.AuthInterceptor
 import com.pega.mobile.constellation.sample.auth.AuthManager
+import com.pega.mobile.constellation.sample.ui.components.CustomEmailComponent
 import com.pega.mobile.constellation.sample.ui.screens.home.HomeScreen
 import com.pega.mobile.constellation.sample.ui.screens.pega.PegaViewModel
 import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
+import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
+import com.pega.mobile.constellation.sdk.components.core.ComponentManager
 import okhttp3.OkHttpClient
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-
 
 class ComposeTest {
     enum class Mode { MOCK_SERVER, REAL_SERVER }
@@ -136,8 +139,11 @@ class ComposeTest {
         pegaUrl = "https://lab-05423-bos.lab.pega.com/prweb",
         pegaVersion = "8.24.1",
         debuggable = true,
-        okHttpClient = buildHttpClient(authManager)
+        okHttpClient = buildHttpClient(authManager),
+        componentManager = buildComponentManager()
     )
+
+    private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
     private fun buildHttpClient(authManager: AuthManager) = when (mode) {
         MOCK_SERVER -> MockHttpClient(InstrumentationRegistry.getInstrumentation().context)
@@ -161,5 +167,9 @@ class ComposeTest {
 
     companion object {
         private const val CREATE_CASE_TEXT = "New Service"
+
+        val TestComponentDefinitions = listOf(
+            ComponentDefinition(Email) { CustomEmailComponent(it) }
+        )
     }
 }

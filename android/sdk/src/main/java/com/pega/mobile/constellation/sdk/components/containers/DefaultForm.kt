@@ -17,33 +17,29 @@ import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class DefaultFormComponent(context: ComponentContext) : ContainerComponent(context) {
-    override val viewModel = DefaultFormViewModel()
+    var instructions: String by mutableStateOf("")
+        private set
+
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.instructions = props.getString("instructions")
+        instructions = props.getString("instructions")
     }
 }
 
-class DefaultFormViewModel : ContainerViewModel() {
-    var instructions: String by mutableStateOf("")
-}
-
-class DefaultFormRenderer : ComponentRenderer<DefaultFormViewModel> {
+class DefaultFormRenderer : ComponentRenderer<DefaultFormComponent> {
     @Composable
-    override fun Render(viewModel: DefaultFormViewModel) {
-        with(viewModel) {
-            if (instructions.isNotEmpty()) {
-                val rawText = HtmlCompat.fromHtml(instructions, FROM_HTML_MODE_COMPACT).toString()
-                    .trim('\n')
-                Text(
-                    text = rawText,
-                    textAlign = TextAlign.Left,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            Column {
-                children.forEach { it.Render() }
-            }
+    override fun DefaultFormComponent.Render() {
+        if (instructions.isNotEmpty()) {
+            val rawText = HtmlCompat.fromHtml(instructions, FROM_HTML_MODE_COMPACT).toString()
+                .trim('\n')
+            Text(
+                text = rawText,
+                textAlign = TextAlign.Left,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        Column {
+            children.forEach { it.Render() }
         }
     }
 }

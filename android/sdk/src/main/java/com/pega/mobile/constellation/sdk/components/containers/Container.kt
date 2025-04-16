@@ -8,16 +8,15 @@ import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
-import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
-import com.pega.mobile.constellation.sdk.components.mapWithIndex
 import org.json.JSONObject
 
 abstract class ContainerComponent(context: ComponentContext) : BaseComponent(context) {
-    abstract override val viewModel: ContainerViewModel
+    var children: List<Component> by mutableStateOf(emptyList())
+        private set
 
     @CallSuper
     override fun onUpdate(props: JSONObject) {
-        viewModel.children = getChildren(props)
+        children = getChildren(props)
     }
 
     private fun getChildren(props: JSONObject): List<Component> {
@@ -25,8 +24,4 @@ abstract class ContainerComponent(context: ComponentContext) : BaseComponent(con
         val ids = children.mapWithIndex { getString(it).toInt() }
         return context.componentManager.getComponents(ids.map { ComponentId(it) })
     }
-}
-
-abstract class ContainerViewModel : BaseViewModel() {
-    var children: List<Component> by mutableStateOf(emptyList())
 }

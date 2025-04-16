@@ -2,38 +2,31 @@ package com.pega.mobile.constellation.sdk.components.fields
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.dxcomponents.compose.controls.form.Currency
+import com.pega.mobile.dxcomponents.compose.controls.form.Phone
 import org.json.JSONObject
 
-class CurrencyComponent(context: ComponentContext) : FieldComponent(context) {
+class PhoneComponent(context: ComponentContext) : FieldComponent(context) {
     var placeholder: String by mutableStateOf("")
         private set
-    var isoCode: String by mutableStateOf("")
-        private set
-    var showIsoCode: Boolean by mutableStateOf(false)
-        private set
-    var decimalPrecision: Int by mutableIntStateOf(2)
+    var showCountryCode: Boolean by mutableStateOf(true)
         private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
         placeholder = props.getString("placeholder")
-        isoCode = props.getString("currencyISOCode")
-        showIsoCode = props.getBoolean("showISOCode")
-        decimalPrecision = props.getInt("decimalPrecision")
+        showCountryCode = props.getBoolean("showCountryCode")
     }
 }
 
-class CurrencyRenderer : ComponentRenderer<CurrencyComponent> {
+class PhoneRenderer : ComponentRenderer<PhoneComponent> {
     @Composable
-    override fun CurrencyComponent.Render() {
+    override fun PhoneComponent.Render() {
         WithVisibility {
-            Currency(
+            Phone(
                 value = value,
                 label = label,
                 helperText = helperText,
@@ -42,9 +35,7 @@ class CurrencyRenderer : ComponentRenderer<CurrencyComponent> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                isoCode = isoCode,
-                showIsoCode = showIsoCode,
-                decimalPrecision = decimalPrecision,
+                showCountryFlag = showCountryCode,
                 onValueChange = { updateValue(it) },
                 onFocusChange = { updateFocus(it) }
             )

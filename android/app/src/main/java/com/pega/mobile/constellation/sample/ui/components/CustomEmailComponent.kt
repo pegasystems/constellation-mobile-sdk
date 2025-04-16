@@ -2,26 +2,30 @@ package com.pega.mobile.constellation.sample.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.fields.EmailViewModel
 import com.pega.mobile.constellation.sdk.components.fields.FieldComponent
+import com.pega.mobile.constellation.sdk.components.fields.WithVisibility
 import com.pega.mobile.dxcomponents.compose.controls.form.Email
 import org.json.JSONObject
 
 class CustomEmailComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = EmailViewModel()
+    var placeholder: String by mutableStateOf("")
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
+        placeholder = props.getString("placeholder")
     }
 }
 
-class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
+class CustomEmailRenderer : ComponentRenderer<CustomEmailComponent> {
     @Composable
-    override fun Render(viewModel: EmailViewModel) {
-        with(viewModel) {
+    override fun CustomEmailComponent.Render() {
+        WithVisibility {
             Column {
                 Email(
                     value = value,
@@ -32,8 +36,8 @@ class CustomEmailRenderer : ComponentRenderer<EmailViewModel> {
                     required = required,
                     disabled = disabled,
                     readOnly = readOnly,
-                    onValueChange = { value = it },
-                    onFocusChange = { focused = it }
+                    onValueChange = { updateValue(it) },
+                    onFocusChange = { updateFocus(it) }
                 )
             }
         }
