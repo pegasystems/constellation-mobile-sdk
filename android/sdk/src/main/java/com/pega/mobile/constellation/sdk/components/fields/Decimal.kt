@@ -11,8 +11,6 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Decimal
 import org.json.JSONObject
 
 class DecimalComponent(context: ComponentContext) : FieldComponent(context) {
-    var placeholder: String by mutableStateOf("")
-        private set
     var decimalPrecision: Int by mutableIntStateOf(0)
         private set
     var showGroupSeparators: Boolean by mutableStateOf(false)
@@ -20,7 +18,6 @@ class DecimalComponent(context: ComponentContext) : FieldComponent(context) {
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        placeholder = props.getString("placeholder")
         decimalPrecision = props.getInt("decimalPrecision")
         showGroupSeparators = false
     }

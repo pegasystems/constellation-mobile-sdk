@@ -25,6 +25,8 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
         private set
     var readOnly: Boolean by mutableStateOf(false)
         private set
+    var placeholder: String by mutableStateOf("")
+        private set
     var helperText: String by mutableStateOf("")
         private set
     var validateMessage: String by mutableStateOf("")
@@ -41,6 +43,7 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
             readOnly = getString("readOnly").toBoolean()
             helperText = getString("helperText")
             validateMessage = getString("validateMessage")
+            placeholder = optString("placeholder")
         }
     }
 

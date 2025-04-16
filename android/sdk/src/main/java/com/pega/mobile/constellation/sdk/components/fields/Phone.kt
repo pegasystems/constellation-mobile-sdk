@@ -10,14 +10,11 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Phone
 import org.json.JSONObject
 
 class PhoneComponent(context: ComponentContext) : FieldComponent(context) {
-    var placeholder: String by mutableStateOf("")
-        private set
     var showCountryCode: Boolean by mutableStateOf(true)
         private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        placeholder = props.getString("placeholder")
         showCountryCode = props.getBoolean("showCountryCode")
     }
 }

@@ -2,24 +2,12 @@ package com.pega.mobile.constellation.sdk.components.fields
 
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.dxcomponents.compose.controls.form.Date
-import org.json.JSONObject
 import java.time.LocalDate
 
-class DateComponent(context: ComponentContext) : FieldComponent(context) {
-    var placeholder: String by mutableStateOf("")
-        private set
-
-    override fun onUpdate(props: JSONObject) {
-        super.onUpdate(props)
-        placeholder = props.getString("placeholder")
-    }
-}
+class DateComponent(context: ComponentContext) : FieldComponent(context)
 
 class DateRenderer : ComponentRenderer<DateComponent> {
     @Composable
