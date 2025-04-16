@@ -25,14 +25,14 @@ import { CurrencyComponent } from '../components/fields/currency.component.js';
 import { DateComponent } from '../components/fields/date.component.js';
 // import { DateTimeComponent } from './_components/field/date-time/date-time.component';
 // import { DecimalComponent } from './_components/field/decimal/decimal.component';
-// import { DropdownComponent } from './_components/field/dropdown/dropdown.component';
+import { DropdownComponent } from '../components/fields/dropdown.component.js';
 import { EmailComponent } from '../components/fields/email.component.js';
 // import { GroupComponent } from './_components/field/group/group.component';
 import { IntegerComponent } from '../components/fields/integer.component.js';
 // import { ListViewActionButtonsComponent } from './_components/field/list-view-action-buttons/list-view-action-buttons.component';
 // import { PercentageComponent } from './_components/field/percentage/percentage.component';
 // import { PhoneComponent } from './_components/field/phone/phone.component';
-// import { RadioButtonsComponent } from './_components/field/radio-buttons/radio-buttons.component';
+import { RadioButtonsComponent } from '../components/fields/radio-buttons.component.js';
 // import { SemanticLinkComponent } from './_components/field/semantic-link/semantic-link.component';
 import { TextAreaComponent } from '../components/fields/text-area.component.js';
 // import { TextComponent } from './_components/field/text/text.component';
@@ -162,7 +162,7 @@ const pegaSdkComponentMap = {
   // DetailsSubTabs: DetailsSubTabsComponent,
   // DetailsThreeColumn: DetailsThreeColumnComponent,
   // DetailsTwoColumn: DetailsTwoColumnComponent,
-  // Dropdown: DropdownComponent,
+  Dropdown: DropdownComponent,
   // DynamicTabs: DynamicTabsComponent,
   Email: EmailComponent,
   // ErrorBoundary: ErrorBoundaryComponent,
@@ -205,7 +205,7 @@ const pegaSdkComponentMap = {
   // Pulse: PulseComponent,
   // QuickCreate: QuickCreateComponent,
   reference: ReferenceComponent,
-  // RadioButtons: RadioButtonsComponent,
+  RadioButtons: RadioButtonsComponent,
   Region: RegionComponent,
   // RichText: RichTextComponent,
   // RichTextEditor: RichTextEditorComponent,

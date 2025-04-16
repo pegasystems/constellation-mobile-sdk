@@ -3,13 +3,13 @@ import ConstellationSDK
 
 // not yet migrated
 struct CustomButtonView: View {
-    
+
     @ObservedObject var properties: ButtonProps
-    
+
     init(properties: ButtonProps) {
         self.properties = properties
     }
-    
+
     var body: some View {
         Button(action: {
             properties.onButtonPress()
@@ -27,10 +27,10 @@ struct CustomButtonView: View {
 }
 
 class CustomButtonComponentProvider: ButtonComponentProvider {
-    
+
     let properties = ButtonProps()
     let hostingController: UIHostingController<AnyView>
-    
+
     init() {
         let view = AnyView(CustomButtonView(properties: properties))
         self.hostingController = UIHostingController(rootView: view)

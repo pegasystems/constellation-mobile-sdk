@@ -8,8 +8,10 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Currency
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Integer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
@@ -44,10 +46,14 @@ import com.pega.mobile.constellation.sdk.components.fields.CurrencyComponent
 import com.pega.mobile.constellation.sdk.components.fields.CurrencyRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DateComponent
 import com.pega.mobile.constellation.sdk.components.fields.DateRenderer
+import com.pega.mobile.constellation.sdk.components.fields.DropdownComponent
+import com.pega.mobile.constellation.sdk.components.fields.DropdownRenderer
 import com.pega.mobile.constellation.sdk.components.fields.EmailComponent
 import com.pega.mobile.constellation.sdk.components.fields.EmailRenderer
 import com.pega.mobile.constellation.sdk.components.fields.IntegerComponent
 import com.pega.mobile.constellation.sdk.components.fields.IntegerRenderer
+import com.pega.mobile.constellation.sdk.components.fields.RadioButtonsComponent
+import com.pega.mobile.constellation.sdk.components.fields.RadioButtonsRenderer
 import com.pega.mobile.constellation.sdk.components.fields.TextAreaComponent
 import com.pega.mobile.constellation.sdk.components.fields.TextAreaRenderer
 import com.pega.mobile.constellation.sdk.components.fields.TextInputComponent
@@ -89,6 +95,8 @@ object Components {
         Def(ActionButtons) { ActionButtonsComponent(it) },
         Def(AlertBanner) { AlertBannerComponent(it) },
         Def(Date) { DateComponent(it) },
+        Def(RadioButtons) { RadioButtonsComponent(it) },
+        Def(Dropdown) { DropdownComponent(it) },
         Def(UnsupportedJs) { UnsupportedJsComponent(it) }
     )
 
@@ -112,6 +120,8 @@ object Components {
         TextArea to TextAreaRenderer(),
         URL to UrlRenderer(),
         Date to DateRenderer(),
+        RadioButtons to RadioButtonsRenderer(),
+        Dropdown to DropdownRenderer(),
         ActionButtons to ActionButtonsRenderer(),
         AlertBanner to AlertBannerRenderer(),
         UnsupportedJs to UnsupportedJsRenderer(),

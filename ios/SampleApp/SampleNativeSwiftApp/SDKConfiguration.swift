@@ -1,7 +1,7 @@
 import Foundation
 
 class SDKConfiguration {
-    
+
     static var environmentURL: URL = {
         guard let urlString = Bundle.main.infoDictionary?["PegaSystemURL"] as? String,
               let url = URL(string: urlString) else {
@@ -9,7 +9,7 @@ class SDKConfiguration {
         }
         return url
     }()
-    
+
     static var oauth2Configuration: [String: Any] = {
         guard let oauth2Config = Bundle.main.infoDictionary?["PegaOAuth2Configuration"] as? [String: Any] else {
             fatalError("Cannot retrieve OAuth2 configuration.")
@@ -24,4 +24,3 @@ class SDKConfiguration {
         return className
     }()
 }
-
