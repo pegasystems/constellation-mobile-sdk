@@ -8,10 +8,10 @@ import com.pega.mobile.dxcomponents.compose.controls.form.RadioButtons
 
 class RadioButtonsComponent(context: ComponentContext) : SelectableComponent(context)
 
-class RadioButtonsRenderer : ComponentRenderer<SelectableViewModel> {
+class RadioButtonsRenderer : ComponentRenderer<SelectableComponent> {
     @Composable
-    override fun Render(viewModel: SelectableViewModel) {
-        WithVisibility(viewModel) {
+    override fun SelectableComponent.Render() {
+        WithVisibility {
             RadioButtons(
                 value = value,
                 label = label,
@@ -22,7 +22,7 @@ class RadioButtonsRenderer : ComponentRenderer<SelectableViewModel> {
                 disabled = disabled,
                 readOnly = readOnly,
                 options = options.map { SelectableOption(it.key, it.label) },
-                onValueChange = { value = it }
+                onValueChange = { updateValue(it) }
             )
         }
     }

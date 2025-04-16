@@ -1,7 +1,7 @@
 package com.pega.mobile.constellation.sdk.components.core
 
 /**
- * Data for event sent to javascript
+ * Data for event sent to javascript.
  *
  * @param type - event type. Supported by default components are: 'FieldChange', 'FieldChangeWithFocus'.
  * Other types can be supported for custom components added by user.

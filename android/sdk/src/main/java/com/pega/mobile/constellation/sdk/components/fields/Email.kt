@@ -10,22 +10,19 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Email
 import org.json.JSONObject
 
 class EmailComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = EmailViewModel()
+    var placeholder: String by mutableStateOf("")
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
+        placeholder = props.getString("placeholder")
     }
 }
 
-class EmailViewModel : FieldViewModel() {
-    var placeholder: String by mutableStateOf("")
-}
-
-class EmailRenderer : ComponentRenderer<EmailViewModel> {
+class EmailRenderer : ComponentRenderer<EmailComponent> {
     @Composable
-    override fun Render(viewModel: EmailViewModel) {
-        WithVisibility(viewModel) {
+    override fun EmailComponent.Render() {
+        WithVisibility {
             Email(
                 value = value,
                 label = label,
@@ -35,8 +32,8 @@ class EmailRenderer : ComponentRenderer<EmailViewModel> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                onValueChange = { value = it },
-                onFocusChange = { focused = it }
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

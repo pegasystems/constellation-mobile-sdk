@@ -69,7 +69,13 @@ import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedJsRendere
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedNativeRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition as Def
 
+/**
+ * Object that holds all supported components, its definitions and renderers.
+ */
 object Components {
+    /**
+     * Supported component definitions
+     */
     val DefaultDefinitions = listOf(
         Def(RootContainer) { RootContainerComponent(it) },
         Def(ViewContainer) { ViewContainerComponent(it) },
@@ -91,9 +97,12 @@ object Components {
         Def(Date) { DateComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },
         Def(Dropdown) { DropdownComponent(it) },
-        Def(UnsupportedJs) { UnsupportedJsComponent(it)}
+        Def(UnsupportedJs) { UnsupportedJsComponent(it) }
     )
 
+    /**
+     * Supported component renderers
+     */
     val DefaultRenderers: Map<ComponentType, ComponentRenderer<*>> = mapOf(
         RootContainer to RootContainerRenderer(),
         ViewContainer to ViewContainerRenderer(),

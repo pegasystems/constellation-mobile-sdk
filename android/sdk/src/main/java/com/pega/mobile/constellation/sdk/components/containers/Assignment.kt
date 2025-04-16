@@ -6,17 +6,13 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.Render
 import com.pega.mobile.dxcomponents.compose.containers.Column
 
-class AssignmentComponent(context: ComponentContext) : ContainerComponent(context) {
-    override val viewModel = AssignmentViewModel()
-}
+class AssignmentComponent(context: ComponentContext) : ContainerComponent(context)
 
-class AssignmentViewModel : ContainerViewModel()
-
-class AssignmentRenderer : ComponentRenderer<AssignmentViewModel> {
+class AssignmentRenderer : ComponentRenderer<AssignmentComponent> {
     @Composable
-    override fun Render(viewModel: AssignmentViewModel) {
+    override fun AssignmentComponent.Render() {
         Column {
-            viewModel.children.forEach { it.Render() }
+            children.forEach { it.Render() }
         }
     }
 }

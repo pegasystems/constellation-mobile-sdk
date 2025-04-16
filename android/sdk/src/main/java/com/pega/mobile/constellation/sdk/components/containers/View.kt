@@ -19,42 +19,39 @@ import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class ViewComponent(context: ComponentContext) : ContainerComponent(context) {
-    override val viewModel = ViewViewModel()
+    var visible: Boolean by mutableStateOf(false)
+        private set
+    var label: String by mutableStateOf("")
+        private set
+    var showLabel: Boolean by mutableStateOf(false)
+        private set
+
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        with(viewModel) {
-            visible = props.getString("visible").toBoolean()
-            label = props.getString("label")
-            showLabel = props.getString("showLabel").toBoolean()
-        }
+        visible = props.getString("visible").toBoolean()
+        label = props.getString("label")
+        showLabel = props.getString("showLabel").toBoolean()
     }
 }
 
-class ViewViewModel : ContainerViewModel() {
-    var visible: Boolean by mutableStateOf(false)
-    var label: String by mutableStateOf("")
-    var showLabel: Boolean by mutableStateOf(false)
-}
-
-class ViewRenderer : ComponentRenderer<ViewViewModel> {
+class ViewRenderer : ComponentRenderer<ViewComponent> {
     @Composable
-    override fun Render(viewModel: ViewViewModel) {
-        with(viewModel) {
-            if (!visible) return
-            Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                if (showLabel && label.isNotEmpty()) {
-                    Text(
-                        text = label,
-                        textAlign = TextAlign.Left,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                children.forEach { it.Render() }
+    override fun ViewComponent.Render() {
+
+        if (!visible) return
+        Column(modifier = Modifier.padding(vertical = 8.dp)) {
+            if (showLabel && label.isNotEmpty()) {
+                Text(
+                    text = label,
+                    textAlign = TextAlign.Left,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
+            children.forEach { it.Render() }
         }
     }
 }

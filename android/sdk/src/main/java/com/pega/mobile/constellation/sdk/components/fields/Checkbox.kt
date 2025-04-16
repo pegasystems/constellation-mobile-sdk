@@ -10,22 +10,19 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Checkbox
 import org.json.JSONObject
 
 class CheckboxComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = CheckboxViewModel()
+    var caption: String by mutableStateOf("")
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.caption = props.getString("caption")
+        caption = props.getString("caption")
     }
 }
 
-class CheckboxViewModel : FieldViewModel() {
-    var caption: String by mutableStateOf("")
-}
-
-class CheckboxRenderer : ComponentRenderer<CheckboxViewModel> {
+class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
     @Composable
-    override fun Render(viewModel: CheckboxViewModel) {
-        WithVisibility(viewModel) {
+    override fun CheckboxComponent.Render() {
+        WithVisibility {
             Checkbox(
                 value = value.toBoolean(),
                 caption = caption,
@@ -35,10 +32,8 @@ class CheckboxRenderer : ComponentRenderer<CheckboxViewModel> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                onValueChange = { value = it.toString() },
+                onValueChange = { updateValue(it.toString()) },
             )
         }
     }
 }
-
-
