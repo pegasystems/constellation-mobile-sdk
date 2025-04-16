@@ -30,8 +30,9 @@ internal class ComponentManagerImpl(
         ids.mapNotNull { getComponent(it) }
 
     override fun updateComponent(id: ComponentId, props: JSONObject) {
-        components[id]?.onUpdate(props)
-            ?: Log.e(TAG, "Cannot update component $id")
+        val component = getComponent(id)
+        runCatching { component?.onUpdate(props) }
+            .onFailure { Log.e(TAG, "Failure during component update: $component") }
     }
 
     override fun removeComponent(id: ComponentId) {
