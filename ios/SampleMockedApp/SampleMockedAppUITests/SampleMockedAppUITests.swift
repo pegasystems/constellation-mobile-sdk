@@ -52,11 +52,19 @@ final class SampleMockedAppUITests: XCTestCase {
         let sdkLabel = app.staticTexts["Pega Mobile Constellation SDK"].firstMatch
         sdkLabel.assertExists()
     }
-    private func tapCreateButton() {
+    private func tapCreateButton(timeout: TimeInterval = 30.0) {
         let createButton = app.buttons["Create a new Case"].firstMatch
         createButton.assertExists()
-        sleep(1)
-        createButton.tap()
+        let startTime = NSDate().timeIntervalSince1970
+
+        // retry tapping if needed, this is really only required on CI
+        while (createButton.isHittable &&
+               NSDate().timeIntervalSince1970 - startTime < timeout) {
+            createButton.tap()
+            usleep(500_000) // delay subsequent taps
+        }
+        // createButton should NOT be hittable after form has been shown
+        XCTAssertFalse(createButton.isHittable)
     }
 
     @MainActor
@@ -66,7 +74,13 @@ final class SampleMockedAppUITests: XCTestCase {
             labelField.assertExists()
             let textField = self.app.textFields.element(boundBy: index)
             textField.assertExists().tap()
-            textField.typeText(textToEnter)
+
+            // Sometimes dialog to "speed up typing by sliding finger" is shown
+            // While running test locally you can just press CMD+K once (per sim) and comment this out
+            // But for new simulator (e.g. on CI) soft keyboard is being shown
+            self.app.buttons["Continue"].tapIfExists()
+            // \n will dismiss soft-keyboard itself minus above dialog
+            textField.typeText(textToEnter + "\n")
         }
         // Button's label contains some extra spaces (padding?)
         let nextButton = app.buttons.firstContainingLabel(text: "Next")
@@ -140,5 +154,11 @@ extension XCUIElement {
 
     func forceTap(offsetX: CGFloat = 0.1, offsetY: CGFloat = 0.1) {
         coordinate(withNormalizedOffset: CGVector(dx: offsetX, dy: offsetY)).tap()
+    }
+
+    func tapIfExists(timeout: TimeInterval = 2.5) {
+        if (waitForExistence(timeout: timeout)) {
+            tap()
+        }
     }
 }
