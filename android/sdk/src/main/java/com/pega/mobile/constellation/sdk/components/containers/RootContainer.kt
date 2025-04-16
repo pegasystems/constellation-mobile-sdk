@@ -10,58 +10,50 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
-import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.constellation.sdk.components.core.BaseViewModel
 import com.pega.mobile.constellation.sdk.components.core.Render
-import com.pega.mobile.constellation.sdk.components.mapWithIndex
+import com.pega.mobile.constellation.sdk.internal.ComponentManagerImpl.Companion.getComponentTyped
 import com.pega.mobile.dxcomponents.compose.controls.form.Snackbar
 import org.json.JSONObject
 
 class RootContainerComponent(context: ComponentContext) : BaseComponent(context) {
-    override val viewModel = RootContainerViewModel()
+    var viewContainer: ViewContainerComponent? by mutableStateOf(null)
+        private set
+    var httpMessages: List<String> by mutableStateOf(emptyList())
+        private set
 
     override fun onUpdate(props: JSONObject) {
-        val viewContainerId = props.getString("viewContainer").toInt()
-        viewModel.viewContainer =
-            context.componentManager.getComponent(ComponentId(viewContainerId))
+        val viewContainerId = ComponentId(props.getString("viewContainer").toInt())
         val httpMessagesArray = props.getJSONArray("httpMessages")
-        viewModel.httpMessages = httpMessagesArray.mapWithIndex {
+        viewContainer = context.componentManager.getComponentTyped(viewContainerId)
+        httpMessages = httpMessagesArray.mapWithIndex {
             val httpMessage = getJSONObject(it)
-            HttpMessage(httpMessage.getString("type"), httpMessage.getString("message"))
+            val type = httpMessage.getString("type")
+            val message = httpMessage.getString("message")
+            val prefix = if (type == "error") "Http error: " else ""
+            prefix + message
         }
+    }
+
+    fun clearMessages() {
+        httpMessages = emptyList()
     }
 }
 
-class RootContainerViewModel : BaseViewModel() {
-    var viewContainer: Component? by mutableStateOf(null)
-    var httpMessages: List<HttpMessage> by mutableStateOf(emptyList())
-}
-
-data class HttpMessage(
-    val type: String,
-    val message: String
-)
-
-class RootContainerRenderer : ComponentRenderer<RootContainerViewModel> {
+class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
     @Composable
-    override fun Render(viewModel: RootContainerViewModel) {
+    override fun RootContainerComponent.Render() {
         Box {
-            viewModel.viewContainer?.Render()
+            viewContainer?.Render()
             Snackbar(
-                messages = viewModel.messages(),
-                onSnackbarClose = { viewModel.httpMessages = emptyList() },
+                messages = httpMessages,
+                onSnackbarClose = { clearMessages() },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 8.dp)
             )
         }
-    }
-
-    private fun RootContainerViewModel.messages() = httpMessages.map {
-        val prefix = if (it.type == "error") "Http error: " else ""
-        prefix + it.message
     }
 }

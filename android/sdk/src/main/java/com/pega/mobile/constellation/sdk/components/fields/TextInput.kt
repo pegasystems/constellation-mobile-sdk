@@ -10,22 +10,19 @@ import com.pega.mobile.dxcomponents.compose.controls.form.TextInput
 import org.json.JSONObject
 
 class TextInputComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = TextInputViewModel()
+    var placeholder: String by mutableStateOf("")
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
+        placeholder = props.getString("placeholder")
     }
 }
 
-class TextInputViewModel : FieldViewModel() {
-    var placeholder: String by mutableStateOf("")
-}
-
-class TextInputRenderer : ComponentRenderer<TextInputViewModel> {
+class TextInputRenderer : ComponentRenderer<TextInputComponent> {
     @Composable
-    override fun Render(viewModel: TextInputViewModel) {
-        WithVisibility(viewModel) {
+    override fun TextInputComponent.Render() {
+        WithVisibility {
             TextInput(
                 value = value,
                 label = label,
@@ -35,8 +32,8 @@ class TextInputRenderer : ComponentRenderer<TextInputViewModel> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                onValueChange = { value = it },
-                onFocusChange = { focused = it }
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

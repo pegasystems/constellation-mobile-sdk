@@ -11,28 +11,28 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Currency
 import org.json.JSONObject
 
 class CurrencyComponent(context: ComponentContext) : FieldComponent(context) {
-    override val viewModel = CurrencyViewModel()
+    var placeholder: String by mutableStateOf("")
+        private set
+    var isoCode: String by mutableStateOf("")
+        private set
+    var showIsoCode: Boolean by mutableStateOf(false)
+        private set
+    var decimalPrecision: Int by mutableIntStateOf(2)
+        private set
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        viewModel.placeholder = props.getString("placeholder")
-        viewModel.isoCode = props.getString("currencyISOCode")
-        viewModel.showIsoCode = props.getBoolean("showISOCode")
-        viewModel.decimalPrecision = props.getInt("decimalPrecision")
+        placeholder = props.getString("placeholder")
+        isoCode = props.getString("currencyISOCode")
+        showIsoCode = props.getBoolean("showISOCode")
+        decimalPrecision = props.getInt("decimalPrecision")
     }
 }
 
-class CurrencyViewModel : FieldViewModel() {
-    var placeholder: String by mutableStateOf("")
-    var isoCode: String by mutableStateOf("")
-    var showIsoCode: Boolean by mutableStateOf(false)
-    var decimalPrecision: Int by mutableIntStateOf(2)
-}
-
-class CurrencyRenderer : ComponentRenderer<CurrencyViewModel> {
+class CurrencyRenderer : ComponentRenderer<CurrencyComponent> {
     @Composable
-    override fun Render(viewModel: CurrencyViewModel) {
-        WithVisibility(viewModel) {
+    override fun CurrencyComponent.Render() {
+        WithVisibility {
             Currency(
                 value = value,
                 label = label,
@@ -45,8 +45,8 @@ class CurrencyRenderer : ComponentRenderer<CurrencyViewModel> {
                 isoCode = isoCode,
                 showIsoCode = showIsoCode,
                 decimalPrecision = decimalPrecision,
-                onValueChange = { value = it },
-                onFocusChange = { focused = it }
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }
