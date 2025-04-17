@@ -7,13 +7,14 @@ public struct PMSDKCreateCaseView: View {
     private weak var delegate: PMSDKCreateCaseViewDelegate?
 
     public init(pegaURL: URL,
+                pegaVersion: String,
                 caseClass: String,
                 startingFields: PMSDKCreateCaseStartingFields = .init(),
                 delegate: PMSDKCreateCaseViewDelegate? = nil
     ) {
         engineConfiguration = .init(
             url: pegaURL,
-            version: "8.24.1",
+            version: pegaVersion,
             caseClassName: caseClass,
             startingFields: startingFields)
         self.delegate = delegate
