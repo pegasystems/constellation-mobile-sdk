@@ -84,7 +84,7 @@ extension SampleMockedAppUITests {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         waitUntil ({
             springboard.icons.allContainingLabel(text: text).count >= count
-        }, "Cannot find at least \(count) icon(s) with text: \(text)")
+        }, timeout: appInstallTimeout, "Cannot find at least \(count) icon(s) with text: \(text)")
     }
 
     private func screenshot() {
