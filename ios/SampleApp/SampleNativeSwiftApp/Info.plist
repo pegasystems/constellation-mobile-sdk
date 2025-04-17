@@ -4,7 +4,7 @@
 <dict>
 	<key>PegaCaseClassName</key>
 	<string>DIXL-MediaCo-Work-SDKTesting</string>
-	<key>PegaOAuth2Configuration</key>
+	<key>PegaAuthConfiguration</key>
 	<dict>
 		<key>client_id</key>
 		<string>12345</string>
@@ -23,6 +23,8 @@
 	</dict>
 	<key>PegaSystemURL</key>
 	<string>https://insert-url-here.example/prweb</string>
+	<key>PegaVersion</key>
+	<string>8.24.1</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
