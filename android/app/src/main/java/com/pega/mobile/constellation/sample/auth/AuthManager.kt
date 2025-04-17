@@ -8,9 +8,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.lifecycle.lifecycleScope
-import com.pega.mobile.constellation.sample.PegaConfig.Auth.CLIENT_ID
-import com.pega.mobile.constellation.sample.PegaConfig.Auth.REDIRECT_URI
-import com.pega.mobile.constellation.sample.PegaConfig.URL
+import com.pega.mobile.constellation.sample.SDKConfig.AUTH_CLIENT_ID
+import com.pega.mobile.constellation.sample.SDKConfig.AUTH_REDIRECT_URI
+import com.pega.mobile.constellation.sample.SDKConfig.PEGA_URL
 import com.pega.mobile.constellation.sample.auth.AuthState.AuthError
 import com.pega.mobile.constellation.sample.auth.AuthState.Authenticated
 import com.pega.mobile.constellation.sample.auth.AuthState.Authenticating
@@ -95,7 +95,7 @@ class AuthManager(private val context: Context) {
             Uri.parse(TOKEN_ENDPOINT)
         )
         val request = AuthorizationRequest
-            .Builder(config, CLIENT_ID, ResponseTypeValues.CODE, Uri.parse(REDIRECT_URI))
+            .Builder(config, AUTH_CLIENT_ID, ResponseTypeValues.CODE, Uri.parse(AUTH_REDIRECT_URI))
             .build()
 
         val authIntent = service.getAuthorizationRequestIntent(request)
@@ -177,8 +177,8 @@ class AuthManager(private val context: Context) {
     companion object {
         private const val TAG = "AuthManager"
 
-        const val AUTHORIZATION_ENDPOINT = "$URL/PRRestService/oauth2/v1/authorize"
-        const val TOKEN_ENDPOINT = "$URL/PRRestService/oauth2/v1/token"
+        const val AUTHORIZATION_ENDPOINT = "$PEGA_URL/PRRestService/oauth2/v1/authorize"
+        const val TOKEN_ENDPOINT = "$PEGA_URL/PRRestService/oauth2/v1/token"
     }
 }
 
