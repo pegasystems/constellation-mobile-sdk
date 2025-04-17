@@ -3,18 +3,18 @@
 <plist version="1.0">
 <dict>
 	<key>PegaCaseClassName</key>
-	<string>DIXL-MediaCo-Work-SDKTesting</string>
+	<string>DIXL-MediaCo-Work-NewService</string>
 	<key>PegaOAuth2Configuration</key>
 	<dict>
 		<key>client_id</key>
-		<string>12345</string>
+		<string>25795373220702300272</string>
 		<key>authorize_uri</key>
 		<string>https://insert-url-here.example/prweb/PRRestService/oauth2/v1/authorize</string>
 		<key>token_uri</key>
 		<string>https://insert-url-here.example/prweb/PRRestService/oauth2/v1/token</string>
 		<key>redirect_uris</key>
 		<array>
-			<string>com.pega://redirect</string>
+			<string>com.pega.mobile.constellation.sample://redirect</string>
 		</array>
 		<key>use_pkce</key>
 		<true/>

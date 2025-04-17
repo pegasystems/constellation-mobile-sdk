@@ -34,8 +34,7 @@ implementation(libs.androidx.webkit)
 
 **1. Create ConstellationSdk object**
 
-At first we need to create *ConstellationSdk* object by calling
-*create* method:
+At first we need to create *ConstellationSdk* object by calling *create* method:
 
 ```kotlin
 val sdk = ConstellationSdk.create(context, config)
@@ -46,12 +45,9 @@ where:
 - **context** - android application context
 - **config** - constellation sdk config object with parameters:
     - **pegaUrl** - URL to Pega server e.g.: *https://insert-url-here.example/prweb*
-    - **pegaVersion** - version of Pega server e.g.: *8.24.1*. Determines Constellation Core JS
-      library version used by SDK.
-    - **okHttpClient** (optional) - instance of OkHttpClient which can be passed to SDK for advanced
-      networking control.
-    - **componentManager** (optional) - instance of ComponentManager which is responsible for
-      providing component definitions and manages them in the runtime
+    - **pegaVersion** - version of Pega server e.g.: *8.24.1*. Determines Constellation Core JS library version used by SDK.
+    - **okHttpClient** (optional) - instance of OkHttpClient which can be passed to SDK for advanced networking control.
+    - **componentManager** (optional) - instance of ComponentManager which is responsible for providing component definitions and manages them in the runtime
     - **debuggable** (optional) - flag which allows for debugging of underlying WebView engine
 
 **2. Create Pega case using SDK**
@@ -124,8 +120,8 @@ There is also a helper extension method which is an entry point for rendering:
 fun Component.Render()
 ```
 
-Calling that on *RootContainerComponent* will render all components. This extension function is
-helpful for rendering other components as well.
+Calling *RootContainerComponent.Render()* will render all components. 
+This extension function is helpful for rendering other components as well.
 
 > Please note that SDK provides ready-to-use set of components with their renderers.
 
@@ -180,8 +176,7 @@ class CustomEmailRenderer : ComponentRenderer<CustomEmailComponent> {
 ### Creating new components ###
 
 It is possible to create new components (or override existing) and pass them to the SDK.
-This can be useful when SDK does not support some components or client wants to utilize Pega Custom
-Components.
+This is useful when SDK does not support some components or client wants to utilize Pega Custom Components.
 
 #### Defining Kotlin Component ####
 
@@ -211,8 +206,7 @@ class ComponentDefinition(
 
 - **producer** - instance of *ComponentProducer*
 
-*ComponentProducer* is functional interface which has *produce* method returning instance of
-*Component*
+*ComponentProducer* is functional interface which has *produce* method returning instance of *Component*:
 
 ```kotlin
 fun interface ComponentProducer {
