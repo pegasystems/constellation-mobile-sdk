@@ -19,75 +19,14 @@ final class SampleMockedAppUITests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    private func waitForIconContaining(text: String, timeout: TimeInterval, count: Int) {
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let getIconCount = { () -> Int in
-            springboard.icons.allContainingLabel(text: text).count
-        }
-        let startTime = NSDate().timeIntervalSince1970
-        while getIconCount() < count && NSDate().timeIntervalSince1970 - startTime < timeout {
-            usleep(100_000)
-        }
-        XCTAssertGreaterThanOrEqual(getIconCount(), count, "Cannot find at least \(count) icon(s) with text: \(text)")
-    }
-
-    private func acceptAlert() {
-        // addUIInterruptionMonitor does not seem to work anymore, see:
-        // https://developer.apple.com/forums/thread/737880
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let alertButton = springboard.buttons["Continue"].firstMatch
-        if alertButton.waitForExistence(timeout: 10.0) {
-            alertButton.tap()
-        }
-    }
-
-    private func screenshot() {
-        let screenshot = XCUIScreen.main.screenshot()
-        let attachment = XCTAttachment(screenshot: screenshot, quality: XCTAttachment.ImageQuality.medium)
-        attachment.lifetime = .keepAlways
-        add(attachment)
-    }
-
-    private func verifyMainScreen() {
-        let sdkLabel = app.staticTexts["Pega Mobile Constellation SDK"].firstMatch
-        sdkLabel.assertExists()
-    }
-    private func tapCreateButton(timeout: TimeInterval = 30.0) {
-        let createButton = app.buttons["Create a new Case"].firstMatch
-        createButton.assertExists()
-        let startTime = NSDate().timeIntervalSince1970
-
-        // retry tapping if needed, this is really only required on CI
-        while (createButton.isHittable &&
-               NSDate().timeIntervalSince1970 - startTime < timeout) {
-            createButton.tap()
-            usleep(500_000) // delay subsequent taps
-        }
-        // createButton should NOT be hittable after form has been shown
-        XCTAssertFalse(createButton.isHittable)
-    }
-
     @MainActor
     func testFormDisplayAndInteraction() throws {
-        let fillTextField = { (index: Int, label: String, textToEnter: String) -> () in
-            let labelField = self.app.staticTexts[label]
-            labelField.assertExists()
-            let textField = self.app.textFields.element(boundBy: index)
-            textField.assertExists().tap()
-
-            // Sometimes dialog to "speed up typing by sliding finger" is shown
-            // While running test locally you can just press CMD+K once (per sim) and comment this out
-            // But for new simulator (e.g. on CI) soft keyboard is being shown
-            self.app.buttons["Continue"].tapIfExists()
-            // \n will dismiss soft-keyboard itself minus above dialog
-            textField.typeText(textToEnter + "\n")
-        }
         // Button's label contains some extra spaces (padding?)
         let nextButton = app.buttons.firstContainingLabel(text: "Next")
         verifyMainScreen()
         tapCreateButton()
 
-        fillTextField(0, "Name", "Jan")
+        fillTextField(0, "Name", "Jan", dismissSlidingDialog: true)
         fillTextField(1, "Surname", "Kowalski")
         // Second text field has also placeholder text set
         XCTAssertEqual(app.textFields.element(boundBy: 1).placeholderValue, "Surname here")
@@ -125,6 +64,65 @@ final class SampleMockedAppUITests: XCTestCase {
     }
 }
 
+// MARK: Test helpers
+extension SampleMockedAppUITests {
+    private func waitUntil(_ condition: () -> Bool, timeout: TimeInterval = 5,
+                           delay: TimeInterval = 0.5, _ message: String? = nil) {
+        let startTime = NSDate().timeIntervalSince1970
+        while !condition() && NSDate().timeIntervalSince1970 - startTime < timeout {
+            // delay subsequents checks; also convert seconds to microseconds
+            usleep(UInt32(1_000_000.0 * delay))
+        }
+        if let message {
+            XCTAssertTrue(condition(), message)
+        } else {
+            XCTAssertTrue(condition(), "Condition not met within \(timeout) seconds")
+        }
+    }
+
+    private func waitForIconContaining(text: String, timeout: TimeInterval, count: Int) {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        waitUntil ({
+            springboard.icons.allContainingLabel(text: text).count >= count
+        }, timeout: appInstallTimeout, "Cannot find at least \(count) icon(s) with text: \(text)")
+    }
+
+    private func screenshot() {
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot, quality: XCTAttachment.ImageQuality.medium)
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    private func verifyMainScreen() {
+        let sdkLabel = app.staticTexts["Pega Mobile Constellation SDK"].firstMatch
+        sdkLabel.assertExists()
+    }
+    private func tapCreateButton(timeout: TimeInterval = 30.0) {
+        let createButton = app.buttons["Create a new Case"]
+        createButton.firstMatch.assertExists()
+        waitUntil ({ // Retry tapping if needed, this is really only required on CI
+            createButton.firstMatch.tapIfHittable()
+            // When form is displayed create button should be NOT hittable
+            return !createButton.firstMatch.isHittable
+        }, timeout: timeout)
+    }
+
+    private func fillTextField(_ index: Int, _ label: String,
+                               _ textToEnter: String, dismissSlidingDialog: Bool = false) {
+        app.staticTexts[label].assertExists()
+        app.textFields.element(boundBy: index).assertExists().tap()
+        if dismissSlidingDialog {
+            // Sometimes dialog to "speed up typing by sliding finger" is shown
+            // While running test locally you can just press CMD+K once (per sim) and comment this out
+            // But for new simulator (e.g. on CI) soft keyboard is being shown
+            app.buttons["Continue"].tapIfHittable()
+        }
+        // \n will dismiss soft-keyboard itself minus above dialog
+        app.textFields.element(boundBy: index).typeText(textToEnter + "\n")
+    }
+}
+
 extension XCUIElementQuery {
     @discardableResult
     func assertExists(timeout: TimeInterval = 180.0) -> XCUIElement {
@@ -156,8 +154,8 @@ extension XCUIElement {
         coordinate(withNormalizedOffset: CGVector(dx: offsetX, dy: offsetY)).tap()
     }
 
-    func tapIfExists(timeout: TimeInterval = 2.5) {
-        if (waitForExistence(timeout: timeout)) {
+    func tapIfHittable(timeout: TimeInterval = 2.5) {
+        if (waitForExistence(timeout: timeout) && isHittable) {
             tap()
         }
     }
