@@ -19,7 +19,7 @@ class DecimalComponent(context: ComponentContext) : FieldComponent(context) {
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
         decimalPrecision = props.getInt("decimalPrecision")
-        showGroupSeparators = false
+        showGroupSeparators = props.getBoolean("showGroupSeparators")
     }
 }
 
