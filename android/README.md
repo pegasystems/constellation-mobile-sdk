@@ -109,7 +109,7 @@ fun PegaForm(state: State) {
 
 For rendering actual components on the form, you need to get the *RootContainerComponent*, which is available
 through the *Ready* state. This component holds whole form components structure. Rendering components is
-fully possible by client's app, but to make the process easier, the SDK provides the set of component renderers for
+fully possible by your app, but to make the process easier, the SDK provides the set of component renderers for
 **Jetpack Compose** technology.
 
 There is also a helper extension method, which is an entry point for rendering:
@@ -175,7 +175,7 @@ class CustomEmailRenderer : ComponentRenderer<CustomEmailComponent> {
 ### Creating new components ###
 
 It is possible to create new components (or override existing components) and pass them to the SDK.
-This is useful when the SDK does not support some components or a client wants to utilize Pega Custom Components.
+This is useful when the SDK does not support some components, or you want to utilize Pega Custom Components.
 
 #### Defining Kotlin Component ####
 
