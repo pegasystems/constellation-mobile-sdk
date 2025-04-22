@@ -1,11 +1,11 @@
 ## Android ##
 
-- [Gradle integration](#gradle-integration-)
-- [Running SDK](#running-sdk-)
-- [Overriding components UI](#overriding-ui-components-)
-- [Creating new components](#creating-new-components-)
-    - [Defining Kotlin Component](#defining-kotlin-component-)
-    - [Defining JavaScript component](#defining-a-javascript-component-)
+- [Gradle integration](#gradle-integration)
+- [Running SDK](#running-sdk)
+- [Overriding components UI](#overriding-ui-components)
+- [Creating new components](#creating-new-components)
+    - [Defining Kotlin Component](#defining-kotlin-component)
+    - [Defining JavaScript component](#defining-a-javascript-component)
 
 Let's go step by step to quickly integrate the SDK with an Android application.
 
