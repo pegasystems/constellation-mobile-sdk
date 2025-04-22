@@ -11,7 +11,7 @@
         android:theme="@style/Theme.MediaCo"
         tools:targetApi="35">
         <activity
-            android:name=".MainActivity"
+            android:name=".MediaCoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

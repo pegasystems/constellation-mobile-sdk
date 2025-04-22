@@ -12,8 +12,8 @@ import com.pega.mobile.constellation.sample.auth.AuthState.AuthError
 import com.pega.mobile.constellation.sample.auth.AuthState.TokenExpired
 import com.pega.mobile.constellation.sample.data.News
 import com.pega.mobile.constellation.sample.data.NewsRepository
-import com.pega.mobile.constellation.sample.ui.screens.app.MediaCoBottomAppBar
-import com.pega.mobile.constellation.sample.ui.screens.app.MediaCoTopAppBar
+import com.pega.mobile.constellation.sample.ui.screens.bars.MediaCoBottomAppBar
+import com.pega.mobile.constellation.sample.ui.screens.bars.MediaCoTopAppBar
 import com.pega.mobile.constellation.sample.ui.screens.pega.PegaBottomSheet
 import com.pega.mobile.constellation.sample.ui.screens.pega.PegaViewModel
 import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme

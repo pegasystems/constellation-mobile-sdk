@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.pega.mobile.constellation.sample.CustomComponents.CustomDefinitions
+import com.pega.mobile.constellation.sample.ui.components.CustomComponents.CustomDefinitions
 import com.pega.mobile.constellation.sample.MediaCoApplication.Companion.authManager
-import com.pega.mobile.constellation.sample.PegaConfig
+import com.pega.mobile.constellation.sample.SDKConfig
 import com.pega.mobile.constellation.sample.auth.AuthInterceptor
 import com.pega.mobile.constellation.sample.auth.AuthManager
 import com.pega.mobile.constellation.sdk.ConstellationSdk
@@ -48,13 +48,13 @@ class PegaViewModel(
                 val application = checkNotNull(this[APPLICATION_KEY])
                 val authManager = application.authManager
                 val sdk = ConstellationSdk.create(application, buildConfig(authManager))
-                PegaViewModel(application, sdk, PegaConfig.CASE_CLASS_NAME)
+                PegaViewModel(application, sdk, SDKConfig.PEGA_CASE_CLASS_NAME)
             }
         }
 
         private fun buildConfig(authManager: AuthManager) = ConstellationSdkConfig(
-            pegaUrl = PegaConfig.URL,
-            pegaVersion = PegaConfig.VERSION,
+            pegaUrl = SDKConfig.PEGA_URL,
+            pegaVersion = SDKConfig.PEGA_VERSION,
             okHttpClient = buildOkHttpClient(authManager),
             componentManager = buildComponentManager(),
             debuggable = true

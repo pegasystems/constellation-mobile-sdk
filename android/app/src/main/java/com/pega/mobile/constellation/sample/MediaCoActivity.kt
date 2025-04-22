@@ -8,7 +8,7 @@ import com.pega.mobile.constellation.sample.MediaCoApplication.Companion.authMan
 import com.pega.mobile.constellation.sample.ui.screens.home.HomeScreen
 import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
-class MainActivity : ComponentActivity() {
+class MediaCoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setupAuth() {
-        application.authManager.register(this@MainActivity)
+        application.authManager.register(this@MediaCoActivity)
     }
 
     override fun onDestroy() {
