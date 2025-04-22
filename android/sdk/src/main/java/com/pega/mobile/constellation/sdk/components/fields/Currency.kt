@@ -11,8 +11,6 @@ import com.pega.mobile.dxcomponents.compose.controls.form.Currency
 import org.json.JSONObject
 
 class CurrencyComponent(context: ComponentContext) : FieldComponent(context) {
-    var placeholder: String by mutableStateOf("")
-        private set
     var isoCode: String by mutableStateOf("")
         private set
     var showIsoCode: Boolean by mutableStateOf(false)
@@ -22,7 +20,6 @@ class CurrencyComponent(context: ComponentContext) : FieldComponent(context) {
 
     override fun onUpdate(props: JSONObject) {
         super.onUpdate(props)
-        placeholder = props.getString("placeholder")
         isoCode = props.getString("currencyISOCode")
         showIsoCode = props.getBoolean("showISOCode")
         decimalPrecision = props.getInt("decimalPrecision")

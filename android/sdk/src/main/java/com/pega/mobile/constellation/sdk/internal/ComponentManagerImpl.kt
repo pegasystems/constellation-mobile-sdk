@@ -1,15 +1,14 @@
 package com.pega.mobile.constellation.sdk.internal
 
 import android.util.Log
-import com.pega.mobile.constellation.sdk.components.ComponentTypes.UnsupportedNative
 import com.pega.mobile.constellation.sdk.components.Components.DefaultDefinitions
 import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
-import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
-import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedNativeComponent
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import org.json.JSONObject
 
 internal class ComponentManagerImpl(
@@ -41,15 +40,8 @@ internal class ComponentManagerImpl(
 
     private fun produceComponent(context: ComponentContext): Component =
         definitions[context.type]?.producer?.produce(context)
-            ?: UnsupportedNativeComponent(
-                context.type.type,
-                ComponentContextImpl(
-                    id = context.id,
-                    type = UnsupportedNative,
-                    componentManager = context.componentManager,
-                    onComponentEvent = { Log.w(TAG, "Cannot send event $it") }
-                )
-            )
+            ?: UnsupportedComponent.create(context, cause = MISSING_COMPONENT_DEFINITION)
+                .also { Log.w(TAG, "Cannot find component definition for ${context.type}") }
 
     companion object {
         private const val TAG = "ComponentManager"
