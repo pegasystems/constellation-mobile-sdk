@@ -242,11 +242,10 @@ After providing *customDefinitions* to *ComponentManager*, the SDK will create t
 When adding a new component, the SDK requires a JavaScript file to be created.
 The reason is that the SDK utilizes business logic that runs in JS code inside the WebView.
 
-JS files should be located in the *assets* directory. The relative path to the JS file should be provided as a
-*jsFile* parameter to ComponentDefinition.
+JS files should be located in the *assets* directory. The relative path to the JS file should be provided as a *jsFile* parameter to ComponentDefinition.
 
 An example of an Email JS component with comments is available here:
-https://git.pega.io/projects/MX/repos/constellation-mobile-sdk/browse/android/app/src/main/assets/components_overrides/email.component.override.js
+[email.component.override.js](app/src/main/assets/components_overrides/email.component.override.js)
 
 JavaScript Components use PCore and PConn API which is provided by the Constellation Core JS
 Library:<br>
