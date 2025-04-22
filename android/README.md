@@ -1,13 +1,13 @@
 ## Android ##
 
-- [Gradle intergration](#gradle-integration-)
+- [Gradle integration](#gradle-integration-)
 - [Running SDK](#running-sdk-)
-- [Overriding components UI](#overriding-components-ui-)
+- [Overriding components UI](#overriding-ui-components-)
 - [Creating new components](#creating-new-components-)
     - [Defining Kotlin Component](#defining-kotlin-component-)
-    - [Defining JavaScript component](#defining-javascript-component-)
+    - [Defining JavaScript component](#defining-a-javascript-component-)
 
-Lets go step by step to quickly integrate the SDK with an Android application.
+Let's go step by step to quickly integrate the SDK with an Android application.
 
 ### Gradle integration ###
 
@@ -43,11 +43,11 @@ where:
 
 - **context** - Android application context
 - **config** - constellation sdk config object with parameters:
-    - **pegaUrl** - URL to Pega server e.g.: *https://insert-url-here.example/prweb*
-    - **pegaVersion** - Version of Pega server. For example, *8.24.1*. Determines the Constellation Core JS library version used by the SDK.
-    - **okHttpClient** (optional) - Instance of OkHttpClient that can be passed to the SDK for advanced networking control.
-    - **componentManager** (optional) - Instance of ComponentManager that is responsible for providing component definitions and managing them in the runtime
-    - **debuggable** (optional) - Flag that allows for debugging of underlying WebView engine
+    - **pegaUrl** — URL to Pega server e.g.: *https://insert-url-here.example/prweb*
+    - **pegaVersion** — Version of Pega server. For example, *8.24.1*. Determines the Constellation Core JS library version used by the SDK.
+    - **okHttpClient** (optional) — Instance of OkHttpClient that can be passed to the SDK for advanced networking control.
+    - **componentManager** (optional) — Instance of ComponentManager that is responsible for providing component definitions and managing them in the runtime
+    - **debuggable** (optional) — Flag that allows for debugging of the underlying WebView engine
 
 **2. Create Pega case using SDK**
 
@@ -59,8 +59,8 @@ sdk.createCase(caseClassName, startingFields)
 
 where:
 
-- **caseClassName** - Name of the Case Type class to be created, e.g. "DIXL-MediaCo-Work-NewService"
-- **startingFields** (optional) - Additional data that can be passed into the newly opened form, e.g:
+- **caseClassName** — Name of the Case Type class to be created, e.g. "DIXL-MediaCo-Work-NewService"
+- **startingFields** (optional) — Additional data that can be passed into the newly opened form, e.g.:
 
 ```kotlin
 val startingFields = mapOf(
@@ -77,12 +77,12 @@ val startingFields = mapOf(
 
 *ConstellationSdk* provides several states that can be observed for seamless UI integration:
 
-- **Initial** - initial state
-- **Loading** - form is loading
-- **Ready** - form ready to be displayed
-- **Error** - form could not be loaded, e.g. due to configuration or network issues
-- **Finished** - form processing finished
-- **Cancelled** - form processing cancelled
+- **Initial** — initial state
+- **Loading** — form is loading
+- **Ready** — form ready to be displayed
+- **Error** — form could not be loaded, e.g., due to configuration or network issues
+- **Finished** — form processing finished
+- **Cancelled** — form processing cancelled
 
 These states are available via *ConstellationSdk* interface:
 
@@ -122,7 +122,7 @@ fun Component.Render()
 Calling *RootContainerComponent.Render()* will render all components. 
 This extension function is helpful for rendering other components as well.
 
-> Please note that SDK provides ready-to-use set of components with their renderers.
+> Please note that SDK provides a ready-to-use set of components with their renderers.
 
 ### Overriding UI components ###
 
@@ -197,13 +197,13 @@ class ComponentDefinition(
 )
 ```
 
-- **type** - Instance of *ComponentType*
+- **type** — Instance of *ComponentType*
 
-- **jsFile** - Relative path to the JavaScript file that is the JS implementation of the component.<br>
+- **jsFile** — Relative path to the JavaScript file that is the JS implementation of the component.<br>
   It is possible to override the native implementation of an already existing component.
   In that case *jsFile* should be set to *null* (The JS file from the SDK will be used instead).
 
-- **producer** - instance of *ComponentProducer*
+- **producer** — instance of *ComponentProducer*
 
 *ComponentProducer* is the functional interface that has the *produce* method returning the instance of *Component*:
 
