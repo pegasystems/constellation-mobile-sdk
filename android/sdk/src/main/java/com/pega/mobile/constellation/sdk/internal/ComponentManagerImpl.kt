@@ -8,6 +8,7 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import org.json.JSONObject
 
 internal class ComponentManagerImpl(
@@ -39,7 +40,8 @@ internal class ComponentManagerImpl(
 
     private fun produceComponent(context: ComponentContext): Component =
         definitions[context.type]?.producer?.produce(context)
-            ?: UnsupportedComponent.create(context)
+            ?: UnsupportedComponent.create(context, cause = MISSING_COMPONENT_DEFINITION)
+                .also { Log.w(TAG, "Cannot find component definition for ${context.type}") }
 
     companion object {
         private const val TAG = "ComponentManager"

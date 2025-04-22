@@ -7,6 +7,7 @@ import androidx.compose.runtime.compositionLocalOf
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Unsupported
 import com.pega.mobile.constellation.sdk.components.Components
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent
+import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
 
 private const val TAG = "ComponentRenderer"
 private val LocalRenderers = compositionLocalOf { Components.DefaultRenderers }
@@ -30,7 +31,9 @@ fun <C : Component> C.Render() {
     val component = this
     val renderers = LocalRenderers.current
     renderers[context.type]?.Render(component)
-        ?: renderers.getValue(Unsupported).Render(UnsupportedComponent.create(context))
+        ?: renderers.getValue(Unsupported)
+            .Render(UnsupportedComponent.create(context, cause = MISSING_COMPONENT_RENDERER))
+            .also { Log.e(TAG, "Cannot find component renderer for ${context.type}") }
 }
 
 @Composable
