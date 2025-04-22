@@ -67,12 +67,7 @@ export class IntegerComponent {
     this.props.label = configProps.label;
 
     if (configProps.value) {
-      const value = configProps.value
-      if (typeof value === 'string') {
-        this.props.value = parseInt(value, 10);
-      } else {
-        this.props.value = value;
-      }
+      this.props.value = configProps.value.toString();
     }
     this.props.helperText = configProps.helperText || '';
     this.props.placeholder = configProps.placeholder || '';

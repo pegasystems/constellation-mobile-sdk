@@ -17,7 +17,7 @@ abstract class SelectableComponent(context: ComponentContext) : FieldComponent(c
         placeholder = props.getString("placeholder")
         options = props.getJSONArray("options").mapWithIndex { index ->
             getJSONObject(index).let {
-                SelectableOption(it["key"].toString(), it["label"].toString())
+                SelectableOption(it.getString("key"), it.getString("label"))
             }
         }
     }
