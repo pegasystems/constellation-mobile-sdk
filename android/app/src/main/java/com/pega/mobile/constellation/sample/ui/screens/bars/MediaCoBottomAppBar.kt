@@ -1,4 +1,4 @@
-package com.pega.mobile.constellation.sample.ui.screens.app
+package com.pega.mobile.constellation.sample.ui.screens.bars
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.RowScope

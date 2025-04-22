@@ -13,20 +13,44 @@ JavaScript common code runs in hidden WebView which is used only as JS engine.
 
 Currently SDK supports creating new case of given type and processing assignment.
 
-### Supported Controls
+### Supported components
 
-- TextInput
-- TextArea
-- Email
+#### Fields
 - Checkbox
-- Url
+- Currency
 - Date
+- Dropdown
+- Email
+- Integer
+- Phone
+- RadioButtons
+- TextArea
+- TextInput
+- Url
+
+#### Containers
+- Assignment
+- AssignmentCard
+- DefaultForm
+- FlowContainer
+- Region
+- RootContainer
+- View
+- ViewContainer
+
+#### Other
+- ActionButtons
+- AlertBanner
 
 ## Get started ##
 
-### [Integration with Android applications](android/README.md) ###
+### [Getting started with the SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html)
 
-### [Integration with iOS applications](ios/README.md) ###
+### [Integration with Android applications](android/README.md)
+
+### [Integration with iOS applications](ios/README.md)
+
+### [Running SDK with MediaCo sample application](docs/MediaCo.md)
 
 ## License
 

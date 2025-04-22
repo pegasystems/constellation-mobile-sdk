@@ -106,7 +106,7 @@ export class DropdownComponent {
 
     this.props.options = options.map(option => {
       const localizedValue = this.getLocalizedOptionValue(option, localePath, localeClass, localeContext, localeName);
-      return { key: option.key, label: localizedValue };
+      return { key: option.key.toString(), label: localizedValue.toString() };
     });
 
     this.props.validateMessage = this.jsComponentPConnectData.validateMessage || ''

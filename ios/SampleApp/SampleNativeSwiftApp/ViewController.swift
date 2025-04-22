@@ -43,6 +43,7 @@ class ViewController: UIViewController {
             let hostingController = UIHostingController(
                 rootView: PMSDKCreateCaseView(
                     pegaURL: SDKConfiguration.environmentURL,
+                    pegaVersion: SDKConfiguration.environmentVersion,
                     caseClass: SDKConfiguration.caseClassName,
                     startingFields: startingFields,
                     delegate: self

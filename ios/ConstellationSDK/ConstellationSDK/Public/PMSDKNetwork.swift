@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 public class PMSDKNetwork {
     
@@ -13,23 +14,26 @@ public protocol PMSDKNetworkRequestDelegate: AnyObject {
 }
 
 enum HTTPHandlerError: Error {
-    case shouldNotBeHandled
+    case delegateNotDefined
 }
 
 extension PMSDKNetwork {
 
-    private static func canHandle(_ request: URLRequest) throws {
-        if !(PMSDKNetwork.shared.requestDelegate?.shouldHandle(request: request) ?? false) {
-            throw HTTPHandlerError.shouldNotBeHandled
-        }
+    private static func canHandle(_ request: URLRequest) -> Bool {
+        (PMSDKNetwork.shared.requestDelegate?.shouldHandle(request: request) ?? false)
     }
 
     static func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
-        // i would prefer to log error from here, but old SDK do it this way
         guard let requestDelegate = PMSDKNetwork.shared.requestDelegate else {
-            fatalError("Invalid configuration. PMSDKNetwork without a delegate object.")
+            Logger.current().error("Network delegate not defined, cannot send request.")
+            throw HTTPHandlerError.delegateNotDefined
         }
-        try canHandle(request)
-        return try await requestDelegate.performRequest(request)
+        if canHandle(request) {
+            return try await requestDelegate.performRequest(request)
+        }
+        Logger.current().debug(
+            "Sending request to \(request.url?.absoluteString ?? "nil") using built-in mechanism."
+        )
+        return try await URLSession.shared.data(for: request)
     }
 }

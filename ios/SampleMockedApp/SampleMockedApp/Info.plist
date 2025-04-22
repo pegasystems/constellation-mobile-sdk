@@ -23,7 +23,9 @@
 	</dict>
 	<key>PegaSystemURL</key>
 	<string>https://url.example</string>
-	<key>PegaOAuth2Configuration</key>
+	<key>PegaVersion</key>
+	<string>8.24.1</string>
+	<key>PegaAuthConfiguration</key>
 	<dict>
 		<key>client_id</key>
 		<string>1234</string>
