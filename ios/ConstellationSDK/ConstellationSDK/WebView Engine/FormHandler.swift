@@ -4,14 +4,12 @@ import OSLog
 
 class FormHandler: NSObject, WKScriptMessageHandler {
     weak var manager: ComponentManager?
-    private var resultHandler: CaseProcessingResultHandler
+    private let continuation = DeferedContinuation<CaseProcessingResult>()
 
     init(
-        manager: ComponentManager,
-        resultHandler: @escaping CaseProcessingResultHandler
+        manager: ComponentManager
     ) {
         self.manager = manager
-        self.resultHandler = resultHandler
     }
 
     func userContentController(
@@ -36,6 +34,10 @@ class FormHandler: NSObject, WKScriptMessageHandler {
         default:
             Logger.current().error("Unexpected message type: \(type)")
         }
+    }
+
+    func processingResult() async -> CaseProcessingResult {
+        await continuation.result()
     }
 
     private func handleUpdateComponent(_ input: [Any]) {
@@ -70,18 +72,18 @@ class FormHandler: NSObject, WKScriptMessageHandler {
 
     private func handleFormFinished(_ input: [Any]) {
         Logger.current().debug("Form finished.")
-        resultHandler(.finished(input[1] as? String))
+        continuation.proceed(.finished(input[1] as? String))
     }
 
     private func handleFormCancel() {
         Logger.current().debug("Form cancelled.")
-        resultHandler(.cancelled)
+        continuation.proceed(.cancelled)
     }
 
     private func handleFormError(_ input: [Any]) {
         let errorMessage = input[1] as? String ?? "Unexpected."
         Logger.current().debug("Form encountered an error: \(errorMessage)")
-        resultHandler(.error(errorMessage))
+        continuation.proceed(.error(errorMessage))
     }
 }
 

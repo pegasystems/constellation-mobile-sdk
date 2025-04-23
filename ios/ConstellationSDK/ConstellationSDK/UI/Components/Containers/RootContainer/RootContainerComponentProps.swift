@@ -17,6 +17,7 @@ struct AlertInfo {
 class RootContainerComponentProps : ObservableObject, ComponentProps {
     @Published var viewContainer: ViewID? = nil
     @Published var alertInfo: AlertInfo? = nil
+    @Published var view: AnyView? = nil
 }
 
 struct HTTPMessage: Decodable {

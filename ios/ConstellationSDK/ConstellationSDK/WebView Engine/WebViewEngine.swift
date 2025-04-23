@@ -19,15 +19,26 @@ extension WebViewEngine {
     }
 }
 
+enum WebViewEngineError: Error {
+    case incorrectBaseURL
+}
+
 class WebViewEngine: NSObject {
     private var webView: WKWebView?
     private var initialNavigation: WKNavigation?
-    private var configuration: Configuration?
+    private var configuration: Configuration
 
     let bundle = Bundle(for: ComponentManager.self)
     private(set) var manager = ComponentManager()
+    private var formHandler: FormHandler?
 
-    override init() {}
+    init(configuration: Configuration) throws {
+        guard (try? configuration.url.standardizingBaseURL()) != nil else {
+            Logger.current().error("Can not get standardized base url from configuration.")
+            throw WebViewEngineError.incorrectBaseURL
+        }
+        self.configuration = configuration
+    }
 
     deinit {
         Logger.current().debug("Engine deinit.")
@@ -51,34 +62,20 @@ class WebViewEngine: NSObject {
         return WKWebView(frame: .zero, configuration: config)
     }
 
-    func start(
-        _ configuration: Configuration,
-        completionHandler: @escaping CaseProcessingResultHandler
-    ) {
-        if !Thread.isMainThread {
-            DispatchQueue.main.async {
-                self.start(configuration, completionHandler: completionHandler)
-            }
-        }
-
+    @MainActor
+    func startProcessing() async -> CaseProcessingResult {
         guard let baseURL = try? configuration.url.standardizingBaseURL() else {
             Logger.current().error("Can not get standardized base url from configuration.")
-            return
+            return .error("Can not get standardized base url from configuration.")
         }
 
-        guard self.webView == nil else {
-            Logger.current().error("Engine already started.")
-            return
+        if let formHandler {
+            return await formHandler.processingResult()
         }
-
-        self.configuration = configuration
 
         let resourceHandler = ResourceHandler(baseURL: baseURL)
 
-        let formHandler = FormHandler(manager: manager) { [weak self] result in
-            self?.stop()
-            completionHandler(result)
-        }
+        let formHandler = FormHandler(manager: manager)
 
         let webView = createWebView(with: resourceHandler, formHandler: formHandler)
         webView.uiDelegate = self
@@ -100,13 +97,12 @@ class WebViewEngine: NSObject {
         manager.formSubmitCallback = { [weak webView] in
             webView?.evaluateJavaScript("submitForm()")
         }
-    }
 
-    func stop() {
-        webView = nil
+        let result = await formHandler.processingResult()
         initialNavigation = nil
-        configuration = nil
         manager = ComponentManager()
+        self.webView = nil
+        return result
     }
 }
 
@@ -153,11 +149,8 @@ extension WebViewEngine: WKNavigationDelegate {
         guard navigation == initialNavigation else {
             return
         }
-        guard let configuration else {
-            Logger.current().error("Unknown configuration.")
-            return
-        }
         Logger.current().info("Initial navigation completed, injecting scripts.")
+        manager.rootComponent.injectView(webView)
         let injector = ScriptInjector()
         Task {
             do {
