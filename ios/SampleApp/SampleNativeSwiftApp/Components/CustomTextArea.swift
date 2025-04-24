@@ -10,7 +10,7 @@ struct CustomTextArea: View {
     init(properties: TextAreaProps) {
         self.properties = properties
     }
-    
+
     var body: some View {
         VStack {
             if properties.visible {

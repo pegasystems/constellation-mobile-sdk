@@ -29,7 +29,7 @@ class WebViewEngine: NSObject {
     private var configuration: Configuration
 
     let bundle = Bundle(for: ComponentManager.self)
-    private(set) var manager = ComponentManager()
+    let manager = ComponentManager()
     private var formHandler: FormHandler?
 
     init(configuration: Configuration) throws {
@@ -100,7 +100,7 @@ class WebViewEngine: NSObject {
 
         let result = await formHandler.processingResult()
         initialNavigation = nil
-        manager = ComponentManager()
+        manager.reset()
         self.webView = nil
         return result
     }
@@ -150,7 +150,7 @@ extension WebViewEngine: WKNavigationDelegate {
             return
         }
         Logger.current().info("Initial navigation completed, injecting scripts.")
-        manager.rootComponent.injectView(webView)
+        manager.rootComponent.injectInvisible(webView)
         let injector = ScriptInjector()
         Task {
             do {

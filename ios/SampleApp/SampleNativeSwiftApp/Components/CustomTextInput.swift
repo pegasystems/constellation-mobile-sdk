@@ -2,14 +2,14 @@ import SwiftUI
 import ConstellationSDK
 
 struct CustomTextInput: View {
-    
+
     @ObservedObject var properties: TextInputProps
     @FocusState private var isFocused: Bool
-    
+
     init(properties: TextInputProps) {
         self.properties = properties
     }
-    
+
     var body: some View {
         VStack {
             if properties.visible {
@@ -18,7 +18,7 @@ struct CustomTextInput: View {
         }
         .animation(.easeInOut, value: properties.visible)
     }
-    
+
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
@@ -29,7 +29,7 @@ struct CustomTextInput: View {
                     Text("*").foregroundColor(.red).fontWeight(.semibold)
                 }
             }
-            
+
             HStack {
                 TextField(
                     text: $properties.value,

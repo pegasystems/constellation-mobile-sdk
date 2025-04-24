@@ -44,11 +44,7 @@
 /* Begin PBXFileReference section */
 		6543469A2CD2838600849AA8 /* SDKConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKConfiguration.swift; sourceTree = "<group>"; };
 		65659C762C4DA9E500D34B2D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		659383962CB86C3700E9C697 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
-		6593839A2CB878F900E9C697 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
-		6593839E2CB8917800E9C697 /* CustomDropdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDropdown.swift; sourceTree = "<group>"; };
 		659383A02CB8950E00E9C697 /* CustomTextArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextArea.swift; sourceTree = "<group>"; };
-		659383A22CB897D300E9C697 /* CustomDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDate.swift; sourceTree = "<group>"; };
 		65D1FF4A2C400C1C0013A71B /* SampleNativeSwiftApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleNativeSwiftApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D1FF4D2C400C1C0013A71B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D1FF4F2C400C1C0013A71B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,10 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				B50BA3B22D6CC9D800EBCCE3 /* Slider */,
-				659383962CB86C3700E9C697 /* CustomButton.swift */,
-				659383A22CB897D300E9C697 /* CustomDate.swift */,
-				6593839E2CB8917800E9C697 /* CustomDropdown.swift */,
-				6593839A2CB878F900E9C697 /* CustomLabel.swift */,
 				659383A02CB8950E00E9C697 /* CustomTextArea.swift */,
 				65D5ADB72C4816FD0011D61D /* CustomTextInput.swift */,
 			);

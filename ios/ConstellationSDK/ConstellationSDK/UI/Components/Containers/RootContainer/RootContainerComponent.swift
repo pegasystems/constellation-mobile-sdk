@@ -1,5 +1,6 @@
 import Combine
 import SwiftUI
+import WebKit
 
 class RootContainerComponentProvider: ContainerProvider {
     var eventSubject: AnyPublisher<ComponentEvent, Never>
@@ -23,8 +24,8 @@ class RootContainerComponentProvider: ContainerProvider {
             onClose: onClose)
     }
 
-    func injectView(_ view: UIView) {
-        properties.view = AnyView(WrappedView(view))
+    func injectInvisible(_ webView: WKWebView) {
+        properties.invisibleWebView = AnyView(WrappedView(webView))
     }
 
     func presentConfirm(message: String, onResult: @escaping (Bool) -> Void) {
@@ -57,8 +58,10 @@ struct RootContainerComponentView: View {
 
     var body: some View {
         VStack {
-            if let injectedView = properties.view {
-                injectedView.frame(height: 1)
+            if let invisibleWebView = properties.invisibleWebView {
+                invisibleWebView
+                    .frame(height: 1)
+                    .opacity(1)
             }
             if let viewContainerId = properties.viewContainer?.stringId {
                 manager?.view(for: viewContainerId)

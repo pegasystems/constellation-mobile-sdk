@@ -72,4 +72,11 @@ class ComponentManager {
     func view(for id: String) -> AnyView? {
         providers[id]?.view
     }
+
+    func reset() {
+        providers.removeAll()
+        context.removeAll()
+        componentEventCallback = nil
+        formSubmitCallback = nil
+    }
 }
