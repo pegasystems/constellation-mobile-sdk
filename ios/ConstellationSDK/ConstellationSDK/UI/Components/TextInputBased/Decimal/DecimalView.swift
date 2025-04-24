@@ -43,7 +43,7 @@ struct DecimalView: View {
                 .disabled(properties.disabled || properties.readOnly)
                 .focused($isFocused)
                 .onChange(of: properties.value) { newValue in
-                    properties.value = format(value: newValue, decimalPrecision: properties.decimalPrecision)
+                    properties.value = newValue.formattedToDecimalPlaces(properties.decimalPrecision)
                 }
                 
                 let isValid = properties.validateMessage?.isEmpty ?? true
@@ -77,18 +77,5 @@ struct DecimalView: View {
         }
         .opacity(properties.disabled ? 0.5 : 1)
         .observe(properties: properties, isFocused: _isFocused)
-    }
-    
-    private func format(value: String, decimalPrecision: Int) -> String {
-        let filtered = value.filter { "0123456789,.".contains($0) }.replacingOccurrences(of: ",", with: ".")
-        if let decimalIndex = filtered.firstIndex(of: ".") {
-            let integerPart = filtered[..<decimalIndex]
-            let decimalPart = filtered[decimalIndex...].prefix(decimalPrecision + 1)
-            if decimalPrecision == 0 {
-                return String(integerPart)
-            }
-            return "\(integerPart)\(decimalPart)"
-        }
-        return filtered
     }
 }

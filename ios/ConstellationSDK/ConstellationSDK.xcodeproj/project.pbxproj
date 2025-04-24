@@ -21,6 +21,7 @@
 		656AA5822DBA4D0200312BE2 /* DecimalComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656AA5812DBA4D0200312BE2 /* DecimalComponentProvider.swift */; };
 		656AA5842DBA4D6B00312BE2 /* DecimalProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656AA5832DBA4D6B00312BE2 /* DecimalProps.swift */; };
 		656AA5862DBA4DA100312BE2 /* DecimalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656AA5852DBA4DA100312BE2 /* DecimalView.swift */; };
+		656AA5892DBA610F00312BE2 /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656AA5882DBA610F00312BE2 /* String+Utils.swift */; };
 		657370882D8DB98A001CC458 /* FlowContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370872D8DB98A001CC458 /* FlowContainerComponent.swift */; };
 		6573708A2D8DB99B001CC458 /* FlowContainerComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657370892D8DB99B001CC458 /* FlowContainerComponentProps.swift */; };
 		6573708D2D8DBE82001CC458 /* AlertBannerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573708C2D8DBE82001CC458 /* AlertBannerComponent.swift */; };
@@ -89,6 +90,7 @@
 		656AA5812DBA4D0200312BE2 /* DecimalComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalComponentProvider.swift; sourceTree = "<group>"; };
 		656AA5832DBA4D6B00312BE2 /* DecimalProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalProps.swift; sourceTree = "<group>"; };
 		656AA5852DBA4DA100312BE2 /* DecimalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalView.swift; sourceTree = "<group>"; };
+		656AA5882DBA610F00312BE2 /* String+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
 		657370872D8DB98A001CC458 /* FlowContainerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowContainerComponent.swift; sourceTree = "<group>"; };
 		657370892D8DB99B001CC458 /* FlowContainerComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowContainerComponentProps.swift; sourceTree = "<group>"; };
 		6573708C2D8DBE82001CC458 /* AlertBannerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBannerComponent.swift; sourceTree = "<group>"; };
@@ -213,6 +215,14 @@
 			path = Decimal;
 			sourceTree = "<group>";
 		};
+		656AA5872DBA600F00312BE2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				656AA5882DBA610F00312BE2 /* String+Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		657370862D8DB95E001CC458 /* FlowContainer */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				B5F1A39B2D6775DE0026527C /* Components */,
+				656AA5872DBA600F00312BE2 /* Utils */,
 				B52349FC2D53ADF40042F27B /* ComponentManager.swift */,
 				B52349AC2D53AD010042F27B /* ComponentProps.swift */,
 				B52349A12D53AD010042F27B /* ComponentProvider.swift */,
@@ -628,6 +639,7 @@
 				657594012DAEB14300B7D73A /* CurrencyComponentProvider.swift in Sources */,
 				B53C2D0D2D81CDD900DB47FB /* ViewID.swift in Sources */,
 				657594052DAEB25300B7D73A /* CurrencyView.swift in Sources */,
+				656AA5892DBA610F00312BE2 /* String+Utils.swift in Sources */,
 				B57789DC2D8083B20036B039 /* CaseProcessingResult.swift in Sources */,
 				B52349CC2D53AD010042F27B /* CheckboxProps.swift in Sources */,
 				657593FE2DAEAB9800B7D73A /* IntegerView.swift in Sources */,
