@@ -21,6 +21,12 @@ class ViewController: UIViewController {
         PMSDKNetwork.shared.requestDelegate = self
 
         // 2. Registering custom SwiftUI controls
+        PMSDKComponentManager.shared.register("TextArea") {
+            CustomTextAreaComponentProvider()
+        }
+        PMSDKComponentManager.shared.register("TextInput") {
+            CustomTextInputComponentProvider()
+        }
         try? PMSDKComponentManager.shared.register(
             "MyCompany_MyLib_Slider",
             jsFile: Bundle.main.url(forResource: "slider.component", withExtension: "js")!
