@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct CurrencyView: View {
-
-    @ObservedObject var properties: CurrencyProps
+struct DecimalView: View {
+    
+    @ObservedObject var properties: DecimalProps
     @FocusState private var isFocused: Bool
-
-    init(properties: CurrencyProps) {
+    
+    init(properties: DecimalProps) {
         self.properties = properties
     }
-
+    
     var body: some View {
         VStack {
             if properties.visible {
@@ -17,38 +17,26 @@ struct CurrencyView: View {
         }
         .animation(.easeInOut, value: properties.visible)
     }
-
+    
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
                 if let label = properties.label, !properties.hideLabel {
-                    Text(label)
-                        .foregroundStyle(Color.black)
-                        .font(.system(size: 12, weight: .light, design: .rounded))
+                    Text(label).foregroundStyle(Color.black).font(.system(size: 12, weight: .light, design: .rounded))
                 }
                 if properties.required {
-                    Text("*")
-                        .foregroundColor(.red)
-                        .fontWeight(.semibold)
+                    Text("*").foregroundColor(.red).fontWeight(.semibold)
                 }
             }
             
             HStack {
-                if properties.showISOCode {
-                    Text(properties.currencyISOCode)
-                        .foregroundStyle(Color.gray)
-                        .fontWeight(.bold)
-                }
-                
                 TextField(
                     text: $properties.value,
                     prompt: Text(properties.placeholder ?? "")
-                        .foregroundStyle(Color.gray)
-                        .fontWeight(.light),
+                        .foregroundStyle(Color.gray).fontWeight(.light),
                     label: {
                         Text(properties.value)
-                            .foregroundStyle(Color.black)
-                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.black).fontWeight(.semibold)
                     }
                 )
                 .keyboardType(properties.decimalPrecision == 0 ? .numberPad : .decimalPad)
@@ -71,7 +59,10 @@ struct CurrencyView: View {
             }
             .padding()
             .background(Color.white)
-            .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
+            .clipShape(RoundedRectangle(cornerSize: CGSize(
+                width: 10,
+                height: 10
+            )))
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(isFocused ? Color.blue : Color.gray, lineWidth: 3)
@@ -87,7 +78,7 @@ struct CurrencyView: View {
         .opacity(properties.disabled ? 0.5 : 1)
         .observe(properties: properties, isFocused: _isFocused)
     }
-
+    
     private func format(value: String, decimalPrecision: Int) -> String {
         let filtered = value.filter { "0123456789,.".contains($0) }.replacingOccurrences(of: ",", with: ".")
         if let decimalIndex = filtered.firstIndex(of: ".") {

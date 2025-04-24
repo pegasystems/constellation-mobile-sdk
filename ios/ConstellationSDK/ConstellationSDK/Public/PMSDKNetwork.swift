@@ -24,16 +24,21 @@ extension PMSDKNetwork {
     }
 
     static func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
+        // Remove "Authorization" header if necessary due to JS layer unnecessarily appending `undefined` value to it.
+        var modifiedRequest = request
+        if modifiedRequest.value(forHTTPHeaderField: "Authorization") == "undefined" {
+            modifiedRequest.setValue(nil, forHTTPHeaderField: "Authorization")
+        }
         guard let requestDelegate = PMSDKNetwork.shared.requestDelegate else {
             Logger.current().error("Network delegate not defined, cannot send request.")
             throw HTTPHandlerError.delegateNotDefined
         }
-        if canHandle(request) {
-            return try await requestDelegate.performRequest(request)
+        if canHandle(modifiedRequest) {
+            return try await requestDelegate.performRequest(modifiedRequest)
         }
         Logger.current().debug(
-            "Sending request to \(request.url?.absoluteString ?? "nil") using built-in mechanism."
+            "Sending request to \(modifiedRequest.url?.absoluteString ?? "nil") using built-in mechanism."
         )
-        return try await URLSession.shared.data(for: request)
+        return try await URLSession.shared.data(for: modifiedRequest)
     }
 }

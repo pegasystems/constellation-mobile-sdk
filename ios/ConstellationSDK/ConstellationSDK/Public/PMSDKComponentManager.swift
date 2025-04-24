@@ -35,6 +35,7 @@ public class PMSDKComponentManager {
         "Email": DefaultEmailComponentProvider.self,
         "Checkbox": DefaultCheckboxComponentProvider.self,
         "Currency": CurrencyComponentProvider.self,
+        "Decimal": DecimalComponentProvider.self,
         "Date": DefaultDateComponentProvider.self,
         "Integer": IntegerComponentProvider.self,
         "Dropdown": DropdownComponentProvider.self,
