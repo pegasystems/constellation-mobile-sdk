@@ -44,7 +44,8 @@ final class SampleMockedAppUITests: XCTestCase {
         app.datePickers.buttons["Saturday, January 1"].assertExists().tap()
         // force tap required, as element is not hittable when data picker is shown
         // and we need this tap to hide data picker
-        app.staticTexts.firstContainingLabel(text: "Step instructions").assertExists().forceTap()
+        app.staticTexts.firstContainingLabel(text: "Some description").forceTapIfExists()
+        app.staticTexts.firstContainingLabel(text: "Step instructions").forceTapIfExists()
         nextButton.assertExists().tap()
         
         app.staticTexts["Case ID"].assertExists()
@@ -157,6 +158,12 @@ extension XCUIElement {
     func tapIfHittable(timeout: TimeInterval = 2.5) {
         if (waitForExistence(timeout: timeout) && isHittable) {
             tap()
+        }
+    }
+
+    func forceTapIfExists(timeout: TimeInterval = 2.5) {
+        if (waitForExistence(timeout: timeout)) {
+            forceTap()
         }
     }
 }
