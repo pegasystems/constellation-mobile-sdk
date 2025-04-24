@@ -40,7 +40,7 @@ export class ReferenceComponent {
     //  the visibility prop. (The following 3 lines were carried over from React SDK)
     delete referenceConfig?.name;
     // delete referenceConfig?.type;
-    delete referenceConfig?.visibility;
+    // delete referenceConfig?.visibility;
 
     const viewMetadata = inPConn.getReferencedView();
 
@@ -51,13 +51,21 @@ export class ReferenceComponent {
 
     // If we get here, we have metadata for a View component...
     // const referencedComponentName = viewMetadata.type;
+    if (referenceConfig.visibility && referenceConfig.visibility.length > 0) {
+      const keyPattern = /(\..+?) (=|!)=/;
+      const propertyKeys = referenceConfig.visibility.split('&&').map((part) => {
+        return part.match(keyPattern)[1];
+      });
+      propertyKeys.forEach((key) => {
+        referenceConfig.visibility = referenceConfig.visibility.replace(key, inPConn.getPageReference().replace("caseInfo.content","") + key)
+      })
+    }
 
     const viewObject = {
       ...viewMetadata,
       config: {
         ...viewMetadata.config,
-        ...referenceConfig,
-        visibility: theResolvedConfigProps.visibility
+        ...referenceConfig
       }
     };
 
