@@ -40,7 +40,7 @@ export class ReferenceComponent {
     //  the visibility prop. (The following 3 lines were carried over from React SDK)
     delete referenceConfig?.name;
     // delete referenceConfig?.type;
-    // delete referenceConfig?.visibility;
+    delete referenceConfig?.visibility;
 
     const viewMetadata = inPConn.getReferencedView();
 
@@ -56,7 +56,8 @@ export class ReferenceComponent {
       ...viewMetadata,
       config: {
         ...viewMetadata.config,
-        ...referenceConfig
+        ...referenceConfig,
+        visibility: theResolvedConfigProps.visibility
       }
     };
 
