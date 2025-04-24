@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 public struct PMSDKCreateCaseView: View {
-    let engine = WebViewEngine()
+    @State private var rootView: AnyView? = nil
     private let engineConfiguration: WebViewEngine.Configuration
     private weak var delegate: PMSDKCreateCaseViewDelegate?
 
@@ -22,20 +22,30 @@ public struct PMSDKCreateCaseView: View {
 
     public var body: some View {
         VStack {
-            engine.manager.view(for: "1")?.padding()
-        }.task {
-            engine.start(engineConfiguration) {
-                switch $0 {
-                case .cancelled:
-                    delegate?.createCaseViewDidCancelProcessing(self)
-                case .finished(let message):
-                    delegate?.createCaseView(self, didFinishProcessingWith: message)
-                case .error(let message):
-                    delegate?.createCaseView(self, didFailProcessingWith: message)
-                }
+            if let rootView {
+                rootView.padding()
             }
-        }.onDisappear {
-            engine.stop()
+        }.task {
+            await startProcessing()
+        }
+    }
+
+    private func startProcessing() async {
+        do {
+            let engine = try WebViewEngine(configuration: engineConfiguration)
+            rootView = AnyView(engine.manager.view(for: "1"))
+            switch await engine.startProcessing() {
+            case .cancelled:
+                delegate?.createCaseViewDidCancelProcessing(self)
+            case .finished(let message):
+                delegate?.createCaseView(self, didFinishProcessingWith: message)
+            case .error(let message):
+                delegate?.createCaseView(self, didFailProcessingWith: message)
+            }
+        } catch WebViewEngineError.incorrectBaseURL {
+            delegate?.createCaseView(self, didFailProcessingWith: "Incorrect base URL.")
+        } catch {
+            delegate?.createCaseView(self, didFailProcessingWith: error.localizedDescription)
         }
     }
 }

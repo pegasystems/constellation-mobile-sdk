@@ -22,7 +22,11 @@ class RootContainerComponentProvider: ContainerProvider {
             type: .alert,
             onClose: onClose)
     }
-    
+
+    func injectView(_ view: UIView) {
+        properties.view = AnyView(WrappedView(view))
+    }
+
     func presentConfirm(message: String, onResult: @escaping (Bool) -> Void) {
         properties.alertInfo = AlertInfo(
             message: message,
@@ -45,14 +49,17 @@ struct RootContainerComponentView: View {
     
     @ObservedObject var properties: RootContainerComponentProps
     weak var manager: ComponentManager?
-    
+
     init (properties: RootContainerComponentProps, manager: ComponentManager?) {
         self.manager = manager
         self.properties = properties
     }
-    
+
     var body: some View {
         VStack {
+            if let injectedView = properties.view {
+                injectedView.frame(height: 1)
+            }
             if let viewContainerId = properties.viewContainer?.stringId {
                 manager?.view(for: viewContainerId)
             } else {
@@ -94,5 +101,21 @@ struct RootContainerComponentView: View {
                 }
             }
         }
+    }
+}
+
+fileprivate struct WrappedView: UIViewRepresentable {
+    private let storedView: UIView
+
+    init(_ view: UIView) {
+        storedView = view
+    }
+
+    func makeUIView(context: Context) -> some UIView {
+        storedView
+    }
+
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        //no-op
     }
 }
