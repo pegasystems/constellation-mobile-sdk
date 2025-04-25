@@ -1,10 +1,14 @@
-class ActionButtonsProps: ObservableObject, ComponentProps {
-    class ButtonProps: ObservableObject, Identifiable {
-        @Published var type: String = ""
-        @Published var name: String = ""
-        @Published var jsAction: String = ""
+import Combine
+import Foundation
+import SwiftUI
 
-        var clickEvent: ComponentEvent {
+public class ActionButtonsProps: ObservableObject, ComponentProps {
+    public class ButtonProps: ObservableObject, Identifiable {
+        @Published public var type: String = ""
+        @Published public var name: String = ""
+        @Published public var jsAction: String = ""
+
+        public var clickEvent: ComponentEvent {
             .init(
                 type: .actionButtonClick,
                 componentData: .init(
@@ -15,8 +19,8 @@ class ActionButtonsProps: ObservableObject, ComponentProps {
             )
         }
     }
-    @Published var mainButtons: [ButtonProps] = []
-    @Published var secondaryButtons: [ButtonProps] = []
+    @Published public var mainButtons: [ButtonProps] = []
+    @Published public var secondaryButtons: [ButtonProps] = []
 }
 
 struct DecodableActionButtonProps: Decodable {

@@ -1,14 +1,14 @@
 import Combine
 import SwiftUI
 
-class ViewComponentProps : ObservableObject, ComponentProps {
-    @Published var title: String? = nil
-    @Published var showLabel: Bool = false
-    @Published var label: String = ""
-    @Published var instructions: String? = nil
-    @Published var children: [ViewID] = []
-    @Published var loading: Bool = true
-    @Published var visible: Bool = true
+public class ViewComponentProps : ObservableObject, ComponentProps {
+    @Published public var title: String? = nil
+    @Published public var showLabel: Bool = false
+    @Published public var label: String = ""
+    @Published public var instructions: String? = nil
+    @Published public var children: [ViewID] = []
+    @Published public var loading: Bool = true
+    @Published public var visible: Bool = true
 }
 
 struct DecodableViewComponentProps: Decodable {

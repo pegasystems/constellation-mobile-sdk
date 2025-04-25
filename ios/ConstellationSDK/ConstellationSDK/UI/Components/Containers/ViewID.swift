@@ -1,4 +1,4 @@
-struct ViewID: Identifiable, Equatable {
-    var id: String { stringId }
-    var stringId: String
+public struct ViewID: Identifiable, Equatable {
+    public var id: String { stringId }
+    public var stringId: String
 }

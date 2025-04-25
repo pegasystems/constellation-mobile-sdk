@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-class AlertBannerComponentProps : ObservableObject, ComponentProps {
+public class AlertBannerComponentProps : ObservableObject, ComponentProps {
     @Published var variant: String! = nil
     @Published var messages: [String] = []
 }

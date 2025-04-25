@@ -10,6 +10,8 @@
 		651EF97E2D80837000227F57 /* CustomTextArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659383A02CB8950E00E9C697 /* CustomTextArea.swift */; };
 		6543469B2CD2838600849AA8 /* SDKConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6543469A2CD2838600849AA8 /* SDKConfiguration.swift */; };
 		65659C7C2C4DA9E600D34B2D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65659C762C4DA9E500D34B2D /* Images.xcassets */; };
+		656931032DBBA91400E88803 /* CustomAssignmentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656931022DBBA91400E88803 /* CustomAssignmentCard.swift */; };
+		656931052DBBAA4C00E88803 /* CustomActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656931042DBBAA4C00E88803 /* CustomActionButtons.swift */; };
 		65D1FF4E2C400C1C0013A71B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D1FF4D2C400C1C0013A71B /* AppDelegate.swift */; };
 		65D1FF502C400C1C0013A71B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D1FF4F2C400C1C0013A71B /* SceneDelegate.swift */; };
 		65D1FF552C400C1C0013A71B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 65D1FF542C400C1C0013A71B /* Base */; };
@@ -44,6 +46,8 @@
 /* Begin PBXFileReference section */
 		6543469A2CD2838600849AA8 /* SDKConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKConfiguration.swift; sourceTree = "<group>"; };
 		65659C762C4DA9E500D34B2D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		656931022DBBA91400E88803 /* CustomAssignmentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAssignmentCard.swift; sourceTree = "<group>"; };
+		656931042DBBAA4C00E88803 /* CustomActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionButtons.swift; sourceTree = "<group>"; };
 		659383A02CB8950E00E9C697 /* CustomTextArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextArea.swift; sourceTree = "<group>"; };
 		65D1FF4A2C400C1C0013A71B /* SampleNativeSwiftApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleNativeSwiftApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D1FF4D2C400C1C0013A71B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 				B50BA3B22D6CC9D800EBCCE3 /* Slider */,
 				659383A02CB8950E00E9C697 /* CustomTextArea.swift */,
 				65D5ADB72C4816FD0011D61D /* CustomTextInput.swift */,
+				656931022DBBA91400E88803 /* CustomAssignmentCard.swift */,
+				656931042DBBAA4C00E88803 /* CustomActionButtons.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -227,9 +233,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				656931032DBBA91400E88803 /* CustomAssignmentCard.swift in Sources */,
 				B50BA3B62D6CCC5B00EBCCE3 /* CustomSliderProps.swift in Sources */,
 				B50BA3B12D6CC63E00EBCCE3 /* CustomTextInput.swift in Sources */,
 				6543469B2CD2838600849AA8 /* SDKConfiguration.swift in Sources */,
+				656931052DBBAA4C00E88803 /* CustomActionButtons.swift in Sources */,
 				651EF97E2D80837000227F57 /* CustomTextArea.swift in Sources */,
 				B50BA3B72D6CCC5F00EBCCE3 /* CustomSlider.swift in Sources */,
 				B58C945F2D9EBD1600B978E6 /* RoundedCornerView.swift in Sources */,

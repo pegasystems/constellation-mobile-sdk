@@ -5,14 +5,14 @@
 import SwiftUI
 import Combine
 
-class UnsupportedComponentProvider: ComponentProvider {
-    var eventSubject: AnyPublisher<ComponentEvent, Never>
+public class UnsupportedComponentProvider: ComponentProvider {
+    public var eventSubject: AnyPublisher<ComponentEvent, Never>
     
-    var view: AnyView
+    public var view: AnyView
 
-    var properties: UnsupportedComponentProps
+    public var properties: UnsupportedComponentProps
 
-    required init() {
+    public required init() {
         eventSubject = PassthroughSubject().eraseToAnyPublisher()
         properties = .init()
         view = AnyView(
@@ -20,7 +20,7 @@ class UnsupportedComponentProvider: ComponentProvider {
         )
     }
 
-    func updateProperties(_ jsonInput: String) throws {
+    public func updateProperties(_ jsonInput: String) throws {
         try JSONDecoder()
             .decode(DecodableUnsupportedComponentProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)

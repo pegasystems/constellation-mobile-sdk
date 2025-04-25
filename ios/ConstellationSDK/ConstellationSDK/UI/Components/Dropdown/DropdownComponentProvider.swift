@@ -2,13 +2,13 @@ import Foundation
 import SwiftUI
 import Combine
 
-class DropdownComponentProvider: ComponentProvider {
+open class DropdownComponentProvider: ComponentProvider {
     
-    let view: AnyView
-    let properties: DropdownProps
-    let eventSubject: AnyPublisher<ComponentEvent, Never>
+    public let view: AnyView
+    public let properties: DropdownProps
+    public let eventSubject: AnyPublisher<ComponentEvent, Never>
 
-    required init() {
+    public required init() {
         properties = DropdownProps()
         let subject = PassthroughSubject<ComponentEvent, Never>()
         eventSubject = subject.eraseToAnyPublisher()

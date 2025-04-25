@@ -1,10 +1,10 @@
 import Combine
 import SwiftUI
 
-class AssignmentCardComponentProps : ObservableObject, ComponentProps {
-    @Published var actionButtons: ViewID? = nil
-    @Published var children: [ViewID] = []
-    @Published var loading: Bool = true
+public class AssignmentCardComponentProps : ObservableObject, ComponentProps {
+    @Published public var actionButtons: ViewID? = nil
+    @Published public var children: [ViewID] = []
+    @Published public var loading: Bool = true
 }
 
 struct DecodableAssignmentCardComponentProps: Decodable {

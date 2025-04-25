@@ -3,10 +3,11 @@
 //
 
 import Foundation
+import Combine
 
-class UnsupportedComponentProps: ObservableObject {
-    @Published var type: String = "Unknown"
-    @Published var visible: Bool = true
+public class UnsupportedComponentProps: ObservableObject {
+    @Published public var type: String = "Unknown"
+    @Published public var visible: Bool = true
 }
 
 struct DecodableUnsupportedComponentProps: Decodable {

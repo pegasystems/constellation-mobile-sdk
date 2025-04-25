@@ -1,23 +1,23 @@
 import Combine
 import SwiftUI
 
-struct AlertInfo {
-    var title: String = ""
-    let message: String
-    let type: AlertType
-    var onClose: (() -> Void)? = nil
-    var onConfirm: ((Bool) -> Void)? = nil
+public struct AlertInfo {
+    public var title: String = ""
+    public let message: String
+    public let type: AlertType
+    public var onClose: (() -> Void)? = nil
+    public var onConfirm: ((Bool) -> Void)? = nil
     
-    enum AlertType {
+    public enum AlertType {
         case alert
         case confirm
     }
 }
 
-class RootContainerComponentProps : ObservableObject, ComponentProps {
-    @Published var viewContainer: ViewID? = nil
-    @Published var alertInfo: AlertInfo? = nil
-    @Published var invisibleWebView: AnyView? = nil
+public class RootContainerComponentProps : ObservableObject, ComponentProps {
+    @Published public var viewContainer: ViewID? = nil
+    @Published public var alertInfo: AlertInfo? = nil
+    @Published public var invisibleWebView: AnyView? = nil
 }
 
 struct HTTPMessage: Decodable {

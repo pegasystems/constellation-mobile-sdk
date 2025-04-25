@@ -2,13 +2,13 @@ import Foundation
 import SwiftUI
 import Combine
 
-class DefaultDateComponentProvider: ComponentProvider {
+open class DefaultDateComponentProvider: ComponentProvider {
 
-    let view: AnyView
-    let properties: DateProps
-    let eventSubject: AnyPublisher<ComponentEvent, Never>
+    public let view: AnyView
+    public let properties: DateProps
+    public let eventSubject: AnyPublisher<ComponentEvent, Never>
 
-    required init() {
+    public required init() {
         properties = DateProps()
         let subject = PassthroughSubject<ComponentEvent, Never>()
         eventSubject = subject.eraseToAnyPublisher()
