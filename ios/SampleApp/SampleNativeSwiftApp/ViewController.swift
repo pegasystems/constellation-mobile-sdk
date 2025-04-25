@@ -27,6 +27,12 @@ class ViewController: UIViewController {
         PMSDKComponentManager.shared.register("TextInput") {
             CustomTextInputComponentProvider()
         }
+        PMSDKComponentManager.shared.register("AssignmentCard") {
+            CustomAssignmentCardComponentProvider()
+        }
+        PMSDKComponentManager.shared.register("ActionButtons") {
+            CustomActionButtonsProvider()
+        }
         try? PMSDKComponentManager.shared.register(
             "MyCompany_MyLib_Slider",
             jsFile: Bundle.main.url(forResource: "slider.component", withExtension: "js")!

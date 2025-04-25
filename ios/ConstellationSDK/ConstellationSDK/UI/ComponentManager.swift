@@ -4,7 +4,7 @@ import SwiftUI
 import OSLog
 
 // TODO: Rename/reorganize
-class ComponentManager {
+public class ComponentManager {
     var componentEventCallback: ((String, String) -> Void)?
     var formSubmitCallback: (() -> Void)?
 
@@ -17,6 +17,10 @@ class ComponentManager {
 
     init () {
         addComponent("1", type: "RootContainer")
+    }
+
+    public func view(for id: String) -> AnyView? {
+        providers[id]?.view
     }
 
     func updateComponent(_ id: String, _ propsJson: String) {
@@ -67,10 +71,6 @@ class ComponentManager {
         Logger.current().debug( "Removing component \(id)")
         providers.removeValue(forKey: id)
         context.removeValue(forKey: id)
-    }
-
-    func view(for id: String) -> AnyView? {
-        providers[id]?.view
     }
 
     func reset() {

@@ -2,18 +2,18 @@ import Combine
 import SwiftUI
 
 
-class FlowContainerComponentProvider: ContainerProvider {
-    var eventSubject: AnyPublisher<ComponentEvent, Never>
+open class FlowContainerComponentProvider: ContainerProvider {
+    public var eventSubject: AnyPublisher<ComponentEvent, Never>
     
-    lazy var view: AnyView = {
+    open lazy var view: AnyView = {
         AnyView(FlowContainerComponentView(properties: properties, manager: manager))
     }()
     
-    let properties = FlowContainerComponentProps()
+    public let properties = FlowContainerComponentProps()
     
-    private weak var manager: ComponentManager?
+    public weak var manager: ComponentManager?
     
-    required init() {
+    public required init() {
         eventSubject = PassthroughSubject().eraseToAnyPublisher()
     }
     
@@ -21,7 +21,7 @@ class FlowContainerComponentProvider: ContainerProvider {
         self.manager = manager
     }
     
-    func updateProperties(_ jsonInput: String) throws {
+    public func updateProperties(_ jsonInput: String) throws {
         try JSONDecoder()
             .decode(DecodableFlowContainerComponentProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)

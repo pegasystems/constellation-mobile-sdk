@@ -1,10 +1,10 @@
 import Combine
 import SwiftUI
 
-class FlowContainerComponentProps : ObservableObject, ComponentProps {
-    @Published var title: String? = nil
-    @Published var assignment: ViewID? = nil
-    @Published var alertBanners: [ViewID] = []
+public class FlowContainerComponentProps : ObservableObject, ComponentProps {
+    @Published public var title: String? = nil
+    @Published public var assignment: ViewID? = nil
+    @Published public var alertBanners: [ViewID] = []
 }
 
 struct DecodableFlowContainerComponentProps: Decodable {

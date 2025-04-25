@@ -1,40 +1,16 @@
 import Combine
 import SwiftUI
+import ConstellationSDK
 
-open class AssignmentCardComponentProvider: ContainerProvider {
-    public var eventSubject: AnyPublisher<ComponentEvent, Never>
-    
-    open lazy var view: AnyView = {
-        AnyView(AssignmentCardComponentView(properties: properties, manager: manager))
-    }()
-
-    public let properties = AssignmentCardComponentProps()
-
-    public weak var manager: ComponentManager?
-
-    public required init() {
-        eventSubject = PassthroughSubject().eraseToAnyPublisher()
-    }
-
-    func useManager(_ manager: ComponentManager) {
-        self.manager = manager
-    }
-
-    public func updateProperties(_ jsonInput: String) throws {
-        try JSONDecoder()
-            .decode(DecodableAssignmentCardComponentProps.self, from: Data(jsonInput.utf8))
-            .apply(to: properties)
-    }
-}
-
-struct AssignmentCardComponentView: View {
+import Foundation
+struct CustomAssignmentCardComponentView: View {
     @ObservedObject var properties: AssignmentCardComponentProps
     weak var manager: ComponentManager?
     init (properties: AssignmentCardComponentProps, manager: ComponentManager?) {
         self.manager = manager
         self.properties = properties
     }
-
+    
     var body: some View {
         VStack {
             ScrollView {
@@ -49,7 +25,6 @@ struct AssignmentCardComponentView: View {
                         }
                     }
                 }
-                // Style taken from OneColumnPage
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
                 .background(Color(red: 0.8, green: 0.85, blue: 0.9))
@@ -60,4 +35,23 @@ struct AssignmentCardComponentView: View {
             }
         }
     }
+}
+
+class CustomAssignmentCardComponentProvider: AssignmentCardComponentProvider {
+    required init() {
+        super.init()
+    }
+    
+    override var view: AnyView {
+        get {
+            return _view
+        }
+        set {
+            _view = newValue
+        }
+    }
+    
+    private lazy var _view: AnyView = {
+        return AnyView(CustomAssignmentCardComponentView(properties: properties, manager: manager))
+    }()
 }

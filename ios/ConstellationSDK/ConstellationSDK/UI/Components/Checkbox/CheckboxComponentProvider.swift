@@ -2,19 +2,19 @@ import Foundation
 import SwiftUI
 import Combine
 
-class DefaultCheckboxComponentProvider: ComponentProvider {
+open class DefaultCheckboxComponentProvider: ComponentProvider {
 
-    let view: AnyView
-    let properties: CheckboxProps
-    let eventSubject: AnyPublisher<ComponentEvent, Never>
+    public let view: AnyView
+    public let properties: CheckboxProps
+    public let eventSubject: AnyPublisher<ComponentEvent, Never>
 
-    required init() {
+    public required init() {
         properties = CheckboxProps()
         eventSubject = PassthroughSubject().eraseToAnyPublisher()
         view = AnyView(CheckboxView(properties: properties))
     }
 
-    func updateProperties(_ jsonInput: String) throws {
+    public func updateProperties(_ jsonInput: String) throws {
         try JSONDecoder()
             .decode(DecodableCheckboxProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)

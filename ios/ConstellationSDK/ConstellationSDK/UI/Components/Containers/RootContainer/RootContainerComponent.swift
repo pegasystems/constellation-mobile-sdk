@@ -2,18 +2,18 @@ import Combine
 import SwiftUI
 import WebKit
 
-class RootContainerComponentProvider: ContainerProvider {
-    var eventSubject: AnyPublisher<ComponentEvent, Never>
+open class RootContainerComponentProvider: ContainerProvider {
+    public var eventSubject: AnyPublisher<ComponentEvent, Never>
     
-    lazy var view: AnyView = {
+    open lazy var view: AnyView = {
         AnyView(RootContainerComponentView(properties: properties, manager: manager))
     }()
     
-    let properties = RootContainerComponentProps()
+    public let properties = RootContainerComponentProps()
     
-    private weak var manager: ComponentManager?
+    public weak var manager: ComponentManager?
     
-    required init() {
+    public required init() {
         eventSubject = PassthroughSubject().eraseToAnyPublisher()
     }
     
@@ -39,7 +39,7 @@ class RootContainerComponentProvider: ContainerProvider {
         self.manager = manager
     }
     
-    func updateProperties(_ jsonInput: String) throws {
+    public func updateProperties(_ jsonInput: String) throws {
         try JSONDecoder()
             .decode(DecodableRootContainerComponentProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)

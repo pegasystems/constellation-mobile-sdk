@@ -1,36 +1,11 @@
-import Combine
 import SwiftUI
+import ConstellationSDK
+import Combine
 
-open class ActionButtonsProvider: ComponentProvider {
-    public var eventSubject: AnyPublisher<ComponentEvent, Never>
-    
-    open var view: AnyView
-    public let properties = ActionButtonsProps()
-
-    public required init() {
-        let subject = PassthroughSubject<ComponentEvent, Never>()
-
-        view = AnyView(
-            ActionButtonsView(
-                properties: properties,
-                eventSubject: subject
-            )
-        )
-
-        eventSubject = subject.eraseToAnyPublisher()
-    }
-
-    public func updateProperties(_ jsonInput: String) throws {
-        try JSONDecoder()
-            .decode(DecodableActionButtonProps.self, from: Data(jsonInput.utf8))
-            .apply(to: properties)
-    }
-}
-
-struct ActionButtonsView: View {
+struct CustomActionButtonsView: View {
     @ObservedObject var properties: ActionButtonsProps
     private var eventSubject = PassthroughSubject<ComponentEvent, Never>()
-
+    
     init(
         properties: ActionButtonsProps,
         eventSubject: PassthroughSubject<ComponentEvent, Never>
@@ -38,14 +13,14 @@ struct ActionButtonsView: View {
         self.properties = properties
         self.eventSubject = eventSubject
     }
-
+    
     var body: some View {
         HStack {
             buildButtons(isPrimary: false)
             buildButtons(isPrimary: true)
         }
     }
-
+    
     @ViewBuilder
     private func buildButtons(isPrimary: Bool) -> some View {
         HStack {
@@ -64,5 +39,14 @@ struct ActionButtonsView: View {
                 }
             }
         }
+    }
+}
+
+class CustomActionButtonsProvider: ActionButtonsProvider {
+    required init() {
+        super.init()
+        let subject = PassthroughSubject<ComponentEvent, Never>()
+        self.eventSubject = subject.eraseToAnyPublisher()
+        view = AnyView(CustomActionButtonsView(properties: properties, eventSubject: subject))
     }
 }
