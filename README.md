@@ -44,13 +44,15 @@ Currently SDK supports creating new case of given type and processing assignment
 
 ## Get started ##
 
-### [Getting started with the SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html)
+#### [Getting started with the SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html)
 
-### [Integration with Android applications](android/README.md)
+#### [Integration with Android applications](android/README.md)
 
-### [Integration with iOS applications](ios/README.md)
+#### [Integration with iOS applications](ios/README.md)
 
-### [Running SDK with MediaCo sample application](docs/MediaCo.md)
+#### [Setting up MediaCo sample application](docs/setup.md)
+
+#### [Sample application configuration](docs/configuration.md)
 
 ## License
 
