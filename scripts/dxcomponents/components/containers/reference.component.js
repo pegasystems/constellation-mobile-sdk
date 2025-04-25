@@ -51,21 +51,12 @@ export class ReferenceComponent {
 
     // If we get here, we have metadata for a View component...
     // const referencedComponentName = viewMetadata.type;
-    if (referenceConfig.visibility && referenceConfig.visibility.length > 0) {
-      const keyPattern = /(\..+?) (=|!)=/;
-      const propertyKeys = referenceConfig.visibility.split('&&').map((part) => {
-        return part.match(keyPattern)[1];
-      });
-      propertyKeys.forEach((key) => {
-        referenceConfig.visibility = referenceConfig.visibility.replace(key, inPConn.getPageReference().replace("caseInfo.content","") + key)
-      })
-    }
-
     const viewObject = {
       ...viewMetadata,
       config: {
         ...viewMetadata.config,
-        ...referenceConfig
+        ...referenceConfig,
+        referenceContext: inPConn.getPageReference()
       }
     };
 

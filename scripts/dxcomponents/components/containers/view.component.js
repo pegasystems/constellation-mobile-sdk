@@ -90,7 +90,9 @@ export class ViewComponent {
   }
 
   onEvent(event) {
-    this.childrenComponents.forEach((component) => {component.onEvent(event);})
+    this.childrenComponents.forEach((component) => {
+      component.onEvent(event);
+    })
   }
 
   sendPropsUpdate() {
@@ -150,6 +152,18 @@ export class ViewComponent {
 
     this.visibility$ = this.configProps$.visibility ?? this.visibility$;
 
+    /**
+     * In instances where there is context, like with "shippingAddress," the pageReference becomes "caseInfo.content.shippingAddress."
+     * This leads to problems in the getProperty API, as it incorrectly assesses the visibility condition by looking in the wrong location
+     * in the Store for the property values. Reference component should be able to handle such scenarios(as done in SDK-R) since it has the
+     * expected pageReference values, the View component currently cannot handle this.
+     * The resolution lies in transferring this responsibility to the Reference component, eliminating the need for this code when Reference
+     * component is able to handle it.
+     */
+    if (!this.configProps$.visibility && this.pConn$.getPageReference().length > 'caseInfo.content'.length) {
+      this.visibility$ = this.evaluateVisibility(this.pConn$, this.configProps$.referenceContext);
+    }
+
     // was:  this.arChildren$ = this.pConn$.getChildren() as Array<any>;
 
     // debug
@@ -201,7 +215,7 @@ export class ViewComponent {
 
         case 'Details':
           allFields = this.getAllFields(getPConnect);
-          propObj = { fields: allFields[0] };
+          propObj = {fields: allFields[0]};
           break;
         default:
           break;
@@ -222,4 +236,47 @@ export class ViewComponent {
     }
     return allFields;
   }
+
+  evaluateVisibility(pConn, referenceContext) {
+    const visibilityExpression = pConn.meta.config.visibility;
+    if (!visibilityExpression || visibilityExpression.length === 0) return true;
+
+    let dataPage = this.getDataPage(pConn.getContextName(), referenceContext);
+    if (!dataPage) return false;
+
+    const visibilityConditions = visibilityExpression.replace("@E ", "")
+    return PCore.getExpressionEngine().evaluate(visibilityConditions, dataPage, {
+      pConnect: {
+        getPConnect: () => {
+          return this.pConn$
+        }
+      }
+    });
+  }
+
+  getDataPage(context, referenceContext) {
+    let pageReferenceKeys = referenceContext.replace("caseInfo.content.", "").split('.');
+    let page = PCore.getStore().getState()?.data[context].caseInfo.content;
+    for (const key of pageReferenceKeys) {
+      const arrayStartingBracketIndex = key.indexOf('[');
+      const arrayEndingBracketIndex = key.indexOf(']');
+      if (arrayStartingBracketIndex !== -1 && arrayEndingBracketIndex !== -1) {
+        const keyName = key.substring(0, arrayStartingBracketIndex);
+        const keyIndex = parseInt(key.substring(arrayStartingBracketIndex + 1, arrayEndingBracketIndex));
+        if (page[keyName][keyIndex] !== undefined) {
+          page = page[keyName][keyIndex];
+        } else {
+          return null;
+        }
+      } else {
+        if (key in page) {
+          page = page[key];
+        } else {
+          return null;
+        }
+      }
+    }
+    return page;
+  }
+
 }
