@@ -27,19 +27,23 @@ class DecimalRenderer : ComponentRenderer<DecimalComponent> {
     @Composable
     override fun DecimalComponent.Render() {
         WithVisibility {
-            Decimal(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                decimalPrecision = decimalPrecision,
-                showGroupSeparators = showGroupSeparators,
-                onValueChange = { updateValue(it) },
-                onFocusChange = { updateFocus(it) }
+            WithDisplayMode(
+                editable = {
+                    Decimal(
+                        value = value,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        decimalPrecision = decimalPrecision,
+                        showGroupSeparators = showGroupSeparators,
+                        onValueChange = { updateValue(it) },
+                        onFocusChange = { updateFocus(it) }
+                    )
+                }
             )
         }
     }

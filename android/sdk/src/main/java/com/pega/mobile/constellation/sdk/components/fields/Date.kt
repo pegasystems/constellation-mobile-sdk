@@ -13,17 +13,21 @@ class DateRenderer : ComponentRenderer<DateComponent> {
     @Composable
     override fun DateComponent.Render() {
         WithVisibility {
-            Date(
-                value = value.asLocalDateOrNull(),
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                onValueChange = { updateValue(it?.toString() ?: "") },
-                onFocusChange = { updateFocus(it) }
+            WithDisplayMode(
+                editable = {
+                    Date(
+                        value = value.asLocalDateOrNull(),
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        onValueChange = { updateValue(it?.toString() ?: "") },
+                        onFocusChange = { updateFocus(it) }
+                    )
+                }
             )
         }
     }

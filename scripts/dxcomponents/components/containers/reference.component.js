@@ -49,6 +49,8 @@ export class ReferenceComponent {
       return null;
     }
 
+    this.setShowLabelIfMissing(referenceConfig);
+
     // If we get here, we have metadata for a View component...
     // const referencedComponentName = viewMetadata.type;
     const viewObject = {
@@ -157,5 +159,22 @@ export class ReferenceComponent {
     return inPConnArray.map(child => {
       return ReferenceComponent.normalizePConn(child);
     });
+  }
+
+  /*
+    Show label by default if 'label' is set but 'showLabel' is missing
+   */
+  static setShowLabelIfMissing(referenceConfig) {
+    if (referenceConfig.inheritedProps &&
+      referenceConfig.inheritedProps.find(prop => {return prop.prop === 'label'}) !== undefined &&
+      referenceConfig.inheritedProps.find(prop => {return prop.prop === 'showLabel'}) === undefined) {
+
+      referenceConfig.inheritedProps.push(
+        {
+          prop: "showLabel",
+          value: true
+        }
+      )
+    }
   }
 }

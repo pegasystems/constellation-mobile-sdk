@@ -1,18 +1,22 @@
 package com.pega.mobile.constellation.sdk.components.containers
 
 import android.util.Log
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.Render
-import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(context) {
@@ -37,22 +41,17 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
 
     data class Item(val id: Int, val heading: String, val component: Component)
 
-    companion object {
-        private const val TAG = "FieldGroupTemplateComponent"
-    }
 }
 
 class FieldGroupTemplateRenderer : ComponentRenderer<FieldGroupTemplateComponent> {
     @Composable
     override fun FieldGroupTemplateComponent.Render() {
-        Column {
-            Text("FieldGroupTemplate")
+        Column(modifier = Modifier.fillMaxWidth()) {
             items.forEach {
                 Column {
-                    Text("${it.id}: ${it.heading}")
+                    Text(it.heading, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     it.component.Render()
                 }
-
             }
         }
     }

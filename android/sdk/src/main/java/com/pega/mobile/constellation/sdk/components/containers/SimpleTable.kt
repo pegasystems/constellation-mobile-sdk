@@ -28,7 +28,6 @@ class SimpleTableRenderer : ComponentRenderer<SimpleTableComponent> {
     @Composable
     override fun SimpleTableComponent.Render() {
         Column {
-            Text("SimpleTable")
             child?.Render()
         }
     }

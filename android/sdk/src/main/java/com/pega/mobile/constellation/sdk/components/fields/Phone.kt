@@ -23,18 +23,22 @@ class PhoneRenderer : ComponentRenderer<PhoneComponent> {
     @Composable
     override fun PhoneComponent.Render() {
         WithVisibility {
-            Phone(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                showCountryFlag = showCountryCode,
-                onValueChange = { updateValue(it) },
-                onFocusChange = { updateFocus(it) }
+            WithDisplayMode(
+                editable = {
+                    Phone(
+                        value = value,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        showCountryFlag = showCountryCode,
+                        onValueChange = { updateValue(it) },
+                        onFocusChange = { updateFocus(it) }
+                    )
+                }
             )
         }
     }

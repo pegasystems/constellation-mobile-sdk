@@ -12,17 +12,21 @@ class RadioButtonsRenderer : ComponentRenderer<SelectableComponent> {
     @Composable
     override fun SelectableComponent.Render() {
         WithVisibility {
-            RadioButtons(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                options = options.map { SelectableOption(it.key, it.label) },
-                onValueChange = { updateValue(it) }
+            WithDisplayMode(
+                editable = {
+                    RadioButtons(
+                        value = value,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        options = options.map { SelectableOption(it.key, it.label) },
+                        onValueChange = { updateValue(it) }
+                    )
+                }
             )
         }
     }

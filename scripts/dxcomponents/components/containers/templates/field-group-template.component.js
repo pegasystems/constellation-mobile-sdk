@@ -86,11 +86,11 @@ export class FieldGroupTemplateComponent {
   updateSelf() {
     ////
     this.inheritedProps$ = this.pConn$.getInheritedProps();
-    this.label$ = this.configProps.label;
-    this.showLabel$ = this.configProps.showLabel;
+    const label = this.configProps.label;
+    const showLabel = this.configProps.showLabel;
     // label & showLabel within inheritedProps takes precedence over configProps
-    this.label$ = this.inheritedProps$.label || this.label$;
-    this.showLabel$ = this.inheritedProps$.showLabel || this.showLabel$;
+    this.label$ = this.inheritedProps$.label !== undefined ? this.inheritedProps$.label : label;
+    this.showLabel$ = this.inheritedProps$.showLabel !== undefined ? this.inheritedProps$.showLabel : showLabel;
 
     this.allowAddEdit = this.configProps.allowTableEdit;
 

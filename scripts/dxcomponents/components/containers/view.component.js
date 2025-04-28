@@ -140,13 +140,12 @@ export class ViewComponent {
 
     this.templateName$ = this.configProps$.template || '';
     this.title$ = this.configProps$.title || '';
-    this.label$ = this.configProps$.label || '';
-    this.showLabel$ = this.configProps$.showLabel || isDetailsTemplate(this.templateName$) || this.showLabel$;
+    const label = this.configProps$.label || '';
+    const showLabel = this.configProps$.showLabel || isDetailsTemplate(this.templateName$) || this.showLabel$;
     // label & showLabel within inheritedProps takes precedence over configProps
-    this.label$ = this.inheritedProps$.label || this.label$;
-    this.showLabel$ = this.inheritedProps$.showLabel || this.showLabel$;
+    this.label$ = this.inheritedProps$.label !== undefined ? this.inheritedProps$.label : label;
+    this.showLabel$ = this.inheritedProps$.showLabel !== undefined ? this.inheritedProps$.showLabel : showLabel;
 
-    const oldChildren = this.arChildren$
     // children may have a 'reference' so normalize the children array
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
 

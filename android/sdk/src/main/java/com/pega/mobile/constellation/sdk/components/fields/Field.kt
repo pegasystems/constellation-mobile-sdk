@@ -6,9 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.pega.mobile.constellation.sdk.components.DisplayMode
+import com.pega.mobile.constellation.sdk.components.RenderDisplayOnly
+import com.pega.mobile.constellation.sdk.components.WithDisplayMode
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
+import com.pega.mobile.constellation.sdk.components.toDisplayMode
 import org.json.JSONObject
 
 abstract class FieldComponent(context: ComponentContext) : BaseComponent(context) {
@@ -31,19 +35,22 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
         private set
     var validateMessage: String by mutableStateOf("")
         private set
+    var displayMode: DisplayMode by mutableStateOf(DisplayMode.EDITABLE)
+        private set
 
     @CallSuper
     override fun onUpdate(props: JSONObject) {
         with(props) {
             value = getString("value")
             label = getString("label")
-            visible = getString("visible").toBoolean()
-            required = getString("required").toBoolean()
-            disabled = getString("disabled").toBoolean()
-            readOnly = getString("readOnly").toBoolean()
+            visible = getBoolean("visible")
+            required = getBoolean("required")
+            disabled = getBoolean("disabled")
+            readOnly = getBoolean("readOnly")
             helperText = getString("helperText")
-            validateMessage = getString("validateMessage")
             placeholder = optString("placeholder")
+            validateMessage = getString("validateMessage")
+            displayMode = getString("displayMode").toDisplayMode()
         }
     }
 
@@ -65,4 +72,18 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
 @Composable
 fun <T : FieldComponent> T.WithVisibility(content: @Composable T.() -> Unit) {
     AnimatedVisibility(visible) { content.invoke(this@WithVisibility) }
+}
+
+@Composable
+fun <T : FieldComponent> T.WithDisplayMode(
+    editable: @Composable T.() -> Unit,
+    displayOnly: @Composable T.() -> Unit = { RenderDisplayOnly(label, value) }
+) {
+    WithDisplayMode(
+        displayMode = displayMode,
+        label = label,
+        value = value,
+        editable = { editable.invoke(this) },
+        displayOnly = { displayOnly.invoke(this)}
+    )
 }

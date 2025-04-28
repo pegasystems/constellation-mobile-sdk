@@ -66,7 +66,6 @@ export class SimpleTableComponent {
       this.props.visible = this.utils.getBooleanValue(configProps.visibility);
     }
 
-    ////
     const { multiRecordDisplayAs } = configProps;
     let { contextClass } = configProps;
     if (!contextClass) {
@@ -85,74 +84,8 @@ export class SimpleTableComponent {
         this.childComponent.update(this.pConn$, fieldGroupProps)
       }
     } else {
-      // this branch is not supported yet
-      const {
-        label: labelProp,
-        propertyLabel,
-        displayMode,
-        fieldMetadata,
-        hideLabel,
-        parameters,
-        isDataObject,
-        type,
-        ruleClass,
-        authorContext,
-        name
-      } = configProps;
-
-      const label = labelProp || propertyLabel;
-
-      const propsToUse = { label, ...this.pConn$.getInheritedProps() };
-      const isDisplayModeEnabled = displayMode === 'DISPLAY_ONLY';
-
-      if (fieldMetadata && fieldMetadata.type === 'Page List' && fieldMetadata.dataRetrievalType === 'refer') {
-        const {
-          children: [{ children: rawFields }],
-          parameters: rawParams
-        } = (this.pConn$.getRawMetadata()).config;
-
-        if (isDisplayModeEnabled && hideLabel) {
-          propsToUse.label = '';
-        }
-
-        const metaForListView = this.buildMetaForListView(
-          fieldMetadata,
-          rawFields,
-          type,
-          ruleClass,
-          name,
-          propsToUse.label,
-          isDataObject,
-          parameters // resolved params
-        );
-
-        const metaForPConnect = JSON.parse(JSON.stringify(metaForListView));
-        // @ts-ignore - PCore.getMetadataUtils().getPropertyMetadata - An argument for 'currentClassID' was not provided.
-        metaForPConnect.config.parameters = rawParams ?? PCore.getMetadataUtils().getPropertyMetadata(name)?.datasource?.parameters;
-
-        const { referenceListStr: referenceList } = this.getContext(this.pConn$);
-        let requiredContextForQueryInDisplayMode = {};
-        if (isDisplayModeEnabled) {
-          requiredContextForQueryInDisplayMode = {
-            referenceList
-          };
-        }
-        const options = {
-          context: this.pConn$.getContextName(),
-          pageReference: this.pConn$.getPageReference(),
-          ...requiredContextForQueryInDisplayMode
-        };
-
-        this.refToPConnect = PCore.createPConnect({ meta: metaForPConnect, options }).getPConnect();
-
-        this.listViewProps = {
-          ...metaForListView.config,
-          displayMode,
-          fieldName: authorContext
-        };
-      }
+      console.log("ListView and SimpleTableManual are not supported yet.");
     }
-    ////
     this.sendPropsUpdate();
   }
 
