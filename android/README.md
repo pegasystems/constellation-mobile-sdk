@@ -1,15 +1,33 @@
-## Android ##
+## Android
 
+- [Running sample application](#running-sample-application)
 - [Gradle integration](#gradle-integration)
-- [Running SDK](#running-sdk)
+- [Using SDK](#using-sdk)
 - [Overriding components UI](#overriding-ui-components)
 - [Creating new components](#creating-new-components)
     - [Defining Kotlin Component](#defining-kotlin-component)
     - [Defining JavaScript component](#defining-a-javascript-component)
 
-Let's go step by step to quickly integrate the SDK with an Android application.
+Let's go step by step to quickly run and integrate the SDK with an Android application.
 
-### Gradle integration ###
+### Running sample application
+
+Project contains a sample application that demonstrates the usage of the SDK.
+
+To run the sample application, you need to provide necessary configuration in [SDKConfig.kt](app/src/main/java/com/pega/mobile/constellation/sample/SDKConfig.kt)
+
+```kotlin
+object SDKConfig {
+    ...
+    const val PEGA_URL = "https://insert-url-here.example/prweb"
+    ...
+}
+```
+
+For more information about the configuration, please refer to the [Configuring sample mobile application](../docs/configure-sample-mobile-app.md) document.
+
+
+### Gradle integration
 
 Currently, the SDK is distributed using library AAR files.
 They need to be downloaded into app/libs directory (or any other accessible by Gradle).
@@ -29,7 +47,7 @@ implementation(libs.androidx.webkit)
 
 > After the SDK is distributed through Maven in the future, these two dependencies can be removed from Gradle.
 
-### Running SDK ###
+### Using SDK
 
 **1. Create ConstellationSdk object**
 
@@ -124,7 +142,7 @@ This extension function is helpful for rendering other components as well.
 
 > Please note that SDK provides a ready-to-use set of components with their renderers.
 
-### Overriding UI components ###
+### Overriding UI components
 
 Use *ProvideRenderers* method to override component rendering by providing custom renderers:
 
@@ -172,12 +190,12 @@ class CustomEmailRenderer : ComponentRenderer<CustomEmailComponent> {
 }
 ```
 
-### Creating new components ###
+### Creating new components
 
 It is possible to create new components (or override existing components) and pass them to the SDK.
 This is useful when the SDK does not support some components, or you want to utilize Pega Custom Components.
 
-#### Defining Kotlin Component ####
+#### Defining Kotlin Component
 
 Create *ComponentManager* with custom component definitions and pass it to *ConstellationSdkConfig*:
 
@@ -237,7 +255,7 @@ class CustomSliderComponent(context: ComponentContext) : FieldComponent(context)
 
 After providing *customDefinitions* to *ComponentManager*, the SDK will create the components.
 
-#### Defining a JavaScript component ####
+#### Defining a JavaScript component
 
 When adding a new component, the SDK requires a JavaScript file to be created.
 The reason is that the SDK utilizes business logic that runs in JS code inside the WebView.
