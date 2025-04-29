@@ -1,0 +1,51 @@
+name: "Publish release to github"
+permissions:
+  contents: write
+on:
+  # allow manual trigger of release
+  # this event only works from 'main'
+  workflow_dispatch:
+    inputs:
+      custom-release-notes:
+        description: 'Use custom release notes - they needs to be included in e.g.: docs/releases/v1.0.0.md file for v1.0.0 release etc.'
+        type: boolean
+        default: true
+env:
+  # Bump those versions when needed
+  VERSION_MAJOR: 1
+  VERSION_MINOR: 0
+
+jobs:
+  build-android:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build
+        uses: ./.github/actions/build-android
+
+  build-ios:
+    runs-on: 'macos-15'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build
+        uses: ./.github/actions/build-ios
+
+  publish-release:
+    runs-on: 'ubuntu-latest'
+    needs: [build-android, build-ios]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Publish
+        uses: ./.github/actions/publish
+        with:
+          version-major: ${{ env.VERSION_MAJOR }}
+          version-minor: ${{ env.VERSION_MINOR }}
+          release-type: 'release'
+          custom-release-notes: ${{ inputs.custom-release-notes }}

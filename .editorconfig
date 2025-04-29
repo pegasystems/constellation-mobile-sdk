@@ -1,0 +1,6 @@
+[*.js]
+indent_size = 2
+max_line_length = 120
+ij_javascript_use_double_quotes = false
+ij_javascript_keep_simple_blocks_in_one_line = true
+ij_javascript_spaces_within_imports = false

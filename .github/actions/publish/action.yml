@@ -1,0 +1,45 @@
+name: "Publish github release with SDK"
+description: "Publish github release with SDK"
+inputs:
+  version-major:
+    description: 'Major version of release (first number e.g.: 1 in 1.2.3)'
+    required: true
+  version-minor:
+    description: 'Minor version of release (second number e.g.: 2 in 1.2.3)'
+    required: true
+  release-type:
+    description: 'Type of release, either snapshot or release'
+    required: true
+    default: 'snapshot'
+  custom-release-notes:
+    # custom actions do NOT support booleans
+    # see https://stackoverflow.com/questions/76292948/github-action-boolean-input-with-default-value
+    description: 'true = use custom release notes, false = autogenerate release notes'
+    required: false
+    default: 'false'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Download all workflow artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Publish release
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+        VERSION_MAJOR: ${{ inputs.version-major }}
+        VERSION_MINOR: ${{ inputs.version-minor }}
+        RELEASE_TYPE: ${{ inputs.release-type }}
+        CUSTOM_RELEASE_NOTES: ${{ inputs.custom-release-notes }}
+      shell: bash
+      run: |
+        NOTES_PARAM=""
+        if [ "${CUSTOM_RELEASE_NOTES}" = "true" ]; then
+          NOTES_PARAM="--custom-release-notes"
+        fi
+        .github/workflow-scripts/publish.sh --major ${VERSION_MAJOR} --minor ${VERSION_MINOR} --type ${RELEASE_TYPE} ${NOTES_PARAM}
+
