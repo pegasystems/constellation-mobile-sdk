@@ -1,0 +1,15 @@
+name: "Run lints"
+on:
+  push
+jobs:
+  lint-shell:
+    runs-on: 'ubuntu-latest'
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Lint shell scripts
+      run: |
+          sudo apt-get --yes install shellcheck
+          find ".github" -iname "*.sh" | xargs -I {} sh -c 'echo && echo "======= Checking {}" && shellcheck {}'
+          find "shared" -iname "*.sh" | xargs -I {} sh -c 'echo && echo "======= Checking {}" && shellcheck {}'

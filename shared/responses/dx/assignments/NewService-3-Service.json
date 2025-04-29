@@ -1,0 +1,576 @@
+{
+  "data": {
+    "caseInfo": {
+      "content": {
+        "classID": "DIXL-MediaCo-Work-NewService",
+        "SendToManager": false,
+        "AttachAnyAdditionalInfo": {
+          "pyCategoryName": "AttachAnyAdditionalInfo",
+          "pyCount": "0",
+          "pyLabel": "Attach any additional info",
+          "pyTransientAttachRef": "AttachAnyAdditionalInfo",
+          "pzLoadTime": "March 26, 2025 at 3:07:55 PM UTC",
+          "pzPageNameBase": "D_AttachmentFieldInfo",
+          "pzPageNameHash": "_pa45494069262911pz",
+          "pxDPParameters": {
+            "AllowMultiple": "(null/empty)",
+            "AttachmentCategory": "AttachAnyAdditionalInfo",
+            "AttachmentFieldName": "AttachAnyAdditionalInfo",
+            "CaseID": "N-16042",
+            "ClassName": "DIXL-MediaCo-Work-NewService",
+            "LinkRefFrom": "DIXL-MEDIACO-WORK N-16042"
+          },
+          "pySourcePage": {
+            "pySourceClass": "Embed-Attach-File",
+            "pySourceIdentifier": "pyGetAttachmentFieldInfo",
+            "pySourceNumber": "1",
+            "pySourceType": "Activity"
+          }
+        },
+        "pzInsKey": "DIXL-MEDIACO-WORK N-16042",
+        "pyID": "N-16042",
+        "Notes": "",
+        "Email": "jan.kowalski@pega.com",
+        "FirstName": "Jan",
+        "PhoneNumber": "",
+        "ServiceDate": "2025-03-26",
+        "LastName": "Kowalski",
+        "pxCreateOperator": "rep@mediaco",
+        "pxUpdateDateTime": "2025-03-26T15:07:55.232Z",
+        "pxUpdateOperator": "rep@mediaco",
+        "pxCreateDateTime": "2025-03-26T15:07:51.224Z",
+        "pyStatusWork": "New",
+        "pyLabel": "New Service"
+      },
+      "caseTypeID": "DIXL-MediaCo-Work-NewService",
+      "owner": "rep@mediaco",
+      "availableActions": [{
+        "name": "Edit details",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/DIXL-MEDIACO-WORK N-16042/actions/pyUpdateCaseDetails",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyUpdateCaseDetails",
+        "type": "Case"
+      }, {
+        "name": "Change stage",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/DIXL-MEDIACO-WORK N-16042/actions/pyChangeStage",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyChangeStage",
+        "type": "Case"
+      }],
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "rep@mediaco",
+      "assignments": [{
+        "instructions": "",
+        "canPerform": "true",
+        "assigneeInfo": {
+          "name": "representative",
+          "ID": "rep@mediaco",
+          "type": "worklist"
+        },
+        "processID": "Service_Flow",
+        "urgency": "10",
+        "processName": "Service",
+        "isMultiStep": "false",
+        "name": "Other Notes",
+        "context": "",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/assignments/ASSIGN-WORKLIST DIXL-MEDIACO-WORK N-16042!SERVICE_FLOW",
+            "type": "GET",
+            "title": "Get assignment details"
+          }
+        },
+        "ID": "ASSIGN-WORKLIST DIXL-MEDIACO-WORK N-16042!SERVICE_FLOW",
+        "actions": [{
+          "name": "Other Notes",
+          "links": {
+            "submit": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST DIXL-MEDIACO-WORK N-16042!SERVICE_FLOW/actions/OtherNotes",
+              "type": "PATCH",
+              "title": "Submit assignment action "
+            },
+            "save": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST DIXL-MEDIACO-WORK N-16042!SERVICE_FLOW/actions/OtherNotes/save",
+              "type": "PATCH",
+              "title": "Save assignment action "
+            },
+            "open": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST DIXL-MEDIACO-WORK N-16042!SERVICE_FLOW/actions/OtherNotes",
+              "type": "GET",
+              "title": "Get assignment action details"
+            }
+          },
+          "ID": "OtherNotes",
+          "type": "FlowAction"
+        }]
+      }],
+      "hasNewAttachments": false,
+      "businessID": "N-16042",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "WidgetsToRefresh": ["TaskList"],
+      "caseTypeName": "New Service",
+      "urgency": "10",
+      "createTime": "2025-03-26T15:07:51.224Z",
+      "createdBy": "rep@mediaco",
+      "name": "New Service",
+      "stages": [{
+        "entryTime": "2025-03-26T15:07:51.230Z",
+        "name": "Create",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/DIXL-MEDIACO-WORK N-16042/stages/PRIM0",
+            "type": "PUT",
+            "title": "Jump to this stage"
+          }
+        },
+        "visited_status": "completed",
+        "ID": "PRIM0",
+        "type": "Primary",
+        "transitionType": "create"
+      }, {
+        "entryTime": "2025-03-26T15:07:51.231Z",
+        "name": "Service",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/DIXL-MEDIACO-WORK N-16042/stages/PRIM1",
+            "type": "PUT",
+            "title": "Jump to this stage"
+          }
+        },
+        "visited_status": "active",
+        "ID": "PRIM1",
+        "type": "Primary",
+        "transitionType": "automatic"
+      }, {
+        "name": "Connected",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/DIXL-MEDIACO-WORK N-16042/stages/PRIM2",
+            "type": "PUT",
+            "title": "Jump to this stage"
+          }
+        },
+        "visited_status": "future",
+        "ID": "PRIM2",
+        "type": "Primary",
+        "transitionType": "automatic"
+      }, {
+        "name": "Resolved",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/DIXL-MEDIACO-WORK N-16042/stages/PRIM3",
+            "type": "PUT",
+            "title": "Jump to this stage"
+          }
+        },
+        "visited_status": "future",
+        "ID": "PRIM3",
+        "type": "Primary",
+        "transitionType": "resolution"
+      }],
+      "ID": "DIXL-MEDIACO-WORK N-16042",
+      "caseTypeIcon": "cmicons/pycase.svg",
+      "status": "New",
+      "stageID": "PRIM1",
+      "stageLabel": "Service",
+      "lastUpdateTime": "2025-03-26T15:07:55.232Z"
+    },
+    "referencedUsers": [{
+      "UserID": "rep@mediaco",
+      "UserName": "representative"
+    }],
+    "D_pyCountryCallingCodeList": {
+      "pxResults": [{
+        "classID": "-",
+        "pyCallingCode": "+1"
+      }, {
+        "classID": "-",
+        "pyCallingCode": "+91"
+      }, {
+        "classID": "-",
+        "pyCallingCode": "+48"
+      }, {
+        "classID": "-",
+        "pyCallingCode": "+44"
+      }]
+    },
+    "shared": {
+      "D_pyCountryCallingCodeList": {
+        "D_pyCountryCallingCodeList": {
+          "parameters": [],
+          "pxResults": [{
+            "classID": "-",
+            "pyCallingCode": "+1"
+          }, {
+            "classID": "-",
+            "pyCallingCode": "+91"
+          }, {
+            "classID": "-",
+            "pyCallingCode": "+48"
+          }, {
+            "classID": "-",
+            "pyCallingCode": "+44"
+          }],
+          "loadTime": "2025-03-26T15:07:55.302541017Z"
+        }
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "OtherNotes": [{
+          "name": "OtherNotes",
+          "type": "View",
+          "config": {
+            "template": "DefaultForm",
+            "ruleClass": "DIXL-MediaCo-Work-NewService",
+            "localeReference": "@LR DIXL-MEDIACO-WORK-NEWSERVICE!VIEW!OTHERNOTES"
+          },
+          "children": [{
+            "name": "Fields",
+            "type": "Region",
+            "children": [{
+              "type": "TextArea",
+              "config": {
+                "value": "@P .Notes",
+                "label": "@L Notes",
+                "testId": "@L F4C6F851B00D5518BF888815DE279ABA"
+              }
+            }, {
+              "type": "Checkbox",
+              "config": {
+                "caption": "@L Send to manager for discount",
+                "value": "@P .SendToManager",
+                "trueText": "True",
+                "falseText": "False",
+                "hideLabel": false,
+                "testId": "@L C3B43E79AEC2D689F0CF97BD6AFB7DC4"
+              }
+            }, {
+              "type": "Attachment",
+              "config": {
+                "value": "@P .AttachAnyAdditionalInfo",
+                "label": "@L Attach any additional info",
+                "required": false
+              }
+            }]
+          }],
+          "classID": "DIXL-MediaCo-Work-NewService"
+        }],
+        "pyCaseSummary": [{
+          "name": "pyCaseSummary",
+          "type": "View",
+          "config": {
+            "template": "CaseSummary",
+            "status": "@P .pyStatusWork",
+            "showStatus": true,
+            "ruleClass": "DIXL-MediaCo-Work-NewService"
+          },
+          "children": [{
+            "name": "Primary fields",
+            "type": "Region",
+            "children": [{
+              "type": "TextInput",
+              "config": {
+                "value": "@P .FirstName",
+                "label": "@L First Name"
+              }
+            }, {
+              "type": "TextInput",
+              "config": {
+                "value": "@P .LastName",
+                "label": "@L Last Name"
+              }
+            }, {
+              "type": "Email",
+              "config": {
+                "value": "@P .Email",
+                "label": "@L Email"
+              }
+            }, {
+              "type": "Phone",
+              "config": {
+                "value": "@P .PhoneNumber",
+                "label": "@L Phone number",
+                "datasource": {
+                  "source": "@DATASOURCE D_pyCountryCallingCodeList.pxResults",
+                  "fields": {
+                    "value": "@P .pyCallingCode"
+                  }
+                }
+              }
+            }, {
+              "type": "Date",
+              "config": {
+                "value": "@P .ServiceDate",
+                "label": "@L Service date"
+              }
+            }]
+          }, {
+            "name": "Secondary fields",
+            "type": "Region",
+            "children": [{
+              "type": "CaseOperator",
+              "config": {
+                "label": "Create operator",
+                "createLabel": "@L Created",
+                "updateLabel": "@L Updated",
+                "updateDateTime": "@P .pxUpdateDateTime",
+                "createDateTime": "@P .pxCreateDateTime",
+                "updateOperator": "@USER .pxUpdateOperator",
+                "createOperator": "@USER .pxCreateOperator"
+              }
+            }, {
+              "type": "CaseOperator",
+              "config": {
+                "label": "Update operator",
+                "createLabel": "@L Created",
+                "updateLabel": "@L Updated",
+                "updateDateTime": "@P .pxUpdateDateTime",
+                "createDateTime": "@P .pxCreateDateTime",
+                "updateOperator": "@USER .pxUpdateOperator",
+                "createOperator": "@USER .pxCreateOperator"
+              }
+            }]
+          }],
+          "classID": "DIXL-MediaCo-Work-NewService"
+        }]
+      },
+      "datapages": {
+        "D_AttachmentFieldInfo": {
+          "parameters": [{
+            "name": "AttachmentFieldName",
+            "defaultValue": ""
+          }, {
+            "name": "LinkRefFrom",
+            "defaultValue": ""
+          }, {
+            "name": "AttachmentCategory",
+            "defaultValue": ""
+          }, {
+            "name": "ClassName",
+            "defaultValue": ""
+          }, {
+            "name": "CaseID",
+            "defaultValue": ""
+          }, {
+            "name": "AllowMultiple",
+            "defaultValue": ""
+          }],
+          "classID": "Embed-Attach-File",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": false,
+          "structure": "page",
+          "refreshStrategy": {
+            "type": "reloadOncePerInteraction"
+          }
+        },
+        "D_pyCountryCallingCodeList": {
+          "classID": "Code-Pega-List",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": false,
+          "structure": "list"
+        }
+      },
+      "fields": {
+        "SendToManager": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "True-False",
+          "displayAs": "pxCheckbox",
+          "label": "Send to manager"
+        }],
+        "AttachAnyAdditionalInfo": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Page",
+          "dataRetrievalType": "refer",
+          "pageClass": "Embed-Attach-File",
+          "label": "Attach any additional info",
+          "datasource": {
+            "name": "D_AttachmentFieldInfo",
+            "parameters": {
+              "AttachmentFieldName": "AttachAnyAdditionalInfo",
+              "LinkRefFrom": "@P .pzInsKey",
+              "ClassName": "@P .pxObjClass",
+              "CaseID": "@P .pyID",
+              "AttachmentCategory": "AttachAnyAdditionalInfo"
+            }
+          }
+        }],
+        "pzInsKey": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Identifier",
+          "label": "Instance Handle Key",
+          "isSpecial": true
+        }],
+        "pyID": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "Scalar",
+          "expectedLength": 22,
+          "label": "Case ID",
+          "isClassKey": true
+        }],
+        "Notes": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "displayAs": "pxTextArea",
+          "label": "Notes"
+        }],
+        "Email": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxEmail",
+          "label": "Email",
+          "validateAs": "ValidEmailAddress"
+        }],
+        "FirstName": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxTextInput",
+          "label": "First Name"
+        }],
+        "PhoneNumber": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxPhone",
+          "label": "Phone number",
+          "validateAs": "ValidPhoneNumber"
+        }],
+        "ServiceDate": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Date",
+          "displayAs": "pxDateTime",
+          "label": "Service date"
+        }],
+        "LastName": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxTextInput",
+          "label": "Last Name"
+        }],
+        "pxCreateOperator": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "displayAs": "HarnessOperator",
+          "expectedLength": 40,
+          "label": "Create Operator",
+          "isSpecial": true
+        }],
+        "pxUpdateDateTime": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Date Time",
+          "displayAs": "pxDateTime",
+          "label": "Update date/time",
+          "isSpecial": true
+        }],
+        "pxUpdateOperator": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "displayAs": "HarnessOperator",
+          "label": "Update Operator",
+          "isSpecial": true
+        }],
+        "pxCreateDateTime": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Date Time",
+          "displayAs": "pxDateTime",
+          "label": "Create date/time",
+          "isSpecial": true
+        }],
+        "pyStatusWork": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "WorkStatus",
+          "expectedLength": 32,
+          "label": "Work Status"
+        }],
+        "pyCallingCode": [{
+          "classID": "-",
+          "type": "Unknown"
+        }],
+        "pyLabel": [{
+          "classID": "DIXL-MediaCo-Work-NewService",
+          "type": "Text",
+          "maxLength": 64,
+          "displayAs": "pxTextInput",
+          "expectedLength": 60,
+          "label": "Label"
+        }]
+      }
+    },
+    "components": ["DefaultForm", "Email", "CaseSummary", "TextArea", "Checkbox", "Phone", "Region", "Attachment", "TextInput", "CaseOperator", "View", "Date"],
+    "localeReferences": ["DIXL-MEDIACO-WORK-NEWSERVICE!CASE!NEW SERVICE", "DIXL-MEDIACO-WORK-NEWSERVICE!VIEW!OTHERNOTES"],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "OtherNotes",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {},
+    "actionButtons": {
+      "secondary": [{
+        "jsAction": "cancelAssignment",
+        "name": "Cancel",
+        "actionID": "cancel"
+      }, {
+        "jsAction": "saveAssignment",
+        "name": "Save for later",
+        "actionID": "save"
+      }],
+      "main": [{
+        "jsAction": "finishAssignment",
+        "name": "Submit",
+        "actionID": "submit"
+      }]
+    }
+  },
+  "nextAssignmentInfo": {
+    "context": "self",
+    "className": "DIXL-MediaCo-Work-NewService",
+    "links": {
+      "open": {
+        "rel": "self",
+        "href": "/assignments/ASSIGN-WORKLIST DIXL-MEDIACO-WORK N-16042!SERVICE_FLOW",
+        "type": "GET",
+        "title": "Get assignment details"
+      }
+    },
+    "ID": "ASSIGN-WORKLIST DIXL-MEDIACO-WORK N-16042!SERVICE_FLOW"
+  }
+}
