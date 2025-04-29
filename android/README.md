@@ -24,7 +24,7 @@ object SDKConfig {
 }
 ```
 
-For more information about the configuration, please refer to the [Sample application configuration](../docs/configuration.md) document.
+For more information about the configuration, please refer to the [Configuring sample mobile application](../docs/configure-sample-mobile-app.md) document.
 
 
 ### Gradle integration

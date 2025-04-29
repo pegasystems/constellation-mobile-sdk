@@ -50,9 +50,9 @@ Currently SDK supports creating new case of given type and processing assignment
 
 #### [Integration with iOS applications](ios/README.md)
 
-#### [Setting up MediaCo sample application](docs/setup.md)
+#### [Setting up sample Pega application](docs/setup-sample-pega-app.md)
 
-#### [Sample application configuration](docs/configuration.md)
+#### [Configuring sample mobile application](docs/configure-sample-mobile-app.md)
 
 ## License
 
