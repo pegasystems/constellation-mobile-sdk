@@ -7,12 +7,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.DisplayMode
+import com.pega.mobile.constellation.sdk.components.DisplayMode.Companion.toDisplayMode
 import com.pega.mobile.constellation.sdk.components.RenderDisplayOnly
 import com.pega.mobile.constellation.sdk.components.WithDisplayMode
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
-import com.pega.mobile.constellation.sdk.components.toDisplayMode
 import org.json.JSONObject
 
 abstract class FieldComponent(context: ComponentContext) : BaseComponent(context) {

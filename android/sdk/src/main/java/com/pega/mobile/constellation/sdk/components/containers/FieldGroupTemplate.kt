@@ -24,7 +24,6 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
         private set
 
     override fun onUpdate(props: JSONObject) {
-        Log.d("FieldGroupTemplateComponent", "props: $props")
         val itemsJsonList = props.getJSONArray("items").mapWithIndex { getJSONObject(it) }
         items = itemsJsonList.mapNotNull { itemJson ->
             val componentId = itemJson.getString("componentId")

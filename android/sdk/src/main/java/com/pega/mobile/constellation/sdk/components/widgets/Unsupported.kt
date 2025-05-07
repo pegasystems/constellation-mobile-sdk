@@ -8,13 +8,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.ComponentTypes
 import com.pega.mobile.constellation.sdk.components.DisplayMode
+import com.pega.mobile.constellation.sdk.components.DisplayMode.Companion.toDisplayMode
 import com.pega.mobile.constellation.sdk.components.WithDisplayMode
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
-import com.pega.mobile.constellation.sdk.components.toDisplayMode
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
