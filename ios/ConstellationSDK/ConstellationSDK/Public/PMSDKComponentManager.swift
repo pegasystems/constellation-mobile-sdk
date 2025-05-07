@@ -39,7 +39,7 @@ public class PMSDKComponentManager {
         "Date": DefaultDateComponentProvider.self,
         "Integer": IntegerComponentProvider.self,
         "Dropdown": DropdownComponentProvider.self,
-        "RadioButtons": DropdownComponentProvider.self,
+        "RadioButtons": RadioButtonsComponentProvider.self,
 
         "Region": ViewComponentProvider.self,
         "View": ViewComponentProvider.self,
