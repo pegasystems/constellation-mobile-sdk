@@ -84,7 +84,6 @@ export class FieldGroupTemplateComponent {
   }
 
   updateSelf() {
-    ////
     this.inheritedProps$ = this.pConn$.getInheritedProps();
     const label = this.configProps.label;
     const showLabel = this.configProps.showLabel;
@@ -115,93 +114,43 @@ export class FieldGroupTemplateComponent {
           this.addFieldGroupItem();
         }
       }
-      const children = [];
+      const items = [];
       this.referenceList?.forEach((item, index) => {
         //TODO: add some reconciliation
-        children.push({
+        items.push({
           id: index,
           name: this.fieldHeader === 'propertyRef' ? this.getDynamicHeader(item, index) : this.getStaticHeader(this.heading, index),
           component: this.createItemComponent(this.buildItemPConnect(this.pConn$, index, lookForChildInConfig).getPConnect())
         });
       })
-      this.children = children;
+      this.items = items;
     }
     this.prevRefLength = this.referenceList.length;
-    ////
+
     this.sendPropsUpdate();
   }
 
   createItemComponent(pConn) {
-    const childComponentClass = getComponentFromMap(pConn.getRawMetadata().type);
-    const childComponentInstance = new childComponentClass(this.componentsManager, pConn);
-    childComponentInstance.init();
-    return childComponentInstance;
+    const itemComponentClass = getComponentFromMap(pConn.getRawMetadata().type);
+    const itemComponentInstance = new itemComponentClass(this.componentsManager, pConn);
+    itemComponentInstance.init();
+    return itemComponentInstance;
   }
 
-  // reconcileItemsComponents(newItems) {
-  //   const oldItems = this.children
-  //   const reconciledItems = [];
-  //
-  //   newItems.forEach((newItem) => {
-  //     const oldItemToReuse = this.getItemToReuse(oldItems, newItem.pConn.getPConnect());
-  //     if (oldItemToReuse !== undefined) {
-  //       this.updateComponentPconn(oldItemToReuse, newItem.getPConnect());
-  //       reconciledItems.push({component: oldItemToReuse, shouldInit: false});
-  //       oldItems.splice(oldItems.indexOf(oldItemToReuse), 1);
-  //     } else {
-  //       const newChildComponent = this.createNewChildComponent(component.componentsManager, newItem.getPConnect());
-  //       reconciledItems.push({component: newChildComponent, shouldInit: true});
-  //     }
-  //   })
-  //   this.destroyOldChildrenComponents(oldItems);
-  //   return reconciledItems;
-  // }
-  //
-  // getItemToReuse(oldItems, newItemPConn) {
-  //   return oldItems.find((item) => {
-  //     return this.isEqualNameType(item.pConn, newItemPConn);
-  //   })
-  // }
-  //
-  // destroyOldChildrenComponents(oldChildrenComponents) {
-  //   oldChildrenComponents.forEach((component) => {
-  //     if (component === undefined) {
-  //       throw new Error("Reconciliation failed, child component is 'undefined'");
-  //     }
-  //     if (component.destroy === undefined) {
-  //       throw new Error("Reconciliation failed, child component is missing 'destroy' function");
-  //     }
-  //     component.destroy();
-  //   });
-  // }
-  //
-  // createNewChildComponent(componentsManager, childPConn) {
-  //   const childComponentClass = getComponentFromMap(childPConn.meta.type);
-  //   return new childComponentClass(componentsManager, childPConn);
-  // }
-  //
-  // updateComponentPconn(childComponent, newChildPConn) {
-  //   if (childComponent === undefined) {
-  //     throw new Error("Reconciliation failed, child component is 'undefined'");
-  //   }
-  //   if (childComponent.update === undefined) {
-  //     throw new Error("Reconciliation failed, child component is missing 'update' function");
-  //   }
-  //   childComponent.update(newChildPConn);
-  // }
-  //
-  // isEqualNameType(oldChildPConn, newChildPConn) {
-  //   return newChildPConn.meta.name === oldChildPConn.meta.name && newChildPConn.meta.type === oldChildPConn.meta.type
-  // }
-
-
   onEvent(event) {
-
+    if (!this.readonlyMode) {
+      this.referenceList?.forEach((item) => {
+          item.component.onEvent(event);
+        }
+      )
+    }
+    // TODO: add handling of add and delete button when introducing support for editable field group
   }
 
   sendPropsUpdate() {
     this.props = {
-      items: this.children.map(child => {
+      // TODO: pass 'allowAddEdit' prop when introducing support for editable field group
+      items: this.items.map(child => {
         return {
           id: child.id,
           heading: child.name,
@@ -211,62 +160,6 @@ export class FieldGroupTemplateComponent {
     };
     this.componentsManager.onComponentPropsUpdate(this);
   }
-
-  //helpers
-  buildMetaForListView(fieldMetadata, fields, type, ruleClass, name, propertyLabel, isDataObject, parameters) {
-    return {
-      name,
-      config: {
-        type,
-        referenceList: fieldMetadata.datasource.name,
-        parameters: parameters ?? fieldMetadata.datasource.parameters,
-        personalization: false,
-        isDataObject,
-        grouping: true,
-        globalSearch: true,
-        reorderFields: true,
-        toggleFieldVisibility: true,
-        title: propertyLabel,
-        personalizationId: '' /* TODO */,
-        template: 'ListView',
-        presets: [
-          {
-            name: 'presets',
-            template: 'Table',
-            config: {},
-            children: [
-              {
-                name: 'Columns',
-                type: 'Region',
-                children: fields
-              }
-            ],
-            label: propertyLabel,
-            id: 'P_' /* TODO */
-          }
-        ],
-        ruleClass
-      }
-    };
-  };
-
-  getContext(thePConn) {
-    const contextName = thePConn.getContextName();
-    const pageReference = thePConn.getPageReference();
-    // 8.7 change = referenceList may now be in top-level of state props,
-    //  not always in config of state props
-    let { referenceList } = thePConn.getStateProps()?.config || thePConn.getStateProps();
-    const pageReferenceForRows = referenceList.startsWith('.') ? `${pageReference}.${referenceList.substring(1)}` : referenceList;
-
-    // removing "caseInfo.content" prefix to avoid setting it as a target while preparing pageInstructions
-    referenceList = pageReferenceForRows.replace(PCore.getConstants().CASE_INFO.CASE_INFO_CONTENT, '');
-
-    return {
-      contextName,
-      referenceListStr: referenceList,
-      pageReferenceForRows
-    };
-  };
 
   getStaticHeader = (heading, index) => {
     return `${heading} ${index + 1}`;
