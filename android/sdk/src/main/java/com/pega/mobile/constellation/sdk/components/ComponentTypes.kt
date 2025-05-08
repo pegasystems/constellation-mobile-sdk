@@ -16,6 +16,10 @@ object ComponentTypes {
     val View = ComponentType("View")
     val ViewContainer = ComponentType("ViewContainer")
 
+    //Templates
+    val SimpleTable = ComponentType("SimpleTable")
+    val FieldGroupTemplate = ComponentType("FieldGroupTemplate")
+
     // fields
     val Checkbox = ComponentType("Checkbox")
     val Currency = ComponentType("Currency")

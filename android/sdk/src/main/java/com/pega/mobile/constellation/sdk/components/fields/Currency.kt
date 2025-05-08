@@ -30,20 +30,24 @@ class CurrencyRenderer : ComponentRenderer<CurrencyComponent> {
     @Composable
     override fun CurrencyComponent.Render() {
         WithVisibility {
-            Currency(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                isoCode = isoCode,
-                showIsoCode = showIsoCode,
-                decimalPrecision = decimalPrecision,
-                onValueChange = { updateValue(it) },
-                onFocusChange = { updateFocus(it) }
+            WithDisplayMode(
+                editable = {
+                    Currency(
+                        value = value,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        isoCode = isoCode,
+                        showIsoCode = showIsoCode,
+                        decimalPrecision = decimalPrecision,
+                        onValueChange = { updateValue(it) },
+                        onFocusChange = { updateFocus(it) }
+                    )
+                }
             )
         }
     }

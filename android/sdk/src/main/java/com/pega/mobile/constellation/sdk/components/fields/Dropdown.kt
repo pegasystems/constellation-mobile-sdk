@@ -12,17 +12,21 @@ class DropdownRenderer : ComponentRenderer<SelectableComponent> {
     @Composable
     override fun SelectableComponent.Render() {
         WithVisibility {
-            Dropdown(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                options = options.map { SelectableOption(it.key, it.label) },
-                onValueChange = { updateValue(it) }
+            WithDisplayMode(
+                editable = {
+                    Dropdown(
+                        value = value,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        options = options.map { SelectableOption(it.key, it.label) },
+                        onValueChange = { updateValue(it) }
+                    )
+                }
             )
         }
     }

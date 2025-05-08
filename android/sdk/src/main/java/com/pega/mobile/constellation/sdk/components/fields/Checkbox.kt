@@ -23,16 +23,20 @@ class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
     @Composable
     override fun CheckboxComponent.Render() {
         WithVisibility {
-            Checkbox(
-                value = value.toBoolean(),
-                caption = caption,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                onValueChange = { updateValue(it.toString()) },
+            WithDisplayMode(
+                editable = {
+                    Checkbox(
+                        value = value.toBoolean(),
+                        caption = caption,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        onValueChange = { updateValue(it.toString()) },
+                    )
+                }
             )
         }
     }

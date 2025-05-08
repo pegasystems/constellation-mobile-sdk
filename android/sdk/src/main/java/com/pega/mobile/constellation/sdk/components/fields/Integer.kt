@@ -11,17 +11,21 @@ class IntegerRenderer : ComponentRenderer<IntegerComponent> {
     @Composable
     override fun IntegerComponent.Render() {
         WithVisibility {
-            Integer(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                onValueChange = { updateValue(it) },
-                onFocusChange = { updateFocus(it) }
+            WithDisplayMode(
+                editable = {
+                    Integer(
+                        value = value,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        onValueChange = { updateValue(it) },
+                        onFocusChange = { updateFocus(it) }
+                    )
+                }
             )
         }
     }

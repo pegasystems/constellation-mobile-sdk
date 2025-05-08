@@ -80,7 +80,7 @@ export class DateComponent {
     this.testId = this.configProps$.testId;
 
     this.label$ = this.configProps$.label;
-    this.displayMode$ = this.configProps$.displayMode;
+    this.displayMode$ = this.configProps$.displayMode || '';
 
     this.componentReference = this.pConn$.getStateProps().value;
 
@@ -126,7 +126,8 @@ export class DateComponent {
       readOnly: this.bReadonly$,
       helperText: this.helperText,
       placeholder: this.placeholder,
-      validateMessage: this.jsComponentPConnectData.validateMessage || ''
+      validateMessage: this.jsComponentPConnectData.validateMessage || '',
+      displayMode: this.displayMode$
     }
     this.componentsManager.onComponentPropsUpdate(this);
   }

@@ -19,7 +19,8 @@ export class PhoneComponent {
     helperText: '',
     placeholder: '',
     showCountryCode: true,
-    validateMessage: ''
+    validateMessage: '',
+    displayMode: ''
   }
 
   constructor(componentsManager, pConn$) {
@@ -65,6 +66,7 @@ export class PhoneComponent {
 
   updateSelf() {
     const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.props.displayMode = configProps.displayMode || '';
     this.props.label = configProps.label;
 
     if (configProps.value != undefined) {

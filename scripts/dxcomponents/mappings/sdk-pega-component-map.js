@@ -62,7 +62,7 @@ import { DefaultFormComponent } from '../components/containers/default-form.comp
 // import { DetailsWideNarrowComponent } from './_components/template/details-wide-narrow/details-wide-narrow.component';
 // import { DynamicTabsComponent } from './_components/template/dynamic-tabs/dynamic-tabs.component';
 // import { FieldGroupListComponent } from './_components/template/field-group-list/field-group-list.component';
-// import { FieldGroupTemplateComponent } from './_components/template/field-group-template/field-group-template.component';
+import { FieldGroupTemplateComponent } from '../components/containers/templates/field-group-template.component.js';
 // import { FieldValueListComponent } from './_components/template/field-value-list/field-value-list.component';
 // import { InlineDashboardComponent } from './_components/template/inline-dashboard/inline-dashboard.component';
 // import { InlineDashboardPageComponent } from './_components/template/inline-dashboard-page/inline-dashboard-page.component';
@@ -76,7 +76,7 @@ import { DefaultFormComponent } from '../components/containers/default-form.comp
 // import { OneColumnTabComponent } from './_components/template/one-column-tab/one-column-tab.component';
 // import { PageComponent } from './_components/template/page/page.component';
 // import { PromotedFiltersComponent } from './_components/template/promoted-filters/promoted-filters.component';
-// import { SimpleTableComponent } from './_components/template/simple-table/simple-table.component';
+import { SimpleTableComponent } from '../components/containers/templates/simple-table.component.js';
 // import { SimpleTableManualComponent } from './_components/template/simple-table-manual/simple-table-manual.component';
 // import { SimpleTableSelectComponent } from './_components/template/simple-table-select/simple-table-select.component';
 // import { SingleReferenceReadonlyComponent } from './_components/template/single-reference-readonly/single-reference-readonly.component';
@@ -169,7 +169,7 @@ const pegaSdkComponentMap = {
   // FeedContainer: FeedContainerComponent,
   // FieldGroup: FieldGroupComponent,
   // FieldGroupList: FieldGroupListComponent,
-  // FieldGroupTemplate: FieldGroupTemplateComponent,
+  FieldGroupTemplate: FieldGroupTemplateComponent,
   // FieldValueList: FieldValueListComponent,
   // FileUtility: FileUtilityComponent,
   FlowContainer: FlowContainerComponent,
@@ -212,7 +212,7 @@ const pegaSdkComponentMap = {
   RootContainer: RootContainerComponent,
   // ScalarList: ScalarListComponent,
   // SemanticLink: SemanticLinkComponent,
-  // SimpleTable: SimpleTableComponent,
+  SimpleTable: SimpleTableComponent,
   // SimpleTableManual: SimpleTableManualComponent,
   // SimpleTableSelect: SimpleTableSelectComponent,
   // SingleReferenceReadOnly: SingleReferenceReadonlyComponent,

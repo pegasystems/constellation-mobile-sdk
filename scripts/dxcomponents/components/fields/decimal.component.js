@@ -18,9 +18,10 @@ export class DecimalComponent {
     readOnly: false,
     helperText: '',
     placeholder: '',
-    validateMessage: '',
     decimalPrecision: 0,
-    showGroupSeparators: false
+    showGroupSeparators: false,
+    validateMessage: '',
+    displayMode: ''
   }
 
   constructor(componentsManager, pConn$) {
@@ -66,6 +67,7 @@ export class DecimalComponent {
 
   updateSelf() {
     const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.props.displayMode = configProps.displayMode || '';
     this.props.label = configProps.label;
 
     if (configProps.value) {

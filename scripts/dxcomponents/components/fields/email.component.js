@@ -79,7 +79,7 @@ export class EmailComponent {
     this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
     this.testId = this.configProps$.testId;
     this.label$ = this.configProps$.label;
-    this.displayMode$ = this.configProps$.displayMode;
+    this.displayMode$ = this.configProps$.displayMode || '';
 
     if (this.configProps$.value != undefined) {
       this.value$ = this.configProps$.value;
@@ -134,7 +134,8 @@ export class EmailComponent {
       readOnly: this.bReadonly$,
       helperText: this.helperText,
       placeholder: this.placeholder,
-      validateMessage: this.jsComponentPConnectData.validateMessage || ''
+      validateMessage: this.jsComponentPConnectData.validateMessage || '',
+      displayMode: this.displayMode$
     }
     this.componentsManager.onComponentPropsUpdate(this);
   }

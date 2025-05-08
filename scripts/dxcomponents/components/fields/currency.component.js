@@ -21,7 +21,8 @@ export class CurrencyComponent {
     currencyISOCode: '',
     showISOCode: false,
     decimalPrecision: '',
-    validateMessage: ''
+    validateMessage: '',
+    displayMode: ''
   }
 
   constructor(componentsManager, pConn$) {
@@ -67,6 +68,7 @@ export class CurrencyComponent {
 
   updateSelf() {
     const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.props.displayMode = configProps.displayMode || '';
     this.props.label = configProps.label;
 
     if (configProps.value) {

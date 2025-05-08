@@ -10,7 +10,7 @@ object SDKConfig {
      *
      * Replace with the actual URL of your Pega instance.
      */
-    const val PEGA_URL = "https://insert-url-here.example/prweb"
+    const val PEGA_URL = "http://192.168.1.63/prweb"
 
     /**
      * The version of the Pega Platform being used. Determines the Constellation Core JS library version used by the SDK.

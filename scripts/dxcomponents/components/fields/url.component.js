@@ -70,7 +70,7 @@ export class UrlComponent {
       this.value$ = this.configProps$.value;
     }
     this.testId = this.configProps$.testId;
-    this.displayMode$ = this.configProps$.displayMode;
+    this.displayMode$ = this.configProps$.displayMode || '';
     this.label$ = this.configProps$.label || '';
     this.helperText = this.configProps$.helperText || '';
     this.placeholder = this.configProps$.placeholder || '';
@@ -104,6 +104,7 @@ export class UrlComponent {
       helperText: this.helperText,
       placeholder: this.placeholder,
       validateMessage: this.jsComponentPConnectData.validateMessage || '',
+      displayMode: this.displayMode$
     }
     this.componentsManager.onComponentPropsUpdate(this);
   }

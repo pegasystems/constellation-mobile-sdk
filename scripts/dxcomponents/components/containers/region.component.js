@@ -54,7 +54,7 @@ export class RegionComponent {
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
 
 
-    const reconciledComponents = this.componentsManager.reconcileChildren(this, oldChildren);
+    const reconciledComponents = this.componentsManager.reconcileChildren(this);
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.componentsManager.initReconciledComponents(reconciledComponents);
 

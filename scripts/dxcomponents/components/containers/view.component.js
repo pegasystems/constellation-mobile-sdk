@@ -13,7 +13,7 @@ const DETAILS_TEMPLATES = [
   'NarrowWideDetails',
   'WideNarrowDetails'
 ];
-const SUPPORTED_FORM_TEMPLATES = ['DefaultForm'];
+const SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'SimpleTable'];
 
 function isDetailsTemplate(template) {
   return DETAILS_TEMPLATES.includes(template);
@@ -25,45 +25,6 @@ function isDetailsTemplate(template) {
  * is totally at your own risk.
  */
 
-/**
- *
- * @param pConnn - PConnect Object
- * @returns visibility expression result if exists, otherwise true
- */
-function evaluateVisibility(pConnn) {
-  let bVisibility = true;
-  const sVisibility = pConnn.meta.config.visibility;
-  if (sVisibility && sVisibility.length) {
-    // e.g. "@E .EmbeddedData_SelectedTestName == 'Readonly' && .EmbeddedData_SelectedSubCategory == 'Mode'"
-    const aVisibility = sVisibility.split('&&');
-    // e.g. ["EmbeddedData_SelectedTestName": "Readonly", "EmbeddedData_SelectedSubCategory": "Mode"]
-    const context = pConnn.getContextName();
-    // Reading values from the Store to evaluate the visibility expressions
-    const storeData = PCore.getStore().getState()?.data[context].caseInfo.content;
-
-    const initialVal = {};
-    const oProperties = aVisibility.reduce((properties, property) => {
-      const keyStartIndex = property.indexOf('.');
-      const keyEndIndex = property.indexOf('=') - 1;
-      const valueStartIndex = property.indexOf("'");
-      const valueEndIndex = property.lastIndexOf("'") - 1;
-      return {
-        ...properties,
-        [property.substr(keyStartIndex + 1, keyEndIndex - keyStartIndex - 1)]: property.substr(valueStartIndex + 1, valueEndIndex - valueStartIndex)
-      };
-    }, initialVal);
-
-    const propertyKeys = Object.keys(oProperties);
-    const propertyValues = Object.values(oProperties);
-
-    for (let propertyIndex = 0; propertyIndex < propertyKeys.length; propertyIndex++) {
-      if (storeData[propertyKeys[propertyIndex]] !== propertyValues[propertyIndex]) {
-        bVisibility = false;
-      }
-    }
-  }
-  return bVisibility;
-}
 
 // interface ViewProps {
 //   // If any, enter additional props that only exist on this component
@@ -129,7 +90,9 @@ export class ViewComponent {
   }
 
   onEvent(event) {
-    this.childrenComponents.forEach((component) => {component.onEvent(event);})
+    this.childrenComponents.forEach((component) => {
+      component.onEvent(event);
+    })
   }
 
   sendPropsUpdate() {
@@ -177,13 +140,12 @@ export class ViewComponent {
 
     this.templateName$ = this.configProps$.template || '';
     this.title$ = this.configProps$.title || '';
-    this.label$ = this.configProps$.label || '';
-    this.showLabel$ = this.configProps$.showLabel || isDetailsTemplate(this.templateName$) || this.showLabel$;
+    const label = this.configProps$.label || '';
+    const showLabel = this.configProps$.showLabel || isDetailsTemplate(this.templateName$) || this.showLabel$;
     // label & showLabel within inheritedProps takes precedence over configProps
-    this.label$ = this.inheritedProps$.label || this.label$;
-    this.showLabel$ = this.inheritedProps$.showLabel || this.showLabel$;
+    this.label$ = this.inheritedProps$.label !== undefined ? this.inheritedProps$.label : label;
+    this.showLabel$ = this.inheritedProps$.showLabel !== undefined ? this.inheritedProps$.showLabel : showLabel;
 
-    const oldChildren = this.arChildren$
     // children may have a 'reference' so normalize the children array
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
 
@@ -198,7 +160,7 @@ export class ViewComponent {
      * component is able to handle it.
      */
     if (!this.configProps$.visibility && this.pConn$.getPageReference().length > 'caseInfo.content'.length) {
-      this.visibility$ = evaluateVisibility(this.pConn$);
+      this.visibility$ = this.evaluateVisibility(this.pConn$, this.configProps$.referenceContext);
     }
 
     // was:  this.arChildren$ = this.pConn$.getChildren() as Array<any>;
@@ -214,13 +176,13 @@ export class ViewComponent {
       if (this.childrenComponents[0] !== undefined) {
         this.childrenComponents[0].update(this.pConn$, this.arChildren$);
       } else {
-        const defaultFormComponentClass = getComponentFromMap("DefaultForm");
-        const defaultFormComponent = new defaultFormComponentClass(this.componentsManager, this.pConn$, this.arChildren$);
-        defaultFormComponent.init();
-        this.childrenComponents.push(defaultFormComponent);
+        const templateComponentClass = getComponentFromMap(this.templateName$);
+        const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn$, this.arChildren$);
+        templateComponentInstance.init();
+        this.childrenComponents.push(templateComponentInstance);
       }
     } else {
-      const reconciledComponents = this.componentsManager.reconcileChildren(this, oldChildren);
+      const reconciledComponents = this.componentsManager.reconcileChildren(this);
       this.childrenComponents = reconciledComponents.map((item) => item.component);
       this.componentsManager.initReconciledComponents(reconciledComponents);
     }
@@ -252,7 +214,7 @@ export class ViewComponent {
 
         case 'Details':
           allFields = this.getAllFields(getPConnect);
-          propObj = { fields: allFields[0] };
+          propObj = {fields: allFields[0]};
           break;
         default:
           break;
@@ -273,4 +235,47 @@ export class ViewComponent {
     }
     return allFields;
   }
+
+  evaluateVisibility(pConn, referenceContext) {
+    const visibilityExpression = pConn.meta.config.visibility;
+    if (!visibilityExpression || visibilityExpression.length === 0) return true;
+
+    let dataPage = this.getDataPage(pConn.getContextName(), referenceContext);
+    if (!dataPage) return false;
+
+    const visibilityConditions = visibilityExpression.replace("@E ", "")
+    return PCore.getExpressionEngine().evaluate(visibilityConditions, dataPage, {
+      pConnect: {
+        getPConnect: () => {
+          return this.pConn$
+        }
+      }
+    });
+  }
+
+  getDataPage(context, referenceContext) {
+    let pageReferenceKeys = referenceContext.replace("caseInfo.content.", "").split('.');
+    let page = PCore.getStore().getState()?.data[context].caseInfo.content;
+    for (const key of pageReferenceKeys) {
+      const arrayStartingBracketIndex = key.indexOf('[');
+      const arrayEndingBracketIndex = key.indexOf(']');
+      if (arrayStartingBracketIndex !== -1 && arrayEndingBracketIndex !== -1) {
+        const keyName = key.substring(0, arrayStartingBracketIndex);
+        const keyIndex = parseInt(key.substring(arrayStartingBracketIndex + 1, arrayEndingBracketIndex));
+        if (page[keyName][keyIndex] !== undefined) {
+          page = page[keyName][keyIndex];
+        } else {
+          return null;
+        }
+      } else {
+        if (key in page) {
+          page = page[key];
+        } else {
+          return null;
+        }
+      }
+    }
+    return page;
+  }
+
 }

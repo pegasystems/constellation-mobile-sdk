@@ -109,9 +109,8 @@ export class CheckBoxComponent {
 
   updateSelf() {
     this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-
     this.testId = this.configProps$.testId;
-    this.displayMode$ = this.configProps$.displayMode;
+    this.displayMode$ = this.configProps$.displayMode || '';
     this.label$ = this.configProps$.label || '';
     if (this.label$ != '') {
       this.showLabel$ = true;
@@ -184,8 +183,9 @@ export class CheckBoxComponent {
       disabled: this.bDisabled$,
       readOnly: this.bReadonly$,
       helperText: this.helperText,
+      caption: this.caption$,
       validateMessage: this.jsComponentPConnectData.validateMessage || '',
-      caption: this.caption$
+      displayMode: this.displayMode$
     }
     this.componentsManager.onComponentPropsUpdate(this);
   }

@@ -11,17 +11,21 @@ class TextInputRenderer : ComponentRenderer<TextInputComponent> {
     @Composable
     override fun TextInputComponent.Render() {
         WithVisibility {
-            TextInput(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                onValueChange = { updateValue(it) },
-                onFocusChange = { updateFocus(it) }
+            WithDisplayMode(
+                editable = {
+                    TextInput(
+                        value = value,
+                        label = label,
+                        helperText = helperText,
+                        validateMessage = validateMessage,
+                        placeholder = placeholder,
+                        required = required,
+                        disabled = disabled,
+                        readOnly = readOnly,
+                        onValueChange = { updateValue(it) },
+                        onFocusChange = { updateFocus(it) }
+                    )
+                }
             )
         }
     }
