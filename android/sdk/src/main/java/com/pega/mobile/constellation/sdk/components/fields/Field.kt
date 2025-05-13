@@ -1,18 +1,18 @@
 package com.pega.mobile.constellation.sdk.components.fields
 
 import androidx.annotation.CallSuper
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.DisplayMode
 import com.pega.mobile.constellation.sdk.components.DisplayMode.Companion.toDisplayMode
-import com.pega.mobile.constellation.sdk.components.RenderDisplayOnly
-import com.pega.mobile.constellation.sdk.components.WithDisplayMode
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
+import com.pega.mobile.constellation.sdk.components.helpers.WithDisplayMode
+import com.pega.mobile.constellation.sdk.components.helpers.WithVisibility
+import com.pega.mobile.dxcomponents.compose.controls.form.FieldValue
 import org.json.JSONObject
 
 abstract class FieldComponent(context: ComponentContext) : BaseComponent(context) {
@@ -70,20 +70,17 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
 }
 
 @Composable
-fun <T : FieldComponent> T.WithVisibility(content: @Composable T.() -> Unit) {
-    AnimatedVisibility(visible) { content.invoke(this@WithVisibility) }
-}
-
-@Composable
-fun <T : FieldComponent> T.WithDisplayMode(
+fun <T : FieldComponent> T.WithFieldHelpers(
+    displayOnly: @Composable T.() -> Unit = { FieldValue(label, value) },
     editable: @Composable T.() -> Unit,
-    displayOnly: @Composable T.() -> Unit = { RenderDisplayOnly(label, value) }
 ) {
-    WithDisplayMode(
-        displayMode = displayMode,
-        label = label,
-        value = value,
-        editable = { editable.invoke(this) },
-        displayOnly = { displayOnly.invoke(this)}
-    )
+    WithVisibility(visible) {
+        WithDisplayMode(
+            displayMode = displayMode,
+            label = label,
+            value = value,
+            editable = { editable.invoke(this) },
+            displayOnly = { displayOnly.invoke(this) }
+        )
+    }
 }

@@ -22,22 +22,18 @@ class TextAreaComponent(context: ComponentContext) : FieldComponent(context) {
 class TextAreaRenderer : ComponentRenderer<TextAreaComponent> {
     @Composable
     override fun TextAreaComponent.Render() {
-        WithVisibility {
-            WithDisplayMode(
-                editable = {
-                    TextArea(
-                        value = value,
-                        label = label,
-                        helperText = helperText,
-                        validateMessage = validateMessage,
-                        placeholder = placeholder,
-                        required = required,
-                        disabled = disabled,
-                        readOnly = readOnly,
-                        onValueChange = { updateValue(it) },
-                        onFocusChange = { updateFocus(it) }
-                    )
-                }
+        WithFieldHelpers {
+            TextArea(
+                value = value,
+                label = label,
+                helperText = helperText,
+                validateMessage = validateMessage,
+                placeholder = placeholder,
+                required = required,
+                disabled = disabled,
+                readOnly = readOnly,
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

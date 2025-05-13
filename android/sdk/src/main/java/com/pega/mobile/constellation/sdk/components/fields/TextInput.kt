@@ -10,22 +10,18 @@ class TextInputComponent(context: ComponentContext) : FieldComponent(context)
 class TextInputRenderer : ComponentRenderer<TextInputComponent> {
     @Composable
     override fun TextInputComponent.Render() {
-        WithVisibility {
-            WithDisplayMode(
-                editable = {
-                    TextInput(
-                        value = value,
-                        label = label,
-                        helperText = helperText,
-                        validateMessage = validateMessage,
-                        placeholder = placeholder,
-                        required = required,
-                        disabled = disabled,
-                        readOnly = readOnly,
-                        onValueChange = { updateValue(it) },
-                        onFocusChange = { updateFocus(it) }
-                    )
-                }
+        WithFieldHelpers {
+            TextInput(
+                value = value,
+                label = label,
+                helperText = helperText,
+                validateMessage = validateMessage,
+                placeholder = placeholder,
+                required = required,
+                disabled = disabled,
+                readOnly = readOnly,
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.fields.FieldComponent
-import com.pega.mobile.constellation.sdk.components.fields.WithVisibility
+import com.pega.mobile.constellation.sdk.components.fields.WithFieldHelpers
 import com.pega.mobile.dxcomponents.compose.containers.Column
 import com.pega.mobile.dxcomponents.compose.controls.form.Label
 
@@ -14,7 +14,7 @@ class CustomSliderComponent(context: ComponentContext) : FieldComponent(context)
 class CustomSliderRenderer : ComponentRenderer<CustomSliderComponent> {
     @Composable
     override fun CustomSliderComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Column {
                 Label(
                     label = label,

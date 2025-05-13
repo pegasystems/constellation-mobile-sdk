@@ -10,22 +10,18 @@ class EmailComponent(context: ComponentContext) : FieldComponent(context)
 class EmailRenderer : ComponentRenderer<EmailComponent> {
     @Composable
     override fun EmailComponent.Render() {
-        WithVisibility {
-            WithDisplayMode(
-                editable = {
-                    Email(
-                        value = value,
-                        label = label,
-                        helperText = helperText,
-                        validateMessage = validateMessage,
-                        placeholder = placeholder,
-                        required = required,
-                        disabled = disabled,
-                        readOnly = readOnly,
-                        onValueChange = { updateValue(it) },
-                        onFocusChange = { updateFocus(it) }
-                    )
-                }
+        WithFieldHelpers {
+            Email(
+                value = value,
+                label = label,
+                helperText = helperText,
+                validateMessage = validateMessage,
+                placeholder = placeholder,
+                required = required,
+                disabled = disabled,
+                readOnly = readOnly,
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

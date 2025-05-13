@@ -22,21 +22,17 @@ class CheckboxComponent(context: ComponentContext) : FieldComponent(context) {
 class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
     @Composable
     override fun CheckboxComponent.Render() {
-        WithVisibility {
-            WithDisplayMode(
-                editable = {
-                    Checkbox(
-                        value = value.toBoolean(),
-                        caption = caption,
-                        label = label,
-                        helperText = helperText,
-                        validateMessage = validateMessage,
-                        required = required,
-                        disabled = disabled,
-                        readOnly = readOnly,
-                        onValueChange = { updateValue(it.toString()) },
-                    )
-                }
+        WithFieldHelpers {
+            Checkbox(
+                value = value.toBoolean(),
+                caption = caption,
+                label = label,
+                helperText = helperText,
+                validateMessage = validateMessage,
+                required = required,
+                disabled = disabled,
+                readOnly = readOnly,
+                onValueChange = { updateValue(it.toString()) },
             )
         }
     }

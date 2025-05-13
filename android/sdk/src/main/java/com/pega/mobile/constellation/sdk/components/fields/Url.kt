@@ -10,22 +10,18 @@ class UrlComponent(context: ComponentContext) : FieldComponent(context)
 class UrlRenderer : ComponentRenderer<UrlComponent> {
     @Composable
     override fun UrlComponent.Render() {
-        WithVisibility {
-            WithDisplayMode(
-                editable = {
-                    Url(
-                        value = value,
-                        label = label,
-                        helperText = helperText,
-                        validateMessage = validateMessage,
-                        placeholder = placeholder,
-                        required = required,
-                        disabled = disabled,
-                        readOnly = readOnly,
-                        onValueChange = { updateValue(it) },
-                        onFocusChange = { updateFocus(it) }
-                    )
-                }
+        WithFieldHelpers {
+            Url(
+                value = value,
+                label = label,
+                helperText = helperText,
+                validateMessage = validateMessage,
+                placeholder = placeholder,
+                required = required,
+                disabled = disabled,
+                readOnly = readOnly,
+                onValueChange = { updateValue(it) },
+                onFocusChange = { updateFocus(it) }
             )
         }
     }

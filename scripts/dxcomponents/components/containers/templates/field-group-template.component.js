@@ -45,11 +45,6 @@ export class FieldGroupTemplateComponent {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
-
-    // const menuIconOverride$ = 'trash';
-    // if (menuIconOverride$) {
-    //   this.menuIconOverride$ = this.utils.getImageSrc(menuIconOverride$, this.utils.getSDKStaticContentUrl());
-    // }
   }
 
   destroy() {

@@ -24,18 +24,19 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
         private set
 
     override fun onUpdate(props: JSONObject) {
-        val itemsJsonList = props.getJSONArray("items").mapWithIndex { getJSONObject(it) }
-        items = itemsJsonList.mapNotNull { itemJson ->
-            val componentId = itemJson.getString("componentId")
-            context.componentManager.getComponent(ComponentId(componentId.toInt()))
-                ?.let { component ->
-                    Item(
-                        id = itemJson.getInt("id"),
-                        heading = itemJson.getString("heading"),
-                        component = component
-                    )
-                }
-        }
+        items = props.getJSONArray("items")
+            .mapWithIndex { getJSONObject(it) }
+            .mapNotNull { itemJson ->
+                val componentId = itemJson.getString("componentId")
+                context.componentManager.getComponent(ComponentId(componentId.toInt()))
+                    ?.let { component ->
+                        Item(
+                            id = itemJson.getInt("id"),
+                            heading = itemJson.getString("heading"),
+                            component = component
+                        )
+                    }
+            }
     }
 
     data class Item(val id: Int, val heading: String, val component: Component)
