@@ -15,8 +15,17 @@ struct DropdownView: View {
             }
         }
     }
-    
+
     var body: some View {
+        VStack {
+            if properties.visible {
+                contentView
+            }
+        }
+        .animation(.easeInOut, value: properties.visible)
+    }
+
+    private var contentView: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
                 if let label = properties.label {
