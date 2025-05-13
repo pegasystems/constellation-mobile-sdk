@@ -29,8 +29,17 @@ struct UnsupportedComponentView: View {
     init(properties: UnsupportedComponentProps) {
         self.properties = properties
     }
-
+    
     var body: some View {
+        VStack {
+            if properties.visible {
+                contentView
+            }
+        }
+        .animation(.easeInOut, value: properties.visible)
+    }
+
+    private var contentView: some View {
         HStack(spacing: 10) {
             Text("Component not supported: <\(properties.type)>").padding()
         }

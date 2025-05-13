@@ -10,7 +10,39 @@ open class DefaultCheckboxComponentProvider: ComponentProvider {
 
     public required init() {
         properties = CheckboxProps()
-        eventSubject = PassthroughSubject().eraseToAnyPublisher()
+        let subject = PassthroughSubject<ComponentEvent, Never>()
+        
+        properties.onFocusChange = { input in
+            guard
+                let value = input["value"] as? Bool,
+                let focus = input["focus"] as? Bool else
+            {
+                return
+            }
+            subject.send(
+                ComponentEvent(
+                    type: .fieldChangeWithFocus,
+                    componentData: .init(value: String(value)),
+                    eventData: .init(focused: focus)
+                )
+            )
+        }
+        properties.onValueChange = { input in
+            guard
+                let value = input["value"] as? Bool,
+                let focus = input["focus"] as? Bool else
+            {
+                return
+            }
+            subject.send(
+                ComponentEvent(
+                    type: .fieldChange,
+                    componentData: .init(value: String(value)),
+                    eventData: .init(focused: focus)
+                )
+            )
+        }
+        eventSubject = subject.eraseToAnyPublisher()
         view = AnyView(CheckboxView(properties: properties))
     }
 
