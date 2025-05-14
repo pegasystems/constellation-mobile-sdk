@@ -7,7 +7,7 @@ export class FieldGroupTemplateComponent {
   jsComponentPConnectData = {};
   compId;
   type;
-  items;
+  items = [];
   configProps;
 
   props = {
@@ -110,22 +110,29 @@ export class FieldGroupTemplateComponent {
         }
       }
       const items = [];
+      const oldItemsComponents = this.items.map(item => item.component);
       this.referenceList?.forEach((item, index) => {
-        //TODO: add some reconciliation
+        // all components in list are the same name and type so we can pick any component for re-use.
+        const oldComponent = oldItemsComponents.pop();
+        const newPConn = this.buildItemPConnect(this.pConn$, index, lookForChildInConfig).getPConnect();
+        const newComponent = this.reconcileItemComponent(newPConn, oldComponent);
         items.push({
           id: index,
           name: this.fieldHeader === 'propertyRef' ? this.getDynamicHeader(item, index) : this.getStaticHeader(this.heading, index),
-          component: this.createItemComponent(this.buildItemPConnect(this.pConn$, index, lookForChildInConfig).getPConnect())
+          component: newComponent
         });
       })
       this.items = items;
+      this.prevRefLength = this.referenceList.length;
     }
-    this.prevRefLength = this.referenceList.length;
-
     this.sendPropsUpdate();
   }
 
-  createItemComponent(pConn) {
+  reconcileItemComponent(pConn, oldComponent) {
+    if (oldComponent !== undefined) {
+      oldComponent.update(pConn)
+      return oldComponent;
+    }
     const itemComponentClass = getComponentFromMap(pConn.getRawMetadata().type);
     const itemComponentInstance = new itemComponentClass(this.componentsManager, pConn);
     itemComponentInstance.init();
