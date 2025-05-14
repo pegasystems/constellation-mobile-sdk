@@ -15,6 +15,7 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
 import com.pega.mobile.constellation.sdk.components.helpers.WithDisplayMode
+import com.pega.mobile.constellation.sdk.components.helpers.WithVisibility
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
@@ -77,7 +78,7 @@ class UnsupportedRenderer : ComponentRenderer<UnsupportedComponent> {
     @Composable
     override fun UnsupportedComponent.Render() {
         Log.w(TAG, "Unsupported component '$type' due to ${cause.message()}")
-        AnimatedVisibility(visible) {
+        WithVisibility(visible) {
             val label = label
             val value = value
             if (label == null || value == null) {
