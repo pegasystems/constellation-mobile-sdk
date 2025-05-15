@@ -38,7 +38,7 @@ import { TextAreaComponent } from '../components/fields/text-area.component.js';
 // import { TextComponent } from './_components/field/text/text.component';
 // import { TextContentComponent } from './_components/field/text-content/text-content.component';
 import { TextInputComponent } from '../components/fields/text-input.component.js';
-// import { TimeComponent } from './_components/field/time/time.component';
+import { TimeComponent } from '../components/fields/time.component.js';
 import { UrlComponent } from '../components/fields/url.component.js';
 // import { UserReferenceComponent } from './_components/field/user-reference/user-reference.component';
 // import { ScalarListComponent } from './_components/field/scalar-list/scalar-list.component';
@@ -226,7 +226,7 @@ const pegaSdkComponentMap = {
   TextInput: TextInputComponent,
   // ThreeColumn: ThreeColumnComponent,
   // ThreeColumnPage: ThreeColumnPageComponent,
-  // Time: TimeComponent,
+  Time: TimeComponent,
   // Todo: TodoComponent,
   // TwoColumn: TwoColumnComponent,
   // TwoColumnPage: TwoColumnPageComponent,

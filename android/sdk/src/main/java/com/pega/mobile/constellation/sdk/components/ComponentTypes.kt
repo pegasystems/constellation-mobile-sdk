@@ -28,6 +28,7 @@ object ComponentTypes {
     val RadioButtons = ComponentType("RadioButtons")
     val TextArea = ComponentType("TextArea")
     val TextInput = ComponentType("TextInput")
+    val Time = ComponentType("Time")
     val URL = ComponentType("URL")
 
     // widgets

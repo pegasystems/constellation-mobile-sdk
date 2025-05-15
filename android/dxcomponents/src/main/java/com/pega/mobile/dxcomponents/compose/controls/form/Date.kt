@@ -1,7 +1,5 @@
 package com.pega.mobile.dxcomponents.compose.controls.form
 
-import android.graphics.drawable.Icon
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.padding
@@ -21,10 +19,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pega.mobile.dxcomponents.R
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.Input
 import kotlinx.coroutines.flow.filter
 import java.time.Instant

@@ -19,6 +19,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextArea
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextInput
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Time
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.URL
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Unsupported
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.View
@@ -63,6 +64,8 @@ import com.pega.mobile.constellation.sdk.components.fields.TextAreaComponent
 import com.pega.mobile.constellation.sdk.components.fields.TextAreaRenderer
 import com.pega.mobile.constellation.sdk.components.fields.TextInputComponent
 import com.pega.mobile.constellation.sdk.components.fields.TextInputRenderer
+import com.pega.mobile.constellation.sdk.components.fields.TimeComponent
+import com.pega.mobile.constellation.sdk.components.fields.TimeRenderer
 import com.pega.mobile.constellation.sdk.components.fields.UrlComponent
 import com.pega.mobile.constellation.sdk.components.fields.UrlRenderer
 import com.pega.mobile.constellation.sdk.components.widgets.ActionButtonsComponent
@@ -100,6 +103,7 @@ object Components {
         Def(RootContainer) { RootContainerComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(TextInput) { TextInputComponent(it) },
+        Def(Time) { TimeComponent(it) },
         Def(URL) { UrlComponent(it) },
         Def(Unsupported) { UnsupportedComponent(it) },
         Def(View) { ViewComponent(it) },
@@ -129,6 +133,7 @@ object Components {
         RootContainer to RootContainerRenderer(),
         TextArea to TextAreaRenderer(),
         TextInput to TextInputRenderer(),
+        Time to TimeRenderer(),
         URL to UrlRenderer(),
         Unsupported to UnsupportedRenderer(),
         View to ViewRenderer(),
