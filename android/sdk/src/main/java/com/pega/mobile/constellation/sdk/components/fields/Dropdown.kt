@@ -11,7 +11,7 @@ class DropdownComponent(context: ComponentContext) : SelectableComponent(context
 class DropdownRenderer : ComponentRenderer<SelectableComponent> {
     @Composable
     override fun SelectableComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Dropdown(
                 value = value,
                 label = label,

@@ -19,7 +19,8 @@ export class RadioButtonsComponent {
     helperText: '',
     placeholder: '',
     options: [],
-    validateMessage: ''
+    validateMessage: '',
+    displayMode: ''
   }
 
   constructor(componentsManager, pConn$) {
@@ -65,6 +66,7 @@ export class RadioButtonsComponent {
 
   updateSelf() {
     const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.props.displayMode = configProps.displayMode || '';
     this.props.label = configProps.label;
 
     // if there is param for picklist for submit it gets un-focus and this control gets re-loaded for param change

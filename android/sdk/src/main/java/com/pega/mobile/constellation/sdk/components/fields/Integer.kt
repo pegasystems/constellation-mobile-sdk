@@ -10,7 +10,7 @@ class IntegerComponent(context: ComponentContext) : FieldComponent(context)
 class IntegerRenderer : ComponentRenderer<IntegerComponent> {
     @Composable
     override fun IntegerComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Integer(
                 value = value,
                 label = label,

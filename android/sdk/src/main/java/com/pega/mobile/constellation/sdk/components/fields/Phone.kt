@@ -22,7 +22,7 @@ class PhoneComponent(context: ComponentContext) : FieldComponent(context) {
 class PhoneRenderer : ComponentRenderer<PhoneComponent> {
     @Composable
     override fun PhoneComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Phone(
                 value = value,
                 label = label,

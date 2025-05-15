@@ -17,7 +17,8 @@ export class EmailComponent {
     readOnly: false,
     helperText: '',
     placeholder: '',
-    validateMessage: ''
+    validateMessage: '',
+    displayMode: ''
   }
 
   constructor(componentsManager, pConn$) {
@@ -70,6 +71,7 @@ export class EmailComponent {
 
   updateSelf() {
     const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.props.displayMode = configProps.displayMode;
     this.props.label = configProps.label;
 
     if (configProps.value != undefined) {

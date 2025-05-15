@@ -83,7 +83,7 @@ export class TextAreaComponent {
     }
     this.nMaxLength$ = this.pConn$.getFieldMetadata(this.pConn$.getRawConfigProps()?.value)?.maxLength || 100;
     this.testId = this.configProps$.testId;
-    this.displayMode$ = this.configProps$.displayMode;
+    this.displayMode$ = this.configProps$.displayMode || '';
     this.label$ = this.configProps$.label || '';
     this.helperText = this.configProps$.helperText || '';
     this.placeholder = this.configProps$.placeholder || '';
@@ -124,8 +124,9 @@ export class TextAreaComponent {
       readOnly: this.bReadonly$,
       helperText: this.helperText,
       placeholder: this.placeholder,
+      maxLength: this.nMaxLength$,
       validateMessage: this.jsComponentPConnectData.validateMessage || '',
-      maxLength: this.nMaxLength$
+      displayMode: this.displayMode$
     }
     this.componentsManager.onComponentPropsUpdate(this);
   }
