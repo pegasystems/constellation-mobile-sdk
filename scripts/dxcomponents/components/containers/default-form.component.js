@@ -34,7 +34,7 @@ export class DefaultFormComponent {
     const configProps = this.pConn$.getConfigProps();
     this.instructions = this.getInstructions(this.pConn$, configProps?.instructions);
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
-    const reconciledComponents = this.componentsManager.reconcileChildren(this, []);
+    const reconciledComponents = this.componentsManager.reconcileChildren(this);
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.componentsManager.initReconciledComponents(reconciledComponents);
 
@@ -61,7 +61,7 @@ export class DefaultFormComponent {
     // this.arChildren$ = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
 
-    const reconciledComponents = this.componentsManager.reconcileChildren(this, oldChildren);
+    const reconciledComponents = this.componentsManager.reconcileChildren(this);
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.componentsManager.initReconciledComponents(reconciledComponents);
 

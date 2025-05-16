@@ -12,7 +12,7 @@ class DateComponent(context: ComponentContext) : FieldComponent(context)
 class DateRenderer : ComponentRenderer<DateComponent> {
     @Composable
     override fun DateComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Date(
                 value = value.asLocalDateOrNull(),
                 label = label,

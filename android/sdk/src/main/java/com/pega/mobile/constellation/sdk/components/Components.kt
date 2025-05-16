@@ -12,12 +12,14 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.Decimal
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.FieldGroupTemplate
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Integer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Phone
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.SimpleTable
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextArea
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextInput
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Time
@@ -31,12 +33,16 @@ import com.pega.mobile.constellation.sdk.components.containers.AssignmentCompone
 import com.pega.mobile.constellation.sdk.components.containers.AssignmentRenderer
 import com.pega.mobile.constellation.sdk.components.containers.DefaultFormComponent
 import com.pega.mobile.constellation.sdk.components.containers.DefaultFormRenderer
+import com.pega.mobile.constellation.sdk.components.containers.FieldGroupTemplateComponent
+import com.pega.mobile.constellation.sdk.components.containers.FieldGroupTemplateRenderer
 import com.pega.mobile.constellation.sdk.components.containers.FlowContainerComponent
 import com.pega.mobile.constellation.sdk.components.containers.FlowContainerRenderer
 import com.pega.mobile.constellation.sdk.components.containers.RegionComponent
 import com.pega.mobile.constellation.sdk.components.containers.RegionRenderer
 import com.pega.mobile.constellation.sdk.components.containers.RootContainerComponent
 import com.pega.mobile.constellation.sdk.components.containers.RootContainerRenderer
+import com.pega.mobile.constellation.sdk.components.containers.SimpleTableComponent
+import com.pega.mobile.constellation.sdk.components.containers.SimpleTableRenderer
 import com.pega.mobile.constellation.sdk.components.containers.ViewComponent
 import com.pega.mobile.constellation.sdk.components.containers.ViewContainerComponent
 import com.pega.mobile.constellation.sdk.components.containers.ViewContainerRenderer
@@ -99,12 +105,14 @@ object Components {
         Def(DefaultForm) { DefaultFormComponent(it) },
         Def(Dropdown) { DropdownComponent(it) },
         Def(Email) { EmailComponent(it) },
+        Def(FieldGroupTemplate) { FieldGroupTemplateComponent(it) },
         Def(FlowContainer) { FlowContainerComponent(it) },
         Def(Integer) { IntegerComponent(it) },
         Def(Phone) { PhoneComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },
         Def(Region) { RegionComponent(it) },
         Def(RootContainer) { RootContainerComponent(it) },
+        Def(SimpleTable) { SimpleTableComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(TextInput) { TextInputComponent(it) },
         Def(Time) { TimeComponent(it) },
@@ -130,12 +138,14 @@ object Components {
         DefaultForm to DefaultFormRenderer(),
         Dropdown to DropdownRenderer(),
         Email to EmailRenderer(),
+        FieldGroupTemplate to FieldGroupTemplateRenderer(),
         FlowContainer to FlowContainerRenderer(),
         Integer to IntegerRenderer(),
         Phone to PhoneRenderer(),
         RadioButtons to RadioButtonsRenderer(),
         Region to RegionRenderer(),
         RootContainer to RootContainerRenderer(),
+        SimpleTable to SimpleTableRenderer(),
         TextArea to TextAreaRenderer(),
         TextInput to TextInputRenderer(),
         Time to TimeRenderer(),

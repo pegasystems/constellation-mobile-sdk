@@ -11,7 +11,7 @@ class RadioButtonsComponent(context: ComponentContext) : SelectableComponent(con
 class RadioButtonsRenderer : ComponentRenderer<SelectableComponent> {
     @Composable
     override fun SelectableComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             RadioButtons(
                 value = value,
                 label = label,

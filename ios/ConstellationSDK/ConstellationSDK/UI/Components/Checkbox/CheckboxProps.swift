@@ -27,16 +27,16 @@ struct CheckboxPropsObservator: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onChange(of: properties.value) {
-                self.properties.onValueChange(["value": self.properties.value])
+                self.properties.onValueChange(["focus": isFocused, "value": self.properties.value])
             }
             .onChange(of: isFocused) {
-                self.properties.onFocusChange(["focus": isFocused])
+                self.properties.onValueChange(["focus": isFocused, "value": self.properties.value])
             }
     }
 }
 
 extension View {
-    public func observe(properties:CheckboxProps, isFocused: FocusState<Bool>) -> some View {
+    public func observe(properties: CheckboxProps, isFocused: FocusState<Bool>) -> some View {
         modifier(CheckboxPropsObservator(properties: properties, isFocused: isFocused))
     }
 }
