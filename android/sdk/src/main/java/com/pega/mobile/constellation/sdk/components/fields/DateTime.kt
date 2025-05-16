@@ -40,7 +40,7 @@ class DateTimeComponent(context: ComponentContext) : FieldComponent(context) {
 class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
     @Composable
     override fun DateTimeComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             DateTime(
                 value = value.asLocalDateTimeOrNull()?.plusMinutes(timeZoneMinutesOffset.toLong()),
                 label = label,

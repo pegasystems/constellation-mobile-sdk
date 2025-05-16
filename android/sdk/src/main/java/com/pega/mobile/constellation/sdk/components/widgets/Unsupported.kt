@@ -1,20 +1,16 @@
 package com.pega.mobile.constellation.sdk.components.widgets
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.ComponentTypes
-import com.pega.mobile.constellation.sdk.components.DisplayMode
-import com.pega.mobile.constellation.sdk.components.DisplayMode.Companion.toDisplayMode
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
-import com.pega.mobile.constellation.sdk.components.helpers.WithDisplayMode
 import com.pega.mobile.constellation.sdk.components.helpers.WithVisibility
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
@@ -35,20 +31,11 @@ class UnsupportedComponent(
         private set
     var visible by mutableStateOf(false)
         private set
-    var value: String? by mutableStateOf(null)
-        private set
-    var label: String? by mutableStateOf(null)
-        private set
-    var displayMode by mutableStateOf(DisplayMode.EDITABLE)
-        private set
 
     override fun onUpdate(props: JSONObject) {
         type = ComponentType(props.getString("type"))
         cause = MISSING_JAVASCRIPT_IMPLEMENTATION
         visible = props.getBoolean("visible")
-        value = props.optString("value")
-        label = props.optString("label")
-        displayMode = props.optString("displayMode").toDisplayMode()
     }
 
     enum class Cause {
@@ -79,20 +66,7 @@ class UnsupportedRenderer : ComponentRenderer<UnsupportedComponent> {
     override fun UnsupportedComponent.Render() {
         Log.w(TAG, "Unsupported component '$type' due to ${cause.message()}")
         WithVisibility(visible) {
-            val label = label
-            val value = value
-            if (label == null || value == null) {
-                Unsupported("Unsupported component '$type'")
-            } else {
-                WithDisplayMode(
-                    displayMode = displayMode,
-                    label = label,
-                    value = value,
-                    editable = {
-                        Unsupported("Unsupported component '$type'")
-                    })
-            }
-
+            Unsupported("Unsupported component '$type'")
         }
     }
 

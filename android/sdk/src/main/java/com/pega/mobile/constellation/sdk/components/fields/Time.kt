@@ -26,7 +26,7 @@ class TimeComponent(context: ComponentContext) : FieldComponent(context) {
 class TimeRenderer : ComponentRenderer<TimeComponent> {
     @Composable
     override fun TimeComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Time(
                 value = value.asLocalTimeOrNull(),
                 label = label,
