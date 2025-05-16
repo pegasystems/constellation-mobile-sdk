@@ -3,8 +3,7 @@ package com.pega.mobile.dxcomponents.compose.controls.form
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,16 +12,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pega.mobile.dxcomponents.compose.controls.form.internal.DatePickerModal
+import com.pega.mobile.dxcomponents.R
+import com.pega.mobile.dxcomponents.compose.controls.form.internal.ClockFormat
+import com.pega.mobile.dxcomponents.compose.controls.form.internal.ClockFormat.Companion.is24Hour
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.Input
+import com.pega.mobile.dxcomponents.compose.controls.form.internal.TimePickerModal
 import kotlinx.coroutines.flow.filter
-import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Composable
-fun Date(
-    value: LocalDate?,
+fun Time(
+    value: LocalTime?,
     label: String,
     modifier: Modifier = Modifier,
     helperText: String = "",
@@ -32,17 +37,23 @@ fun Date(
     required: Boolean = false,
     disabled: Boolean = false,
     readOnly: Boolean = false,
-    onValueChange: (LocalDate) -> Unit = {},
+    clockFormat: ClockFormat = ClockFormat.FROM_LOCALE,
+    onValueChange: (LocalTime) -> Unit = {},
     onFocusChange: (Boolean) -> Unit = {}
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val is24Hour = clockFormat.is24Hour(context)
+
     if (showDialog) {
-        DatePickerModal(
+        TimePickerModal(
             value = value,
-            onDateSelected = { onValueChange(it) },
+            is24Hour = is24Hour,
+            onTimeSelected = { onValueChange(it) },
             onDismiss = { showDialog = false }
         )
     }
+
     // intercept clicks
     val interactionSource = remember { MutableInteractionSource() }
     LaunchedEffect(interactionSource, disabled, readOnly) {
@@ -52,9 +63,8 @@ fun Date(
                 .collect { showDialog = true }
         }
     }
-
     Input(
-        value = value?.toString().orEmpty(),
+        value = value?.parseTimeValue(is24Hour) ?: "",
         label = label,
         modifier = modifier,
         helperText = helperText,
@@ -66,17 +76,28 @@ fun Date(
         readOnly = readOnly, //TODO: fixing missing validation message, need to handle readOnly for date in other way
         onValueChange = {},
         onFocusChange = onFocusChange,
-        trailingIcon = { Icon(Icons.Default.DateRange, "Select date") },
+        trailingIcon = {
+            Icon(
+                painterResource(R.drawable.time_icon),
+                "Select date",
+                modifier = Modifier.size(24.dp)
+            )
+        },
         interactionSource = interactionSource
     )
 }
 
+private fun LocalTime.parseTimeValue(is24Hour: Boolean): String {
+    val pattern = if (is24Hour) "HH:mm" else "hh:mm a"
+    return DateTimeFormatter.ofPattern(pattern).format(LocalTime.of(hour, minute))
+}
+
 @Preview(showBackground = true, heightDp = 720, widthDp = 480)
 @Composable
-fun DatePreview() {
-    var value: LocalDate? by remember { mutableStateOf(null) }
+fun TimePreview() {
+    var value: LocalTime? by remember { mutableStateOf(null) }
 
-    Date(
+    Time(
         modifier = Modifier.padding(8.dp),
         value = value,
         label = "Birth date",
@@ -87,10 +108,10 @@ fun DatePreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun DatePreviewDisabled() {
-    Date(
-        value = LocalDate.parse("2020-10-10"),
-        label = "Birth date",
+fun TimePreviewDisabled() {
+    Time(
+        value = LocalTime.parse("19:30"),
+        label = "TV news",
         disabled = true,
         onValueChange = { error("unexpected") }
     )
@@ -98,10 +119,10 @@ fun DatePreviewDisabled() {
 
 @Preview(showBackground = true)
 @Composable
-fun DatePreviewReadOnly() {
-    Date(
-        value = LocalDate.parse("1980-01-01"),
-        label = "Birth date",
+fun TimePreviewReadOnly() {
+    Time(
+        value = LocalTime.parse("19:30"),
+        label = "TV news",
         readOnly = true,
         onValueChange = { error("unexpected") }
     )
@@ -109,20 +130,20 @@ fun DatePreviewReadOnly() {
 
 @Preview(showBackground = true)
 @Composable
-fun DatePreviewRequired() {
-    Date(
-        value = LocalDate.parse("2024-09-27"),
-        label = "Birth date",
+fun TimePreviewRequired() {
+    Time(
+        value = LocalTime.parse("19:30"),
+        label = "TV news",
         required = true
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DatePreviewValidateMessage() {
-    Date(
-        value = LocalDate.parse("2024-09-27"),
-        label = "Birth date",
+fun TimePreviewValidateMessage() {
+    Time(
+        value = LocalTime.parse("19:30"),
+        label = "TV news",
         validateMessage = "Some error!",
         helperText = "select date of birth"
     )

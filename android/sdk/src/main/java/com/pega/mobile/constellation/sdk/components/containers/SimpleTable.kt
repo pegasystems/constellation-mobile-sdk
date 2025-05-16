@@ -14,7 +14,8 @@ import com.pega.mobile.dxcomponents.compose.containers.Column
 import org.json.JSONObject
 
 class SimpleTableComponent(context: ComponentContext) : BaseComponent(context) {
-    // In the future we will also support ListView and SimpleTableManual as child component here
+    // Child component is FieldGroupTemplateComponent
+    // We will also support ListViewComponent and SimpleTableManualComponent
     var child: Component? by mutableStateOf(null)
         private set
 

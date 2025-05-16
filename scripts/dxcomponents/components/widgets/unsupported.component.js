@@ -11,8 +11,7 @@ export class UnsupportedComponent {
   utils;
   props = {
     visible: true,
-    type: '',
-    displayMode: ''
+    type: ''
   }
 
   constructor(componentsManager, pConn$) {
@@ -43,17 +42,8 @@ export class UnsupportedComponent {
     this.propName = this.pConn$.getStateProps().value;
     const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
     this.props.type = this.pConn$.meta.type;
-    if (configProps.value !== undefined) {
-      this.props.value = configProps.value;
-    }
-    if (configProps.label !== undefined) {
-      this.props.label = configProps.label;
-    }
     if (configProps.visibility != null) {
       this.props.visible = this.utils.getBooleanValue(configProps.visibility);
-    }
-    if (configProps.displayMode !== undefined) {
-      this.props.displayMode = configProps.displayMode;
     }
     console.log(`Unsupported component ${this.type} for property ${this.propName} inited`);
     this.componentsManager.onComponentAdded(this);

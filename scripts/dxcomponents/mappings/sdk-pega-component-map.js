@@ -23,7 +23,7 @@ import { ViewContainerComponent } from '../components/containers/view-container.
 import { CheckBoxComponent } from '../components/fields/check-box.component.js';
 import { CurrencyComponent } from '../components/fields/currency.component.js';
 import { DateComponent } from '../components/fields/date.component.js';
-// import { DateTimeComponent } from './_components/field/date-time/date-time.component';
+import { DateTimeComponent } from '../components/fields/date-time.component.js';
 import { DecimalComponent } from '../components/fields/decimal.component.js';
 import { DropdownComponent } from '../components/fields/dropdown.component.js';
 import { EmailComponent } from '../components/fields/email.component.js';
@@ -38,7 +38,7 @@ import { TextAreaComponent } from '../components/fields/text-area.component.js';
 // import { TextComponent } from './_components/field/text/text.component';
 // import { TextContentComponent } from './_components/field/text-content/text-content.component';
 import { TextInputComponent } from '../components/fields/text-input.component.js';
-// import { TimeComponent } from './_components/field/time/time.component';
+import { TimeComponent } from '../components/fields/time.component.js';
 import { UrlComponent } from '../components/fields/url.component.js';
 // import { UserReferenceComponent } from './_components/field/user-reference/user-reference.component';
 // import { ScalarListComponent } from './_components/field/scalar-list/scalar-list.component';
@@ -152,7 +152,7 @@ const pegaSdkComponentMap = {
   // DashboardFilter: DashboardFilterComponent,
   // DataReference: DataReferenceComponent,
   Date: DateComponent,
-  // DateTime: DateTimeComponent,
+  DateTime: DateTimeComponent,
   Decimal: DecimalComponent,
   DefaultForm: DefaultFormComponent,
   // DeferLoad: DeferLoadComponent,
@@ -226,7 +226,7 @@ const pegaSdkComponentMap = {
   TextInput: TextInputComponent,
   // ThreeColumn: ThreeColumnComponent,
   // ThreeColumnPage: ThreeColumnPageComponent,
-  // Time: TimeComponent,
+  Time: TimeComponent,
   // Todo: TodoComponent,
   // TwoColumn: TwoColumnComponent,
   // TwoColumnPage: TwoColumnPageComponent,

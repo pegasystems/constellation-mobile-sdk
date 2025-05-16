@@ -7,6 +7,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.AssignmentCar
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Currency
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.DateTime
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Decimal
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
@@ -21,6 +22,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.SimpleTable
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextArea
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextInput
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Time
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.URL
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Unsupported
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.View
@@ -53,6 +55,8 @@ import com.pega.mobile.constellation.sdk.components.fields.CurrencyComponent
 import com.pega.mobile.constellation.sdk.components.fields.CurrencyRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DateComponent
 import com.pega.mobile.constellation.sdk.components.fields.DateRenderer
+import com.pega.mobile.constellation.sdk.components.fields.DateTimeComponent
+import com.pega.mobile.constellation.sdk.components.fields.DateTimeRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DecimalComponent
 import com.pega.mobile.constellation.sdk.components.fields.DecimalRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DropdownComponent
@@ -69,6 +73,8 @@ import com.pega.mobile.constellation.sdk.components.fields.TextAreaComponent
 import com.pega.mobile.constellation.sdk.components.fields.TextAreaRenderer
 import com.pega.mobile.constellation.sdk.components.fields.TextInputComponent
 import com.pega.mobile.constellation.sdk.components.fields.TextInputRenderer
+import com.pega.mobile.constellation.sdk.components.fields.TimeComponent
+import com.pega.mobile.constellation.sdk.components.fields.TimeRenderer
 import com.pega.mobile.constellation.sdk.components.fields.UrlComponent
 import com.pega.mobile.constellation.sdk.components.fields.UrlRenderer
 import com.pega.mobile.constellation.sdk.components.widgets.ActionButtonsComponent
@@ -94,6 +100,7 @@ object Components {
         Def(Checkbox) { CheckboxComponent(it) },
         Def(Currency) { CurrencyComponent(it) },
         Def(Date) { DateComponent(it) },
+        Def(DateTime) { DateTimeComponent(it) },
         Def(Decimal) { DecimalComponent(it) },
         Def(DefaultForm) { DefaultFormComponent(it) },
         Def(Dropdown) { DropdownComponent(it) },
@@ -108,6 +115,7 @@ object Components {
         Def(SimpleTable) { SimpleTableComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(TextInput) { TextInputComponent(it) },
+        Def(Time) { TimeComponent(it) },
         Def(URL) { UrlComponent(it) },
         Def(Unsupported) { UnsupportedComponent(it) },
         Def(View) { ViewComponent(it) },
@@ -125,6 +133,7 @@ object Components {
         Checkbox to CheckboxRenderer(),
         Currency to CurrencyRenderer(),
         Date to DateRenderer(),
+        DateTime to DateTimeRenderer(),
         Decimal to DecimalRenderer(),
         DefaultForm to DefaultFormRenderer(),
         Dropdown to DropdownRenderer(),
@@ -139,6 +148,7 @@ object Components {
         SimpleTable to SimpleTableRenderer(),
         TextArea to TextAreaRenderer(),
         TextInput to TextInputRenderer(),
+        Time to TimeRenderer(),
         URL to UrlRenderer(),
         Unsupported to UnsupportedRenderer(),
         View to ViewRenderer(),
