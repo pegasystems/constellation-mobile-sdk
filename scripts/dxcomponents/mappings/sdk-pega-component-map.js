@@ -23,7 +23,7 @@ import { ViewContainerComponent } from '../components/containers/view-container.
 import { CheckBoxComponent } from '../components/fields/check-box.component.js';
 import { CurrencyComponent } from '../components/fields/currency.component.js';
 import { DateComponent } from '../components/fields/date.component.js';
-// import { DateTimeComponent } from './_components/field/date-time/date-time.component';
+import { DateTimeComponent } from '../components/fields/date-time.component.js';
 import { DecimalComponent } from '../components/fields/decimal.component.js';
 import { DropdownComponent } from '../components/fields/dropdown.component.js';
 import { EmailComponent } from '../components/fields/email.component.js';
@@ -152,7 +152,7 @@ const pegaSdkComponentMap = {
   // DashboardFilter: DashboardFilterComponent,
   // DataReference: DataReferenceComponent,
   Date: DateComponent,
-  // DateTime: DateTimeComponent,
+  DateTime: DateTimeComponent,
   Decimal: DecimalComponent,
   DefaultForm: DefaultFormComponent,
   // DeferLoad: DeferLoadComponent,

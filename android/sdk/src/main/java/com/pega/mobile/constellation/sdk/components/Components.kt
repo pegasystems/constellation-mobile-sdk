@@ -7,6 +7,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.AssignmentCar
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Currency
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.DateTime
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Decimal
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DefaultForm
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
@@ -48,6 +49,8 @@ import com.pega.mobile.constellation.sdk.components.fields.CurrencyComponent
 import com.pega.mobile.constellation.sdk.components.fields.CurrencyRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DateComponent
 import com.pega.mobile.constellation.sdk.components.fields.DateRenderer
+import com.pega.mobile.constellation.sdk.components.fields.DateTimeComponent
+import com.pega.mobile.constellation.sdk.components.fields.DateTimeRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DecimalComponent
 import com.pega.mobile.constellation.sdk.components.fields.DecimalRenderer
 import com.pega.mobile.constellation.sdk.components.fields.DropdownComponent
@@ -91,6 +94,7 @@ object Components {
         Def(Checkbox) { CheckboxComponent(it) },
         Def(Currency) { CurrencyComponent(it) },
         Def(Date) { DateComponent(it) },
+        Def(DateTime) { DateTimeComponent(it) },
         Def(Decimal) { DecimalComponent(it) },
         Def(DefaultForm) { DefaultFormComponent(it) },
         Def(Dropdown) { DropdownComponent(it) },
@@ -121,6 +125,7 @@ object Components {
         Checkbox to CheckboxRenderer(),
         Currency to CurrencyRenderer(),
         Date to DateRenderer(),
+        DateTime to DateTimeRenderer(),
         Decimal to DecimalRenderer(),
         DefaultForm to DefaultFormRenderer(),
         Dropdown to DropdownRenderer(),

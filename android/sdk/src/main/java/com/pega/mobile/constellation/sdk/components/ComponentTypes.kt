@@ -20,6 +20,7 @@ object ComponentTypes {
     val Checkbox = ComponentType("Checkbox")
     val Currency = ComponentType("Currency")
     val Date = ComponentType("Date")
+    val DateTime = ComponentType("DateTime")
     val Decimal = ComponentType("Decimal")
     val Dropdown = ComponentType("Dropdown")
     val Email = ComponentType("Email")

@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
-import com.pega.mobile.dxcomponents.compose.controls.form.ClockFormat.Companion.toClockFormat
 import com.pega.mobile.dxcomponents.compose.controls.form.Time
+import com.pega.mobile.dxcomponents.compose.controls.form.internal.ClockFormat.Companion.toClockFormat
 import org.json.JSONObject
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -37,12 +37,8 @@ class TimeRenderer : ComponentRenderer<TimeComponent> {
                 disabled = disabled,
                 readOnly = readOnly,
                 clockFormat = clockFormat.toClockFormat(),
-                onValueChange = { localTime ->
-                    val newValue = localTime?.let {
-                        DateTimeFormatter.ofPattern("HH:mm:ss")
-                            .format(LocalTime.of(it.hour, it.minute, it.second))
-                    } ?: ""
-                    updateValue(newValue)
+                onValueChange = {
+                    updateValue(DateTimeFormatter.ofPattern("HH:mm:ss").format(it))
                 },
                 onFocusChange = { updateFocus(it) }
             )
