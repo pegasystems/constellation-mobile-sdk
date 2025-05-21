@@ -38,6 +38,8 @@ class DateTimeComponent(context: ComponentContext) : FieldComponent(context) {
 }
 
 class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+
     @Composable
     override fun DateTimeComponent.Render() {
         WithFieldHelpers {
@@ -52,10 +54,7 @@ class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
                 readOnly = readOnly,
                 clockFormat = clockFormat.toClockFormat(),
                 onValueChange = {
-                    val newValue =
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                            .format(it.minusMinutes(timeZoneMinutesOffset.toLong()))
-                    updateValue(newValue)
+                    updateValue(formatter.format(it.minusMinutes(timeZoneMinutesOffset.toLong())))
                 },
                 onFocusChange = { updateFocus(it) }
             )

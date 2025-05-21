@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,8 +20,7 @@ internal fun DatePickerModal(
     onDismiss: () -> Unit
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = value?.atStartOfDay(ZoneId.systemDefault())?.toInstant()
-            ?.toEpochMilli()
+        initialSelectedDateMillis = value?.atStartOfDay()?.toInstant(ZoneOffset.UTC)?.toEpochMilli()
     )
 
     DatePickerDialog(

@@ -28,7 +28,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
       console.log("Selection mode 'multi' is unsupported.");
       return;
     }
-    this.props.value = value
+    this.props.value = value;
     const checked = this.props.value === 'true' || this.props.value === true;
     handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, checked);
   }
@@ -39,7 +39,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
       return;
     }
     if (value !== undefined) {
-      this.props.value = value
+      this.props.value = value;
     }
     const checked = this.props.value === 'true' || this.props.value === true;
     this.pConn$.getValidationApi().validate(checked);

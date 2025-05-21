@@ -1,13 +1,10 @@
 package com.pega.mobile.dxcomponents.compose.controls.form
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,7 +18,8 @@ import com.pega.mobile.dxcomponents.compose.controls.form.internal.ClockFormat.C
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.DatePickerModal
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.Input
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.TimePickerModal
-import kotlinx.coroutines.flow.filter
+import com.pega.mobile.dxcomponents.compose.controls.form.utils.interceptInteractionSource
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -42,14 +40,13 @@ fun DateTime(
     onValueChange: (LocalDateTime) -> Unit = {},
     onFocusChange: (Boolean) -> Unit = {}
 ) {
-
     var showDateDialog by remember { mutableStateOf(false) }
     var showTimeDialog by remember { mutableStateOf(false) }
-    var localDate by remember { mutableStateOf(value?.toLocalDate()) }
+    var localDate by remember { mutableStateOf<LocalDate?>(null) }
 
     if (showDateDialog) {
         DatePickerModal(
-            value = localDate,
+            value = value?.toLocalDate(),
             onDateSelected = {
                 localDate = it
                 showTimeDialog = true
@@ -64,22 +61,9 @@ fun DateTime(
         TimePickerModal(
             value = value?.toLocalTime(),
             is24Hour = is24Hour,
-            onTimeSelected = {
-                val newValue = LocalDateTime.of(localDate, it)
-                onValueChange(newValue)
-            },
+            onTimeSelected = { onValueChange(LocalDateTime.of(localDate, it)) },
             onDismiss = { showTimeDialog = false }
         )
-    }
-
-    // intercept clicks
-    val interactionSource = remember { MutableInteractionSource() }
-    LaunchedEffect(interactionSource, disabled, readOnly) {
-        if (!disabled && !readOnly) {
-            interactionSource.interactions
-                .filter { it is PressInteraction.Release }
-                .collect { showDateDialog = true }
-        }
     }
 
     Input(
@@ -92,11 +76,11 @@ fun DateTime(
         placeholder = placeholder,
         required = required,
         disabled = disabled,
-        readOnly = readOnly, //TODO: fixing missing validation message, need to handle readOnly for date in other way
+        readOnly = readOnly,
         onValueChange = {},
         onFocusChange = onFocusChange,
         trailingIcon = { Icon(Icons.Default.DateRange, "Select date") },
-        interactionSource = interactionSource
+        interactionSource = interceptInteractionSource(disabled, readOnly) { showDateDialog = true }
     )
 }
 

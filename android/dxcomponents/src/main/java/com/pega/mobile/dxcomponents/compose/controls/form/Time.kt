@@ -1,12 +1,9 @@
 package com.pega.mobile.dxcomponents.compose.controls.form
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,7 +18,7 @@ import com.pega.mobile.dxcomponents.compose.controls.form.internal.ClockFormat
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.ClockFormat.Companion.is24Hour
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.Input
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.TimePickerModal
-import kotlinx.coroutines.flow.filter
+import com.pega.mobile.dxcomponents.compose.controls.form.utils.interceptInteractionSource
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -54,15 +51,6 @@ fun Time(
         )
     }
 
-    // intercept clicks
-    val interactionSource = remember { MutableInteractionSource() }
-    LaunchedEffect(interactionSource, disabled, readOnly) {
-        if (!disabled && !readOnly) {
-            interactionSource.interactions
-                .filter { it is PressInteraction.Release }
-                .collect { showDialog = true }
-        }
-    }
     Input(
         value = value?.parseTimeValue(is24Hour) ?: "",
         label = label,
@@ -73,17 +61,13 @@ fun Time(
         placeholder = placeholder,
         required = required,
         disabled = disabled,
-        readOnly = readOnly, //TODO: fixing missing validation message, need to handle readOnly for date in other way
+        readOnly = readOnly,
         onValueChange = {},
         onFocusChange = onFocusChange,
         trailingIcon = {
-            Icon(
-                painterResource(R.drawable.time_icon),
-                "Select date",
-                modifier = Modifier.size(24.dp)
-            )
+            Icon(painterResource(R.drawable.time_icon), "Select date", Modifier.size(24.dp))
         },
-        interactionSource = interactionSource
+        interactionSource = interceptInteractionSource(disabled, readOnly) { showDialog = true }
     )
 }
 
@@ -100,8 +84,8 @@ fun TimePreview() {
     Time(
         modifier = Modifier.padding(8.dp),
         value = value,
-        label = "Birth date",
-        helperText = "select date of birth",
+        label = "TV news",
+        helperText = "select time of news",
         onValueChange = { value = it }
     )
 }
@@ -145,7 +129,7 @@ fun TimePreviewValidateMessage() {
         value = LocalTime.parse("19:30"),
         label = "TV news",
         validateMessage = "Some error!",
-        helperText = "select date of birth"
+        helperText = "select time of news"
     )
 }
 

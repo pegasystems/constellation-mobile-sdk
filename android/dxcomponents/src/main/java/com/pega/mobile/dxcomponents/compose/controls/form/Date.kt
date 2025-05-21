@@ -1,13 +1,10 @@
 package com.pega.mobile.dxcomponents.compose.controls.form
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.DatePickerModal
 import com.pega.mobile.dxcomponents.compose.controls.form.internal.Input
-import kotlinx.coroutines.flow.filter
+import com.pega.mobile.dxcomponents.compose.controls.form.utils.interceptInteractionSource
 import java.time.LocalDate
 
 @Composable
@@ -43,15 +40,6 @@ fun Date(
             onDismiss = { showDialog = false }
         )
     }
-    // intercept clicks
-    val interactionSource = remember { MutableInteractionSource() }
-    LaunchedEffect(interactionSource, disabled, readOnly) {
-        if (!disabled && !readOnly) {
-            interactionSource.interactions
-                .filter { it is PressInteraction.Release }
-                .collect { showDialog = true }
-        }
-    }
 
     Input(
         value = value?.toString().orEmpty(),
@@ -63,11 +51,11 @@ fun Date(
         placeholder = placeholder,
         required = required,
         disabled = disabled,
-        readOnly = readOnly, //TODO: fixing missing validation message, need to handle readOnly for date in other way
+        readOnly = readOnly,
         onValueChange = {},
         onFocusChange = onFocusChange,
         trailingIcon = { Icon(Icons.Default.DateRange, "Select date") },
-        interactionSource = interactionSource
+        interactionSource = interceptInteractionSource(disabled, readOnly) { showDialog = true }
     )
 }
 
