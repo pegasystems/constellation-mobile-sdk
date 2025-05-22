@@ -28,7 +28,7 @@ struct CheckboxView: View {
                     Text("*").foregroundColor(.red).fontWeight(.semibold)
                 }
             }
-            
+
             HStack {
                 Toggle(isOn: $properties.value) {
                     Text(properties.caption)

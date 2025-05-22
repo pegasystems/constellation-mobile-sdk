@@ -40,6 +40,7 @@ public class PMSDKComponentManager {
         "Integer": IntegerComponentProvider.self,
         "Dropdown": DropdownComponentProvider.self,
         "RadioButtons": RadioButtonsComponentProvider.self,
+        "Phone": PhoneNumberComponentProvider.self,
 
         "Region": ViewComponentProvider.self,
         "View": ViewComponentProvider.self,
