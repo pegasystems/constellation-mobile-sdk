@@ -36,7 +36,7 @@ struct TextAreaView: View {
                     .font(.body)
                     .focused($isFocused)
                     .disabled(properties.disabled || properties.readOnly)
-                    .onChange(of: properties.value) { newValue in
+                    .onChange(of: properties.value) { _, newValue in
                         if newValue.count > characterLimit {
                             properties.value = String(newValue.prefix(characterLimit))
                         }

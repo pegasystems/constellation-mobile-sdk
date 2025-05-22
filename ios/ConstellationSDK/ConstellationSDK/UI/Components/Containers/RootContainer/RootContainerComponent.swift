@@ -47,7 +47,7 @@ open class RootContainerComponentProvider: ContainerProvider {
 }
 
 struct RootContainerComponentView: View {
-    
+
     @ObservedObject var properties: RootContainerComponentProps
     weak var manager: ComponentManager?
 

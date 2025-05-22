@@ -43,6 +43,7 @@ open class DefaultCheckboxComponentProvider: ComponentProvider {
             )
         }
         eventSubject = subject.eraseToAnyPublisher()
+
         view = AnyView(CheckboxView(properties: properties))
     }
 
