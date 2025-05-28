@@ -48,7 +48,13 @@ struct ViewComponentView: View {
                     .padding(.top, 20)
             }
             if let instructions = properties.instructions?.stripHTML {
+                let instructionsColor = Color(UIColor(red: 189/255,
+                                                      green: 188/255,
+                                                      blue: 192/255,
+                                                      alpha: 1.0))
                 Text(instructions)
+                    .foregroundColor(instructionsColor)
+                    .fontWeight(.ultraLight)
             }
             ZStack {
                 VStack(spacing: 15) {
@@ -58,12 +64,21 @@ struct ViewComponentView: View {
                     .blur(radius: properties.loading ? 3 : 0)
                 }
                 
+                let backgroundColor = UIColor(red: 5/255,
+                                              green: 21/255,
+                                              blue: 59/255,
+                                              alpha: 1.0)
+                
                 if properties.loading {
                     VStack {
                         ProgressView()
+                            .scaleEffect(1.5)
+                            .tint(.white)
+                        //ProgressView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.white.opacity(0.2))
+                    //.background(Color.white.opacity(0.2))
+                    .background(Color(backgroundColor))
                 }
             }
         }

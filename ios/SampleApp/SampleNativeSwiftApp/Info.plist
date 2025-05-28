@@ -2,29 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PegaCaseClassName</key>
-	<string>DIXL-MediaCo-Work-NewService</string>
 	<key>PegaAuthConfiguration</key>
 	<dict>
+		<key>authorize_uri</key>
+		<string>https://lab-05423-bos.lab.pega.com/prweb/PRRestService/oauth2/v1/authorize</string>
 		<key>client_id</key>
 		<string>25795373220702300272</string>
-		<key>authorize_uri</key>
-		<string>https://insert-url-here.example/prweb/PRRestService/oauth2/v1/authorize</string>
-		<key>token_uri</key>
-		<string>https://insert-url-here.example/prweb/PRRestService/oauth2/v1/token</string>
+		<key>keychain</key>
+		<true/>
 		<key>redirect_uris</key>
 		<array>
 			<string>com.pega.mobile.constellation.sample://redirect</string>
 		</array>
+		<key>token_uri</key>
+		<string>https://lab-05423-bos.lab.pega.com/prweb/PRRestService/oauth2/v1/token</string>
 		<key>use_pkce</key>
 		<true/>
-		<key>keychain</key>
-		<true/>
 	</dict>
+	<key>PegaCaseClassName</key>
+	<string>DIXL-MediaCo-Work-DataPackage</string>
 	<key>PegaSystemURL</key>
-	<string>https://insert-url-here.example/prweb</string>
+	<string>https://lab-05423-bos.lab.pega.com/prweb</string>
 	<key>PegaVersion</key>
 	<string>8.24.1</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Nabla-Regular.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

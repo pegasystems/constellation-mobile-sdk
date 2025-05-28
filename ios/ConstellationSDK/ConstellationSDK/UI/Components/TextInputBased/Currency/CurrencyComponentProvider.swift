@@ -10,14 +10,16 @@ open class CurrencyComponentProvider: TextInputBasedComponentProvider<CurrencyPr
     }
 
     public override func updateProperties(_ jsonInput: String) throws {
+        print("MLOCTT - CurrencyComponentProvider updateProperties")
         try JSONDecoder()
             .decode(DecodableCurrencyProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)
+        print("MLOCTT - 2 CurrencyComponentProvider updateProperties")
     }
 }
 
 fileprivate struct DecodableCurrencyProps: Decodable {
-    let value: String
+    let value: Int
     let label: String
     let placeholder: String?
     let visible: Bool?
@@ -31,7 +33,7 @@ fileprivate struct DecodableCurrencyProps: Decodable {
     let decimalPrecision: Int
 
     func apply(to observableProps: CurrencyProps) {
-        observableProps.value = value
+        observableProps.value = String(value)
         observableProps.label = label
         observableProps.helperText = helperText?.nilIfEmpty
         observableProps.placeholder = placeholder?.nilIfEmpty

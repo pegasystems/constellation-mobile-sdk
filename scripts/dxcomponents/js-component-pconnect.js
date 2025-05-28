@@ -94,8 +94,7 @@ export class JsComponentPConnectService {
     // The following comment is from the Nebula/Constellation version of this code. Meant as a reminder to check this occasionally
     // populate additional props which are component specific and not present in configurations
     // This block can be removed once all these props will be added as part of configs
-    // side-effect: this causes call to addFieldToForm() in form-handler in c11n core js
-    inComp.pConn$.populateAdditionalProps(compProps);
+    this.populateAdditionalProps(inComp, compProps);
 
     compProps = inComp.pConn$.resolveConfigProps(compProps);
 
@@ -238,20 +237,42 @@ export class JsComponentPConnectService {
     // initialize this components entry in the componentPropsArr
     this.componentPropsArr[theCompID] = {};
 
-    this.addFormField(inComp);
+    if (!inComp.pConn$.getConfigProps().readOnly) {
+      this.addFormField(inComp);
+    }
 
     // return object with compID and unsubscribe...
     return returnObject;
   }
 
+  /**
+   * Note: This functions internally marks 'isMounted' flag as true for field in formFieldsMap
+   * This causes the field to be sent during submit.
+   * (formFieldsMap[contextName].fieldOrder[propName].isMounted = true)
+   * It does not add field itself to the formFieldsMap, it just marks it as mounted.
+   * It also does not check if given field is editable or not so it may incorrectly set isMounted to true for readOnly fields.
+   */
   addFormField(inComp) {
     inComp.pConn$?.addFormField();
   }
 
+  /**
+   * Note: This functions internally marks 'isMounted' flag as false for field in formFieldsMap
+   * This causes the field NOT to be sent during submit.
+   * (formFieldsMap[contextName].fieldOrder[propName].isMounted = false)
+   * It does not remove field itself from the formFieldsMap, it just marks it as unmounted.
+   */
   removeFormField(inComp) {
     if (inComp.pConn$?.removeFormField) {
       inComp.pConn$?.removeFormField();
     }
+  }
+
+  /**
+   * Note: This function internally adds field to formFieldsMap if it is editable.
+   */
+  populateAdditionalProps(inComp, compProps) {
+    inComp.pConn$.populateAdditionalProps(compProps);
   }
 
   // Returns true if the component's entry in ___componentPropsArr___ is

@@ -21,13 +21,17 @@ public struct PMSDKCreateCaseView: View {
     }
 
     public var body: some View {
+        let backgroundColor = UIColor(red: 5/255,
+                                      green: 21/255,
+                                      blue: 59/255,
+                                      alpha: 1.0)
         VStack {
             if let rootView {
-                rootView.padding()
+                rootView.background(Color(backgroundColor))
             }
         }.task {
             await startProcessing()
-        }
+        }.background(Color.yellow)
     }
 
     private func startProcessing() async {

@@ -22,11 +22,14 @@ struct CheckboxView: View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
                 if let label = properties.label, !properties.hideLabel {
-                    Text(label).foregroundStyle(Color.black).font(.system(size: 12, weight: .light, design: .rounded))
+                    let labelColor = Color(UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6))
+                    Text("    " + label)
+                        .foregroundStyle(labelColor)
+                        .font(.system(size: 12, weight: .light, design: .rounded))
                 }
-                if properties.required {
-                    Text("*").foregroundColor(.red).fontWeight(.semibold)
-                }
+//                if properties.required {
+//                    Text("*").foregroundColor(.red).fontWeight(.semibold)
+//                }
             }
 
             HStack {
@@ -37,13 +40,12 @@ struct CheckboxView: View {
                 .focused($isFocused)
 
                 let isValid = properties.validateMessage?.isEmpty ?? true
-                let showCheckmark = isValid
                 let showError = !isValid
-                if showError || showCheckmark {
-                    Image(systemName: showCheckmark ? "checkmark" : "exclamationmark.triangle.fill")
+                if showError {
+                    Image(systemName: "exclamationmark.triangle.fill")
                         .resizable()
                         .frame(width: 20, height: 20)
-                        .foregroundStyle(showCheckmark ? Color.green : Color.red)
+                        .foregroundStyle(Color.red)
                 }
             }
             .padding()
@@ -52,10 +54,6 @@ struct CheckboxView: View {
                 width: 10,
                 height: 10
             )))
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(isFocused ? Color.blue : Color.gray, lineWidth: 3)
-            }
             if let message = properties.validateMessage ?? properties.helperText {
                 Text(message)
                     .font(.system(size: 12, weight: .light, design: .rounded))

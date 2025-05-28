@@ -39,21 +39,35 @@ struct FlowContainerComponentView: View {
     }
     
     var body: some View {
+        let backgroundColor = UIColor(red: 5/255,
+                                      green: 21/255,
+                                      blue: 59/255,
+                                      alpha: 1.0)
+        
         VStack {
             if let title = properties.title {
-                Text(title)
-                    .font(.title)
+                let filteredTitle = title.replacingOccurrences(
+                    of: #" \([^)]+\)"#,
+                    with: "",
+                    options: .regularExpression)
+                Text(filteredTitle)
+                    .font(.title2)
+                    .foregroundColor(.white)
             }
-            ForEach(properties.alertBanners) {
-                manager?.view(for: $0.stringId)
-                    .cornerRadius(10)
-            }
+//            ForEach(properties.alertBanners) {
+//                manager?.view(for: $0.stringId)
+//                    .cornerRadius(10)
+//            }
             if let assignmentId = properties.assignment?.stringId {
                 manager?.view(for: assignmentId)
                     .cornerRadius(10)
             } else {
                 ProgressView()
+                    .scaleEffect(1.5)
+                    .tint(.white)
+                //ProgressView()
             }
         }
+        .background(Color(backgroundColor))
     }
 }

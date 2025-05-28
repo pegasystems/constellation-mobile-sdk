@@ -3,7 +3,7 @@ import SwiftUI
 import ConstellationSDK
 import OAuth2
 
-class ViewController: UIViewController {
+class ViewController: GradientViewController {
 
     var loadMobileSDKContent: UIButton!
     var oauth: OAuth2?
@@ -21,23 +21,30 @@ class ViewController: UIViewController {
         PMSDKNetwork.shared.requestDelegate = self
 
         // 2. Registering custom SwiftUI controls
-        PMSDKComponentManager.shared.register("TextArea") {
-            CustomTextAreaComponentProvider()
-        }
-        PMSDKComponentManager.shared.register("TextInput") {
-            CustomTextInputComponentProvider()
-        }
-        PMSDKComponentManager.shared.register("AssignmentCard") {
-            CustomAssignmentCardComponentProvider()
-        }
-        PMSDKComponentManager.shared.register("ActionButtons") {
-            CustomActionButtonsProvider()
-        }
+//        PMSDKComponentManager.shared.register("TextArea") {
+//            CustomTextAreaComponentProvider()
+//        }
+//        PMSDKComponentManager.shared.register("TextInput") {
+//            CustomTextInputComponentProvider()
+//        }
+//        PMSDKComponentManager.shared.register("AssignmentCard") {
+//            CustomAssignmentCardComponentProvider()
+//        }
+//        PMSDKComponentManager.shared.register("ActionButtons") {
+//            CustomActionButtonsProvider()
+//        }
         try? PMSDKComponentManager.shared.register(
             "MyCompany_MyLib_Slider",
             jsFile: Bundle.main.url(forResource: "slider.component", withExtension: "js")!
         ) {
             CustomSliderProvider()
+        }
+        
+        for family in UIFont.familyNames {
+            print("\(family)")
+            for name in UIFont.fontNames(forFamilyName: family) {
+                print("  \(name)")
+            }
         }
     }
 
@@ -64,6 +71,11 @@ class ViewController: UIViewController {
             hostingController.modalPresentationStyle = .formSheet
             hostingController.modalTransitionStyle = .coverVertical
             self.controller = hostingController
+            let backgroundColor = UIColor(red: 5/255,
+                                          green: 21/255,
+                                          blue: 59/255,
+                                          alpha: 1.0)
+            hostingController.view.backgroundColor = backgroundColor
             present(hostingController, animated: true, completion: nil)
         }
     }

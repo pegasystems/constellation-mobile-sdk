@@ -36,12 +36,20 @@ struct AssignmentCardComponentView: View {
     }
 
     var body: some View {
+        let backgroundColor = UIColor(red: 5/255,
+                                      green: 21/255,
+                                      blue: 59/255,
+                                      alpha: 1.0)
+
         VStack {
             ScrollView {
                 VStack(spacing: 20) {
                     VStack {
                         if properties.loading {
+                            // ProgressView()
                             ProgressView()
+                                .scaleEffect(1.5)
+                                .tint(.white)
                         } else {
                             ForEach(properties.children) {
                                 manager?.view(for: $0.stringId)
@@ -52,7 +60,8 @@ struct AssignmentCardComponentView: View {
                 // Style taken from OneColumnPage
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
-                .background(Color(red: 0.8, green: 0.85, blue: 0.9))
+                .background(Color(backgroundColor))
+                //.background(Color(red: 0.8, green: 0.85, blue: 0.9))
                 .cornerRadius(10)
             }
             if let buttons = properties.actionButtons {

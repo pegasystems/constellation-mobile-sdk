@@ -57,16 +57,22 @@ struct RootContainerComponentView: View {
     }
 
     var body: some View {
+        let backgroundColor = UIColor(red: 5/255,
+                                      green: 21/255,
+                                      blue: 59/255,
+                                      alpha: 1.0)
         VStack {
             if let invisibleWebView = properties.invisibleWebView {
                 invisibleWebView
                     .frame(height: 1)
-                    .opacity(1)
+                    .opacity(0)
             }
             if let viewContainerId = properties.viewContainer?.stringId {
                 manager?.view(for: viewContainerId)
             } else {
                 ProgressView()
+                    .scaleEffect(1.5)
+                    .tint(.white)
             }
         }
         .alert(self.properties.alertInfo?.title ?? "", isPresented: showAlert) {
@@ -75,6 +81,7 @@ struct RootContainerComponentView: View {
             let message = properties.alertInfo?.message ?? "Unknown error"
             return Text(message)
         }
+        .background(Color(backgroundColor))
     }
     
     private var showAlert: Binding<Bool> {
