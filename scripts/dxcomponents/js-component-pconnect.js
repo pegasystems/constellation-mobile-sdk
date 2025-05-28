@@ -326,7 +326,7 @@ export class JsComponentPConnectService {
       inComp.jsComponentPConnectData.httpMessages = incomingProps.httpMessages;
       delete incomingProps.httpMessages
     }
-  
+
     const incomingPropsAsStr = JSON.stringify(incomingProps);
 
     bRet = currentPropsAsStr != incomingPropsAsStr;
