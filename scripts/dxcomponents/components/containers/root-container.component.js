@@ -47,7 +47,7 @@ export class RootContainerComponent extends BaseComponent {
   }
 
   #clearHttpMessages() {
-    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/${this.pConn$.getContainerName()}`);
+    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/${this.pConn.getContainerName()}`);
     PCore.getMessageManager().clearMessages({
       category: 'HTTP',
       type: 'error',
@@ -72,13 +72,13 @@ export class RootContainerComponent extends BaseComponent {
   }
 
   #generateViewContainerForNoPortal() {
-    const arChildren = this.pConn$.getChildren();
+    const arChildren = this.pConn.getChildren();
     if (!arChildren || arChildren.length !== 1 || arChildren[0].getPConnect().getComponentName() !== 'ViewContainer') {
       console.error("Only ViewContainer in RootContainer supported for 'noPortal' mode.");
       return;
     }
 
-    const configProps = this.pConn$.getConfigProps();
+    const configProps = this.pConn.getConfigProps();
     const viewContConfig = {
       meta: {
         type: 'ViewContainer',

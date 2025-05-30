@@ -4,8 +4,8 @@ export class TimeComponent extends FieldBaseComponent {
 
   updateSelf() {
     this.updateBaseProps();
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    this.propName = this.pConn$.getStateProps().value;
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
+    this.propName = this.pConn.getStateProps().value;
     this.props.clockFormat = this.parseClockFormat(configProps.clockFormat);
 
     this.componentsManager.onComponentPropsUpdate(this);

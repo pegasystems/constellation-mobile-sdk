@@ -74,7 +74,7 @@ export class ComponentsManager {
 
   getComponentToReuse(oldChildrenComponents, newChildPconn) {
     return oldChildrenComponents.find((component) => {
-      return this.isEqualNameType(component.pConn$, newChildPconn);
+      return this.isEqualNameType(component.pConn, newChildPconn);
     })
   }
 

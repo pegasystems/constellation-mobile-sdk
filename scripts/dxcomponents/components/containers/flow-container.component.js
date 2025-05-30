@@ -37,7 +37,7 @@ export class FlowContainerComponent extends BaseComponent {
     this.componentsManager.onComponentAdded(this);
 
     this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
-    const caseInfo = this.pConn$.getCaseInfo();
+    const caseInfo = this.pConn.getCaseInfo();
     this.localeReference = `${caseInfo?.getClassName()}!CASE!${caseInfo.getName()}`.toUpperCase();
 
     this.pCoreConstants = PCore.getConstants();
@@ -83,14 +83,14 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.checkAndUpdate();
     }
   }
 
   sendPropsUpdate() {
-    const caseId = this.pConn$.getCaseSummary().content.pyID;
+    const caseId = this.pConn.getCaseSummary().content.pyID;
     const title = caseId ? `${this.containerName$} (${caseId})` : 'Loading ...';
     this.props = {
       title: title,
@@ -115,7 +115,7 @@ export class FlowContainerComponent extends BaseComponent {
   checkAndUpdate() {
     const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
 
-    const pConn = this.pConnectOfActiveContainerItem || this.pConn$;
+    const pConn = this.pConnectOfActiveContainerItem || this.pConn;
     const caseViewModeFromProps = this.jsComponentPConnect.getComponentProp(this, 'caseViewMode');
     const caseViewModeFromRedux = pConn.getValue('context_data.caseViewMode', '');
     if (bUpdateSelf || caseViewModeFromProps !== caseViewModeFromRedux) {
@@ -182,9 +182,9 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   initContainer() {
-    const containerMgr = this.pConn$.getContainerManager();
-    const baseContext = this.pConn$.getContextName();
-    const containerName = this.pConn$.getContainerName();
+    const containerMgr = this.pConn.getContainerManager();
+    const baseContext = this.pConn.getContextName();
+    const containerName = this.pConn.getContainerName();
     const containerType = 'single';
 
     const flowContainerTarget = `${baseContext}/${containerName}`;
@@ -197,27 +197,27 @@ export class FlowContainerComponent extends BaseComponent {
         type: containerType
       });
 
-      this.addContainerItem(this.pConn$);
+      this.addContainerItem(this.pConn);
     }
   }
 
   initComponent(bLoadChildren) {
-    this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.configProps$ = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     this.createBanners(this.configProps$.pageMessages);
 
     // when true, update arChildren from pConn, otherwise, arChilren will be updated in updateSelf()
     if (bLoadChildren) {
-      this.arChildren$ = this.pConn$.getChildren();
+      this.arChildren$ = this.pConn.getChildren();
     }
 
-    const baseContext = this.pConn$.getContextName();
-    const acName = this.pConn$.getContainerName();
+    const baseContext = this.pConn.getContextName();
+    const acName = this.pConn.getContainerName();
 
     if (this.itemKey$ === '') {
       this.itemKey$ = baseContext.concat('/').concat(acName);
     }
 
-    this.pConn$.isBoundToState();
+    this.pConn.isBoundToState();
     // inside
     // get fist kid, get the name and display
     // pass first kid to a view container, which will disperse it to a view which will use one column, two column, etc.
@@ -231,7 +231,7 @@ export class FlowContainerComponent extends BaseComponent {
 
   hasAssignments() {
     let hasAssignments = false;
-    const assignmentsList = this.pConn$.getValue(this.pCoreConstants.CASE_INFO.D_CASE_ASSIGNMENTS_RESULTS) || []
+    const assignmentsList = this.pConn.getValue(this.pCoreConstants.CASE_INFO.D_CASE_ASSIGNMENTS_RESULTS) || []
     let bAssignmentsForThisOperator = false;
 
     const thisOperator = PCore.getEnvironmentInfo().getOperatorIdentifier();
@@ -256,8 +256,8 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   isCaseWideLocalAction() {
-    const actionID = this.pConn$.getValue(this.pCoreConstants.CASE_INFO.ACTIVE_ACTION_ID);
-    const caseActions = this.pConn$.getValue(this.pCoreConstants.CASE_INFO.AVAILABLEACTIONS);
+    const actionID = this.pConn.getValue(this.pCoreConstants.CASE_INFO.ACTIVE_ACTION_ID);
+    const caseActions = this.pConn.getValue(this.pCoreConstants.CASE_INFO.AVAILABLEACTIONS);
     let bCaseWideAction = false;
     if (caseActions && actionID) {
       const actionObj = caseActions.find(caseAction => caseAction.ID === actionID);
@@ -269,7 +269,7 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   hasChildCaseAssignments() {
-    const childCases = this.pConn$.getValue(this.pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS);
+    const childCases = this.pConn.getValue(this.pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS);
 
     return childCases && childCases.length > 0;
   }
@@ -279,8 +279,8 @@ export class FlowContainerComponent extends BaseComponent {
 
     const { CASE_INFO: CASE_CONSTS } = PCore.getConstants();
 
-    const caseActions = this.pConn$.getValue(CASE_CONSTS.CASE_INFO_ACTIONS);
-    const activeActionID = this.pConn$.getValue(CASE_CONSTS.ACTIVE_ACTION_ID);
+    const caseActions = this.pConn.getValue(CASE_CONSTS.CASE_INFO_ACTIONS);
+    const activeActionID = this.pConn.getValue(CASE_CONSTS.ACTIVE_ACTION_ID);
     const activeAction = caseActions?.find(action => action.ID === activeActionID);
     if (activeAction) {
       activeActionLabel = activeAction.name;
@@ -290,7 +290,7 @@ export class FlowContainerComponent extends BaseComponent {
 
 
   updateSelf() {
-    this.pConnectOfActiveContainerItem = this.getPConnectOfActiveContainerItem(this.pConn$) || this.pConn$;
+    this.pConnectOfActiveContainerItem = this.getPConnectOfActiveContainerItem(this.pConn) || this.pConn;
 
     if (this.assignmentComponent) {
       this.assignmentComponent.update(this.pConnectOfActiveContainerItem, this.arChildren$);
@@ -302,7 +302,7 @@ export class FlowContainerComponent extends BaseComponent {
     this.sendPropsUpdate();
 
     const caseViewMode = this.pConnectOfActiveContainerItem.getValue('context_data.caseViewMode');
-    // this.bShowBanner = showBanner(this.pConn$); //disabling
+    // this.bShowBanner = showBanner(this.pConn); //disabling
 
     if (caseViewMode && caseViewMode === 'perform') {
 
@@ -323,7 +323,7 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   showCaseMessages() {
-    this.caseMessages$ = this.localizedVal(this.pConn$.getValue('caseMessages'), this.localeCategory);
+    this.caseMessages$ = this.localizedVal(this.pConn.getValue('caseMessages'), this.localeCategory);
     // caseMessages's behavior has changed in 24.2, and hence it doesn't let Optional Action work.
     // Changing the below condition for now. Was: (theCaseMessages || !hasAssignments())
     if (!this.hasAssignments()) {
@@ -351,7 +351,7 @@ export class FlowContainerComponent extends BaseComponent {
     let loadingInfo;
     try {
       // @ts-ignore - Property 'getLoadingStatus' is private and only accessible within class 'C11nEnv'
-      loadingInfo = this.pConn$.getLoadingStatus();
+      loadingInfo = this.pConn.getLoadingStatus();
     } catch (ex) {
       /* empty */
     }
@@ -423,8 +423,8 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   getBuildName() {
-    const context = this.pConn$.getContextName();
-    let viewContainerName = this.pConn$.getContainerName();
+    const context = this.pConn.getContextName();
+    let viewContainerName = this.pConn.getContainerName();
 
     if (!viewContainerName) viewContainerName = '';
     return `${context.toUpperCase()}/${viewContainerName.toUpperCase()}`;

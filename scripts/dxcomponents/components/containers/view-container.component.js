@@ -10,21 +10,21 @@ export class ViewContainerComponent extends BaseComponent {
   arChildren$ =[];
   childComponent;
   title$ = '';
-  viewPConn$;
+  viewPConn;
 
   init() {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
     this.componentsManager.onComponentAdded(this);
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     this.templateName$ = configProps.template || '';
     this.title$ = configProps.title || '';
     const { CONTAINER_TYPE, APP } = PCore.getConstants();
-    const { name = '', mode = 'single', limit = 16} = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    const { name = '', mode = 'single', limit = 16} = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
 
-    this.pConn$.isBoundToState();
+    this.pConn.isBoundToState();
 
-    const containerMgr = this.pConn$.getContainerManager();
+    const containerMgr = this.pConn.getContainerManager();
 
     if (!Utils.hasViewContainer()) {
       containerMgr.initializeContainers({
@@ -63,8 +63,8 @@ export class ViewContainerComponent extends BaseComponent {
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.checkAndUpdate();
     }
   }
@@ -91,7 +91,7 @@ export class ViewContainerComponent extends BaseComponent {
 
   updateSelf() {
     if (this.arChildren$ == null) {
-      this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
+      this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
     }
     // routingInfo was added as component prop in populateAdditionalProps
     const routingInfo = this.jsComponentPConnect.getComponentProp(this, 'routingInfo');
@@ -116,13 +116,13 @@ export class ViewContainerComponent extends BaseComponent {
           console.error(`newComp name is '${newCompName}. 'Only 'reference' is supported as newComp in ViewContainer`);
           return
         }
-        this.viewPConn$ = ReferenceComponent.normalizePConn(newCompPConn);
+        this.viewPConn = ReferenceComponent.normalizePConn(newCompPConn);
 
         if (this.childComponent !== undefined && this.childComponent.destroy !== undefined) {
           this.childComponent.destroy();
         }
-        const viewComponent = getComponentFromMap(this.viewPConn$.meta.type);
-        this.childComponent = new viewComponent(this.componentsManager, this.viewPConn$);
+        const viewComponent = getComponentFromMap(this.viewPConn.meta.type);
+        this.childComponent = new viewComponent(this.componentsManager, this.viewPConn);
         this.childComponent.init();
 
         this.sendPropsUpdate();
@@ -138,8 +138,8 @@ export class ViewContainerComponent extends BaseComponent {
     const config = { meta: rootView };
     config.options = {
       context: latestItem.context,
-      pageReference: context || this.pConn$.getPageReference(),
-      containerName: this.pConn$.getContainerName(),
+      pageReference: context || this.pConn.getPageReference(),
+      containerName: this.pConn.getContainerName(),
       containerItemName: key,
       hasForm: viewName === CREATE_DETAILS_VIEW_NAME
     };
@@ -147,9 +147,9 @@ export class ViewContainerComponent extends BaseComponent {
   }
 
   prepareDispatchObject() {
-    const baseContext = this.pConn$.getContextName();
+    const baseContext = this.pConn.getContextName();
     // const { acName = "primary" } = pConn.getContainerName(); // doesn't work with 8.23 typings
-    const acName = this.pConn$.getContainerName() || 'primary';
+    const acName = this.pConn.getContainerName() || 'primary';
 
     return {
       semanticURL: '',

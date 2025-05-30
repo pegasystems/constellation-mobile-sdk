@@ -11,8 +11,8 @@ export class AssignmentCardComponent extends BaseComponent {
   childrenComponents = [];
   actionButtonsComponent;
 
-  constructor(componentsManager, pConn$, childrenPConns, mainButtons, secondaryButtons, actionButtonClick) {
-    super(componentsManager, pConn$);
+  constructor(componentsManager, pConn, childrenPConns, mainButtons, secondaryButtons, actionButtonClick) {
+    super(componentsManager, pConn);
     this.type = "AssignmentCard";
     this.arChildren$ = childrenPConns;
     this.arMainButtons$ = mainButtons;
@@ -42,7 +42,7 @@ export class AssignmentCardComponent extends BaseComponent {
   }
 
   update(pConn, pConnChildren, mainButtons, secondaryButtons) {
-    this.pConn$ = pConn;
+    this.pConn = pConn;
     const oldChildren = this.arChildren$;
     this.arChildren$ = pConnChildren;
     this.arMainButtons$ = mainButtons;

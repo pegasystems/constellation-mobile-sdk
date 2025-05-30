@@ -1,6 +1,6 @@
 export class EmailComponent {
   // these variables are present in all components
-  pConn$; // object which keeps internal information about component coming from Constellation Core JS library
+  pConn; // object which keeps internal information about component coming from Constellation Core JS library
   jsComponentPConnect; // bridge between JS components and Constellation Core JS Library
   jsComponentPConnectData = {}; // object which contains additional data like validateMessage
   propName; // name of the property which this component represent
@@ -21,12 +21,12 @@ export class EmailComponent {
     displayMode: ''
   }
 
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
+  constructor(componentsManager, pConn) {
+    this.pConn = pConn;
     this.componentsManager = componentsManager;
     this.compId = this.componentsManager.getNextComponentId();
     this.jsComponentPConnect = componentsManager.jsComponentPConnect
-    this.type = pConn$.meta.type
+    this.type = pConn.meta.type
   }
 
   init() {
@@ -50,8 +50,8 @@ export class EmailComponent {
 
   // runs whenever components is updated by its parent
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.checkAndUpdate();
     }
   }
@@ -70,7 +70,7 @@ export class EmailComponent {
   }
 
   updateSelf() {
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     this.props.displayMode = configProps.displayMode;
     this.props.label = configProps.label;
 
@@ -96,7 +96,7 @@ export class EmailComponent {
       this.props.readOnly = getBooleanValue(configProps.readOnly);
     }
     this.props.validateMessage = this.jsComponentPConnectData.validateMessage || ''
-    this.propName = this.pConn$.getStateProps().value;
+    this.propName = this.pConn.getStateProps().value;
     // sends updated props to Native side
     this.componentsManager.onComponentPropsUpdate(this);
   }
@@ -114,11 +114,11 @@ export class EmailComponent {
   // helper function called by component manager for event of changing field value with focus (FieldChangeWithFocus event)
   fieldOnBlur(value) {
     this.props.value = value || this.props.value
-    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
+    const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value;
     if (this.props.value !== submittedValue) {
-      handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
+      handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, this.props.value);
     }
-    clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
+    clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }
 

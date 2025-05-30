@@ -4,7 +4,7 @@ export class CurrencyComponent extends FieldBaseComponent{
 
   updateSelf() {
     this.updateBaseProps();
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     if (configProps.currencyISOCode != null) {
       this.props.currencyISOCode = configProps.currencyISOCode;
     }
@@ -13,7 +13,7 @@ export class CurrencyComponent extends FieldBaseComponent{
     }
     this.props.decimalPrecision = configProps.allowDecimals ? 2 : 0;
 
-    this.propName = this.pConn$.getStateProps().value;
+    this.propName = this.pConn.getStateProps().value;
     this.componentsManager.onComponentPropsUpdate(this);
   }
 }

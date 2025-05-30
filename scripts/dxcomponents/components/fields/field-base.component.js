@@ -20,8 +20,8 @@ export class FieldBaseComponent extends BaseComponent {
     displayMode: ''
   }
 
-  constructor(componentsManager, pConn$) {
-    super(componentsManager, pConn$);
+  constructor(componentsManager, pConn) {
+    super(componentsManager, pConn);
     this.utils = new Utils();
   }
 
@@ -39,8 +39,8 @@ export class FieldBaseComponent extends BaseComponent {
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.checkAndUpdate();
     }
   }
@@ -59,12 +59,12 @@ export class FieldBaseComponent extends BaseComponent {
 
   updateSelf() {
     this.updateBaseProps();
-    this.propName = this.pConn$.getStateProps().value;
+    this.propName = this.pConn.getStateProps().value;
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
   updateBaseProps() {
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     this.props.displayMode = configProps.displayMode || '';
     this.props.label = configProps.label || '';
     if (configProps.value !== undefined) {
@@ -103,12 +103,12 @@ export class FieldBaseComponent extends BaseComponent {
     if (value !== undefined) {
       this.props.value = value
     }
-    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
+    const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value;
     // Preventing 'changeNblur' events for unchanged field values.
     // Sending it for field which is a dropdown param causes dropdown value to be cleared
     if (submittedValue !== this.props.value) {
-      handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
+      handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, this.props.value);
     }
-    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
+    Utils.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }

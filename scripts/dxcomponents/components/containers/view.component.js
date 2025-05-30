@@ -57,8 +57,8 @@ export class ViewComponent extends BaseComponent {
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.checkAndUpdate();
     }
   }
@@ -102,11 +102,11 @@ export class ViewComponent extends BaseComponent {
 
     // debugger;
 
-    // normalize this.pConn$ in case it contains a 'reference'
-    this.pConn$ = ReferenceComponent.normalizePConn(this.pConn$);
+    // normalize this.pConn in case it contains a 'reference'
+    this.pConn = ReferenceComponent.normalizePConn(this.pConn);
 
-    this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    this.inheritedProps$ = this.pConn$.getInheritedProps();
+    this.configProps$ = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
+    this.inheritedProps$ = this.pConn.getInheritedProps();
 
     // NOTE: this.configProps$.visibility'] is used in view.component.ts such that
     //  the View will only be rendered when this.configProps$.visibility'] is false.
@@ -121,7 +121,7 @@ export class ViewComponent extends BaseComponent {
     this.showLabel$ = this.inheritedProps$.showLabel !== undefined ? this.inheritedProps$.showLabel : showLabel;
 
     // children may have a 'reference' so normalize the children array
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
+    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
     this.visibility$ = this.configProps$.visibility ?? this.visibility$;
 
@@ -133,11 +133,11 @@ export class ViewComponent extends BaseComponent {
      * The resolution lies in transferring this responsibility to the Reference component, eliminating the need for this code when Reference
      * component is able to handle it.
      */
-    if (!this.configProps$.visibility && this.pConn$.getPageReference().length > 'caseInfo.content'.length) {
-      this.visibility$ = this.evaluateVisibility(this.pConn$, this.configProps$.referenceContext);
+    if (!this.configProps$.visibility && this.pConn.getPageReference().length > 'caseInfo.content'.length) {
+      this.visibility$ = this.evaluateVisibility(this.pConn, this.configProps$.referenceContext);
     }
 
-    // was:  this.arChildren$ = this.pConn$.getChildren() as Array<any>;
+    // was:  this.arChildren$ = this.pConn.getChildren() as Array<any>;
 
     // debug
     // let  kidList: string = "";
@@ -148,10 +148,10 @@ export class ViewComponent extends BaseComponent {
 
     if (SUPPORTED_FORM_TEMPLATES.includes(this.templateName$)) {
       if (this.childrenComponents[0] !== undefined) {
-        this.childrenComponents[0].update(this.pConn$, this.arChildren$);
+        this.childrenComponents[0].update(this.pConn, this.arChildren$);
       } else {
         const templateComponentClass = getComponentFromMap(this.templateName$);
-        const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn$, this.arChildren$);
+        const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn, this.arChildren$);
         templateComponentInstance.init();
         this.childrenComponents.push(templateComponentInstance);
       }
@@ -221,7 +221,7 @@ export class ViewComponent extends BaseComponent {
     return PCore.getExpressionEngine().evaluate(visibilityConditions, dataPage, {
       pConnect: {
         getPConnect: () => {
-          return this.pConn$
+          return this.pConn
         }
       }
     });

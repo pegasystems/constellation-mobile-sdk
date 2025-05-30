@@ -54,7 +54,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
       if (configProps !== this.configProps) {
         this.configProps = configProps;
         if (pConn) {
-          this.pConn$ = pConn;
+          this.pConn = pConn;
         }
         this.updateSelf();
       }
@@ -74,7 +74,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   }
 
   updateSelf() {
-    this.inheritedProps$ = this.pConn$.getInheritedProps();
+    this.inheritedProps$ = this.pConn.getInheritedProps();
     const label = this.configProps.label;
     const showLabel = this.configProps.showLabel;
     // label & showLabel within inheritedProps takes precedence over configProps
@@ -90,11 +90,11 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     const lookForChildInConfig = this.configProps.lookForChildInConfig;
     this.heading = this.configProps.heading ?? 'Row';
     this.fieldHeader = this.configProps.fieldHeader;
-    const resolvedList = this.getReferenceList(this.pConn$);
-    this.pageReference = `${this.pConn$.getPageReference()}${resolvedList}`;
-    this.pConn$.setReferenceList(resolvedList);
+    const resolvedList = this.getReferenceList(this.pConn);
+    this.pageReference = `${this.pConn.getPageReference()}${resolvedList}`;
+    this.pConn.setReferenceList(resolvedList);
     if (this.readonlyMode) {
-      this.pConn$.setInheritedProp('displayMode', 'DISPLAY_ONLY');
+      this.pConn.setInheritedProp('displayMode', 'DISPLAY_ONLY');
     }
     this.referenceList = this.configProps.referenceList;
     if (this.prevRefLength !== this.referenceList.length) {
@@ -109,7 +109,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
       this.referenceList?.forEach((item, index) => {
         // all components in list are the same name and type so we can pick any component for re-use.
         const oldComponent = oldItemsComponents.pop();
-        const newPConn = this.buildItemPConnect(this.pConn$, index, lookForChildInConfig).getPConnect();
+        const newPConn = this.buildItemPConnect(this.pConn, index, lookForChildInConfig).getPConnect();
         const newComponent = this.reconcileItemComponent(newPConn, oldComponent);
         items.push({
           id: index,
@@ -170,11 +170,11 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   };
 
   addFieldGroupItem() {
-    this.pConn$.getListActions().insert({ classID: this.contextClass }, this.referenceList.length);
+    this.pConn.getListActions().insert({ classID: this.contextClass }, this.referenceList.length);
   }
 
   deleteFieldGroupItem(index) {
-    this.pConn$.getListActions().deleteEntry(index);
+    this.pConn.getListActions().deleteEntry(index);
   }
 
   buildItemPConnect(pConn, index, viewConfigPath) {

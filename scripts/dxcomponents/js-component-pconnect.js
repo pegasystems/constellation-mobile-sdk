@@ -80,14 +80,14 @@ export class JsComponentPConnectService {
 
     if (inComp.additionalProps !== undefined) {
       if (typeof inComp.additionalProps === 'object') {
-        addProps = inComp.pConn$.resolveConfigProps(inComp.additionalProps);
+        addProps = inComp.pConn.resolveConfigProps(inComp.additionalProps);
       } else if (typeof inComp.additionalProps === 'function') {
-        const propsToAdd = inComp.additionalProps(PCore.getStore().getState(), inComp.pConn$);
-        addProps = inComp.pConn$.resolveConfigProps(propsToAdd);
+        const propsToAdd = inComp.additionalProps(PCore.getStore().getState(), inComp.pConn);
+        addProps = inComp.pConn.resolveConfigProps(propsToAdd);
       }
     }
 
-    compProps = inComp.pConn$.getConfigProps();
+    compProps = inComp.pConn.getConfigProps();
 
     // const componentName = inComp.constructor.name;
 
@@ -96,7 +96,7 @@ export class JsComponentPConnectService {
     // This block can be removed once all these props will be added as part of configs
     this.populateAdditionalProps(inComp, compProps)
 
-    compProps = inComp.pConn$.resolveConfigProps(compProps);
+    compProps = inComp.pConn.resolveConfigProps(compProps);
 
     if (compProps && undefined !== compProps.validatemessage && compProps.validatemessage != '') {
       // console.log( `   validatemessage for ${inComp.constructor.name} ${inComp.jsComponentPConnectData.compID}: ${compProps.validatemessage}`);
@@ -211,9 +211,9 @@ export class JsComponentPConnectService {
     // call processActions to populate metadata with actions as in PConnectHOR initialize
     this.processActions(inComp);
     if (undefined === inComp.actions) {
-      returnObject.actions = inComp.pConn$.getActions();
+      returnObject.actions = inComp.pConn.getActions();
     } else {
-      inComp.actions = inComp.pConn$.getActions();
+      inComp.actions = inComp.pConn.getActions();
     }
 
     // bind the provided callback to the component it's associated with
@@ -236,7 +236,7 @@ export class JsComponentPConnectService {
 
     // initialize this components entry in the componentPropsArr
     this.componentPropsArr[theCompID] = {};
-    if (!inComp.pConn$.getConfigProps().readOnly) {
+    if (!inComp.pConn.getConfigProps().readOnly) {
       this.addFormField(inComp);
     }
 
@@ -252,7 +252,7 @@ export class JsComponentPConnectService {
    * It also does not check if given field is editable or not so it may incorrectly set isMounted to true for readOnly fields.
    */
   addFormField(inComp) {
-    inComp.pConn$?.addFormField();
+    inComp.pConn?.addFormField();
   }
 
   /**
@@ -262,8 +262,8 @@ export class JsComponentPConnectService {
    * It does not remove field itself from the formFieldsMap, it just marks it as unmounted.
    */
   removeFormField(inComp) {
-    if (inComp.pConn$?.removeFormField) {
-      inComp.pConn$?.removeFormField();
+    if (inComp.pConn?.removeFormField) {
+      inComp.pConn?.removeFormField();
     }
   }
 
@@ -271,7 +271,7 @@ export class JsComponentPConnectService {
    * Note: This function internally adds field to formFieldsMap if it is editable.
    */
   populateAdditionalProps(inComp, compProps) {
-    inComp.pConn$.populateAdditionalProps(compProps);
+    inComp.pConn.populateAdditionalProps(compProps);
   }
 
   // Returns true if the component's entry in ___componentPropsArr___ is
@@ -279,7 +279,7 @@ export class JsComponentPConnectService {
   //  As a side effect, update the component's entry in componentPropsArr
   //  NOTE: It is assumed that the incoming component has the following:
   //  * a bridgeComponentID <string> property - used as lookup key in componentPropsArr
-  //  * a pConn$ <?> property - used to access functions accessed in getComponentProps
+  //  * a pConn <?> property - used to access functions accessed in getComponentProps
   // Return true: means the component props are different and the component should update itself (re-render)
   // Return false: means the component props are the same and the component doesn't need to update (re-render)
   //  On bad input, return false;
@@ -289,7 +289,7 @@ export class JsComponentPConnectService {
    * As a side effect, the component's entry in ___componentPropsArr___ is updated.
    * **Note**: It is assumed that the incoming component has the following:
    * (a) a bridgeComponentID _string_ property used as lookup key in ___componentPropsArr___
-   * and (b) a ___pConn$___ property used to access functions called in ___getComponentProps___
+   * and (b) a ___pConn___ property used to access functions called in ___getComponentProps___
    *
    * @param inComp The component asking if it should update itself
    * @returns Return **true**: means the component props are different and the component should update itself (re-render).
@@ -337,7 +337,7 @@ export class JsComponentPConnectService {
     }
 
     // Below piece of code is needed to re-render the component since we wanna evaluate the Visibility expression within View component in such cases
-    if (inComp.pConn$.meta.config.context?.length > 0 && inComp.pConn$.getPageReference().length > 'caseInfo.content'.length) {
+    if (inComp.pConn.meta.config.context?.length > 0 && inComp.pConn.getPageReference().length > 'caseInfo.content'.length) {
       return true;
     }
 
@@ -412,9 +412,9 @@ export class JsComponentPConnectService {
       return;
     }
 
-    const pConnect = inComp.pConn$;
+    const pConnect = inComp.pConn;
     if (undefined === pConnect) {
-      console.error(`JsComponentPConnect: bad call to changeHandler: inComp.pConn$: ${pConnect}`);
+      console.error(`JsComponentPConnect: bad call to changeHandler: inComp.pConn: ${pConnect}`);
       return;
     }
 
@@ -437,9 +437,9 @@ export class JsComponentPConnectService {
       return;
     }
 
-    const pConnect = inComp.pConn$;
+    const pConnect = inComp.pConn;
     if (undefined === pConnect) {
-      console.error(`JsComponentPConnect: bad call to eventHandler: inComp.pConn$: ${pConnect}`);
+      console.error(`JsComponentPConnect: bad call to eventHandler: inComp.pConn: ${pConnect}`);
       return;
     }
 
@@ -476,15 +476,15 @@ export class JsComponentPConnectService {
    *  Attaches common handler (eventHandler) for all actions.
    */
   processActions(inComp) {
-    const pConnect = inComp.pConn$;
+    const pConnect = inComp.pConn;
     if (undefined === pConnect) {
-      console.error(`JsComponentPConnect: bad call to processActions: pConn$: ${pConnect} from component: ${inComp.constructor.name}`);
+      console.error(`JsComponentPConnect: bad call to processActions: pConn: ${pConnect} from component: ${inComp.constructor.name}`);
       return;
     }
 
-    if (inComp.pConn$.isEditable()) {
-      inComp.pConn$.setAction('onChange', this.changeHandler.bind(this));
-      inComp.pConn$.setAction('onBlur', this.eventHandler.bind(this));
+    if (inComp.pConn.isEditable()) {
+      inComp.pConn.setAction('onChange', this.changeHandler.bind(this));
+      inComp.pConn.setAction('onBlur', this.eventHandler.bind(this));
     }
   }
 

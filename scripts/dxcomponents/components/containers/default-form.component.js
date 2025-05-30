@@ -14,8 +14,8 @@ export class DefaultFormComponent extends BaseComponent{
   instructions;
   props;
 
-  constructor(componentsManager, pConn$, childrenPConns) {
-    super(componentsManager, pConn$);
+  constructor(componentsManager, pConn, childrenPConns) {
+    super(componentsManager, pConn);
     this.type = "DefaultForm"
     this.arChildren$ = childrenPConns;
   }
@@ -23,8 +23,8 @@ export class DefaultFormComponent extends BaseComponent{
   init() {
     this.componentsManager.onComponentAdded(this);
 
-    const configProps = this.pConn$.getConfigProps();
-    this.instructions = this.getInstructions(this.pConn$, configProps?.instructions);
+    const configProps = this.pConn.getConfigProps();
+    this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
     const reconciledComponents = this.componentsManager.reconcileChildren(this);
     this.childrenComponents = reconciledComponents.map((item) => item.component);
@@ -36,18 +36,18 @@ export class DefaultFormComponent extends BaseComponent{
   destroy() {
     // copied from form-template-base.ts
     // this was present in angular sdk but missing in react-sdk, will comment it out for now
-    // PCore.getContextTreeManager().removeContextTreeNode(this.pConn$.getContextName());
+    // PCore.getContextTreeManager().removeContextTreeNode(this.pConn.getContextName());
     Utils.destroyChildren(this);
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn, childrenPConns) {
-    this.pConn$ = pConn;
+    this.pConn = pConn;
     this.arChildren$ = childrenPConns;
 
-    const configProps = this.pConn$.getConfigProps();
-    this.instructions = this.getInstructions(this.pConn$, configProps?.instructions);
+    const configProps = this.pConn.getConfigProps();
+    this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
 
     const oldChildren = this.arChildren$;
     // this.arChildren$ = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());

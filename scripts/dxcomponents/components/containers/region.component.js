@@ -20,8 +20,8 @@ export class RegionComponent extends BaseComponent {
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.updateSelf();
     }
   }
@@ -41,7 +41,7 @@ export class RegionComponent extends BaseComponent {
   updateSelf() {
     const oldChildren = this.arChildren$;
     // The children may contain 'reference' components, so normalize the children...
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
+    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
 
     const reconciledComponents = this.componentsManager.reconcileChildren(this);
