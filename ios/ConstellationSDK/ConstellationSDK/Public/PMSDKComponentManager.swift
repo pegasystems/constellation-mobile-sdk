@@ -37,6 +37,7 @@ public class PMSDKComponentManager {
         "Currency": CurrencyComponentProvider.self,
         "Decimal": DecimalComponentProvider.self,
         "Date": DefaultDateComponentProvider.self,
+        "Time": DefaultTimeComponentProvider.self,
         "Integer": IntegerComponentProvider.self,
         "Dropdown": DropdownComponentProvider.self,
         "RadioButtons": RadioButtonsComponentProvider.self,
