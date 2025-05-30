@@ -1,25 +1,19 @@
 import { Utils } from '../../../helpers/utils.js';
 import {getComponentFromMap} from '../../../mappings/sdk-component-map.js';
+import { BaseComponent } from '../../base.component.js';
 
-export class SimpleTableComponent {
-  pConn$;
-  jsComponentPConnect;
+export class SimpleTableComponent extends BaseComponent {
+
   jsComponentPConnectData = {};
-  compId;
-  type;
   childComponent;
-
   props = {
     child: undefined
   }
 
   constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.utils = new Utils();
-    this.componentsManager = componentsManager;
-    this.compId = this.componentsManager.getNextComponentId();
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect
+    super(componentsManager, pConn$);
     this.type = "SimpleTable"
+    this.utils = new Utils();
   }
 
   init() {

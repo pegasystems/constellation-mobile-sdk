@@ -1,30 +1,23 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
+import { BaseComponent } from '../base.component.js';
 
-export class AssignmentCardComponent {
-  pConn$;
-  formGroup$;
+export class AssignmentCardComponent extends BaseComponent {
   arMainButtons$;
   arSecondaryButtons$;
   arChildren$;
-  updateToken$;
-  compId;
-  type;
   props;
-
   childrenComponents = [];
   actionButtonsComponent;
 
   constructor(componentsManager, pConn$, childrenPConns, mainButtons, secondaryButtons, actionButtonClick) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
+    super(componentsManager, pConn$);
+    this.type = "AssignmentCard";
     this.arChildren$ = childrenPConns;
     this.arMainButtons$ = mainButtons;
     this.arSecondaryButtons$ = secondaryButtons;
     this.actionButtonClick = actionButtonClick;
-    this.type = "AssignmentCard";
   }
 
   init() {

@@ -1,15 +1,10 @@
 import { ReferenceComponent } from './reference.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
-// interface AssignmentProps {
-//   // If any, enter additional props that only exist on this component
-//   template: string;
-// }
+export class AssignmentComponent extends BaseComponent {
 
-
-export class AssignmentComponent {
-  pConn$;
   arChildren$;
   assignmentCardComponent;
   itemKey$;
@@ -49,17 +44,14 @@ export class AssignmentComponent {
   localizedVal;
   localeCategory = 'Assignment';
   localeReference;
-  compId;
-  type;
+
 
   constructor(componentsManager, pConn$, childrenPConns, itemKey) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect;
+    super(componentsManager, pConn$);
+
+    this.type = "Assignment"
     this.arChildren$ = childrenPConns;
     this.itemKey$ = itemKey;
-    this.type = "Assignment"
   }
 
   init() {

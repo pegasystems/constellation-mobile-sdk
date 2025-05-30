@@ -1,5 +1,6 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
 // interface DefaultFormProps {
 //   // If any, enter additional props that only exist on this component
@@ -7,25 +8,16 @@ import { Utils } from '../../helpers/utils.js';
 //   instructions: string;
 // }
 
-export class DefaultFormComponent {
-  pConn$;
-  formGroup$;
-
+export class DefaultFormComponent extends BaseComponent{
   arChildren$ = [];
   childrenComponents = [];
-  divClass$;
   instructions;
-  compId;
-  componentsManager;
-  type;
   props;
 
   constructor(componentsManager, pConn$, childrenPConns) {
-    this.pConn$ = pConn$;
-    this.arChildren$ = childrenPConns;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
+    super(componentsManager, pConn$);
     this.type = "DefaultForm"
+    this.arChildren$ = childrenPConns;
   }
 
   init() {

@@ -1,13 +1,11 @@
 import { handleEvent } from '../../helpers/event-util.js';
 import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
-export class FieldBaseComponent {
-  pConn$;
-  jsComponentPConnect;
+export class FieldBaseComponent extends BaseComponent {
+
   jsComponentPConnectData = {};
   propName;
-  compId;
-  type;
 
   props = {
     value: '',
@@ -23,12 +21,8 @@ export class FieldBaseComponent {
   }
 
   constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
+    super(componentsManager, pConn$);
     this.utils = new Utils();
-    this.componentsManager = componentsManager;
-    this.compId = this.componentsManager.getNextComponentId();
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect
-    this.type = pConn$.meta.type
   }
 
   init() {

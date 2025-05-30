@@ -1,8 +1,8 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
+import { BaseComponent } from '../base.component.js';
 
-const NO_HEADER_TEMPLATES = ['SubTabs', 'SimpleTable', 'Confirmation', 'DynamicTabs', 'DetailsSubTabs'];
 const DETAILS_TEMPLATES = [
   'Details',
   'DetailsFields',
@@ -25,25 +25,9 @@ function isDetailsTemplate(template) {
  * is totally at your own risk.
  */
 
-
-// interface ViewProps {
-//   // If any, enter additional props that only exist on this component
-//   template?: string;
-//   label?: string;
-//   showLabel: boolean;
-//   title?: string;
-//   visibility?: boolean;
-// }
-
-export class ViewComponent {
-  pConn$;
-  formGroup$;
-  displayOnlyFA$;
-  // @Input() updateToken$: number;
+export class ViewComponent extends BaseComponent {
 
   jsComponentPConnectData = {};
-  noHeaderTemplates = NO_HEADER_TEMPLATES;
-
   configProps$;
   inheritedProps$;
   arChildren$ = [];
@@ -53,17 +37,7 @@ export class ViewComponent {
   label$ = '';
   showLabel$ = false;
   visibility$ = true;
-  compId;
-  type;
   props;
-
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect;
-    this.type = pConn$.meta.type
-  }
 
   init() {
     // First thing in initialization is registering and subscribing to the JsComponentPConnect service

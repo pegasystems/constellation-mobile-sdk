@@ -1,12 +1,10 @@
 import { Utils } from '../../../helpers/utils.js';
 import {getComponentFromMap} from '../../../mappings/sdk-component-map.js';
+import { BaseComponent } from '../../base.component.js';
 
-export class FieldGroupTemplateComponent {
-  pConn$;
-  jsComponentPConnect;
+export class FieldGroupTemplateComponent extends BaseComponent {
+
   jsComponentPConnectData = {};
-  compId;
-  type;
   items = [];
   configProps;
 
@@ -32,13 +30,10 @@ export class FieldGroupTemplateComponent {
   //
 
   constructor(componentsManager, pConn, configProps) {
-    this.pConn$ = pConn;
+    super(componentsManager, pConn);
+    this.type = "FieldGroupTemplate"
     this.configProps = configProps;
     this.utils = new Utils();
-    this.componentsManager = componentsManager;
-    this.compId = this.componentsManager.getNextComponentId();
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect
-    this.type = "FieldGroupTemplate"
   }
 
   init() {

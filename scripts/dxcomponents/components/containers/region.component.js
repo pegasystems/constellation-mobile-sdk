@@ -1,22 +1,12 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
-export class RegionComponent {
-  pConn$;
-  formGroup$;
+export class RegionComponent extends BaseComponent {
 
   arChildren$ = [];
   childrenComponents = [];
-  compId;
-  type;
   props;
-
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.type = pConn$.meta.type
-  }
 
   init() {
     this.componentsManager.onComponentAdded(this);

@@ -1,43 +1,24 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
+import { BaseComponent } from '../base.component.js';
 
-export class ViewContainerComponent {
-  pConn$;
+export class ViewContainerComponent extends BaseComponent {
+
   jsComponentPConnectData = {};
-  configProps$ = {
-    mode: String,
-    name: String,
-    limit: Number,
-    template: String,
-    title: String,
-    routingInfo: Object,
-    readOnly: Boolean
-  }
   props;
-
   arChildren$ =[];
   childComponent;
   title$ = '';
   viewPConn$;
-  compId;
-  type;
-
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId =  componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect;
-    this.type = pConn$.meta.type
-  }
 
   init() {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
     this.componentsManager.onComponentAdded(this);
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
-    this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    this.templateName$ = this.configProps$.template || '';
-    this.title$ = this.configProps$.title || '';
+    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.templateName$ = configProps.template || '';
+    this.title$ = configProps.title || '';
     const { CONTAINER_TYPE, APP } = PCore.getConstants();
     const { name = '', mode = 'single', limit = 16} = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
 

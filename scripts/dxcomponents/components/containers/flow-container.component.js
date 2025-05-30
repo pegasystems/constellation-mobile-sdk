@@ -1,23 +1,14 @@
 import { ReferenceComponent } from './reference.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
-// interface FlowContainerProps {
-//   // If any, enter additional props that only exist on this component
-//   children?: any[];
-//   name?: string;
-//   routingInfo?: any;
-//   pageMessages: any[];
-// }
+export class FlowContainerComponent extends BaseComponent {
 
-export class FlowContainerComponent {
-  pConn$;
   jsComponentPConnectData = {};
-
   pCoreConstants;
   configProps$;
   props;
-
   formGroup$;
   arChildren$ = [];
   assignmentComponent;
@@ -40,16 +31,6 @@ export class FlowContainerComponent {
   localeReference;
 
   pConnectOfActiveContainerItem;
-  compId;
-  type;
-
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect;
-    this.type = pConn$.meta.type
-  }
 
   init() {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
