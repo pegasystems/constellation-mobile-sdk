@@ -4,12 +4,8 @@ export class PhoneComponent extends FieldBaseComponent {
 
   updateSelf() {
     this.updateBaseProps()
-    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-    if (configProps.showCountryCode != null) {
-      this.props.showCountryCode = this.utils.getBooleanValue(configProps.showCountryCode);
-    } else {
-      this.props.showCountryCode = true;
-    }
+    const showCountryCode = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).showCountryCode;
+    this.props.showCountryCode = showCountryCode != null ? this.utils.getBooleanValue(showCountryCode) : true;
     this.propName = this.pConn.getStateProps().value;
     this.componentsManager.onComponentPropsUpdate(this);
   }

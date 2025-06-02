@@ -26,15 +26,13 @@ export class FieldBaseComponent extends BaseComponent {
   }
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     this.componentsManager.onComponentRemoved(this);
   }
 
@@ -45,14 +43,8 @@ export class FieldBaseComponent extends BaseComponent {
     }
   }
 
-  onStateChange() {
-    this.checkAndUpdate();
-  }
-
   checkAndUpdate() {
-    const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
-
-    if (bUpdateSelf) {
+    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.updateSelf();
     }
   }
@@ -65,30 +57,16 @@ export class FieldBaseComponent extends BaseComponent {
 
   updateBaseProps() {
     const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-    this.props.displayMode = configProps.displayMode || '';
-    this.props.label = configProps.label || '';
-    if (configProps.value !== undefined) {
-      this.props.value = configProps.value;
-    }
-    this.props.helperText = configProps.helperText || '';
-    this.props.placeholder = configProps.placeholder || '';
-
-    if (configProps.required != null) {
-      this.props.required = this.utils.getBooleanValue(configProps.required);
-    }
-
-    if (configProps.visibility != null) {
-      this.props.visible = this.utils.getBooleanValue(configProps.visibility);
-    }
-
-    if (configProps.disabled !== undefined) {
-      this.props.disabled = this.utils.getBooleanValue(configProps.disabled);
-    }
-
-    if (configProps.readOnly != null) {
-      this.props.readOnly = this.utils.getBooleanValue(configProps.readOnly);
-    }
-    this.props.validateMessage = this.jsComponentPConnectData.validateMessage || ''
+    this.props.displayMode = configProps.displayMode ?? '';
+    this.props.label = configProps.label ?? '';
+    this.props.value = configProps.value ?? this.props.value;
+    this.props.helperText = configProps.helperText ?? '';
+    this.props.placeholder = configProps.placeholder ?? '';
+    this.props.required = this.utils.getBooleanValue(configProps.required ?? this.props.required);
+    this.props.visible = this.utils.getBooleanValue(configProps.visibility ?? this.props.visible);
+    this.props.disabled = this.utils.getBooleanValue(configProps.disabled ?? this.props.disabled);
+    this.props.readOnly = this.utils.getBooleanValue(configProps.readOnly ?? this.props.readOnly);
+    this.props.validateMessage = this.jsComponentPConnectData.validateMessage ?? ''
   }
 
   onEvent(event) {
@@ -100,9 +78,8 @@ export class FieldBaseComponent extends BaseComponent {
   }
 
   fieldOnBlur(value) {
-    if (value !== undefined) {
-      this.props.value = value
-    }
+    this.props.value = value ?? this.props.value
+
     const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value;
     // Preventing 'changeNblur' events for unchanged field values.
     // Sending it for field which is a dropdown param causes dropdown value to be cleared

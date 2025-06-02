@@ -13,12 +13,10 @@ export class CheckBoxComponent extends FieldBaseComponent {
       return;
     }
     this.updateBaseProps();
-    if (this.props.label !== '') {
-      this.props.showLabel = true;
-    }
-    this.props.caption = configProps.caption || '';
-    this.props.trueLabel = configProps.trueLabel || 'Yes';
-    this.props.falseLabel = configProps.falseLabel || 'No';
+    this.props.showLabel = this.props.label !== '';
+    this.props.caption = configProps.caption ?? '';
+    this.props.trueLabel = configProps.trueLabel ?? 'Yes';
+    this.props.falseLabel = configProps.falseLabel ?? 'No';
     this.propName = this.pConn.getStateProps().value;
     this.componentsManager.onComponentPropsUpdate(this);
   }
@@ -29,8 +27,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
       return;
     }
     this.props.value = value;
-    const checked = this.props.value === 'true' || this.props.value === true;
-    handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, checked);
+    handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, this.#isChecked());
   }
 
   fieldOnBlur(value) {
@@ -38,11 +35,12 @@ export class CheckBoxComponent extends FieldBaseComponent {
       console.log("Selection mode 'multi' is unsupported.");
       return;
     }
-    if (value !== undefined) {
-      this.props.value = value;
-    }
-    const checked = this.props.value === 'true' || this.props.value === true;
-    this.pConn.getValidationApi().validate(checked);
+    this.props.value = value ?? this.props.value;
+    this.pConn.getValidationApi().validate(this.#isChecked());
     Utils.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
+  }
+
+  #isChecked() {
+    return this.props.value === 'true' || this.props.value === true;
   }
 }

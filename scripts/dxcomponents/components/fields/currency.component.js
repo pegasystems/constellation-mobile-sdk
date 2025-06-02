@@ -5,15 +5,11 @@ export class CurrencyComponent extends FieldBaseComponent{
   updateSelf() {
     this.updateBaseProps();
     const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-    if (configProps.currencyISOCode != null) {
-      this.props.currencyISOCode = configProps.currencyISOCode;
-    }
-    if (configProps.alwaysShowISOCode != null) {
-      this.props.showISOCode = configProps.alwaysShowISOCode;
-    }
-    this.props.decimalPrecision = configProps.allowDecimals ? 2 : 0;
-
+    this.props.currencyISOCode = configProps.currencyISOCode ?? this.props.currencyISOCode;
+    this.props.showISOCode = configProps.alwaysShowISOCode ?? this.props.showISOCode;
+    this.props.decimalPrecision = this.utils.getBooleanValue(configProps.allowDecimals ?? false) ? 2 : 0;
     this.propName = this.pConn.getStateProps().value;
+
     this.componentsManager.onComponentPropsUpdate(this);
   }
 }
