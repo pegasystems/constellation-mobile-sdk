@@ -6,30 +6,24 @@ import { BaseComponent } from '../base.component.js';
 export class ViewContainerComponent extends BaseComponent {
 
   jsComponentPConnectData = {};
-  props;
   childComponent;
-  title$ = '';
-  viewPConn;
+  props = {
+    children: []
+  }
 
   init() {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
-    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-    this.templateName$ = configProps.template ?? '';
-    this.title$ = configProps.title ?? '';
+
     const { CONTAINER_TYPE, APP } = PCore.getConstants();
     const { name = '', mode = 'single', limit = 16 } = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
 
-    this.pConn.isBoundToState();
-
     const containerMgr = this.pConn.getContainerManager();
-
+    const type = mode === CONTAINER_TYPE.MULTIPLE ? CONTAINER_TYPE.MULTIPLE : CONTAINER_TYPE.SINGLE;
     if (!Utils.hasViewContainer()) {
-      containerMgr.initializeContainers({
-        type: mode === CONTAINER_TYPE.MULTIPLE ? CONTAINER_TYPE.MULTIPLE : CONTAINER_TYPE.SINGLE
-      });
+      containerMgr.initializeContainers({type: type});
 
-      if (mode === CONTAINER_TYPE.MULTIPLE && limit) {
+      if (mode === CONTAINER_TYPE.MULTIPLE) {
         /* NOTE: setContainerLimit use is temporary. It is a non-public, unsupported API. */
         PCore.getContainerUtils().setContainerLimit(`${APP.APP}/${name}`, limit);
       }
@@ -37,7 +31,7 @@ export class ViewContainerComponent extends BaseComponent {
       if (!PCore.checkIfSemanticURL()) {
         // PCore.checkIfSemanticURL() logic inside c11n-core-js is that it compares app path and path in url.
         // If they are equal then it returns false. In code these values are set to be equal.
-        containerMgr.addContainerItem(this.prepareDispatchObject());
+        containerMgr.addContainerItem(this.#prepareDispatchObject());
       }
       Utils.setHasViewContainer('true')
     }
@@ -51,7 +45,7 @@ export class ViewContainerComponent extends BaseComponent {
   destroy() {
     this.jsComponentPConnectData.unsubscribeFn?.();
     this.childComponent?.destroy?.();
-    this.sendPropsUpdate();
+    this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }
 
@@ -60,13 +54,6 @@ export class ViewContainerComponent extends BaseComponent {
       this.pConn = pConn;
       this.checkAndUpdate();
     }
-  }
-
-  sendPropsUpdate() {
-    this.props = {
-      children: Utils.getChildrenComponentsIds([this.childComponent])
-    };
-    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   checkAndUpdate() {
@@ -87,30 +74,41 @@ export class ViewContainerComponent extends BaseComponent {
     }
     const { accessedOrder, items } = routingInfo;
     if (accessedOrder && items) {
-      const key = accessedOrder[accessedOrder.length - 1];
-      if (items[key] && items[key].view && Object.keys(items[key].view).length > 0) {
-        const config = this.createNewConfig(key, items);
-        const configObject = PCore.createPConnect(config);
-        const newCompPConn = configObject.getPConnect();
+      const lastItemKey = accessedOrder[accessedOrder.length - 1];
+      if (this.#hasViewsInRoutingInfo(lastItemKey, items)) {
+        const newCompPConn = this.#createNewPConn(lastItemKey, items);
         const newCompName = newCompPConn.getComponentName();
 
         if (newCompName !== 'reference') {
           console.error(`newComp name is '${newCompName}. 'Only 'reference' is supported as newComp in ViewContainer`);
           return
         }
-        this.viewPConn = ReferenceComponent.normalizePConn(newCompPConn);
+        const viewPConn = ReferenceComponent.normalizePConn(newCompPConn);
         this.childComponent?.destroy?.();
-        const viewComponent = getComponentFromMap(this.viewPConn.meta.type);
-        this.childComponent = new viewComponent(this.componentsManager, this.viewPConn);
+        const viewComponent = getComponentFromMap(viewPConn.meta.type);
+        this.childComponent = new viewComponent(this.componentsManager, viewPConn);
         this.childComponent.init();
-        this.sendPropsUpdate();
+        this.props.children = Utils.getChildrenComponentsIds([this.childComponent]);
+        this.componentsManager.onComponentPropsUpdate(this);
       }
     }
   }
 
-  createNewConfig(key, items) {
+  #hasViewsInRoutingInfo(key, items) {
+    return items[key] && items[key].view && Object.keys(items[key].view).length > 0
+  }
+
+  #createNewPConn(lastItemKey, items) {
+    const config = this.#createNewConfig(lastItemKey, items);
+    return PCore.createPConnect(config).getPConnect();
+  }
+
+  /**
+   * Creates a new configuration object based on the last item view in the routing info.
+   */
+  #createNewConfig(lastItemKey, items) {
     const { CREATE_DETAILS_VIEW_NAME } = PCore.getConstants();
-    const latestItem = items[key];
+    const latestItem = items[lastItemKey];
     const rootView = latestItem.view;
     const { context, name: viewName } = rootView.config;
     const config = { meta: rootView };
@@ -118,13 +116,13 @@ export class ViewContainerComponent extends BaseComponent {
       context: latestItem.context,
       pageReference: context || this.pConn.getPageReference(),
       containerName: this.pConn.getContainerName(),
-      containerItemName: key,
+      containerItemName: lastItemKey,
       hasForm: viewName === CREATE_DETAILS_VIEW_NAME
     };
     return config;
   }
 
-  prepareDispatchObject() {
+  #prepareDispatchObject() {
     return {
       semanticURL: '',
       context: this.pConn.getContextName(),
