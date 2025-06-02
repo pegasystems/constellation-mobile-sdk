@@ -7,20 +7,18 @@ export class ViewContainerComponent extends BaseComponent {
 
   jsComponentPConnectData = {};
   props;
-  arChildren$ =[];
   childComponent;
   title$ = '';
   viewPConn;
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
     const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-    this.templateName$ = configProps.template || '';
-    this.title$ = configProps.title || '';
+    this.templateName$ = configProps.template ?? '';
+    this.title$ = configProps.title ?? '';
     const { CONTAINER_TYPE, APP } = PCore.getConstants();
-    const { name = '', mode = 'single', limit = 16} = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
+    const { name = '', mode = 'single', limit = 16 } = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
 
     this.pConn.isBoundToState();
 
@@ -44,20 +42,15 @@ export class ViewContainerComponent extends BaseComponent {
       Utils.setHasViewContainer('true')
     }
 
-    // cannot call checkAndUpdate becasue first time through, will call updateSelf and that is incorrect (causes issues).
+    // cannot call checkAndUpdate because first time through, will call updateSelf and that is incorrect (causes issues).
     // however, need jsComponentPConnect to be initialized with currentProps for future updates, so calling shouldComponentUpdate directly
     // without checking to update here in init, will initialize and this is correct
     this.jsComponentPConnect.shouldComponentUpdate(this);
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      console.log("destroy for view container - id:  ", this.jsComponentPConnectData.compID);
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
-    if (this.childComponent !== undefined && this.childComponent.destroy !== undefined) {
-      this.childComponent.destroy();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
+    this.childComponent?.destroy?.();
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
   }
@@ -76,23 +69,15 @@ export class ViewContainerComponent extends BaseComponent {
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
-  onStateChange() {
-    // added because call to addContainerItem in init() causes redux to dispatch event and this method is called too early
-    if (Utils.hasViewContainer()) {
-      this.checkAndUpdate();
-    }
-  }
-
   checkAndUpdate() {
-    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
+    // added Utils.hasViewContainer() check because call to addContainerItem in init()
+    // causes redux to dispatch event and this method is called too early
+    if (Utils.hasViewContainer() && this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.updateSelf();
     }
   }
 
   updateSelf() {
-    if (this.arChildren$ == null) {
-      this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
-    }
     // routingInfo was added as component prop in populateAdditionalProps
     const routingInfo = this.jsComponentPConnect.getComponentProp(this, 'routingInfo');
 
@@ -103,9 +88,6 @@ export class ViewContainerComponent extends BaseComponent {
     const { accessedOrder, items } = routingInfo;
     if (accessedOrder && items) {
       const key = accessedOrder[accessedOrder.length - 1];
-      let componentVisible = accessedOrder.length > 0;
-      const visible = !PCore.checkIfSemanticURL();
-      componentVisible = visible || componentVisible;
       if (items[key] && items[key].view && Object.keys(items[key].view).length > 0) {
         const config = this.createNewConfig(key, items);
         const configObject = PCore.createPConnect(config);
@@ -117,14 +99,10 @@ export class ViewContainerComponent extends BaseComponent {
           return
         }
         this.viewPConn = ReferenceComponent.normalizePConn(newCompPConn);
-
-        if (this.childComponent !== undefined && this.childComponent.destroy !== undefined) {
-          this.childComponent.destroy();
-        }
+        this.childComponent?.destroy?.();
         const viewComponent = getComponentFromMap(this.viewPConn.meta.type);
         this.childComponent = new viewComponent(this.componentsManager, this.viewPConn);
         this.childComponent.init();
-
         this.sendPropsUpdate();
       }
     }
@@ -147,14 +125,10 @@ export class ViewContainerComponent extends BaseComponent {
   }
 
   prepareDispatchObject() {
-    const baseContext = this.pConn.getContextName();
-    // const { acName = "primary" } = pConn.getContainerName(); // doesn't work with 8.23 typings
-    const acName = this.pConn.getContainerName() || 'primary';
-
     return {
       semanticURL: '',
-      context: baseContext,
-      acName
+      context: this.pConn.getContextName(),
+      acName: this.pConn.getContainerName() ?? 'primary'
     };
   }
 }

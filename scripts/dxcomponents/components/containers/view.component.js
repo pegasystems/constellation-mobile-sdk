@@ -40,17 +40,13 @@ export class ViewComponent extends BaseComponent {
   props;
 
   init() {
-    // First thing in initialization is registering and subscribing to the JsComponentPConnect service
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
-    // save component to map so we can receive events from native
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     Utils.destroyChildren(this);
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
@@ -79,18 +75,8 @@ export class ViewComponent extends BaseComponent {
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
-  // Callback passed when subscribing to store change
-  onStateChange() {
-    this.checkAndUpdate();
-  }
-
   checkAndUpdate() {
-    // Should always check the bridge to see if the component should
-    // update itself (re-render)
-    const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
-
-    // ONLY call updateSelf when the component should update
-    if (bUpdateSelf) {
+    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.updateSelf();
     }
   }

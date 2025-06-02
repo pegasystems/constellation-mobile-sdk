@@ -33,7 +33,7 @@ export class FlowContainerComponent extends BaseComponent {
   pConnectOfActiveContainerItem;
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
 
     this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
@@ -72,9 +72,7 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     this.assignmentComponent.destroy();
     this.componentsManager.onComponentRemoved(this);
 
@@ -106,10 +104,6 @@ export class FlowContainerComponent extends BaseComponent {
 
   handleCancelPressed() {
     this.bHasCancel = true;
-  }
-
-  onStateChange() {
-    this.checkAndUpdate();
   }
 
   checkAndUpdate() {

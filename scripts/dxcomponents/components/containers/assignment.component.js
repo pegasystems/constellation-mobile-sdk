@@ -55,9 +55,7 @@ export class AssignmentComponent extends BaseComponent {
   }
 
   init() {
-    console.debug("JS :: Assignment :: Creating Assignment component");
-    // First thing in initialization is registering and subscribing to the AngularPConnect service.
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
 
     this.initComponent();
@@ -70,9 +68,7 @@ export class AssignmentComponent extends BaseComponent {
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     this.assignmentCardComponent.destroy();
     this.componentsManager.onComponentRemoved(this);
   }
@@ -104,13 +100,8 @@ export class AssignmentComponent extends BaseComponent {
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
-  onStateChange() {
-    this.checkAndUpdate();
-  }
-
   checkAndUpdate() {
-    const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
-    if (bUpdateSelf) {
+    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.setLoading(this.newPConn.getLoadingStatus());
     }
   }

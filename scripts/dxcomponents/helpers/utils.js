@@ -147,7 +147,7 @@ export class Utils {
     let bReturn = false;
 
     if (typeof inValue === 'string') {
-      if (inValue.toLowerCase() == 'true') {
+      if (inValue.toLowerCase() === 'true') {
         bReturn = true;
       }
     } else {

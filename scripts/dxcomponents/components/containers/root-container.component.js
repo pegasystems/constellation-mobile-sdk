@@ -16,13 +16,11 @@ export class RootContainerComponent extends BaseComponent {
   init() {
     const { containers } = PCore.getStore().getState();
     const items = Object.keys(containers).filter(item => item.includes('root'));
-
     PCore.getContainerUtils().getContainerAPI().addContainerItems(items);
-
     Utils.setHasViewContainer('false');
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
-    this.#onStateChange()
+    this.checkAndUpdate()
   }
 
   destroy() {
@@ -55,7 +53,7 @@ export class RootContainerComponent extends BaseComponent {
     });
   }
 
-  #onStateChange() {
+  checkAndUpdate() {
     if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.#updateSelf();
     }

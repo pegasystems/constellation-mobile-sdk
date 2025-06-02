@@ -37,15 +37,13 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   }
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     this.componentsManager.onComponentRemoved(this);
   }
 
@@ -61,14 +59,8 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     }
   }
 
-  onStateChange() {
-    this.checkAndUpdate();
-  }
-
   checkAndUpdate() {
-    const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
-
-    if (bUpdateSelf) {
+    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.updateSelf();
     }
   }
