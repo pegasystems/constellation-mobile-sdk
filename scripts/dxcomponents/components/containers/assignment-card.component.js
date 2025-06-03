@@ -1,14 +1,12 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
-import { BaseComponent } from '../base.component.js';
+import { ContainerBaseComponent } from './container-base.component.js';
 
-export class AssignmentCardComponent extends BaseComponent {
+export class AssignmentCardComponent extends ContainerBaseComponent {
   arMainButtons$;
   arSecondaryButtons$;
-  arChildren$;
   props;
-  childrenComponents = [];
   actionButtonsComponent;
 
   constructor(componentsManager, pConn, childrenPConns, mainButtons, secondaryButtons, actionButtonClick) {
@@ -24,9 +22,9 @@ export class AssignmentCardComponent extends BaseComponent {
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
     this.componentsManager.onComponentAdded(this);
 
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
     const actionButtonsComponentClass = getComponentFromMap("ActionButtons");
     this.actionButtonsComponent = new actionButtonsComponentClass(this.componentsManager, this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
@@ -49,9 +47,9 @@ export class AssignmentCardComponent extends BaseComponent {
     this.arSecondaryButtons$ = secondaryButtons;
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
 
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
     this.sendPropsUpdate()
     this.actionButtonsComponent.update(this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);

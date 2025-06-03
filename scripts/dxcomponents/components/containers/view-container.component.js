@@ -12,7 +12,7 @@ export class ViewContainerComponent extends BaseComponent {
   }
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
 
     const { CONTAINER_TYPE, APP } = PCore.getConstants();
@@ -36,7 +36,7 @@ export class ViewContainerComponent extends BaseComponent {
       Utils.setHasViewContainer('true')
     }
 
-    // cannot call checkAndUpdate because first time through, will call updateSelf and that is incorrect (causes issues).
+    // cannot call #checkAndUpdate because first time through, will call #updateSelf and that is incorrect (causes issues).
     // however, need jsComponentPConnect to be initialized with currentProps for future updates, so calling shouldComponentUpdate directly
     // without checking to update here in init, will initialize and this is correct
     this.jsComponentPConnect.shouldComponentUpdate(this);
@@ -52,19 +52,19 @@ export class ViewContainerComponent extends BaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
-      this.checkAndUpdate();
+      this.#checkAndUpdate();
     }
   }
 
-  checkAndUpdate() {
+  #checkAndUpdate() {
     // added Utils.hasViewContainer() check because call to addContainerItem in init()
     // causes redux to dispatch event and this method is called too early
     if (Utils.hasViewContainer() && this.jsComponentPConnect.shouldComponentUpdate(this)) {
-      this.updateSelf();
+      this.#updateSelf();
     }
   }
 
-  updateSelf() {
+  #updateSelf() {
     // routingInfo was added as component prop in populateAdditionalProps
     const routingInfo = this.jsComponentPConnect.getComponentProp(this, 'routingInfo');
 

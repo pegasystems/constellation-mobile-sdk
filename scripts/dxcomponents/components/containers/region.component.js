@@ -1,11 +1,8 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
-import { BaseComponent } from '../base.component.js';
+import { ContainerBaseComponent } from './container-base.component.js';
 
-export class RegionComponent extends BaseComponent {
-
-  arChildren$ = [];
-  childrenComponents = [];
+export class RegionComponent extends ContainerBaseComponent {
   props;
 
   init() {
@@ -44,9 +41,9 @@ export class RegionComponent extends BaseComponent {
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
 
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
     console.log("Region children: ", this.arChildren$);
     this.sendPropsUpdate();

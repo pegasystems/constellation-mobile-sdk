@@ -1,16 +1,8 @@
 import { ReferenceComponent } from './reference.component.js';
 import { Utils } from '../../helpers/utils.js';
-import { BaseComponent } from '../base.component.js';
+import { ContainerBaseComponent } from './container-base.component.js';
 
-// interface DefaultFormProps {
-//   // If any, enter additional props that only exist on this component
-//   NumCols: string;
-//   instructions: string;
-// }
-
-export class DefaultFormComponent extends BaseComponent{
-  arChildren$ = [];
-  childrenComponents = [];
+export class DefaultFormComponent extends ContainerBaseComponent {
   instructions;
   props;
 
@@ -26,9 +18,9 @@ export class DefaultFormComponent extends BaseComponent{
     const configProps = this.pConn.getConfigProps();
     this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
     this.sendPropsUpdate();
   }
@@ -53,9 +45,9 @@ export class DefaultFormComponent extends BaseComponent{
     // this.arChildren$ = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());
     this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
 
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
     this.sendPropsUpdate();
   }
