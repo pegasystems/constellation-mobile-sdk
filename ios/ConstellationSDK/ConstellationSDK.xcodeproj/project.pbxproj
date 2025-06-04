@@ -66,6 +66,9 @@
 		B54FD7632DD3765900DC6938 /* PhoneNumberComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523498D2D53AD010042F27B /* PhoneNumberComponentProvider.swift */; };
 		B54FD7642DD37BB500DC6938 /* PhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349902D53AD010042F27B /* PhoneNumberView.swift */; };
 		B54FD7652DD37E0000DC6938 /* CountryData.json in Resources */ = {isa = PBXBuildFile; fileRef = B523498A2D53AD010042F27B /* CountryData.json */; };
+		B55399672DE85A2A00C6CC23 /* TimeProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55399652DE85A2A00C6CC23 /* TimeProps.swift */; };
+		B55399682DE85A2A00C6CC23 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55399662DE85A2A00C6CC23 /* TimeView.swift */; };
+		B55399692DE85A2A00C6CC23 /* TimeComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55399642DE85A2A00C6CC23 /* TimeComponentProvider.swift */; };
 		B56F836A2D5B66BC0093E00D /* WebViewEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F83692D5B66BC0093E00D /* WebViewEngine.swift */; };
 		B56F836D2D5B84060093E00D /* FormHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F836C2D5B84060093E00D /* FormHandler.swift */; };
 		B56F83702D5B861F0093E00D /* WKWebView+PMS.h in Headers */ = {isa = PBXBuildFile; fileRef = B56F836E2D5B861F0093E00D /* WKWebView+PMS.h */; };
@@ -157,6 +160,9 @@
 		B53C2D082D81CD9900DB47FB /* AssignmentCardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCardComponent.swift; sourceTree = "<group>"; };
 		B53C2D092D81CD9900DB47FB /* AssignmentCardComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCardComponentProps.swift; sourceTree = "<group>"; };
 		B53C2D0C2D81CDD600DB47FB /* ViewID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewID.swift; sourceTree = "<group>"; };
+		B55399642DE85A2A00C6CC23 /* TimeComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeComponentProvider.swift; sourceTree = "<group>"; };
+		B55399652DE85A2A00C6CC23 /* TimeProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeProps.swift; sourceTree = "<group>"; };
+		B55399662DE85A2A00C6CC23 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		B56F83692D5B66BC0093E00D /* WebViewEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewEngine.swift; sourceTree = "<group>"; };
 		B56F836C2D5B84060093E00D /* FormHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHandler.swift; sourceTree = "<group>"; };
 		B56F836E2D5B861F0093E00D /* WKWebView+PMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+PMS.h"; sourceTree = "<group>"; };
@@ -469,6 +475,16 @@
 			path = AssignmentCard;
 			sourceTree = "<group>";
 		};
+		B55399632DE859F100C6CC23 /* Time */ = {
+			isa = PBXGroup;
+			children = (
+				B55399642DE85A2A00C6CC23 /* TimeComponentProvider.swift */,
+				B55399652DE85A2A00C6CC23 /* TimeProps.swift */,
+				B55399662DE85A2A00C6CC23 /* TimeView.swift */,
+			);
+			path = Time;
+			sourceTree = "<group>";
+		};
 		B56F83742D5B87A10093E00D /* WebViewOverride */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,6 +545,7 @@
 		B5F1A39B2D6775DE0026527C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B55399632DE859F100C6CC23 /* Time */,
 				B58C94D92DA5192C00B978E6 /* UnsupportedComponent */,
 				B53C2D062D81CD5300DB47FB /* Containers */,
 				B58637D02D786C5D007E3020 /* ActionButtons */,
@@ -705,6 +722,9 @@
 				6538731D2D9AC84F00FB29AF /* DateComponentProvider.swift in Sources */,
 				B5ACA2ED2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift in Sources */,
 				B53C2D0A2D81CD9900DB47FB /* AssignmentCardComponent.swift in Sources */,
+				B55399672DE85A2A00C6CC23 /* TimeProps.swift in Sources */,
+				B55399682DE85A2A00C6CC23 /* TimeView.swift in Sources */,
+				B55399692DE85A2A00C6CC23 /* TimeComponentProvider.swift in Sources */,
 				B53C2D0B2D81CD9900DB47FB /* AssignmentCardComponentProps.swift in Sources */,
 				B56F836D2D5B84060093E00D /* FormHandler.swift in Sources */,
 				B5F1A39A2D6767820026527C /* ConsoleHandler.swift in Sources */,
