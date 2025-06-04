@@ -82,14 +82,14 @@ export class ViewComponent extends ContainerBaseComponent {
     }
 
     // children may have a 'reference' so normalize the children array
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
     if (this.SUPPORTED_FORM_TEMPLATES.includes(templateName)) {
       if (this.childrenComponents[0] !== undefined) {
-        this.childrenComponents[0].update(this.pConn, this.arChildren$);
+        this.childrenComponents[0].update(this.pConn, this.childrenPConns);
       } else {
         const templateComponentClass = getComponentFromMap(templateName);
-        const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn, this.arChildren$);
+        const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn, this.childrenPConns);
         templateComponentInstance.init();
         this.childrenComponents.push(templateComponentInstance);
       }

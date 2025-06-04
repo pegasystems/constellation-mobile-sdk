@@ -70,7 +70,22 @@ export class FieldBaseComponent extends BaseComponent {
   }
 
   onEvent(event) {
-    this.componentsManager.handleNativeEvent(this, event)
+    const value = event.componentData !== undefined ? event.componentData.value : undefined;
+    const focused = event.eventData !== undefined ? event.eventData.focused : undefined
+    switch (event.type) {
+      case 'FieldChange':
+        console.log(`FieldChange for ${this.compId}, value: ${value}`);
+        this.fieldOnChange(value);
+        break;
+      case 'FieldChangeWithFocus':
+        console.log(`FieldChangeWithFocus for ${this.compId}, value: ${value}, focused: ${focused}`);
+        if (focused === "false" || focused === false) {
+          this.fieldOnBlur(value)
+        }
+        break;
+      default:
+        console.log(`unknown event type: ${event.type}`)
+    }
   }
 
   fieldOnChange(value) {

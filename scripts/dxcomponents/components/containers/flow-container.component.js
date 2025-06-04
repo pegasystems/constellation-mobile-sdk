@@ -10,7 +10,7 @@ export class FlowContainerComponent extends BaseComponent {
   configProps$;
   props;
   formGroup$;
-  arChildren$ = [];
+  childrenPConns = [];
   assignmentComponent;
   alertBannerComponents = [];
   itemKey$ = '';
@@ -201,7 +201,7 @@ export class FlowContainerComponent extends BaseComponent {
 
     // when true, update arChildren from pConn, otherwise, arChilren will be updated in updateSelf()
     if (bLoadChildren) {
-      this.arChildren$ = this.pConn.getChildren();
+      this.childrenPConns = this.pConn.getChildren();
     }
 
     const baseContext = this.pConn.getContextName();
@@ -215,7 +215,7 @@ export class FlowContainerComponent extends BaseComponent {
     // inside
     // get fist kid, get the name and display
     // pass first kid to a view container, which will disperse it to a view which will use one column, two column, etc.
-    const oWorkItem = this.arChildren$[0].getPConnect();
+    const oWorkItem = this.childrenPConns[0].getPConnect();
     const oWorkData = oWorkItem.getDataObject();
 
     if (bLoadChildren && oWorkData) {
@@ -287,10 +287,10 @@ export class FlowContainerComponent extends BaseComponent {
     this.pConnectOfActiveContainerItem = this.getPConnectOfActiveContainerItem(this.pConn) || this.pConn;
 
     if (this.assignmentComponent) {
-      this.assignmentComponent.update(this.pConnectOfActiveContainerItem, this.arChildren$);
+      this.assignmentComponent.update(this.pConnectOfActiveContainerItem, this.childrenPConns);
     } else {
       const assignmentComponentClass = getComponentFromMap("Assignment");
-      this.assignmentComponent = new assignmentComponentClass(this.componentsManager, this.pConnectOfActiveContainerItem, this.arChildren$, this.itemKey$);
+      this.assignmentComponent = new assignmentComponentClass(this.componentsManager, this.pConnectOfActiveContainerItem, this.childrenPConns, this.itemKey$);
       this.assignmentComponent.init();
     }
     this.sendPropsUpdate();
@@ -313,7 +313,7 @@ export class FlowContainerComponent extends BaseComponent {
 
     this.updateFlowContainerChildren();
 
-    console.log("FlowContainer children: ", this.arChildren$)
+    console.log("FlowContainer children: ", this.childrenPConns)
   }
 
   showCaseMessages() {
@@ -378,7 +378,7 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   addPConnectAndUpdateChildren(currentItem, key) {
-    const localPConn = this.arChildren$[0].getPConnect();
+    const localPConn = this.childrenPConns[0].getPConnect();
 
     const rootView = currentItem.view;
     const { context, name: ViewName } = rootView.config;
@@ -405,15 +405,15 @@ export class FlowContainerComponent extends BaseComponent {
     //  So need to get the PConnect of the normalized component we just created...
     const normalizedConfigObjectAsPConnect = normalizedConfigObject.getComponent();
     this.buildName$ = this.getBuildName();
-    this.arChildren$ = [];
-    this.arChildren$.push(normalizedConfigObjectAsPConnect);
+    this.childrenPConns = [];
+    this.childrenPConns.push(normalizedConfigObjectAsPConnect);
     console.log("FlowContaner normalizedConfigObjectAsPConnect: ", normalizedConfigObjectAsPConnect);
     const oWorkItem = configObject.getPConnect();
     const oWorkData = oWorkItem.getDataObject();
 
     this.containerName$ = this.localizedVal(this.getActiveViewLabel() || oWorkData.caseInfo.assignments?.[0].name, undefined, this.localeReference);
 
-    this.assignmentComponent.update(this.pConnectOfActiveContainerItem, this.arChildren$, this.itemKey$);
+    this.assignmentComponent.update(this.pConnectOfActiveContainerItem, this.childrenPConns, this.itemKey$);
   }
 
   getBuildName() {

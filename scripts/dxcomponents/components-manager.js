@@ -10,7 +10,7 @@ export class ComponentsManager {
   /**
    * Variable used to compute the next componentID
    */
-  counterComponentID = 0;
+  #counterComponentID = 0;
 
   /**
    * Returns a unique (for this session) ComponentID that should
@@ -21,36 +21,9 @@ export class ComponentsManager {
    * @returns the next componentID
    */
   getNextComponentId() {
-    this.counterComponentID += 1;
+    this.#counterComponentID += 1;
     // Note that we use the string version of the number so we have an
     //  associative array that we can clean up later, if needed.
-    return this.counterComponentID.toString();
-  }
-
-  handleNativeEvent(component, event) {
-    const value = event.componentData !== undefined ? event.componentData.value : undefined;
-    const focused = event.eventData !== undefined ? event.eventData.focused : undefined
-    switch (event.type) {
-      case 'FieldChange':
-        console.log(`FieldChange for ${component.compId}, value: ${value}`);
-        this.updateComponentValue(component, value)
-        break;
-      case 'FieldChangeWithFocus':
-        console.log(`FieldChangeWithFocus for ${component.compId}, value: ${value}, focused: ${focused}`);
-        this.updateComponentFocus(component, value, focused)
-        break;
-      default:
-        console.log(`unknown event type: ${event.type}`)
-    }
-  }
-
-  updateComponentValue(component, value) {
-    component.fieldOnChange(value);
-  }
-
-  updateComponentFocus(component, value, focused) {
-    if (focused === "false" || focused === false) {
-      component.fieldOnBlur(value)
-    }
+    return this.#counterComponentID.toString();
   }
 }

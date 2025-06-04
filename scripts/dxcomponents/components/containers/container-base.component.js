@@ -2,7 +2,7 @@ import { BaseComponent } from '../base.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 
 export class ContainerBaseComponent extends BaseComponent {
-  arChildren$ = [];
+  childrenPConns = [];
   childrenComponents = [];
 
   /**
@@ -18,7 +18,7 @@ export class ContainerBaseComponent extends BaseComponent {
    *
    */
   reconcileChildren() {
-    const newChildren = this.arChildren$;
+    const newChildren = this.childrenPConns;
     const oldChildrenComponents = this.childrenComponents
     const reconciledComponents = [];
 

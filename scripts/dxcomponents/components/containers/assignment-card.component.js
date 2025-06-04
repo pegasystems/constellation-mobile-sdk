@@ -12,14 +12,14 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
   constructor(componentsManager, pConn, childrenPConns, mainButtons, secondaryButtons, actionButtonClick) {
     super(componentsManager, pConn);
     this.type = "AssignmentCard";
-    this.arChildren$ = childrenPConns;
+    this.childrenPConns = childrenPConns;
     this.arMainButtons$ = mainButtons;
     this.arSecondaryButtons$ = secondaryButtons;
     this.actionButtonClick = actionButtonClick;
   }
 
   init() {
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
     this.componentsManager.onComponentAdded(this);
 
     const reconciledComponents = this.reconcileChildren();
@@ -41,11 +41,11 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
 
   update(pConn, pConnChildren, mainButtons, secondaryButtons) {
     this.pConn = pConn;
-    const oldChildren = this.arChildren$;
-    this.arChildren$ = pConnChildren;
+    const oldChildren = this.childrenPConns;
+    this.childrenPConns = pConnChildren;
     this.arMainButtons$ = mainButtons;
     this.arSecondaryButtons$ = secondaryButtons;
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
 
     const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);

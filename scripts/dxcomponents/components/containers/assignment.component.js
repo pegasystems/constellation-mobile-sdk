@@ -5,7 +5,7 @@ import { BaseComponent } from '../base.component.js';
 
 export class AssignmentComponent extends BaseComponent {
 
-  arChildren$;
+  childrenPConns;
   assignmentCardComponent;
   itemKey$;
 
@@ -50,7 +50,7 @@ export class AssignmentComponent extends BaseComponent {
     super(componentsManager, pConn);
 
     this.type = "Assignment"
-    this.arChildren$ = childrenPConns;
+    this.childrenPConns = childrenPConns;
     this.itemKey$ = itemKey;
   }
 
@@ -75,7 +75,7 @@ export class AssignmentComponent extends BaseComponent {
 
   update(pConn, pConnChildren, itemKey) {
     this.pConn = pConn;
-    this.arChildren$ = pConnChildren;
+    this.childrenPConns = pConnChildren;
     this.itemKey$ = itemKey;
     if (this.bInitialized) {
       this.updateChanges();
@@ -109,15 +109,15 @@ export class AssignmentComponent extends BaseComponent {
   updateChanges() {
     this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
 
-    if (this.arChildren$) {
+    if (this.childrenPConns) {
       this.createButtons();
     }
 
     if (this.assignmentCardComponent) {
-      this.assignmentCardComponent.update(this.newPConn, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$);
+      this.assignmentCardComponent.update(this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$);
     } else {
       const assignmentCardComponentClass = getComponentFromMap("AssignmentCard");
-      this.assignmentCardComponent = new assignmentCardComponentClass(this.componentsManager, this.newPConn, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick);
+      this.assignmentCardComponent = new assignmentCardComponentClass(this.componentsManager, this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick);
       this.assignmentCardComponent.init();
     }
     this.loading = this.newPConn.getLoadingStatus();
@@ -157,7 +157,7 @@ export class AssignmentComponent extends BaseComponent {
     this.rejectCase = actionsAPI.rejectCase?.bind(actionsAPI);
     this.onActionButtonClick = this.onActionButtonClick.bind(this);
 
-    if (this.arChildren$) {
+    if (this.childrenPConns) {
       this.createButtons();
     }
   }
@@ -172,7 +172,7 @@ export class AssignmentComponent extends BaseComponent {
     // inside
     // get fist kid, get the name and display
     // pass first kid to a view container, which will disperse it to a view which will use one column, two column, etc.
-    const oWorkItem = this.arChildren$[0].getPConnect();
+    const oWorkItem = this.childrenPConns[0].getPConnect();
     const oWorkData = oWorkItem.getDataObject();
 
     if (oWorkData) {

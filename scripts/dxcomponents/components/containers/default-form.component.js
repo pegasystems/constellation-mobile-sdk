@@ -9,7 +9,7 @@ export class DefaultFormComponent extends ContainerBaseComponent {
   constructor(componentsManager, pConn, childrenPConns) {
     super(componentsManager, pConn);
     this.type = "DefaultForm"
-    this.arChildren$ = childrenPConns;
+    this.childrenPConns = childrenPConns;
   }
 
   init() {
@@ -17,7 +17,7 @@ export class DefaultFormComponent extends ContainerBaseComponent {
 
     const configProps = this.pConn.getConfigProps();
     this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
     const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.initReconciledComponents(reconciledComponents);
@@ -36,14 +36,14 @@ export class DefaultFormComponent extends ContainerBaseComponent {
 
   update(pConn, childrenPConns) {
     this.pConn = pConn;
-    this.arChildren$ = childrenPConns;
+    this.childrenPConns = childrenPConns;
 
     const configProps = this.pConn.getConfigProps();
     this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
 
-    const oldChildren = this.arChildren$;
-    // this.arChildren$ = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
+    const oldChildren = this.childrenPConns;
+    // this.childrenPConns = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
 
     const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);

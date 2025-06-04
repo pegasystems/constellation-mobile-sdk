@@ -36,16 +36,16 @@ export class RegionComponent extends ContainerBaseComponent {
   }
 
   updateSelf() {
-    const oldChildren = this.arChildren$;
+    const oldChildren = this.childrenPConns;
     // The children may contain 'reference' components, so normalize the children...
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
 
     const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.initReconciledComponents(reconciledComponents);
 
-    console.log("Region children: ", this.arChildren$);
+    console.log("Region children: ", this.childrenPConns);
     this.sendPropsUpdate();
   }
 }
