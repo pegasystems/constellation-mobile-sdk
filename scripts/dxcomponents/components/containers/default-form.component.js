@@ -1,5 +1,4 @@
 import { ReferenceComponent } from './reference.component.js';
-import { Utils } from '../../helpers/utils.js';
 import { ContainerBaseComponent } from './container-base.component.js';
 
 export class DefaultFormComponent extends ContainerBaseComponent {
@@ -29,7 +28,7 @@ export class DefaultFormComponent extends ContainerBaseComponent {
     // copied from form-template-base.ts
     // this was present in angular sdk but missing in react-sdk, will comment it out for now
     // PCore.getContextTreeManager().removeContextTreeNode(this.pConn.getContextName());
-    Utils.destroyChildren(this);
+    this.destroyChildren();
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
   }
@@ -59,7 +58,7 @@ export class DefaultFormComponent extends ContainerBaseComponent {
   sendPropsUpdate() {
     const childrenComponents = this.childrenComponents
     this.props = {
-       children: Utils.getChildrenComponentsIds(childrenComponents),
+       children: this.getChildrenComponentsIds(),
        instructions: this.instructions || ''
     };
     this.componentsManager.onComponentPropsUpdate(this);

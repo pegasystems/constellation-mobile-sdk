@@ -18,9 +18,9 @@ export class RootContainerComponent extends BaseComponent {
     const items = Object.keys(containers).filter(item => item.includes('root'));
     PCore.getContainerUtils().getContainerAPI().addContainerItems(items);
     Utils.setHasViewContainer('false');
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate, this.compId);
     this.componentsManager.onComponentAdded(this);
-    this.checkAndUpdate()
+    this.#checkAndUpdate()
   }
 
   destroy() {
@@ -53,7 +53,7 @@ export class RootContainerComponent extends BaseComponent {
     });
   }
 
-  checkAndUpdate() {
+  #checkAndUpdate() {
     if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.#updateSelf();
     }

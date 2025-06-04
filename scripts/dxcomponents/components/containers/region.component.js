@@ -1,25 +1,26 @@
 import { ReferenceComponent } from './reference.component.js';
-import { Utils } from '../../helpers/utils.js';
 import { ContainerBaseComponent } from './container-base.component.js';
 
 export class RegionComponent extends ContainerBaseComponent {
-  props;
+  props = {
+    children: []
+  }
 
   init() {
     this.componentsManager.onComponentAdded(this);
-    this.updateSelf();
+    this.#updateSelf();
   }
 
   destroy() {
-    Utils.destroyChildren(this);
-    this.sendPropsUpdate();
+    this.destroyChildren();
+    this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
-      this.updateSelf();
+      this.#updateSelf();
     }
   }
 
@@ -27,25 +28,15 @@ export class RegionComponent extends ContainerBaseComponent {
     this.childrenComponents.forEach((component) => {component.onEvent(event);})
   }
 
-  sendPropsUpdate() {
-    const childrenComponents = this.childrenComponents
-    this.props = {
-       children: Utils.getChildrenComponentsIds(childrenComponents)
-    };
-    this.componentsManager.onComponentPropsUpdate(this);
-  }
-
-  updateSelf() {
-    const oldChildren = this.childrenPConns;
+  #updateSelf() {
     // The children may contain 'reference' components, so normalize the children...
     this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
-
 
     const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.initReconciledComponents(reconciledComponents);
 
-    console.log("Region children: ", this.childrenPConns);
-    this.sendPropsUpdate();
+    this.props.children = this.getChildrenComponentsIds();
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 }

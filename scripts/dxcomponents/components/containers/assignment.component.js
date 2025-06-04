@@ -1,6 +1,5 @@
 import { ReferenceComponent } from './reference.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
-import { Utils } from '../../helpers/utils.js';
 import { BaseComponent } from '../base.component.js';
 
 export class AssignmentComponent extends BaseComponent {
@@ -94,7 +93,7 @@ export class AssignmentComponent extends BaseComponent {
 
   sendPropsUpdate() {
     this.props = {
-      children: Utils.getChildrenComponentsIds([this.assignmentCardComponent]),
+      children: [this.assignmentCardComponent.compId],
       loading: this.loading
     };
     this.componentsManager.onComponentPropsUpdate(this);

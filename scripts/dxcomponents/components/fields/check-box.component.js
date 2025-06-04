@@ -1,4 +1,3 @@
-import { Utils } from '../../helpers/utils.js';
 import { handleEvent } from '../../helpers/event-util.js';
 import { FieldBaseComponent } from './field-base.component.js';
 
@@ -37,7 +36,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
     }
     this.props.value = value ?? this.props.value;
     this.pConn.getValidationApi().validate(this.#isChecked());
-    Utils.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
+    this.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 
   #isChecked() {

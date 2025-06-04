@@ -5,6 +5,19 @@ export class ContainerBaseComponent extends BaseComponent {
   childrenPConns = [];
   childrenComponents = [];
 
+  destroyChildren() {
+    this.childrenComponents.forEach(component => {
+      component.destroy?.();
+    });
+    this.childrenComponents = [];
+  }
+
+  getChildrenComponentsIds() {
+    return this.childrenComponents.map(component => {
+      return component.compId;
+    })
+  }
+
   /**
    * Reconciliation logic
    * - Iterate all new children pConns.

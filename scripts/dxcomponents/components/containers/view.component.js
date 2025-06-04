@@ -1,5 +1,4 @@
 import { ReferenceComponent } from './reference.component.js';
-import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import {ContainerBaseComponent} from './container-base.component.js';
 
@@ -27,7 +26,7 @@ export class ViewComponent extends ContainerBaseComponent {
 
   destroy() {
     this.jsComponentPConnectData.unsubscribeFn?.();
-    Utils.destroyChildren(this);
+    this.destroyChildren();
     this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }
@@ -99,7 +98,7 @@ export class ViewComponent extends ContainerBaseComponent {
       this.initReconciledComponents(reconciledComponents);
     }
 
-    this.props.children = Utils.getChildrenComponentsIds(this.childrenComponents)
+    this.props.children = this.getChildrenComponentsIds();
     this.componentsManager.onComponentPropsUpdate(this)
   }
 

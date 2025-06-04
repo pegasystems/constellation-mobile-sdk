@@ -88,7 +88,7 @@ export class ViewContainerComponent extends BaseComponent {
         const viewComponent = getComponentFromMap(viewPConn.meta.type);
         this.childComponent = new viewComponent(this.componentsManager, viewPConn);
         this.childComponent.init();
-        this.props.children = Utils.getChildrenComponentsIds([this.childComponent]);
+        this.props.children = [this.childComponent.compId];
         this.componentsManager.onComponentPropsUpdate(this);
       }
     }

@@ -101,6 +101,14 @@ export class FieldBaseComponent extends BaseComponent {
     if (submittedValue !== this.props.value) {
       handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, this.props.value);
     }
-    Utils.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
+    this.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
+  }
+
+  clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
+    if (!validateMessage || validateMessage === '') {
+      pConn.clearErrorMessages({
+        property: propName
+      });
+    }
   }
 }

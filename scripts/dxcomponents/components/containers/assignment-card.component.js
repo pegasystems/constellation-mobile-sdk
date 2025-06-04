@@ -1,5 +1,4 @@
 import { ReferenceComponent } from './reference.component.js';
-import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { ContainerBaseComponent } from './container-base.component.js';
 
@@ -34,7 +33,7 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
   }
 
   destroy() {
-    Utils.destroyChildren(this);
+    this.destroyChildren();
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
   }
@@ -61,7 +60,7 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
 
   sendPropsUpdate() {
     this.props = {
-      children: Utils.getChildrenComponentsIds(this.childrenComponents),
+      children: this.getChildrenComponentsIds(),
       actionButtons: this.actionButtonsComponent.compId
     }
     this.componentsManager.onComponentPropsUpdate(this);
