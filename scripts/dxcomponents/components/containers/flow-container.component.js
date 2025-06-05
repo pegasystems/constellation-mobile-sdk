@@ -293,7 +293,6 @@ export class FlowContainerComponent extends BaseComponent {
       this.assignmentComponent = new assignmentComponentClass(this.componentsManager, this.pConnectOfActiveContainerItem, this.childrenPConns, this.itemKey$);
       this.assignmentComponent.init();
     }
-    this.sendPropsUpdate();
 
     const caseViewMode = this.pConnectOfActiveContainerItem.getValue('context_data.caseViewMode');
     // this.bShowBanner = showBanner(this.pConn); //disabling
@@ -313,7 +312,7 @@ export class FlowContainerComponent extends BaseComponent {
 
     this.updateFlowContainerChildren();
 
-    console.log("FlowContainer children: ", this.childrenPConns)
+    this.sendPropsUpdate();
   }
 
   showCaseMessages() {
