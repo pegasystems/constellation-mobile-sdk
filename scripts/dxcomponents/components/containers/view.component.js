@@ -19,7 +19,7 @@ export class ViewComponent extends ContainerBaseComponent {
   };
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
     this.#checkAndUpdate();
   }
@@ -34,6 +34,8 @@ export class ViewComponent extends ContainerBaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
       this.#checkAndUpdate();
     }
   }

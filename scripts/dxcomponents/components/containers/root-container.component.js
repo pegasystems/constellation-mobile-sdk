@@ -18,7 +18,7 @@ export class RootContainerComponent extends BaseComponent {
     const items = Object.keys(containers).filter(item => item.includes('root'));
     PCore.getContainerUtils().getContainerAPI().addContainerItems(items);
     Utils.setHasViewContainer('false');
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
     this.#checkAndUpdate()
   }

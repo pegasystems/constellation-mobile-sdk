@@ -163,7 +163,8 @@ export class JsComponentPConnectService {
    * validateMessage: any validation/error message that gets generated for this object,
    * actions: any actions that are defined for this object
    */
-  registerAndSubscribeComponent(inComp, inCallback = null, compId) {
+  registerAndSubscribeComponent(inComp, inCallback = null) {
+    const compId = inComp.compId
     // Create an initial object to be returned.
     const returnObject = {
       compID: '',

@@ -33,7 +33,7 @@ export class EmailComponent {
     console.log("Initiating custom email component!")
     // registerAndSubscribeComponent registers component to Constellation Core JS redux to receive updates
     // onStateChange is a callback called when some change occurs on any component so it is called very frequently
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
     // causes adding component on Native side
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
@@ -41,9 +41,7 @@ export class EmailComponent {
 
   destroy() {
     // unsubscribing from Constellation Core JS redux
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     // causes removing component on Native side
     this.componentsManager.onComponentRemoved(this);
   }
@@ -52,6 +50,8 @@ export class EmailComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
       this.checkAndUpdate();
     }
   }

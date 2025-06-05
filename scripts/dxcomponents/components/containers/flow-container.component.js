@@ -33,7 +33,7 @@ export class FlowContainerComponent extends BaseComponent {
   pConnectOfActiveContainerItem;
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
 
     this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
@@ -83,6 +83,8 @@ export class FlowContainerComponent extends BaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
       this.checkAndUpdate();
     }
   }

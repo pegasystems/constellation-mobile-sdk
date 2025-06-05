@@ -33,22 +33,21 @@ export class SliderComponent {
 
   init() {
     console.log("Initiating custom slider component!")
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      console.log("destroy for slider component - id:  ", this.jsComponentPConnectData.compID);
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
       this.checkAndUpdate();
     }
   }

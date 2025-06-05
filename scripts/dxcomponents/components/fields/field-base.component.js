@@ -26,7 +26,7 @@ export class FieldBaseComponent extends BaseComponent {
   }
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
@@ -39,6 +39,8 @@ export class FieldBaseComponent extends BaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
       this.checkAndUpdate();
     }
   }
