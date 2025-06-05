@@ -31,7 +31,6 @@ open class DefaultDateTimeComponentProvider: ComponentProvider {
     }
 
     public func updateProperties(_ jsonInput: String) throws {
-        print("MLOCTT: dateTime: \(jsonInput)")
         try JSONDecoder()
             .decode(DecodableDateTimeProps.self, from: Data(jsonInput.utf8))
             .apply(to: properties)
