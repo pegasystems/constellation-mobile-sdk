@@ -41,6 +41,9 @@
 		657594072DAEC27B00B7D73A /* DropdownComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349AE2D53AD010042F27B /* DropdownComponentProvider.swift */; };
 		657594082DAEC3A500B7D73A /* DropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349AD2D53AD010042F27B /* DropdownView.swift */; };
 		657D9D612D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657D9D602D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift */; };
+		65E617922DF19DBE00DD83BB /* DateTimeProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617912DF19DB700DD83BB /* DateTimeProps.swift */; };
+		65E617942DF19F0900DD83BB /* DateTimeComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617932DF19F0100DD83BB /* DateTimeComponentProvider.swift */; };
+		65E617962DF1A41100DD83BB /* DateTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617952DF1A40C00DD83BB /* DateTimeView.swift */; };
 		B52348AF2D53A31D0042F27B /* ConstellationSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = B52348AE2D53A31D0042F27B /* ConstellationSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B52349882D53ACD80042F27B /* ComponentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523497E2D53ACD70042F27B /* ComponentEvent.swift */; };
 		B52349CB2D53AD010042F27B /* CheckboxComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349922D53AD010042F27B /* CheckboxComponentProvider.swift */; };
@@ -121,6 +124,9 @@
 		657594022DAEB20800B7D73A /* CurrencyProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyProps.swift; sourceTree = "<group>"; };
 		657594042DAEB25300B7D73A /* CurrencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyView.swift; sourceTree = "<group>"; };
 		657D9D602D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMSDKCreateCaseStartingFields.swift; sourceTree = "<group>"; };
+		65E617912DF19DB700DD83BB /* DateTimeProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeProps.swift; sourceTree = "<group>"; };
+		65E617932DF19F0100DD83BB /* DateTimeComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeComponentProvider.swift; sourceTree = "<group>"; };
+		65E617952DF1A40C00DD83BB /* DateTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeView.swift; sourceTree = "<group>"; };
 		B52348AB2D53A31D0042F27B /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52348AE2D53A31D0042F27B /* ConstellationSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstellationSDK.h; sourceTree = "<group>"; };
 		B523497E2D53ACD70042F27B /* ComponentEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentEvent.swift; sourceTree = "<group>"; };
@@ -300,6 +306,16 @@
 				657594042DAEB25300B7D73A /* CurrencyView.swift */,
 			);
 			path = Currency;
+			sourceTree = "<group>";
+		};
+		65E617902DF19D9C00DD83BB /* DateTime */ = {
+			isa = PBXGroup;
+			children = (
+				65E617952DF1A40C00DD83BB /* DateTimeView.swift */,
+				65E617932DF19F0100DD83BB /* DateTimeComponentProvider.swift */,
+				65E617912DF19DB700DD83BB /* DateTimeProps.swift */,
+			);
+			path = DateTime;
 			sourceTree = "<group>";
 		};
 		B52348A12D53A31D0042F27B = {
@@ -545,18 +561,19 @@
 		B5F1A39B2D6775DE0026527C /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				B55399632DE859F100C6CC23 /* Time */,
 				B58C94D92DA5192C00B978E6 /* UnsupportedComponent */,
 				B53C2D062D81CD5300DB47FB /* Containers */,
 				B58637D02D786C5D007E3020 /* ActionButtons */,
 				6573708B2D8DBE49001CC458 /* AlertBanner */,
 				B52349952D53AD010042F27B /* Checkbox */,
 				B52349BA2D53AD010042F27B /* Date */,
+				65E617902DF19D9C00DD83BB /* DateTime */,
 				B52349B12D53AD010042F27B /* Dropdown */,
 				B523499A2D53AD010042F27B /* Label */,
 				B52349912D53AD010042F27B /* Phone */,
 				655DE5D62DC8FCC700326109 /* RadioButtons */,
 				65038CE82D81C0A90070D125 /* TextInputBased */,
+				B55399632DE859F100C6CC23 /* Time */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -694,8 +711,10 @@
 				B52349F62D53AD5D0042F27B /* Logger+Subsystem.swift in Sources */,
 				657594082DAEC3A500B7D73A /* DropdownView.swift in Sources */,
 				6573708F2D8DBE8F001CC458 /* AlertBannerComponentProps.swift in Sources */,
+				65E617962DF1A41100DD83BB /* DateTimeView.swift in Sources */,
 				B56F83732D5B879A0093E00D /* WebViewOverride.swift in Sources */,
 				B52349EE2D53AD010042F27B /* EmailView.swift in Sources */,
+				65E617942DF19F0900DD83BB /* DateTimeComponentProvider.swift in Sources */,
 				B58C94DF2DA551A500B978E6 /* UnsupportedComponentProps.swift in Sources */,
 				651EF97C2D807D3000227F57 /* TextAreaProps.swift in Sources */,
 				B5E2EBAA2DDC712200FDA639 /* PhoneParser.swift in Sources */,
@@ -732,6 +751,7 @@
 				B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetwork.swift in Sources */,
 				6573708A2D8DB99B001CC458 /* FlowContainerComponentProps.swift in Sources */,
 				655DE5DA2DC8FD6800326109 /* RadioButtonsProps.swift in Sources */,
+				65E617922DF19DBE00DD83BB /* DateTimeProps.swift in Sources */,
 				651EF97B2D807D2200227F57 /* TextAreaComponentProvider.swift in Sources */,
 				657370922D8DC3DD001CC458 /* RootContainerComponent.swift in Sources */,
 				B58637D62D79D82B007E3020 /* String+NilIfEmpty.swift in Sources */,
