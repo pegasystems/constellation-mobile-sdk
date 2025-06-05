@@ -1,12 +1,14 @@
 import SwiftUI
 
-struct TimeView: View {
-    
-    @ObservedObject var properties: TimeProps
+struct DateTimeView: View {
 
-    init(properties: TimeProps) {
+    @ObservedObject var properties: DateTimeProps
+
+    init(properties: DateTimeProps) {
         self.properties = properties
     }
+
+    private let utcTimeZone = TimeZone(abbreviation: "UTC")!
 
     var body: some View {
         VStack {
@@ -19,9 +21,11 @@ struct TimeView: View {
 
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 5) {
-            
+
+            let timeZone = TimeZone(identifier: properties.timeZone ?? "") ?? utcTimeZone
+
             DatePicker(selection: $properties.selectedDate,
-                       displayedComponents: [.hourAndMinute]) {
+                       displayedComponents: [.date, .hourAndMinute]) {
                 HStack {
                     if let label = properties.label {
                         Text(label).foregroundStyle(Color.black).font(.system(size: 12, weight: .light, design: .rounded))
@@ -37,7 +41,9 @@ struct TimeView: View {
                         .padding(.leading, 4)
                         .padding(.bottom, 4)
                 }
-            }.environment(\.locale, pickerLocale)
+            }
+                       .environment(\.locale, pickerLocale)
+                       .environment(\.timeZone, timeZone)
         }
         .observe(properties: properties)
     }
