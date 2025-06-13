@@ -259,7 +259,7 @@
               "type": "TextArea",
               "config": {
                 "value": "@P .Notes",
-                "label": "@L Notes",
+                "label": "@L Other notes",
                 "testId": "@L F4C6F851B00D5518BF888815DE279ABA"
               }
             }, {

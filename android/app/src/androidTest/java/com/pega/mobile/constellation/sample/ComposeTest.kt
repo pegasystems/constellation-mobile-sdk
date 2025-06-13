@@ -107,8 +107,8 @@ class ComposeTest {
         onNodeWithText("TV Package").onSiblings().onFirst().performClick()
         onNodeWithText("Submit").performClick()
 
-        waitForNode("Notes")
-        onNodeWithText("Notes").performTextInput("Lorem ipsum")
+        waitForNode("Other notes")
+        onNodeWithText("Other notes").performTextInput("Lorem ipsum")
         onNodeWithText("Submit").performClick()
 
         waitForNode(CREATE_CASE_TEXT)
