@@ -147,7 +147,7 @@ export class Utils {
     let bReturn = false;
 
     if (typeof inValue === 'string') {
-      if (inValue.toLowerCase() == 'true') {
+      if (inValue.toLowerCase() === 'true') {
         bReturn = true;
       }
     } else {
@@ -247,22 +247,6 @@ export class Utils {
     return Object.keys(obj).length === 0;
   }
 
-
-  static destroyChildren(component) {
-    component.childrenComponents.forEach(childComp => {
-      if (childComp.destroy !== undefined) {
-        childComp.destroy();
-      }
-    });
-    component.childrenComponents = [];
-  }
-
-  static getChildrenComponentsIds(childrenComponents) {
-    return childrenComponents.map(component => {
-      return component.compId;
-    })
-  }
-
   static hasViewContainer() {
     return sdkSessionStorage.getItem('hasViewContainer') == 'true'
   }
@@ -277,14 +261,6 @@ export class Utils {
 
   static setOkToInitFlowContainer(okToInit) {
     sdkSessionStorage.setItem('okToInitFlowContainer', okToInit)
-  }
-
-  static clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
-    if (!validateMessage || validateMessage === '') {
-      pConn.clearErrorMessages({
-        property: propName
-      });
-    }
   }
 }
 

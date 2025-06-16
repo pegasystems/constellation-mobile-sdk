@@ -1,42 +1,25 @@
 import { ReferenceComponent } from './reference.component.js';
-import { Utils } from '../../helpers/utils.js';
+import { ContainerBaseComponent } from './container-base.component.js';
 
-// interface DefaultFormProps {
-//   // If any, enter additional props that only exist on this component
-//   NumCols: string;
-//   instructions: string;
-// }
-
-export class DefaultFormComponent {
-  pConn$;
-  formGroup$;
-
-  arChildren$ = [];
-  childrenComponents = [];
-  divClass$;
+export class DefaultFormComponent extends ContainerBaseComponent {
   instructions;
-  compId;
-  componentsManager;
-  type;
   props;
 
-  constructor(componentsManager, pConn$, childrenPConns) {
-    this.pConn$ = pConn$;
-    this.arChildren$ = childrenPConns;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
+  constructor(componentsManager, pConn, childrenPConns) {
+    super(componentsManager, pConn);
     this.type = "DefaultForm"
+    this.childrenPConns = childrenPConns;
   }
 
   init() {
     this.componentsManager.onComponentAdded(this);
 
-    const configProps = this.pConn$.getConfigProps();
-    this.instructions = this.getInstructions(this.pConn$, configProps?.instructions);
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const configProps = this.pConn.getConfigProps();
+    this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
     this.sendPropsUpdate();
   }
@@ -44,26 +27,26 @@ export class DefaultFormComponent {
   destroy() {
     // copied from form-template-base.ts
     // this was present in angular sdk but missing in react-sdk, will comment it out for now
-    // PCore.getContextTreeManager().removeContextTreeNode(this.pConn$.getContextName());
-    Utils.destroyChildren(this);
+    // PCore.getContextTreeManager().removeContextTreeNode(this.pConn.getContextName());
+    this.destroyChildren();
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn, childrenPConns) {
-    this.pConn$ = pConn;
-    this.arChildren$ = childrenPConns;
+    this.pConn = pConn;
+    this.childrenPConns = childrenPConns;
 
-    const configProps = this.pConn$.getConfigProps();
-    this.instructions = this.getInstructions(this.pConn$, configProps?.instructions);
+    const configProps = this.pConn.getConfigProps();
+    this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
 
-    const oldChildren = this.arChildren$;
-    // this.arChildren$ = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.arChildren$);
+    const oldChildren = this.childrenPConns;
+    // this.childrenPConns = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
 
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
     this.sendPropsUpdate();
   }
@@ -75,7 +58,7 @@ export class DefaultFormComponent {
   sendPropsUpdate() {
     const childrenComponents = this.childrenComponents
     this.props = {
-       children: Utils.getChildrenComponentsIds(childrenComponents),
+       children: this.getChildrenComponentsIds(),
        instructions: this.instructions || ''
     };
     this.componentsManager.onComponentPropsUpdate(this);

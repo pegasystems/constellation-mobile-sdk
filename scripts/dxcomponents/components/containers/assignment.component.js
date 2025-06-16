@@ -1,16 +1,10 @@
 import { ReferenceComponent } from './reference.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
-import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
-// interface AssignmentProps {
-//   // If any, enter additional props that only exist on this component
-//   template: string;
-// }
+export class AssignmentComponent extends BaseComponent {
 
-
-export class AssignmentComponent {
-  pConn$;
-  arChildren$;
+  childrenPConns;
   assignmentCardComponent;
   itemKey$;
 
@@ -18,7 +12,7 @@ export class AssignmentComponent {
   configProps$;
   props;
 
-  newPConn$;
+  newPConn;
   containerName$;
 
   bInitialized = false;
@@ -49,23 +43,18 @@ export class AssignmentComponent {
   localizedVal;
   localeCategory = 'Assignment';
   localeReference;
-  compId;
-  type;
 
-  constructor(componentsManager, pConn$, childrenPConns, itemKey) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect;
-    this.arChildren$ = childrenPConns;
-    this.itemKey$ = itemKey;
+
+  constructor(componentsManager, pConn, childrenPConns, itemKey) {
+    super(componentsManager, pConn);
+
     this.type = "Assignment"
+    this.childrenPConns = childrenPConns;
+    this.itemKey$ = itemKey;
   }
 
   init() {
-    console.debug("JS :: Assignment :: Creating Assignment component");
-    // First thing in initialization is registering and subscribing to the AngularPConnect service.
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
 
     this.initComponent();
@@ -74,20 +63,22 @@ export class AssignmentComponent {
 
     this.bInitialized = true;
     this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
-    this.localeReference = `${this.pConn$.getCaseInfo().getClassName()}!CASE!${this.pConn$.getCaseInfo().getName()}`.toUpperCase();
+    this.localeReference = `${this.pConn.getCaseInfo().getClassName()}!CASE!${this.pConn.getCaseInfo().getName()}`.toUpperCase();
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     this.assignmentCardComponent.destroy();
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn, pConnChildren, itemKey) {
-    this.pConn$ = pConn;
-    this.arChildren$ = pConnChildren;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
+    }
+    this.childrenPConns = pConnChildren;
     this.itemKey$ = itemKey;
     if (this.bInitialized) {
       this.updateChanges();
@@ -106,61 +97,56 @@ export class AssignmentComponent {
 
   sendPropsUpdate() {
     this.props = {
-      children: Utils.getChildrenComponentsIds([this.assignmentCardComponent]),
+      children: [this.assignmentCardComponent.compId],
       loading: this.loading
     };
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
-  onStateChange() {
-    this.checkAndUpdate();
-  }
-
   checkAndUpdate() {
-    const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
-    if (bUpdateSelf) {
-      this.setLoading(this.newPConn$.getLoadingStatus());
+    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
+      this.setLoading(this.newPConn.getLoadingStatus());
     }
   }
 
   updateChanges() {
-    this.newPConn$ = ReferenceComponent.normalizePConn(this.pConn$);
+    this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
 
-    if (this.arChildren$) {
+    if (this.childrenPConns) {
       this.createButtons();
     }
 
     if (this.assignmentCardComponent) {
-      this.assignmentCardComponent.update(this.newPConn$, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$);
+      this.assignmentCardComponent.update(this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$);
     } else {
       const assignmentCardComponentClass = getComponentFromMap("AssignmentCard");
-      this.assignmentCardComponent = new assignmentCardComponentClass(this.componentsManager, this.newPConn$, this.arChildren$, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick);
+      this.assignmentCardComponent = new assignmentCardComponentClass(this.componentsManager, this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick);
       this.assignmentCardComponent.init();
     }
-    this.loading = this.newPConn$.getLoadingStatus();
+    this.loading = this.newPConn.getLoadingStatus();
     this.sendPropsUpdate();
   }
 
   initComponent() {
-    this.newPConn$ = ReferenceComponent.normalizePConn(this.pConn$);
+    this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
     // prevent re-intializing with flowContainer update unless an action is taken
     this.bReInit = false;
     this.bHasNavigation$ = false;
 
-    this.configProps$ = this.newPConn$.resolveConfigProps(this.newPConn$.getConfigProps());
+    this.configProps$ = this.newPConn.resolveConfigProps(this.newPConn.getConfigProps());
 
     this.templateName$ = this.configProps$.template;
 
-    const actionsAPI = this.newPConn$.getActionsApi();
-    const baseContext = this.newPConn$.getContextName();
-    const acName = this.newPConn$.getContainerName();
+    const actionsAPI = this.newPConn.getActionsApi();
+    const baseContext = this.newPConn.getContextName();
+    const acName = this.newPConn.getContainerName();
 
     // for now, in general this should be overridden by updateSelf(), and not be blank
     if (this.itemKey$ === '') {
       this.itemKey$ = baseContext.concat('/').concat(acName);
     }
 
-    this.newPConn$.isBoundToState();
+    this.newPConn.isBoundToState();
 
     // store off bound functions to below pointers
     this.finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
@@ -174,7 +160,7 @@ export class AssignmentComponent {
     this.rejectCase = actionsAPI.rejectCase?.bind(actionsAPI);
     this.onActionButtonClick = this.onActionButtonClick.bind(this);
 
-    if (this.arChildren$) {
+    if (this.childrenPConns) {
       this.createButtons();
     }
   }
@@ -185,11 +171,11 @@ export class AssignmentComponent {
   }
 
   createButtons() {
-    const oData = this.newPConn$.getDataObject();
+    const oData = this.newPConn.getDataObject();
     // inside
     // get fist kid, get the name and display
     // pass first kid to a view container, which will disperse it to a view which will use one column, two column, etc.
-    const oWorkItem = this.arChildren$[0].getPConnect();
+    const oWorkItem = this.childrenPConns[0].getPConnect();
     const oWorkData = oWorkItem.getDataObject();
 
     if (oWorkData) {
@@ -300,13 +286,13 @@ export class AssignmentComponent {
           break;
 
         case 'saveAssignment': {
-          const caseID = this.pConn$.getCaseInfo().getKey();
-          const assignmentID = this.pConn$.getCaseInfo().getAssignmentID();
+          const caseID = this.pConn.getCaseInfo().getKey();
+          const assignmentID = this.pConn.getCaseInfo().getAssignmentID();
           const savePromise = this.saveAssignment(this.itemKey$);
 
           savePromise
             .then(() => {
-              const caseType = this.pConn$.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
+              const caseType = this.pConn.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
               PCore.getPubSubUtils().publish('cancelPressed');
               this.onSaveActionSuccess({caseType, caseID, assignmentID});
             })

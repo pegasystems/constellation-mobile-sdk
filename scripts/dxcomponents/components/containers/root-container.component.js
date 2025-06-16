@@ -1,63 +1,51 @@
 import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
+import { BaseComponent } from '../base.component.js';
 
 const options = { context: 'app' };
 
-export class RootContainerComponent {
+export class RootContainerComponent extends BaseComponent {
+  #viewContainerComponent;
 
   jsComponentPConnectData = {};
-  viewContainerComponent;
-  compId;
-  type;
-  props;
-
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect;
-    this.type = pConn$.meta.type;
+  props = {
+    viewContainer: '',
+    httpMessages: {}
   }
 
   init() {
     const { containers } = PCore.getStore().getState();
     const items = Object.keys(containers).filter(item => item.includes('root'));
-
     PCore.getContainerUtils().getContainerAPI().addContainerItems(items);
-
     Utils.setHasViewContainer('false');
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
-    this.onStateChange()
+    this.#checkAndUpdate()
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
-    if (this.viewContainerComponent !== undefined && this.viewContainerComponent.destroy !== undefined) {
-      this.viewContainerComponent.destroy();
-    }
-    this.sendPropsUpdate();
+    this.jsComponentPConnectData.unsubscribeFn?.();
+    this.#viewContainerComponent?.destroy?.()
+    this.#sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);
   }
 
-  sendPropsUpdate() {
+  #sendPropsUpdate() {
     const httpMessages = this.jsComponentPConnectData.httpMessages || []
     this.props = {
-      viewContainer: this.viewContainerComponent.compId,
+      viewContainer: this.#viewContainerComponent.compId,
       httpMessages: httpMessages
     };
     this.componentsManager.onComponentPropsUpdate(this);
 
     // even if the http issue no longer exists the error is persisted in core js so we need to clear it
     if (this.jsComponentPConnectData.httpMessages && this.jsComponentPConnectData.httpMessages.length > 0) {
-      this.clearHttpMessages();
+      this.#clearHttpMessages();
     }
   }
 
-  clearHttpMessages() {
-    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/${this.pConn$.getContainerName()}`);
+  #clearHttpMessages() {
+    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/${this.pConn.getContainerName()}`);
     PCore.getMessageManager().clearMessages({
       category: 'HTTP',
       type: 'error',
@@ -65,30 +53,30 @@ export class RootContainerComponent {
     });
   }
 
-  onStateChange() {
+  #checkAndUpdate() {
     if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-      this.updateSelf();
+      this.#updateSelf();
     }
   }
 
-  updateSelf() {
+  #updateSelf() {
     const myProps = this.jsComponentPConnect.getCurrentCompleteProps(this);
     const { renderingMode } = myProps;
     if (renderingMode === 'noPortal') {
-      this.generateViewContainerForNoPortal();
+      this.#generateViewContainerForNoPortal();
     } else  {
       console.error("'noPortal' rendering mode supported only.")
     }
   }
 
-  generateViewContainerForNoPortal() {
-    const arChildren = this.pConn$.getChildren();
+  #generateViewContainerForNoPortal() {
+    const arChildren = this.pConn.getChildren();
     if (!arChildren || arChildren.length !== 1 || arChildren[0].getPConnect().getComponentName() !== 'ViewContainer') {
       console.error("Only ViewContainer in RootContainer supported for 'noPortal' mode.");
       return;
     }
 
-    const configProps = this.pConn$.getConfigProps();
+    const configProps = this.pConn.getConfigProps();
     const viewContConfig = {
       meta: {
         type: 'ViewContainer',
@@ -98,12 +86,12 @@ export class RootContainerComponent {
     };
     const viewContainerPConn = PCore.createPConnect(viewContConfig).getPConnect();
 
-    if (this.viewContainerComponent) {
-      this.viewContainerComponent.update(viewContainerPConn);
+    if (this.#viewContainerComponent) {
+      this.#viewContainerComponent.update(viewContainerPConn);
     } else {
       const viewContainerComponentClass = getComponentFromMap(viewContainerPConn.meta.type);
-      this.viewContainerComponent = new viewContainerComponentClass(this.componentsManager, viewContainerPConn);
-      this.viewContainerComponent.init();
+      this.#viewContainerComponent = new viewContainerComponentClass(this.componentsManager, viewContainerPConn);
+      this.#viewContainerComponent.init();
     }
 
 
@@ -111,6 +99,6 @@ export class RootContainerComponent {
       console.error("RootComponent id must be '1' to match root container on consumer side");
       return;
     }
-    this.sendPropsUpdate();
+    this.#sendPropsUpdate();
   }
 }

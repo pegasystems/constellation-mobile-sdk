@@ -1,23 +1,15 @@
 import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
-export class UnsupportedComponent {
-
-  pConn$;
-  compId;
-  componentsManager;
-  bVisible$ = true;
-  compId;
-  type;
+export class UnsupportedComponent extends BaseComponent {
   utils;
   props = {
     visible: true,
     type: ''
   }
 
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager;
+  constructor(componentsManager, pConn) {
+    super(componentsManager, pConn);
     this.type = "Unsupported";
     this.utils = new Utils();
   }
@@ -32,16 +24,16 @@ export class UnsupportedComponent {
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.updateSelf();
     }
   }
 
   updateSelf() {
-    this.propName = this.pConn$.getStateProps().value;
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    this.props.type = this.pConn$.meta.type;
+    this.propName = this.pConn.getStateProps().value;
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
+    this.props.type = this.pConn.meta.type;
     if (configProps.visibility != null) {
       this.props.visible = this.utils.getBooleanValue(configProps.visibility);
     }

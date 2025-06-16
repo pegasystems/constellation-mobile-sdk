@@ -5,9 +5,9 @@ export class PicklistBaseComponent extends FieldBaseComponent {
 
   updateSelf() {
     this.updateBaseProps();
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    const options = this.utils.getOptionList(configProps, this.pConn$.getDataObject());
-    const className = this.pConn$.getCaseInfo().getClassName();
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
+    const options = this.utils.getOptionList(configProps, this.pConn.getDataObject());
+    const className = this.pConn.getCaseInfo().getClassName();
     const refName = this.propName?.slice(this.propName.lastIndexOf('.') + 1);
     const fieldMetadata = configProps.fieldMetadata;
     const metaData = Array.isArray(fieldMetadata) ? fieldMetadata.filter(field => field?.classID === className)[0] : fieldMetadata;
@@ -23,20 +23,20 @@ export class PicklistBaseComponent extends FieldBaseComponent {
       return { key: option.key.toString(), label: localizedValue.toString() };
     });
 
-    this.propName = this.pConn$.getStateProps().value;
+    this.propName = this.pConn.getStateProps().value;
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
   fieldOnChange(value) {
     this.props.value = value;
-    handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
+    handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, this.props.value);
   }
 
   getLocalizedOptionValue(opt, localePath, localeClass, localeContext, localeName) {
-    return this.pConn$.getLocalizedValue(
+    return this.pConn.getLocalizedValue(
       opt.value,
       localePath,
-      this.pConn$.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+      this.pConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
     );
   }
 }

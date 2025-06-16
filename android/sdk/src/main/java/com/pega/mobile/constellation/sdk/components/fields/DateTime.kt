@@ -30,10 +30,18 @@ class DateTimeComponent(context: ComponentContext) : FieldComponent(context) {
     }
 
     private fun getTimeZoneOffset(timeZone: String): Int {
+        if (timeZone.isEmpty()) {
+            Log.w(TAG, "Time zone is empty, defaulting to UTC")
+            return 0
+        }
         val zoneId = ZoneId.of(timeZone)
         val instant = Instant.ofEpochMilli(System.currentTimeMillis())
         val offset = zoneId.rules.getOffset(instant)
         return (offset.totalSeconds / 60)
+    }
+
+    companion object {
+        private const val TAG = "DateTimeComponent"
     }
 }
 

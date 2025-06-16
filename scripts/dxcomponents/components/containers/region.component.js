@@ -1,38 +1,26 @@
 import { ReferenceComponent } from './reference.component.js';
-import { Utils } from '../../helpers/utils.js';
+import { ContainerBaseComponent } from './container-base.component.js';
 
-export class RegionComponent {
-  pConn$;
-  formGroup$;
-
-  arChildren$ = [];
-  childrenComponents = [];
-  compId;
-  type;
-  props;
-
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager
-    this.type = pConn$.meta.type
+export class RegionComponent extends ContainerBaseComponent {
+  props = {
+    children: []
   }
 
   init() {
     this.componentsManager.onComponentAdded(this);
-    this.updateSelf();
+    this.#updateSelf();
   }
 
   destroy() {
-    Utils.destroyChildren(this);
-    this.sendPropsUpdate();
+    this.destroyChildren();
+    this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
-      this.updateSelf();
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
+      this.#updateSelf();
     }
   }
 
@@ -40,25 +28,15 @@ export class RegionComponent {
     this.childrenComponents.forEach((component) => {component.onEvent(event);})
   }
 
-  sendPropsUpdate() {
-    const childrenComponents = this.childrenComponents
-    this.props = {
-       children: Utils.getChildrenComponentsIds(childrenComponents)
-    };
-    this.componentsManager.onComponentPropsUpdate(this);
-  }
-
-  updateSelf() {
-    const oldChildren = this.arChildren$;
+  #updateSelf() {
     // The children may contain 'reference' components, so normalize the children...
-    this.arChildren$ = ReferenceComponent.normalizePConnArray(this.pConn$.getChildren());
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
-
-    const reconciledComponents = this.componentsManager.reconcileChildren(this);
+    const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.componentsManager.initReconciledComponents(reconciledComponents);
+    this.initReconciledComponents(reconciledComponents);
 
-    console.log("Region children: ", this.arChildren$);
-    this.sendPropsUpdate();
+    this.props.children = this.getChildrenComponentsIds();
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 }
