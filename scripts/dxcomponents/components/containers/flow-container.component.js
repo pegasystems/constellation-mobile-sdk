@@ -163,7 +163,7 @@ export class FlowContainerComponent extends BaseComponent {
   #updateSelf() {
     this.assignmentPConn = this.#getAssignmentPConn(this.pConn) || this.pConn;
     if (this.assignmentComponent) {
-      this.assignmentComponent.update(this.assignmentPConn, this.childrenPConns);
+      this.assignmentComponent.update(this.assignmentPConn, this.childrenPConns, this.containerContextKey);
     } else {
       const assignmentComponentClass = getComponentFromMap("Assignment");
       this.assignmentComponent = new assignmentComponentClass(this.componentsManager, this.assignmentPConn, this.childrenPConns, this.containerContextKey);

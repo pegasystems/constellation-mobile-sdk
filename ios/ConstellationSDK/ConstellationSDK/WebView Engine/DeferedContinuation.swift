@@ -1,3 +1,5 @@
+import OSLog
+
 class DeferedContinuation<T> {
     private var resultTask: Task<T, Never>?
     private var continuationHandler: ((sending T) -> Void)?
@@ -7,7 +9,11 @@ class DeferedContinuation<T> {
     }
 
     func proceed(_ result: T) {
+        if continuationHandler == nil {
+            Logger.current().error("Tried to proceed a DeferedContinuation more than once")
+        }
         continuationHandler?(result)
+        continuationHandler = nil
     }
 
     func result() async -> T {
