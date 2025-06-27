@@ -28,7 +28,7 @@ public class ComponentManager {
         do {
             try providers[id]?.updateProperties(propsJson)
         } catch {
-            Logger.current().error("unable to update component props: \(error)")
+            Logger.current().error("Unable to update props for component with ID \(id): \(error)")
         }
     }
 

@@ -185,8 +185,8 @@ export class AssignmentComponent extends BaseComponent {
         const oCaseInfo = oData.caseInfo;
 
         if (oCaseInfo && oCaseInfo.actionButtons) {
-          this.arMainButtons$ = oCaseInfo.actionButtons.main;
-          this.arSecondaryButtons$ = oCaseInfo.actionButtons.secondary;
+          this.arMainButtons$ = oCaseInfo.actionButtons.main ?? [];
+          this.arSecondaryButtons$ = oCaseInfo.actionButtons.secondary ?? [];
         }
 
         if (oCaseInfo.navigation != null) {
@@ -275,9 +275,9 @@ export class AssignmentComponent extends BaseComponent {
               this.updateChanges();
               this.setLoading(false);
             })
-            .catch(() => {
+            .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
+              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Navigation failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -296,9 +296,9 @@ export class AssignmentComponent extends BaseComponent {
               PCore.getPubSubUtils().publish('cancelPressed');
               this.onSaveActionSuccess({caseType, caseID, assignmentID});
             })
-            .catch(() => {
+            .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
+              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Save failed', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -321,9 +321,9 @@ export class AssignmentComponent extends BaseComponent {
               this.setLoading(false);
               PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
             })
-            .catch((err) => {
+            .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
+              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
             });
           break;
 
@@ -333,9 +333,9 @@ export class AssignmentComponent extends BaseComponent {
           rejectPromise
             .then(() => {
             })
-            .catch(() => {
+            .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
+              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Rejection failed!', this.localeCategory)}`, 'Ok');
             });
 
@@ -358,9 +358,9 @@ export class AssignmentComponent extends BaseComponent {
               this.setLoading(false);
               this.updateChanges();
             })
-            .catch(() => {
+            .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
+              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Submit failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -375,9 +375,9 @@ export class AssignmentComponent extends BaseComponent {
           approvePromise
             .then(() => {
             })
-            .catch(() => {
+            .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed!`);
+              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Approve failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {

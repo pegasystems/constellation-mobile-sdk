@@ -157,6 +157,14 @@ export class Utils {
     return bReturn;
   }
 
+  getStringValue(inValue) {
+    if (typeof inValue === 'string') {
+      return inValue;
+    } else {
+      return inValue.toString()
+    }
+  }
+
   getIconFromFileType(fileType) {
     let icon = 'document-doc';
     if (!fileType) return icon;
