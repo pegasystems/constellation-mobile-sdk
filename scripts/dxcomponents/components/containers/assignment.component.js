@@ -185,8 +185,8 @@ export class AssignmentComponent extends BaseComponent {
         const oCaseInfo = oData.caseInfo;
 
         if (oCaseInfo && oCaseInfo.actionButtons) {
-          this.arMainButtons$ = oCaseInfo.actionButtons.main || [];
-          this.arSecondaryButtons$ = oCaseInfo.actionButtons.secondary || [];
+          this.arMainButtons$ = oCaseInfo.actionButtons.main ?? [];
+          this.arSecondaryButtons$ = oCaseInfo.actionButtons.secondary ?? [];
         }
 
         if (oCaseInfo.navigation != null) {
