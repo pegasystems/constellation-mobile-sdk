@@ -37,3 +37,6 @@ function sendEventToComponent(id, event) {
 
 window.sendEventToComponent = sendEventToComponent;
 window.init = init;
+window.confirm = () => {
+  return true; // Override confirm to prevent form cancellation failures
+}

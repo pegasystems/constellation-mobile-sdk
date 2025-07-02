@@ -109,6 +109,7 @@ internal class SdkWebViewEngine(
     @SuppressLint("SetJavaScriptEnabled")
     private fun createWebView(client: WebViewClient) = WebView(context).apply {
         settings.javaScriptEnabled = true
+        settings.domStorageEnabled = true
         webViewClient = client
         webChromeClient = SdkWebViewConsole(config.debuggable)
         val bridge = SdkBridge(::onBridgeEvent)
