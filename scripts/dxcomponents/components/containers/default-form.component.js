@@ -25,9 +25,8 @@ export class DefaultFormComponent extends ContainerBaseComponent {
   }
 
   destroy() {
-    // copied from form-template-base.ts
-    // this was present in angular sdk but missing in react-sdk, will comment it out for now
-    // PCore.getContextTreeManager().removeContextTreeNode(this.pConn.getContextName());
+    // prevents sending fields from previous steps on next submit see: TASK-1776419 pulse
+    PCore.getContextTreeManager().removeContextTreeNode(this.pConn.getContextName());
     this.destroyChildren();
     this.sendPropsUpdate();
     this.componentsManager.onComponentRemoved(this);

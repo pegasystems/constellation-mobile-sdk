@@ -94,7 +94,8 @@ export class JsComponentPConnectService {
     // The following comment is from the Nebula/Constellation version of this code. Meant as a reminder to check this occasionally
     // populate additional props which are component specific and not present in configurations
     // This block can be removed once all these props will be added as part of configs
-    // side effect: call to populateAdditionalProps causes given field to be added for next submit
+    // side effect: call to populateAdditionalProps causes given field to be added/removed to field list for next submit
+    // depending on visibility, redonly, etc.
     this.populateAdditionalProps(inComp, compProps)
 
     compProps = inComp.pConn.resolveConfigProps(compProps);
