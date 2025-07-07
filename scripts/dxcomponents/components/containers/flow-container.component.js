@@ -37,6 +37,7 @@ export class FlowContainerComponent extends BaseComponent {
     this.#initComponent();
     this.#initContainer();
     this.#checkAndUpdate();
+    this.#createAndInitAssignmentComponent(); // needs to be called after #initComponent and #checkAndUpdate
     this.#subscribeForEvents();
   }
 
@@ -160,15 +161,15 @@ export class FlowContainerComponent extends BaseComponent {
     }
   }
 
-  #updateSelf() {
+  #createAndInitAssignmentComponent() {
     this.assignmentPConn = this.#getAssignmentPConn(this.pConn) || this.pConn;
-    if (this.assignmentComponent) {
-      this.assignmentComponent.update(this.assignmentPConn, this.childrenPConns, this.containerContextKey);
-    } else {
-      const assignmentComponentClass = getComponentFromMap("Assignment");
-      this.assignmentComponent = new assignmentComponentClass(this.componentsManager, this.assignmentPConn, this.childrenPConns, this.containerContextKey);
-      this.assignmentComponent.init();
-    }
+    const assignmentComponentClass = getComponentFromMap("Assignment");
+    this.assignmentComponent = new assignmentComponentClass(this.componentsManager, this.assignmentPConn, this.childrenPConns, this.containerContextKey);
+    this.assignmentComponent.init();
+  }
+
+  #updateSelf() {
+    this.assignmentComponent.update(this.assignmentPConn, this.childrenPConns, this.containerContextKey);
     const caseViewMode = this.assignmentPConn.getValue('context_data.caseViewMode');
     if (caseViewMode === 'perform') {
       if (Utils.okToInitFlowContainer()) {
