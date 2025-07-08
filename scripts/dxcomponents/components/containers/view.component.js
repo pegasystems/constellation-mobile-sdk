@@ -8,7 +8,9 @@ export class ViewComponent extends ContainerBaseComponent {
     'Details', 'DetailsFields', 'DetailsOneColumn', 'DetailsSubTabs', 'DetailsThreeColumn',
     'DetailsTwoColumn', 'NarrowWideDetails', 'WideNarrowDetails'
   ];
-  SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'SimpleTable'];
+
+  FORM_TEMPLATES = ['DefaultForm', 'OneColumn', 'TwoColumn', 'ThreeColumn', 'WideNarrow'];
+  VIEW_TEMPLATES = ['SimpleTable'];
 
   jsComponentPConnectData = {};
   props = {
@@ -86,23 +88,38 @@ export class ViewComponent extends ContainerBaseComponent {
     // children may have a 'reference' so normalize the children array
     this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
-    if (this.SUPPORTED_FORM_TEMPLATES.includes(templateName)) {
+    if (templateName !== '') {
       if (this.childrenComponents[0] !== undefined) {
         this.childrenComponents[0].update(this.pConn, this.childrenPConns);
       } else {
-        const templateComponentClass = getComponentFromMap(templateName);
-        const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn, this.childrenPConns);
-        templateComponentInstance.init();
-        this.childrenComponents.push(templateComponentInstance);
+        if (this.FORM_TEMPLATES.includes(templateName)) {
+          this.#createTemplateChildComponent("DefaultForm");
+        } else if (this.VIEW_TEMPLATES.includes(templateName)) {
+          this.#createTemplateChildComponent(templateName)
+        } else {
+          console.warn(`JS :: View :: ${templateName} not supported. Rendering children components directly.`);
+          this.#createChildrenComponents()
+        }
       }
     } else {
-      const reconciledComponents = this.reconcileChildren();
-      this.childrenComponents = reconciledComponents.map((item) => item.component);
-      this.initReconciledComponents(reconciledComponents);
+      this.#createChildrenComponents()
     }
 
     this.props.children = this.getChildrenComponentsIds();
     this.componentsManager.onComponentPropsUpdate(this)
+  }
+
+  #createTemplateChildComponent(templateName) {
+    const templateComponentClass = getComponentFromMap(templateName);
+    const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn, this.childrenPConns);
+    templateComponentInstance.init();
+    this.childrenComponents.push(templateComponentInstance);
+  }
+
+  #createChildrenComponents() {
+    const reconciledComponents = this.reconcileChildren();
+    this.childrenComponents = reconciledComponents.map((item) => item.component);
+    this.initReconciledComponents(reconciledComponents);
   }
 
   #evaluateVisibility(pConn, referenceContext) {
