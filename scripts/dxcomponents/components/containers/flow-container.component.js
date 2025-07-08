@@ -184,20 +184,26 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   #finishAssignmentIfNoAssignments() {
-    if (!(this.flowContainerHelper.hasAssignments?.(this.pConn) ?? this.#hasAssignments(this.pConn))) {
+    if (!(this.#hasAssignments())) {
       const caseMessage = this.pConn.getValue('caseMessages') ?? 'Thank you! The next step in this case has been routed appropriately.'
       this.pCorePubSub.publish('assignmentFinished', this.localizedVal(caseMessage, this.localeCategory));
     }
   }
 
-  #hasAssignments(pConnect) {
-    const assignments = pConnect.getValue(this.pCoreConstants.CASE_INFO.D_CASE_ASSIGNMENTS_RESULTS);
-    const childCasesAssignments = this.#getChildCaseAssignments(pConnect);
-    return childCasesAssignments?.length > 0 || assignments?.length > 0 || this.#isCaseWideLocalAction(pConnect);
+  #hasAssignments() {
+    return this.#hasAssignmentsForThisOperator() || this.#hasChildCaseAssignments() || this.#isCaseWideLocalAction();
   }
 
-  #getChildCaseAssignments(pConnect) {
-    const childCases = pConnect.getValue(this.pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS);
+  #hasAssignmentsForThisOperator() {
+    const thisOperator = PCore.getEnvironmentInfo().getOperatorIdentifier();
+    const assignments = this.pConn.getValue(this.pCoreConstants.CASE_INFO.D_CASE_ASSIGNMENTS_RESULTS)?.filter(assignment => {
+      return assignment.assigneeInfo.ID === thisOperator;
+    }) ?? [];
+    return assignments.length > 0;
+  }
+
+  #hasChildCaseAssignments() {
+    const childCases = this.pConn.getValue(this.pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS);
     let allAssignments = [];
     if (childCases && childCases.length > 0) {
       childCases.forEach(({ assignments = [], Name, caseTypeID }) => {
@@ -209,12 +215,12 @@ export class FlowContainerComponent extends BaseComponent {
         allAssignments = allAssignments.concat(childCaseAssignments);
       });
     }
-    return allAssignments;
+    return allAssignments.length > 0;
   }
 
-  #isCaseWideLocalAction = (pConnect) => {
-    const actionID = pConnect.getValue(this.pCoreConstants.CASE_INFO.ACTIVE_ACTION_ID);
-    const caseActions = pConnect.getValue(this.pCoreConstants.CASE_INFO.CASE_INFO_ACTIONS);
+  #isCaseWideLocalAction() {
+    const actionID = this.pConn.getValue(this.pCoreConstants.CASE_INFO.ACTIVE_ACTION_ID);
+    const caseActions = this.pConn.getValue(this.pCoreConstants.CASE_INFO.CASE_INFO_ACTIONS);
     if (caseActions && actionID) {
       const activeAction = caseActions.find((caseAction) => caseAction.ID === actionID);
       return activeAction?.type === 'Case';
