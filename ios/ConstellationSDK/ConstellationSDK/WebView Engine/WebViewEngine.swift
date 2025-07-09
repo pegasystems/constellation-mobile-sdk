@@ -84,10 +84,11 @@ class WebViewEngine: NSObject {
 
         webView.isInspectable = true
 
-        initialNavigation = webView.loadSimulatedRequest(
-            URLRequest(url: baseURL),
-            responseHTML: "<html><header></header><body></body></html>"
+        let indexURL = baseURL.appending(
+            path: "constellation-mobile-sdk-assets/scripts/index.html"
         )
+
+        initialNavigation = webView.load(URLRequest(url: indexURL))
 
         manager.componentEventCallback = { [weak webView] id, event in
             webView?.evaluateJavaScript(
@@ -115,7 +116,7 @@ extension WebViewEngine : WKUIDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping @MainActor () -> Void
     ) {
-        self.manager.rootComponent.presentAlert(message: message) {
+        manager.rootComponent.presentAlert(message: message) {
             completionHandler()
         }
     }
@@ -127,7 +128,7 @@ extension WebViewEngine : WKUIDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping @MainActor (Bool) -> Void
     ) {
-        self.manager.rootComponent.presentConfirm(message: message) { result in
+        manager.rootComponent.presentConfirm(message: message) { result in
             completionHandler(result)
         }
     }
@@ -156,7 +157,6 @@ extension WebViewEngine: WKNavigationDelegate {
             do {
                 try injector.load("Console")
                 try injector.load("FormHandler")
-                try injector.load("c11n")
                 injector.append(script: try initScript(configuration))
                 try await injector.inject(into: webView)
             } catch {
@@ -168,7 +168,12 @@ extension WebViewEngine: WKNavigationDelegate {
     private func initScript(_ configuration: Configuration) throws -> String {
         let overrideString = PMSDKComponentManager.shared.componentOverrideString
         let configString = try configuration.toString()
-        return "window.init('\(configString)', '\(overrideString)');"
+
+        return """
+        window.onload = function() {
+           window.init('\(configString)', '\(overrideString)');
+        }
+        """
     }
 }
 

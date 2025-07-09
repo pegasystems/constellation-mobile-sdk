@@ -80,9 +80,9 @@ public class PMSDKComponentManager {
         { string } else { "" }
     }
 
-    func componentFileContents(_ type: String) throws -> String {
+    func componentFileContents(_ type: String) throws -> Data {
         if let url = jsFilesRegistry[type] {
-            try String(contentsOf: url)
+            try Data(contentsOf: url)
         } else {
             throw ComponentManagerError.unknownComponent
         }
