@@ -13,6 +13,7 @@ export class RegionComponent extends ContainerBaseComponent {
 
   destroy() {
     this.destroyChildren();
+    this.props.children = [];
     this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }

@@ -7,6 +7,7 @@ import android.webkit.WebView
 import android.webkit.WebView.setWebContentsDebuggingEnabled
 import android.webkit.WebViewClient
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
+import com.pega.mobile.constellation.sdk.components.core.AlertComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentEvent
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
@@ -109,8 +110,21 @@ internal class SdkWebViewEngine(
     @SuppressLint("SetJavaScriptEnabled")
     private fun createWebView(client: WebViewClient) = WebView(context).apply {
         settings.javaScriptEnabled = true
+        settings.domStorageEnabled = true
         webViewClient = client
-        webChromeClient = SdkWebViewConsole(config.debuggable)
+        webChromeClient =
+            SdkWebChromeClient(
+                debuggable = config.debuggable,
+                onAlert = { message, onConfirm ->
+                    componentManager.getAlertComponent().setAlertInfo(
+                        AlertComponent.Info(AlertComponent.Type.ALERT, message, onConfirm)
+                    )
+                },
+                onConfirm = { message, onConfirm, onCancel ->
+                    componentManager.getAlertComponent().setAlertInfo(
+                        AlertComponent.Info(AlertComponent.Type.CONFIRM, message, onConfirm, onCancel)
+                    )
+                })
         val bridge = SdkBridge(::onBridgeEvent)
         addJavascriptInterface(bridge, "sdkbridge")
     }

@@ -53,7 +53,7 @@ export class JsComponentPConnectService {
   subscribeToStore(inComp = null, inCallback = null) {
     // const theCompName: string = inComp ? `${inComp.constructor.name}` : 'no component provided';
     let fnUnsubscribe;
-    // console.log( `Bridge subscribing: ${theCompName} `);
+    console.log(`Subscribing component to store: ${inComp.pConn.meta.type}#${inComp.compId}`);
     if (inComp) {
       fnUnsubscribe = this.getStore().subscribe(inCallback);
     }
@@ -94,6 +94,8 @@ export class JsComponentPConnectService {
     // The following comment is from the Nebula/Constellation version of this code. Meant as a reminder to check this occasionally
     // populate additional props which are component specific and not present in configurations
     // This block can be removed once all these props will be added as part of configs
+    // side effect: call to populateAdditionalProps causes given field to be added/removed to field list for next submit
+    // depending on visibility, redonly, etc.
     this.populateAdditionalProps(inComp, compProps)
 
     compProps = inComp.pConn.resolveConfigProps(compProps);
@@ -229,7 +231,7 @@ export class JsComponentPConnectService {
     } else {
       returnObject.compID = theCompID;
       returnObject.unsubscribeFn = () => {
-        console.log("unsubscribeFn for compId: ", theCompID);
+        console.log(`Unsubscribing component from store: ${inComp.pConn.meta.type}#${theCompID}`);
         this.removeFormField(inComp);
         theUnsub();
       };
@@ -325,6 +327,12 @@ export class JsComponentPConnectService {
     if(this.isHttpMessagesEmpty(incomingProps)) {
       inComp.jsComponentPConnectData.httpMessages = incomingProps.httpMessages;
       delete incomingProps.httpMessages
+    }
+
+    // on 24.2 RootContainer properties sometimes contains isLoggedOut=null property and sometimes this property is missing
+    // so we need to remove it to not trigger unnecessary component update
+    if (incomingProps.isLoggedOut === null) {
+      delete incomingProps.isLoggedOut
     }
 
     const incomingPropsAsStr = JSON.stringify(incomingProps);

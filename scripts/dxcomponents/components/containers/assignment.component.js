@@ -355,6 +355,7 @@ export class AssignmentComponent extends BaseComponent {
           const finishPromise = this.finishAssignment(this.itemKey$);
           finishPromise
             .then(() => {
+              console.log(`JS :: Assignment :: '${sAction}' finished successfully`);
               this.setLoading(false);
               this.updateChanges();
             })
@@ -366,7 +367,6 @@ export class AssignmentComponent extends BaseComponent {
             .finally(() => {
               PCore.getPubSubUtils().publish('updateBanners');
             });
-
           break;
 
         case 'approveCase': {

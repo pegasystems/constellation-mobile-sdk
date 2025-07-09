@@ -51,7 +51,7 @@ class ConstellationSdkTest {
         assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()
-        sdk.assertError { it.contains("Constellation SDK initialization failed! Failed to fetch") }
+        sdk.assertError { it.contains("Unsupported Pega version: 1.2.3. Supported version is between 23.1.0 and") }
     }
 
     @Test
@@ -66,33 +66,35 @@ class ConstellationSdkTest {
         val sdk = ConstellationSdk.create(context, config)
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
+        // TODO: When OneColumn template will be added in TASK-1778467 please replace DefaultForm#4 to OneColumn#4
         assertEquals(
             """
                 RootContainer#1
                 -ViewContainer#2
                 --View#3
-                ---Region#4
-                ----View#5
-                -----Region#6
-                ------View#7
-                -------FlowContainer#8
-                --------Assignment#9
-                ---------AssignmentCard#10
-                ----------View#11
-                -----------DefaultForm#12
-                ------------Region#13
-                -------------TextInput#14
-                -------------TextInput#15
-                -------------TextInput#16
-                -------------Date#17
-                -------------URL#18
-                -------------TextArea#19
-                -------------View#20
-                --------------DefaultForm#22
-                ---------------Region#23
-                ----------------Checkbox#24
-                ----------------TextArea#25
-                -------------Email#21
+                ---DefaultForm#4
+                ----Region#5
+                -----View#6
+                ------Region#7
+                -------View#8
+                --------FlowContainer#9
+                ---------Assignment#10
+                ----------AssignmentCard#11
+                -----------View#12
+                ------------DefaultForm#13
+                -------------Region#14
+                --------------TextInput#15
+                --------------TextInput#16
+                --------------TextInput#17
+                --------------Date#18
+                --------------URL#19
+                --------------TextArea#20
+                --------------View#21
+                ---------------DefaultForm#23
+                ----------------Region#24
+                -----------------Checkbox#25
+                -----------------TextArea#26
+                --------------Email#22
                 
                 """.trimIndent(),
             root.structure()
@@ -101,7 +103,7 @@ class ConstellationSdkTest {
 
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
-        private const val PEGA_VERSION = "8.24.1"
+        private const val PEGA_VERSION = "24.1.0"
         private const val CASE_CLASS = "DIXL-MediaCo-Work-SDKTesting"
 
         private fun buildSdkConfig(context: Context) = ConstellationSdkConfig(
