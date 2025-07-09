@@ -62,7 +62,7 @@ where:
 - **context** - Android application context
 - **config** - constellation sdk config object with parameters:
     - **pegaUrl** — URL to Pega server e.g.: *https://insert-url-here.example/prweb*
-    - **pegaVersion** — Version of Pega server. For example, *8.24.1*. Determines the Constellation Core JS library version used by the SDK.
+    - **pegaVersion** — Version of Pega server. For example, *24.1.0*. Determines the Constellation Core JS library version used by the SDK.
     - **okHttpClient** (optional) — Instance of OkHttpClient that can be passed to the SDK for advanced networking control.
     - **componentManager** (optional) — Instance of ComponentManager that is responsible for providing component definitions and managing them in the runtime
     - **debuggable** (optional) — Flag that allows for debugging of the underlying WebView engine

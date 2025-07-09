@@ -137,7 +137,7 @@ class ComposeTest {
 
     private fun buildSdkConfig(authManager: AuthManager) = ConstellationSdkConfig(
         pegaUrl = "https://insert-url-here.example/prweb",
-        pegaVersion = "8.24.1",
+        pegaVersion = "24.1.0",
         debuggable = true,
         okHttpClient = buildHttpClient(authManager),
         componentManager = buildComponentManager()

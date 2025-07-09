@@ -101,7 +101,7 @@ class ConstellationSdkTest {
 
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
-        private const val PEGA_VERSION = "8.24.1"
+        private const val PEGA_VERSION = "24.1.0"
         private const val CASE_CLASS = "DIXL-MediaCo-Work-SDKTesting"
 
         private fun buildSdkConfig(context: Context) = ConstellationSdkConfig(
