@@ -9,6 +9,6 @@ export function initPlatforms(componentsOverridesStr) {
     console.log("Initializing Android APIs");
     overrideXHRForRequestBody();
   }
-  const assetsPath = isAndroid() ? 'constellation-mobile-sdk-assets' : window.location.href + "assets";
+  const assetsPath = isAndroid() ? 'constellation-mobile-sdk-assets' : "/constellation-mobile-sdk-assets/components";
   installComponentsOverrides(componentsOverridesStr, assetsPath);
 }
