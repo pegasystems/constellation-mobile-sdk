@@ -15,17 +15,17 @@ export class DropdownComponent extends PicklistBaseComponent {
 
     const configProps = this.pConn.getConfigProps();
 
-    const fieldMetadata = configProps.fieldMetadata; // undefined
-    const descriptors = configProps.descriptors; // undefined
-    const dataRelationshipContext = configProps.dataRelationshipContext; // undefined
+    const fieldMetadata = configProps.fieldMetadata;
+    const descriptors = configProps.descriptors;
+    const dataRelationshipContext = configProps.dataRelationshipContext;
     const datasourceMetadata = configProps.datasourceMetadata;
-    const contextClass = configProps.contextClass; // undefined
-    const compositeKeys = configProps.compositeKeys; // undefined
-    let parameters = configProps.parameters; // undefined
-    let datasource = configProps.datasource; // null for Car model, list for Car Brand/Colors
-    let columns = configProps.columns; // undefined
-    let listType = configProps.listType; // associated for Car model
-    let isDeferredDatasource = configProps.deferDatasource; // true for Car model
+    const contextClass = configProps.contextClass;
+    const compositeKeys = configProps.compositeKeys;
+    let parameters = configProps.parameters;
+    let datasource = configProps.datasource;
+    let columns = configProps.columns;
+    let listType = configProps.listType;
+    let isDeferredDatasource = configProps.deferDatasource;
     const className = this.pConn.getCaseInfo().getClassName();
     const contextName = this.pConn.getContextName();
 
