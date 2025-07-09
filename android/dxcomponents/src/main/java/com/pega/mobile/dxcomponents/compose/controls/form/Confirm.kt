@@ -17,7 +17,7 @@ fun Confirm(message: String, onConfirm: () -> Unit, onCancel: () -> Unit) {
                     onConfirm()
                 }
             ) {
-                Text("Discard")
+                Text("OK")
             }
         },
         dismissButton = {
@@ -26,7 +26,7 @@ fun Confirm(message: String, onConfirm: () -> Unit, onCancel: () -> Unit) {
                     onCancel()
                 }
             ) {
-                Text("Go back")
+                Text("Cancel")
             }
         }
     )

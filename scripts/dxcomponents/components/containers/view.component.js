@@ -93,7 +93,7 @@ export class ViewComponent extends ContainerBaseComponent {
         this.childrenComponents[0].update(this.pConn, this.childrenPConns);
       } else {
         if (this.FORM_TEMPLATES.includes(templateName)) {
-          this.#createTemplateChildComponent("DefaultForm");
+          this.#createTemplateChildComponent("DefaultForm"); // TODO: OneColumn template will be added in TASK-1778467
         } else if (this.VIEW_TEMPLATES.includes(templateName)) {
           this.#createTemplateChildComponent(templateName)
         } else {
