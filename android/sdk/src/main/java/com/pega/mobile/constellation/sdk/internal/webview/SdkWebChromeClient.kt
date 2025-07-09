@@ -7,15 +7,41 @@ import android.webkit.ConsoleMessage.MessageLevel.ERROR
 import android.webkit.ConsoleMessage.MessageLevel.LOG
 import android.webkit.ConsoleMessage.MessageLevel.TIP
 import android.webkit.ConsoleMessage.MessageLevel.WARNING
+import android.webkit.JsResult
 import android.webkit.WebChromeClient
+import android.webkit.WebView
 
-class SdkWebViewConsole(private val debuggable: Boolean) : WebChromeClient() {
+internal class SdkWebChromeClient(
+    private val debuggable: Boolean,
+    private val onAlert: (message: String, onConfirm: () -> Unit) -> Unit,
+    private val onConfirm: (message: String, onConfirm: () -> Unit, onCancel: () -> Unit) -> Unit
+) : WebChromeClient() {
     override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
         if (debuggable) {
             val priority = consoleMessage.messageLevel().toPriority()
             val errorMsg = consoleMessage.getErrorMessage()
             Log.println(priority, TAG, consoleMessage.message() + errorMsg)
         }
+        return true
+    }
+
+    override fun onJsAlert(
+        view: WebView,
+        url: String,
+        message: String,
+        result: JsResult
+    ): Boolean {
+        onAlert(message) { result.confirm() }
+        return true
+    }
+
+    override fun onJsConfirm(
+        view: WebView,
+        url: String,
+        message: String,
+        result: JsResult
+    ): Boolean {
+        onConfirm(message, { result.confirm() }, { result.cancel() })
         return true
     }
 

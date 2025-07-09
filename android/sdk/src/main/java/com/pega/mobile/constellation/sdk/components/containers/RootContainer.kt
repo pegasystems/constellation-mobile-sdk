@@ -9,12 +9,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.pega.mobile.constellation.sdk.components.core.AlertComponent
 import com.pega.mobile.constellation.sdk.components.core.BaseComponent
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentId
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.Render
 import com.pega.mobile.constellation.sdk.internal.ComponentManagerImpl.Companion.getComponentTyped
+import com.pega.mobile.dxcomponents.compose.controls.form.Alert
+import com.pega.mobile.dxcomponents.compose.controls.form.Confirm
 import com.pega.mobile.dxcomponents.compose.controls.form.Snackbar
 import org.json.JSONObject
 
@@ -54,6 +57,29 @@ class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 8.dp)
             )
+            val alert = context.componentManager.getAlertComponent()
+            alert.info?.let {
+                when (it.type) {
+                    AlertComponent.Type.CONFIRM -> Confirm(
+                        message = it.message,
+                        onConfirm = {
+                            it.onConfirm()
+                            alert.setAlertInfo(null)
+                        },
+                        onCancel = {
+                            it.onCancel()
+                            alert.setAlertInfo(null)
+                        })
+
+                    AlertComponent.Type.ALERT -> Alert(
+                        message = it.message,
+                        onConfirm = {
+                            it.onConfirm()
+                            alert.setAlertInfo(null)
+                        }
+                    )
+                }
+            }
         }
     }
 }

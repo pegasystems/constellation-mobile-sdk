@@ -51,6 +51,13 @@ interface ComponentManager {
      */
     fun removeComponent(id: ComponentId)
 
+    /**
+     * Retrieves the alert component responsible for natively showing JS alerts and dialogs.
+     *
+     * @return The alert component instance.
+     */
+    fun getAlertComponent() : AlertComponent
+
     companion object {
         /**
          * Creates a new instance of `ComponentManager` with optional custom component definitions.
