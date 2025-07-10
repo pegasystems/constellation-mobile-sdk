@@ -34,14 +34,9 @@ export class DefaultFormComponent extends ContainerBaseComponent {
 
   update(pConn, childrenPConns) {
     this.pConn = pConn;
-    this.childrenPConns = childrenPConns;
-
     const configProps = this.pConn.getConfigProps();
     this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
-
-    const oldChildren = this.childrenPConns;
-    // this.childrenPConns = ReferenceComponent.normalizePConnArray(children[0].getPConnect().getChildren());
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(childrenPConns);
 
     const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
@@ -55,7 +50,6 @@ export class DefaultFormComponent extends ContainerBaseComponent {
   }
 
   sendPropsUpdate() {
-    const childrenComponents = this.childrenComponents
     this.props = {
        children: this.getChildrenComponentsIds(),
        instructions: this.instructions || ''
@@ -63,7 +57,6 @@ export class DefaultFormComponent extends ContainerBaseComponent {
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
-  // copied from template-utils.ts
   /**
    * Determine if the current view is the view of the case step/assignment.
    * @param {Function} pConnect PConnect object for the component
@@ -73,12 +66,8 @@ export class DefaultFormComponent extends ContainerBaseComponent {
     // TODO To be replaced with pConnect.getCaseInfo().getCurrentAssignmentView when it's available
     const assignmentViewClass = pConnect.getValue(PCore.getConstants().CASE_INFO.CASE_INFO_CLASSID);
     const assignmentViewName = pConnect.getValue(PCore.getConstants().CASE_INFO.ASSIGNMENTACTION_ID);
-
     const assignmentViewId = `${assignmentViewName}!${assignmentViewClass}`;
-
-    // Get the info about the current view from pConnect
     const currentViewId = `${pConnect.getCurrentView()}!${pConnect.getCurrentClassID()}`;
-
     return assignmentViewId === currentViewId;
   }
 
@@ -89,25 +78,17 @@ export class DefaultFormComponent extends ContainerBaseComponent {
    */
   getInstructions(pConnect, instructions = 'casestep') {
     const caseStepInstructions = PCore.getConstants().CASE_INFO.INSTRUCTIONS && pConnect.getValue(PCore.getConstants().CASE_INFO.INSTRUCTIONS);
-
-    // Determine if this view is the current assignment/step view
     const isCurrentAssignmentView = this.getIsAssignmentView(pConnect);
-
-    // Case step instructions
-    if (instructions === 'casestep' && isCurrentAssignmentView && caseStepInstructions?.length) {
+    if (instructions === 'casestep' && isCurrentAssignmentView && caseStepInstructions?.length > 0) {
       return caseStepInstructions;
     }
-
-    // No instructions
     if (instructions === 'none') {
       return undefined;
     }
-
     // If the annotation wasn't processed correctly, don't return any instruction text
     if (instructions?.startsWith('@PARAGRAPH')) {
       return undefined;
     }
-
     // Custom instructions from the view
     // The raw metadata for `instructions` will be something like '@PARAGRAPH .SomeParagraphRule' but
     // it is evaluated by core logic to the content
