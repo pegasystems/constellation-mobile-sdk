@@ -10,6 +10,7 @@ export class ViewComponent extends ContainerBaseComponent {
   ];
 
   FORM_TEMPLATES = ['DefaultForm', 'OneColumn', 'TwoColumn', 'ThreeColumn', 'WideNarrow'];
+  SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'OneColumn'];
   VIEW_TEMPLATES = ['SimpleTable'];
 
   jsComponentPConnectData = {};
@@ -93,7 +94,8 @@ export class ViewComponent extends ContainerBaseComponent {
         this.childrenComponents[0].update(this.pConn, this.childrenPConns);
       } else {
         if (this.FORM_TEMPLATES.includes(templateName)) {
-          this.#createTemplateChildComponent("DefaultForm"); // TODO: OneColumn template will be added in TASK-1778467
+          const template = this.SUPPORTED_FORM_TEMPLATES.includes(templateName) ? templateName : 'DefaultForm';
+          this.#createTemplateChildComponent(template);
         } else if (this.VIEW_TEMPLATES.includes(templateName)) {
           this.#createTemplateChildComponent(templateName)
         } else {
