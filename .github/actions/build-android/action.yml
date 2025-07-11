@@ -41,8 +41,9 @@ runs:
         rm -rf release || true
         mkdir release
         cd android
-        $GRADLE clean assembleRelease
+        $GRADLE clean assembleRelease sourcesJar
         find . -iname "*-release.aar" | xargs -I {} cp {} ../release
+        find . -iname "sdk-sources.jar" | xargs -I {} cp {} ../release
         rm ../release/mock*.*
 
     - uses: actions/upload-artifact@v4
