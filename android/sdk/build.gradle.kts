@@ -59,3 +59,8 @@ dependencies {
     implementation(libs.okhttp)
     api(project(":dxcomponents"))
 }
+
+val sourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
+    from(android.sourceSets["main"].java.srcDirs)
+}
