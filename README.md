@@ -27,6 +27,8 @@ Currently SDK supports creating new case of given type and processing assignment
 - TextArea
 - TextInput
 - Url
+- DateTime
+- Time
 
 #### Containers
 - Assignment
