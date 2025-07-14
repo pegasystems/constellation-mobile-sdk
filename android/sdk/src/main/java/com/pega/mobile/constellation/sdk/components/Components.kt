@@ -15,6 +15,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FieldGroupTemplate
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Integer
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.OneColumn
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Phone
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
@@ -37,6 +38,8 @@ import com.pega.mobile.constellation.sdk.components.containers.FieldGroupTemplat
 import com.pega.mobile.constellation.sdk.components.containers.FieldGroupTemplateRenderer
 import com.pega.mobile.constellation.sdk.components.containers.FlowContainerComponent
 import com.pega.mobile.constellation.sdk.components.containers.FlowContainerRenderer
+import com.pega.mobile.constellation.sdk.components.containers.OneColumnComponent
+import com.pega.mobile.constellation.sdk.components.containers.OneColumnRenderer
 import com.pega.mobile.constellation.sdk.components.containers.RegionComponent
 import com.pega.mobile.constellation.sdk.components.containers.RegionRenderer
 import com.pega.mobile.constellation.sdk.components.containers.RootContainerComponent
@@ -108,6 +111,7 @@ object Components {
         Def(FieldGroupTemplate) { FieldGroupTemplateComponent(it) },
         Def(FlowContainer) { FlowContainerComponent(it) },
         Def(Integer) { IntegerComponent(it) },
+        Def(OneColumn) { OneColumnComponent(it) },
         Def(Phone) { PhoneComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },
         Def(Region) { RegionComponent(it) },
@@ -141,6 +145,7 @@ object Components {
         FieldGroupTemplate to FieldGroupTemplateRenderer(),
         FlowContainer to FlowContainerRenderer(),
         Integer to IntegerRenderer(),
+        OneColumn to OneColumnRenderer(),
         Phone to PhoneRenderer(),
         RadioButtons to RadioButtonsRenderer(),
         Region to RegionRenderer(),

@@ -66,13 +66,12 @@ class ConstellationSdkTest {
         val sdk = ConstellationSdk.create(context, config)
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
-        // TODO: When OneColumn template will be added in TASK-1778467 please replace DefaultForm#4 to OneColumn#4
         assertEquals(
             """
                 RootContainer#1
                 -ViewContainer#2
                 --View#3
-                ---DefaultForm#4
+                ---OneColumn#4
                 ----Region#5
                 -----View#6
                 ------Region#7
