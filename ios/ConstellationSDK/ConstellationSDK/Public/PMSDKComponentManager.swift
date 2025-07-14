@@ -52,6 +52,7 @@ public class PMSDKComponentManager {
         "AssignmentCard": AssignmentCardComponentProvider.self,
         "RootContainer": RootContainerComponentProvider.self,
         "DefaultForm": ViewComponentProvider.self,
+        "OneColumn": ViewComponentProvider.self,
 
         "ActionButtons": ActionButtonsProvider.self,
         "AlertBanner": AlertBannerComponentProvider.self,
