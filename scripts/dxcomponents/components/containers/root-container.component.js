@@ -3,6 +3,7 @@ import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { BaseComponent } from '../base.component.js';
 
 const options = { context: 'app' };
+const TAG = '[RootContainerComponent]';
 
 export class RootContainerComponent extends BaseComponent {
   #viewContainerComponent;
@@ -65,14 +66,14 @@ export class RootContainerComponent extends BaseComponent {
     if (renderingMode === 'noPortal') {
       this.#generateViewContainerForNoPortal();
     } else  {
-      console.error("'noPortal' rendering mode supported only.")
+      console.error(TAG, "'noPortal' rendering mode supported only.")
     }
   }
 
   #generateViewContainerForNoPortal() {
     const arChildren = this.pConn.getChildren();
     if (!arChildren || arChildren.length !== 1 || arChildren[0].getPConnect().getComponentName() !== 'ViewContainer') {
-      console.error("Only ViewContainer in RootContainer supported for 'noPortal' mode.");
+      console.error(TAG, "Only ViewContainer in RootContainer supported for 'noPortal' mode.");
       return;
     }
 
@@ -96,7 +97,7 @@ export class RootContainerComponent extends BaseComponent {
 
 
     if (this.compId !== "1") {
-      console.error("RootComponent id must be '1' to match root container on consumer side");
+      console.error(TAG, "RootComponent id must be '1' to match root container on consumer side");
       return;
     }
     this.#sendPropsUpdate();

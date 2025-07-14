@@ -1,15 +1,6 @@
-// export interface JsComponentPConnectData {
-//   compID?: string;
-//   unsubscribeFn?: Function;
-//   validateMessage?: string;
-//   actions?: {
-//     onChange: Function;
-//     onBlur: Function;
-//   };
-// }
+const TAG = '[PConnBridge]';
 
 export class JsComponentPConnectService {
-
   /**
    * Local variable for access to the store once the service is connected to it.
    */
@@ -23,9 +14,6 @@ export class JsComponentPConnectService {
    */
   componentPropsArr = [];
 
-  /* Used to toggle some class-wide logging */
-  static bLogging = false;
-
   constructor() {
     // Establish necessary override flags for our use of Core
     // const coreOverrides = { "dynamicLoadComponents": false };
@@ -33,13 +21,6 @@ export class JsComponentPConnectService {
     // coreOverrides["dynamicLoadComponents"] = false;
     // PCore.setBehaviorOverrides( coreOverrides );
     PCore.setBehaviorOverride('dynamicLoadComponents', false);
-
-    // Always best to use deep object compare when it's available
-    // if (isEqual !== undefined) {
-    // console.log(`JsComponentPConnect is using deep object compare`);
-    // } else {
-    // console.log(`JsComponentPConnect is using JSON.stringify compare`);
-    // }
   }
 
   /**
@@ -51,9 +32,8 @@ export class JsComponentPConnectService {
    * to unsubscribe from the store. (Typically during ngOnDestroy)
    */
   subscribeToStore(inComp = null, inCallback = null) {
-    // const theCompName: string = inComp ? `${inComp.constructor.name}` : 'no component provided';
     let fnUnsubscribe;
-    console.log(`Subscribing component to store: ${inComp.pConn.meta.type}#${inComp.compId}`);
+    console.log(TAG, `Subscribing component to store: ${inComp.pConn.meta.type}#${inComp.compId}`);
     if (inComp) {
       fnUnsubscribe = this.getStore().subscribe(inCallback);
     }
@@ -73,11 +53,6 @@ export class JsComponentPConnectService {
       console.error(`JsComponentPConnect: getComponentProps called with bad component: ${inComp}`);
     }
 
-    // if ((inComp.constructor.name === "FlowContainerComponent") || (inComp.constructor.name === "ViewContainerComponent")
-    //     || (inComp.constructor.name === "ViewComponent") || (inComp.constructor.name === "DeferLoadComponent")) {
-    //   console.log(`--> JsComponentPConnect getComponentProps: ${inComp.constructor.name}`);
-    // }
-
     if (inComp.additionalProps !== undefined) {
       if (typeof inComp.additionalProps === 'object') {
         addProps = inComp.pConn.resolveConfigProps(inComp.additionalProps);
@@ -89,8 +64,6 @@ export class JsComponentPConnectService {
 
     compProps = inComp.pConn.getConfigProps();
 
-    // const componentName = inComp.constructor.name;
-
     // The following comment is from the Nebula/Constellation version of this code. Meant as a reminder to check this occasionally
     // populate additional props which are component specific and not present in configurations
     // This block can be removed once all these props will be added as part of configs
@@ -99,10 +72,6 @@ export class JsComponentPConnectService {
     this.populateAdditionalProps(inComp, compProps)
 
     compProps = inComp.pConn.resolveConfigProps(compProps);
-
-    if (compProps && undefined !== compProps.validatemessage && compProps.validatemessage != '') {
-      // console.log( `   validatemessage for ${inComp.constructor.name} ${inComp.jsComponentPConnectData.compID}: ${compProps.validatemessage}`);
-    }
 
     return {
       ...compProps,
@@ -182,9 +151,8 @@ export class JsComponentPConnectService {
 
     const compType = inComp.constructor.name;
 
-    if (JsComponentPConnectService.bLogging) {
-      console.log(`registerAndSubscribeComponent: ${compType}`);
-    }
+    console.log(TAG, `registerAndSubscribeComponent: ${compType}`);
+
 
     if (undefined !== inComp.bridgeComponentID) {
       console.error(`OLD SCHOOL: ${compType}`);
@@ -231,7 +199,7 @@ export class JsComponentPConnectService {
     } else {
       returnObject.compID = theCompID;
       returnObject.unsubscribeFn = () => {
-        console.log(`Unsubscribing component from store: ${inComp.pConn.meta.type}#${theCompID}`);
+        console.log(TAG, `Unsubscribing component from store: ${inComp.pConn.meta.type}#${theCompID}`);
         this.removeFormField(inComp);
         theUnsub();
       };
@@ -277,15 +245,6 @@ export class JsComponentPConnectService {
     inComp.pConn.populateAdditionalProps(compProps);
   }
 
-  // Returns true if the component's entry in ___componentPropsArr___ is
-  //  the same as the inCompProps passed in.
-  //  As a side effect, update the component's entry in componentPropsArr
-  //  NOTE: It is assumed that the incoming component has the following:
-  //  * a bridgeComponentID <string> property - used as lookup key in componentPropsArr
-  //  * a pConn <?> property - used to access functions accessed in getComponentProps
-  // Return true: means the component props are different and the component should update itself (re-render)
-  // Return false: means the component props are the same and the component doesn't need to update (re-render)
-  //  On bad input, return false;
   /**
    * Returns **true** if the component's entry in ___componentPropsArr___ is
    * the same as the properties that are current associated with the component (___inComp___) passed in.
@@ -300,9 +259,7 @@ export class JsComponentPConnectService {
    * If the ***inComp*** input is bad, false is also returned.
    */
   shouldComponentUpdate(inComp) {
-    // const bShowLogging = false;
     let bRet = false;
-    // check for reasonable input
     if (this.isEmptyObject(inComp)) {
       console.error(`JsComponentPConnect: bad call to shouldComponentUpdate: inComp: ${JSON.stringify(inComp)}`);
       return bRet;
@@ -373,27 +330,6 @@ export class JsComponentPConnectService {
       bRet = false;
     }
 
-    // console.log( `JsComponentPConnect component ${compID} - ${inComp.constructor.name} - shouldComponentUpdate: ${bRet}`);
-    // console.log("current props: " + currentPropsAsStr);
-
-    if (bRet) {
-      // console.log(`**** change for: ${inComp.constructor.name}`);
-      // console.log("current props: " + currentPropsAsStr);
-      // console.log("incoming props: " + incomingPropsAsStr);
-      // console.log(`    ${inComp.constructor.name}: shouldComponentUpdate returning: ${bRet}, compId: ${compID}` );
-      // console.log( `    Updating with componentProps for ${inComp.constructor.name}: ${JSON.stringify(this.componentPropsArr[compID])}`);
-      // console.log( `          and validateMessage: ${inComp.validateMessage}`);
-    }
-    // else if (inComp.constructor.name.indexOf("View") >= 0 || inComp.constructor.name.indexOf("Root") >= 0) {
-    //   console.log("no change");
-    //   console.log("current props: " + currentPropsAsStr);
-    //   console.log("incoming props: " + incomingPropsAsStr);
-    //   console.log(`    ${inComp.constructor.name}: shouldComponentUpdate returning: ${bRet}, compId: ${compID}` );
-
-    // }
-
-    // console.log(`    ${inComp.constructor.name}: shouldComponentUpdate returning: ${bRet}`);
-
     return bRet;
   }
 
@@ -411,11 +347,6 @@ export class JsComponentPConnectService {
    * @param event The event
    */
   changeHandler(inComp, event) {
-    const bLogging = false;
-    if (bLogging) {
-      // console.log(`JsComponentPConnect.changeHandler`);
-    }
-    // check for reasonable input
     if (undefined === inComp || this.isEmptyObject(inComp)) {
       console.error(`JsComponentPConnect: bad call to changeHandler: inComp: ${JSON.stringify(inComp)}`);
       return;
@@ -436,11 +367,6 @@ export class JsComponentPConnectService {
    * @param event The event
    */
   eventHandler(inComp, event) {
-    const bLogging = false;
-    if (bLogging) {
-      // console.log(`JsComponentPConnect.eventHandler`);
-    }
-    // check for reasonable input
     if (undefined === inComp || this.isEmptyObject(inComp)) {
       console.error(`JsComponentPConnect: bad call to eventHandler: inComp: ${JSON.stringify(inComp)}`);
       return;
@@ -474,7 +400,7 @@ export class JsComponentPConnectService {
     const theState = this.getStore().getState();
     if (bLogMsg) {
       const theCompName = inComp ? `${inComp.constructor.name}: ` : '';
-      console.log(`${theCompName} Store state: ${JSON.stringify(theState)}`);
+      console.log(TAG, `${theCompName} Store state: ${JSON.stringify(theState)}`);
     }
     return theState;
   }

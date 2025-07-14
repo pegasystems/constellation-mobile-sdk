@@ -1,3 +1,4 @@
+const TAG = "[Bootstrap]";
 const importBootstrapShell = (version) => import(`https://release.constellation.pega.io/${version}/react/prod/bootstrap-shell.js`);
 
 const awaitBoostrapShell = async (version) => {
@@ -18,17 +19,15 @@ const awaitBoostrapShell = async (version) => {
 }
 
 export async function bootstrap(url, version, onPCoreReady) {
-  console.log(`Importing bootstrap shell '${version}'`);
+  console.log(TAG, `Importing bootstrap shell '${version}'`);
   let shell = await awaitBoostrapShell(version);
   const bootConfig = {
     restServerUrl: url,
     customRendering: true,
     onPCoreReadyCallback: onPCoreReady
   };
-
   await shell.bootstrapWithAuthHeader(bootConfig);
-  console.log("Bootstrap complete!");
-
-  console.log("Loading mashup...");
+  console.log(TAG, "Bootstrap complete!");
   shell.loadMashup(null, false);
+  console.log(TAG, "Mashup loaded!");
 }

@@ -71,10 +71,10 @@ class PegaViewModel(
         private class LoggingInterceptor : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val request = chain.request().also {
-                    Log.d("MediaCo", "request: [${it.method}] ${it.url}")
+                    Log.d("MediaCo HTTP Interceptor", "request: [${it.method}] ${it.url}")
                 }
                 return chain.proceed(request).also {
-                    Log.d("MediaCo", "response: [${it.code}] ${it.request.url}")
+                    Log.d("MediaCo HTTP Interceptor", "response: [${it.code}] ${it.request.url}")
                 }
             }
         }

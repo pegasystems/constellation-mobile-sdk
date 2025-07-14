@@ -1,6 +1,8 @@
 import { handleEvent } from '../../helpers/event-util.js';
 import { FieldBaseComponent } from './field-base.component.js';
 
+const TAG = '[CheckBoxComponent]';
+
 export class CheckBoxComponent extends FieldBaseComponent {
   selectionMode;
 
@@ -8,7 +10,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
     const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     this.selectionMode = configProps.selectionMode;
     if (this.selectionMode === 'multi') {
-      console.log("Selection mode 'multi' is unsupported.");
+      console.log(TAG, "Selection mode 'multi' is unsupported.");
       return;
     }
     this.updateBaseProps();
@@ -22,7 +24,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
 
   fieldOnChange(value) {
     if (this.selectionMode === 'multi') {
-      console.log("Selection mode 'multi' is unsupported.");
+      console.log(TAG, "Selection mode 'multi' is unsupported.");
       return;
     }
     this.props.value = value;
@@ -31,7 +33,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
 
   fieldOnBlur(value) {
     if (this.selectionMode === 'multi') {
-      console.log("Selection mode 'multi' is unsupported.");
+      console.log(TAG, "Selection mode 'multi' is unsupported.");
       return;
     }
     this.props.value = value ?? this.props.value;

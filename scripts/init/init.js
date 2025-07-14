@@ -7,14 +7,16 @@ import { bridge } from '../bridge/native-bridge.js';
 import { subscribeForEvents } from './init-events.js';
 import { localSdkComponentMap } from '../dxcomponents/mappings/sdk-local-component-map.js';
 
+const TAG = "[Init]";
+
 async function init(sdkConfig, componentsOverridesStr) {
   try {
-    console.log("Constellation SDK initialization started");
+    console.log(TAG, "Constellation SDK initialization started");
     initPlatforms(componentsOverridesStr);
     const config = JSON.parse(sdkConfig);
     await bootstrap(config.url, config.version, onPCoreReady);
     await createCase(config.caseClassName, config.startingFields);
-    console.log("Constellation SDK initialization completed");
+    console.log(TAG, "Constellation SDK initialization completed");
     bridge.onReady();
   } catch (error) {
     const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "")
@@ -24,9 +26,9 @@ async function init(sdkConfig, componentsOverridesStr) {
 }
 
 async function onPCoreReady(renderObj) {
-  console.log("PCore ready!");
+  console.log(TAG, "PCore ready!");
   await getSdkComponentMap(localSdkComponentMap);
-  console.log("SdkComponentMap initialized");
+  console.log(TAG, "SdkComponentMap initialized");
   const root = initialRender(renderObj);
   subscribeForEvents(root);
 }

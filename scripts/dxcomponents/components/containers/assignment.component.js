@@ -2,6 +2,8 @@ import { ReferenceComponent } from './reference.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { BaseComponent } from '../base.component.js';
 
+const TAG = '[AssignmentComponent]';
+
 export class AssignmentComponent extends BaseComponent {
 
   childrenPConns;
@@ -277,7 +279,7 @@ export class AssignmentComponent extends BaseComponent {
             })
             .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
+              console.warn(TAG, `'${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Navigation failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -298,7 +300,7 @@ export class AssignmentComponent extends BaseComponent {
             })
             .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
+              console.warn(TAG, `'${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Save failed', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -323,7 +325,7 @@ export class AssignmentComponent extends BaseComponent {
             })
             .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
+              console.warn(TAG, `'${sAction}' failed with error ${error}`);
             });
           break;
 
@@ -335,7 +337,7 @@ export class AssignmentComponent extends BaseComponent {
             })
             .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
+              console.warn(TAG, `'${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Rejection failed!', this.localeCategory)}`, 'Ok');
             });
 
@@ -355,13 +357,13 @@ export class AssignmentComponent extends BaseComponent {
           const finishPromise = this.finishAssignment(this.itemKey$);
           finishPromise
             .then(() => {
-              console.log(`JS :: Assignment :: '${sAction}' finished successfully`);
+              console.log(TAG, `'${sAction}' finished successfully`);
               this.setLoading(false);
               this.updateChanges();
             })
             .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
+              console.warn(TAG, `'${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Submit failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {
@@ -377,7 +379,7 @@ export class AssignmentComponent extends BaseComponent {
             })
             .catch((error) => {
               this.setLoading(false);
-              console.warn(`JS :: Assignment :: '${sAction}' failed with error ${error}`);
+              console.warn(TAG, `'${sAction}' failed with error ${error}`);
               // this.snackBar.open(`${this.localizedVal('Approve failed!', this.localeCategory)}`, 'Ok');
             })
             .finally(() => {

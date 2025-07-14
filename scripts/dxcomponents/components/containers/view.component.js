@@ -2,6 +2,8 @@ import { ReferenceComponent } from './reference.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import {ContainerBaseComponent} from './container-base.component.js';
 
+const TAG = '[ViewComponent]';
+
 export class ViewComponent extends ContainerBaseComponent {
 
   DETAILS_TEMPLATES = [
@@ -97,7 +99,7 @@ export class ViewComponent extends ContainerBaseComponent {
         } else if (this.VIEW_TEMPLATES.includes(templateName)) {
           this.#createTemplateChildComponent(templateName)
         } else {
-          console.warn(`JS :: View :: ${templateName} not supported. Rendering children components directly.`);
+          console.warn(TAG, `${templateName} not supported. Rendering children components directly.`);
           this.#createChildrenComponents()
         }
       }

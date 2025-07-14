@@ -2,6 +2,8 @@ import { Utils } from '../../../helpers/utils.js';
 import {getComponentFromMap} from '../../../mappings/sdk-component-map.js';
 import { BaseComponent } from '../../base.component.js';
 
+const TAG = '[SimpleTableComponent]';
+
 export class SimpleTableComponent extends BaseComponent {
 
   jsComponentPConnectData = {};
@@ -71,15 +73,17 @@ export class SimpleTableComponent extends BaseComponent {
       } else {
         this.childComponent.update(this.pConn, fieldGroupProps)
       }
+      this.sendPropsUpdate();
     } else {
-      console.log("ListView and SimpleTableManual are not supported yet.");
+      console.log(TAG, "ListView and SimpleTableManual are not supported yet.");
     }
-    this.sendPropsUpdate();
+
   }
 
 
   onEvent(event) {
-    this.childComponent.onEvent(event)
+    // TODO: remove optional call when other modes are implemented so that child component is always defined
+    this.childComponent?.onEvent(event)
   }
 
   sendPropsUpdate() {
