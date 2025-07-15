@@ -43,7 +43,7 @@ function installComponentsOverridesiOS(componentsOverridesStr, assetsPath) {
     import(`${assetsPath}/${value}`).then((component) => {
       localSdkComponentMap[key] = Object.values(component)[0];
     }).catch((error) => {
-      console.error(TAG, `Error occured when installing ${key}`, error)
+      console.error(TAG, `Error occurred when installing ${key}`, error)
     });
   })
 }
