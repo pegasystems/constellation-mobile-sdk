@@ -44,14 +44,8 @@ extension PMSDKNetwork {
 
     static func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
         var modifiedRequest = request
-        let allowedHeaders = ["Accept", "context", "if-match", "Content-Type"]
-        if let allHeaders = modifiedRequest.allHTTPHeaderFields {
-            for (header, _) in allHeaders {
-                if !allowedHeaders.contains(where: { $0.caseInsensitiveCompare(header) == .orderedSame }) {
-                    modifiedRequest.setValue(nil, forHTTPHeaderField: header)
-                }
-            }
-        }
+        let allowedHeaders = ["accept", "context", "if-match", "content-type"]
+        modifiedRequest.allHTTPHeaderFields = request.allHTTPHeaderFields?.filter { allowedHeaders.contains($0.key.lowercased()) }
         return try await PMSDKNetwork.shared.delegate(for: modifiedRequest).performRequest(modifiedRequest)
     }
 }
