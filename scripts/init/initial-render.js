@@ -7,7 +7,7 @@ export function initialRender(renderObj) {
   PCore.registerComponentCreator(c11nEnv => c11nEnv);
   const pconn = renderObj.props.getPConnect();
   if (pconn.meta.type !== 'RootContainer') {
-    throw new Error("Only 'RootContainer' is supported as root component");
+    throw new Error("[Initial Render] Only 'RootContainer' is supported as root component");
   }
   const jsComponentPConnect = new JsComponentPConnectService();
   const componentsManager = new ComponentsManager(

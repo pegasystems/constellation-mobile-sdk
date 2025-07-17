@@ -9,6 +9,7 @@ import pegaSdkComponentMap from './sdk-pega-component-map.js';
 // Note: Initializing SdkComponentMap to null seems to cause lots of compile issues with references
 //  within other components and the value potentially being null (so try to leave it undefined)
 // eslint-disable-next-line import/no-mutable-exports
+const TAG = "[ComponentsMap]"
 export let SdkComponentMap;
 let SdkComponentMapCreateInProgress = false;
 
@@ -48,7 +49,7 @@ class ComponentMap {
             resolve(this.sdkComponentMap);
           })
           .catch(error => {
-            console.error(`Error in readSdkComponentMap: ${error}`);
+            console.error(TAG, `Error while reading SDK component map: ${error}`);
           });
       } else {
         resolve(this.sdkComponentMap);
@@ -140,15 +141,15 @@ export function getComponentFromMap(inComponentName) {
   let theComponentImplementation = null;
   const theLocalComponent = SdkComponentMap.getLocalComponentMap()[inComponentName];
   if (theLocalComponent !== undefined) {
-    console.log(`Requested component found ${inComponentName}: Local`);
+    console.log(TAG, `Requested component found ${inComponentName}: Local`);
     theComponentImplementation = theLocalComponent;
   } else {
     const thePegaProvidedComponent = SdkComponentMap.getPegaProvidedComponentMap()[inComponentName];
     if (thePegaProvidedComponent !== undefined) {
-      console.log(`Requested component found ${inComponentName}: Pega-provided`);
+      console.log(TAG, `Requested component found ${inComponentName}: Pega-provided`);
       theComponentImplementation = thePegaProvidedComponent;
     } else {
-      console.warn(`Requested component has neither Local nor Pega-provided implementation: ${inComponentName}`);
+      console.warn(TAG, `Requested component has neither Local nor Pega-provided implementation: ${inComponentName}`);
       theComponentImplementation = getComponentFromMap('Unsupported');
     }
   }

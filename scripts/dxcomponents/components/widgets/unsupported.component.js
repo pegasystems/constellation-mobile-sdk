@@ -1,6 +1,8 @@
 import { Utils } from '../../helpers/utils.js';
 import { BaseComponent } from '../base.component.js';
 
+const TAG = '[UnsupportedComponent]';
+
 export class UnsupportedComponent extends BaseComponent {
   utils;
   props = {
@@ -19,7 +21,7 @@ export class UnsupportedComponent extends BaseComponent {
   }
 
   destroy() {
-    console.log(`Unsupported component ${this.type} for property ${this.propName} destroyed`);
+    console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} destroyed`);
     this.componentsManager.onComponentRemoved(this);
   }
 
@@ -37,13 +39,13 @@ export class UnsupportedComponent extends BaseComponent {
     if (configProps.visibility != null) {
       this.props.visible = this.utils.getBooleanValue(configProps.visibility);
     }
-    console.log(`Unsupported component ${this.type} for property ${this.propName} inited`);
+    console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} inited`);
     this.componentsManager.onComponentAdded(this);
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
   destroy() {
-    console.log(`Unsupported component ${this.type} for property ${this.propName} destroyed`);
+    console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} destroyed`);
     this.componentsManager.onComponentRemoved(this);
   }
 
