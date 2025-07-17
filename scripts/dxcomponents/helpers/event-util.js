@@ -1,4 +1,3 @@
-// From npm-nebula/src/utils/event-utils.js
 
 /*
   Note: actions.updateFieldValue and actions.triggerFieldChange causes 2 times StateManager.dispatch is call for each.

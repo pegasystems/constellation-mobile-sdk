@@ -17,8 +17,8 @@ internal class SdkWebChromeClient(
     private val onConfirm: (message: String, onConfirm: () -> Unit, onCancel: () -> Unit) -> Unit
 ) : WebChromeClient() {
     override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
-        if (debuggable) {
-            val priority = consoleMessage.messageLevel().toPriority()
+        val priority = consoleMessage.messageLevel().toPriority()
+        if (debuggable || priority == Log.ERROR || priority == Log.WARN) {
             val errorMsg = consoleMessage.getErrorMessage()
             Log.println(priority, TAG, consoleMessage.message() + errorMsg)
         }

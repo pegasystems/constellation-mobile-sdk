@@ -3,6 +3,8 @@ import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { Utils } from '../../helpers/utils.js';
 import { BaseComponent } from '../base.component.js';
 
+const TAG = '[FlowContainerComponent]';
+
 export class FlowContainerComponent extends BaseComponent {
 
   jsComponentPConnectData = {};
@@ -176,7 +178,7 @@ export class FlowContainerComponent extends BaseComponent {
         this.#initContainer();
       }
     } else {
-      console.log(`Case view mode '${caseViewMode}' not supported`);
+      console.log(TAG, `Case view mode '${caseViewMode}' not supported`);
     }
     this.#finishAssignmentIfNoAssignments();
     this.#updateFlowContainerChildren();
@@ -234,7 +236,7 @@ export class FlowContainerComponent extends BaseComponent {
     // this check in routingInfo, mimic Nebula/Constellation (React) to check and get the internals of the
     // flowContainer and force updates to pConnect/redux
     if(!routingInfo) {
-      console.error("routingInfo is not available.");
+      console.error(TAG, "routingInfo is not available.");
       return;
     }
     const currentOrder = routingInfo.accessedOrder ?? [];

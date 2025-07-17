@@ -3,6 +3,8 @@ import { Utils } from '../../helpers/utils.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import { BaseComponent } from '../base.component.js';
 
+const TAG = '[ViewContainerComponent]';
+
 export class ViewContainerComponent extends BaseComponent {
 
   jsComponentPConnectData = {};
@@ -72,7 +74,7 @@ export class ViewContainerComponent extends BaseComponent {
     const routingInfo = this.jsComponentPConnect.getComponentProp(this, 'routingInfo');
 
     if (!routingInfo) {
-      console.error("routingInfo is not available.")
+      console.error(TAG, "routingInfo is not available.")
       return;
     }
     const { accessedOrder, items } = routingInfo;
@@ -83,7 +85,7 @@ export class ViewContainerComponent extends BaseComponent {
         const newCompName = newCompPConn.getComponentName();
 
         if (newCompName !== 'reference') {
-          console.error(`newComp name is '${newCompName}. 'Only 'reference' is supported as newComp in ViewContainer`);
+          console.error(TAG, `newComp name is '${newCompName}. 'Only 'reference' is supported as newComp in ViewContainer`);
           return
         }
         const viewPConn = ReferenceComponent.normalizePConn(newCompPConn);
