@@ -80,7 +80,6 @@ export class SimpleTableComponent extends BaseComponent {
 
   }
 
-
   onEvent(event) {
     // TODO: remove optional call when other modes are implemented so that child component is always defined
     this.childComponent?.onEvent(event)

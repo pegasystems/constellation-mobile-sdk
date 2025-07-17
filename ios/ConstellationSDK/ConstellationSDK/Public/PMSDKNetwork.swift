@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 public class PMSDKNetwork {
-    
+
     public static let shared = PMSDKNetwork()
     private init() {}
     public weak var requestDelegate: PMSDKNetworkRequestDelegate?
@@ -43,12 +43,9 @@ extension PMSDKNetwork {
     }
 
     static func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
-        // Remove "Authorization" header if necessary due to JS layer unnecessarily appending `undefined` value to it.
         var modifiedRequest = request
-        if modifiedRequest.value(forHTTPHeaderField: "Authorization") == "undefined" {
-            modifiedRequest.setValue(nil, forHTTPHeaderField: "Authorization")
-        }
-
+        let allowedHeaders = ["accept", "context", "if-match", "content-type"]
+        modifiedRequest.allHTTPHeaderFields = request.allHTTPHeaderFields?.filter { allowedHeaders.contains($0.key.lowercased()) }
         return try await PMSDKNetwork.shared.delegate(for: modifiedRequest).performRequest(modifiedRequest)
     }
 }

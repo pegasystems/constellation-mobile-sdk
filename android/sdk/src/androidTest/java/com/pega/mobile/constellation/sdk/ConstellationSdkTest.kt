@@ -109,7 +109,7 @@ class ConstellationSdkTest {
             pegaUrl = PEGA_URL,
             pegaVersion = PEGA_VERSION,
             debuggable = true,
-            okHttpClient = MockHttpClient(context)
+            okHttpClient = MockHttpClient(context, PEGA_URL)
         )
 
         private fun runTest(block: suspend () -> Unit) = runBlocking(Dispatchers.Main) { block() }

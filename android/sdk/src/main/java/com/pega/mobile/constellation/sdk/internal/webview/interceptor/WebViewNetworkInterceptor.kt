@@ -42,10 +42,13 @@ internal class WebViewNetworkInterceptor(
         val body = requestBody.takeIf { request.method in listOf("POST", "PATCH") }
             ?.getAndSet(null)
             ?.toRequestBody()
+        val allowedHeaders = listOf("accept", "context", "if-match", "content-type")
         val okHttpRequest = Request.Builder()
             .method(request.method, body)
             .url(request.url.toString())
-            .headers(request.requestHeaders.toHeaders())
+            .headers(request.requestHeaders.filter { header ->
+                allowedHeaders.any { it.equals(header.key, ignoreCase = true) }
+            }.toHeaders())
             .build()
         return newCall(okHttpRequest).execute()
     }
@@ -63,6 +66,3 @@ internal class WebViewNetworkInterceptor(
         private const val TAG = "SdkWebViewNetworkInterceptor"
     }
 }
-
-
-
