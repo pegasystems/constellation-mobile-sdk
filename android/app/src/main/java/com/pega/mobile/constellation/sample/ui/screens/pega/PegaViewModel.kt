@@ -17,6 +17,7 @@ import com.pega.mobile.constellation.sample.auth.AuthInterceptor
 import com.pega.mobile.constellation.sample.auth.AuthManager
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
+import com.pega.mobile.constellation.sdk.HttpConfig
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
 import kotlinx.coroutines.flow.StateFlow
 import okhttp3.Interceptor
@@ -55,7 +56,7 @@ class PegaViewModel(
         private fun buildConfig(authManager: AuthManager) = ConstellationSdkConfig(
             pegaUrl = SDKConfig.PEGA_URL,
             pegaVersion = SDKConfig.PEGA_VERSION,
-            okHttpClient = buildOkHttpClient(authManager),
+            httpConfig = HttpConfig(pegaOkHttpClient = buildOkHttpClient(authManager)),
             componentManager = buildComponentManager(),
             debuggable = true
         )
