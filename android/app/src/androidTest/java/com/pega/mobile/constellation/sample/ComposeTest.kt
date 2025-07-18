@@ -35,6 +35,7 @@ import com.pega.mobile.constellation.sample.ui.screens.pega.PegaViewModel
 import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 import com.pega.mobile.constellation.sdk.ConstellationSdk
 import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
+import com.pega.mobile.constellation.sdk.HttpConfig
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
@@ -139,7 +140,7 @@ class ComposeTest {
         pegaUrl = "https://insert-url-here.example/prweb",
         pegaVersion = "24.1.0",
         debuggable = true,
-        okHttpClient = buildHttpClient(authManager),
+        httpConfig = HttpConfig(buildHttpClient(authManager)),
         componentManager = buildComponentManager()
     )
 
