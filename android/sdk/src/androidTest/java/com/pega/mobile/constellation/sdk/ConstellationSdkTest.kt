@@ -9,6 +9,7 @@ import com.pega.mobile.constellation.sdk.components.containers.ContainerComponen
 import com.pega.mobile.constellation.sdk.components.containers.FlowContainerComponent
 import com.pega.mobile.constellation.sdk.components.containers.RootContainerComponent
 import com.pega.mobile.constellation.sdk.components.core.Component
+import com.pega.mobile.constellation.sdk.internal.ConstellationSdkImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -27,6 +28,7 @@ class ConstellationSdkTest {
     @Test
     fun test_initialization() = runTest {
         val sdk = ConstellationSdk.create(context, config)
+        config.nonDxOkHttpClient = MockHttpClient(context)
         assertEquals(State.Initial, sdk.state.value)
 
         sdk.createCase(CASE_CLASS)
@@ -64,6 +66,7 @@ class ConstellationSdkTest {
     @Test
     fun test_component_structure() = runTest {
         val sdk = ConstellationSdk.create(context, config)
+        config.nonDxOkHttpClient = MockHttpClient(context)
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
         assertEquals(
