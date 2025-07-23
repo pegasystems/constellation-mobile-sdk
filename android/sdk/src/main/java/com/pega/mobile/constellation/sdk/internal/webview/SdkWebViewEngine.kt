@@ -24,20 +24,21 @@ import com.pega.mobile.constellation.sdk.internal.webview.SdkBridge.BridgeEvent.
 import com.pega.mobile.constellation.sdk.internal.webview.SdkWebViewEngine.EngineEvent.Error
 import com.pega.mobile.constellation.sdk.internal.webview.interceptor.WebViewAssetInterceptor
 import com.pega.mobile.constellation.sdk.internal.webview.interceptor.WebViewNetworkInterceptor
+import okhttp3.OkHttpClient
 import org.json.JSONObject
 
 internal class SdkWebViewEngine(
     private val context: Context,
     private val config: ConstellationSdkConfig,
-    private val handler: EngineEventHandler
+    private val handler: EngineEventHandler,
+    nonDxOkHttpClient: OkHttpClient
 ) {
     init {
         setWebContentsDebuggingEnabled(config.debuggable)
     }
 
     private val componentManager = config.componentManager
-
-    private val networkInterceptor = WebViewNetworkInterceptor(config.httpConfig, config.pegaUrl)
+    private val networkInterceptor = WebViewNetworkInterceptor(config.okHttpClient, nonDxOkHttpClient, config.pegaUrl)
     private val assetInterceptor = WebViewAssetInterceptor(context, config)
     private val interceptors = listOf(assetInterceptor, networkInterceptor)
 

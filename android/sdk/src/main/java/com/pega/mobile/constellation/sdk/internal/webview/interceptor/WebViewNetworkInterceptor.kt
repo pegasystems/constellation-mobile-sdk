@@ -5,7 +5,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.lifecycle.AtomicReference
-import com.pega.mobile.constellation.sdk.HttpConfig
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,7 +13,8 @@ import okhttp3.Response
 import java.io.ByteArrayInputStream
 
 internal class WebViewNetworkInterceptor(
-    private val httpConfig: HttpConfig,
+    private val dxOkHttpClient: OkHttpClient,
+    private val nonDxOkHttpClient: OkHttpClient,
     private val pegaUrl: String
 ) : WebViewInterceptor {
     private var requestBody = AtomicReference<String?>(null)
@@ -22,9 +22,9 @@ internal class WebViewNetworkInterceptor(
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
         runCatching {
             if (request.url.toString().startsWith(pegaUrl)) {
-                httpConfig.pegaOkHttpClient.execute(request).toWebResourceResponse()
+                dxOkHttpClient.execute(request).toWebResourceResponse()
             } else {
-                httpConfig.nonPegaOkHttpClient.execute(request).toWebResourceResponse()
+                nonDxOkHttpClient.execute(request).toWebResourceResponse()
             }
         }.getOrElse {
             val message = it.message.orEmpty()
