@@ -27,7 +27,8 @@ class ConstellationSdkTest {
 
     @Test
     fun test_initialization() = runTest {
-        val sdk = ConstellationSdkImpl(context, config, MockHttpClient(context))
+        val sdk = ConstellationSdk.create(context, config)
+        config.nonDxOkHttpClient = MockHttpClient(context)
         assertEquals(State.Initial, sdk.state.value)
 
         sdk.createCase(CASE_CLASS)
@@ -64,7 +65,8 @@ class ConstellationSdkTest {
 
     @Test
     fun test_component_structure() = runTest {
-        val sdk = ConstellationSdkImpl(context, config, MockHttpClient(context))
+        val sdk = ConstellationSdk.create(context, config)
+        config.nonDxOkHttpClient = MockHttpClient(context)
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
         assertEquals(

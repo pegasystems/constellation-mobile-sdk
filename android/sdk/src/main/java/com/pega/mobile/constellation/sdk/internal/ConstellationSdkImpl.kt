@@ -10,14 +10,12 @@ import com.pega.mobile.constellation.sdk.internal.webview.SdkWebViewEngine
 import com.pega.mobile.constellation.sdk.internal.webview.SdkWebViewEngine.EngineEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import okhttp3.OkHttpClient
 
 internal class ConstellationSdkImpl(
     context: Context,
-    config: ConstellationSdkConfig,
-    nonDxOkHttpClient: OkHttpClient
+    config: ConstellationSdkConfig
 ) : ConstellationSdk {
-    private val engine = SdkWebViewEngine(context, config, ::onEngineEvent, nonDxOkHttpClient)
+    private val engine = SdkWebViewEngine(context, config, ::onEngineEvent)
     private val componentManager = config.componentManager
 
     private val _state = MutableStateFlow<State>(State.Initial)

@@ -34,7 +34,7 @@ interface ConstellationSdk {
          */
         @MainThread
         fun create(context: Context, config: ConstellationSdkConfig): ConstellationSdk =
-            ConstellationSdkImpl(context, config, ConstellationSdkConfig.defaultHttpClient())
+            ConstellationSdkImpl(context, config)
     }
 
     /**
