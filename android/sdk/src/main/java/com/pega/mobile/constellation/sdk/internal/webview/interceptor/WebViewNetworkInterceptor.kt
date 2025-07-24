@@ -46,13 +46,13 @@ internal class WebViewNetworkInterceptor(private val config: ConstellationSdkCon
         val body = requestBody.takeIf { request.method in listOf("POST", "PATCH") }
             ?.getAndSet(null)
             ?.toRequestBody()
+        val filteredHeaders = request.requestHeaders.filterNot {
+            isAuthorizationHeaderUndefined(it.key, it.value) || isHeaderDisallowed(it.key)
+        }
         val okHttpRequest = Request.Builder()
             .method(request.method, body)
             .url(request.url.toString())
-            .headers(
-                request.requestHeaders
-                .filter { isHeaderAllowed(it.key.lowercase()) }
-                .toHeaders())
+            .headers(filteredHeaders.toHeaders())
             .build()
         return newCall(okHttpRequest).execute()
     }
@@ -65,9 +65,15 @@ internal class WebViewNetworkInterceptor(private val config: ConstellationSdkCon
         headers.toMap(),
         body?.byteStream()
     )
+    /**
+     *  Remove "Authorization" header if necessary due to JS layer unnecessarily appending
+     * `undefined` value to it
+     */
+    private fun isAuthorizationHeaderUndefined(headerKey: String, headerValue: String) =
+        headerKey.lowercase() == "authorization" && headerValue.lowercase() == "undefined"
 
-    private fun isHeaderAllowed(headerKey: String) =
-        DISALLOWED_HEADERS_LIST.none {
+    private fun isHeaderDisallowed(headerKey: String) =
+        DISALLOWED_HEADERS_LIST.any {
             if (it.endsWith("*")) {
                 headerKey.lowercase().startsWith(it.removeSuffix("*"))
             } else {

@@ -15,7 +15,8 @@ public class PMSDKNetwork {
         "Origin",
         "X-Requested-With",
         "User-Agent",
-        "sec-ch-ua*"
+        "sec-ch-ua*",
+        "Sec-Fetch*"
     ].map { $0.lowercased() }
 }
 
@@ -50,23 +51,27 @@ extension PMSDKNetwork {
     }
 
     static func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
-        // Remove "Authorization" header if necessary due to JS layer unnecessarily appending `undefined` value to it.
         var modifiedRequest = request
-        if modifiedRequest.value(forHTTPHeaderField: "Authorization") == "undefined" {
-            modifiedRequest.setValue(nil, forHTTPHeaderField: "Authorization")
-        }
-        modifiedRequest.allHTTPHeaderFields = request.allHTTPHeaderFields?
-            .filter { PMSDKNetwork.isHeaderAllowed($0.key.lowercased()) }
+        request.allHTTPHeaderFields?
+            .filter { PMSDKNetwork.isAuthorizationHeaderUndefined($0.key, $0.value) || PMSDKNetwork.isHeaderDisallowed($0.key) }
+            .forEach { header in
+                modifiedRequest.setValue(nil, forHTTPHeaderField: header.key)
+            }
         return try await PMSDKNetwork.shared.delegate(for: modifiedRequest).performRequest(modifiedRequest)
     }
+    
+    // Remove "Authorization" header if necessary due to JS layer unnecessarily appending `undefined` value to it.
+    private static func isAuthorizationHeaderUndefined(_ key: String, _ value: String) -> Bool {
+        key.lowercased() == "authorization" && value.lowercased() == "undefined"
+    }
 
-    private static func isHeaderAllowed(_ key: String) -> Bool {
-        !disallowedHeaders.contains { header in
+    private static func isHeaderDisallowed(_ key: String) -> Bool {
+        disallowedHeaders.contains { header in
             if header.hasSuffix("*") {
                 let prefix = String(header.dropLast())
-                return key.hasPrefix(prefix)
+                return key.lowercased().hasPrefix(prefix)
             } else {
-                return key == header
+                return key.lowercased() == header
             }
         }
     }
