@@ -137,7 +137,7 @@ class ComposeTest {
 
     private fun buildSdkConfig(authManager: AuthManager) = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
-        pegaVersion = "24.1.0",
+        pegaVersion = PEGA_VERSION,
         debuggable = true,
         okHttpClient = buildHttpClient(authManager),
         componentManager = buildComponentManager()
@@ -146,7 +146,7 @@ class ComposeTest {
     private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
     private fun buildHttpClient(authManager: AuthManager) = when (mode) {
-        MOCK_SERVER -> MockHttpClient(InstrumentationRegistry.getInstrumentation().context, PEGA_URL)
+        MOCK_SERVER -> MockHttpClient(InstrumentationRegistry.getInstrumentation().context)
         REAL_SERVER -> OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .build()
@@ -168,6 +168,7 @@ class ComposeTest {
     companion object {
         private const val CREATE_CASE_TEXT = "New Service"
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
+        private const val PEGA_VERSION = "24.1.0"
         val TestComponentDefinitions = listOf(
             ComponentDefinition(Email) { CustomEmailComponent(it) }
         )

@@ -46,20 +46,13 @@ internal class WebViewNetworkInterceptor(private val config: ConstellationSdkCon
         val body = requestBody.takeIf { request.method in listOf("POST", "PATCH") }
             ?.getAndSet(null)
             ?.toRequestBody()
-        val disallowedHeaders = listOf(
-            "Origin",
-            "sec-ch-ua",
-            "sec-ch-ua-mobile",
-            "sec-ch-ua-platform",
-            "User-Agent",
-            "Referer"
-        ).map { it.lowercase() }
         val okHttpRequest = Request.Builder()
             .method(request.method, body)
             .url(request.url.toString())
-            .headers(request.requestHeaders.filterNot {
-                disallowedHeaders.contains(it.key.lowercase())
-            }.toHeaders())
+            .headers(
+                request.requestHeaders
+                .filter { isHeaderAllowed(it.key.lowercase()) }
+                .toHeaders())
             .build()
         return newCall(okHttpRequest).execute()
     }
@@ -73,7 +66,23 @@ internal class WebViewNetworkInterceptor(private val config: ConstellationSdkCon
         body?.byteStream()
     )
 
+    private fun isHeaderAllowed(headerKey: String) =
+        DISALLOWED_HEADERS_LIST.none {
+            if (it.endsWith("*")) {
+                headerKey.lowercase().startsWith(it.removeSuffix("*"))
+            } else {
+                headerKey.lowercase() == it
+            }
+        }
+
     companion object {
         private const val TAG = "SdkWebViewNetworkInterceptor"
+        val DISALLOWED_HEADERS_LIST = listOf(
+            "Referer",
+            "Origin",
+            "X-Requested-With",
+            "User-Agent",
+            "sec-ch-ua*"
+        ).map { it.lowercase() }
     }
 }

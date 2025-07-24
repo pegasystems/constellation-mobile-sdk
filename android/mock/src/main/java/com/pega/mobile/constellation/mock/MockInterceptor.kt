@@ -16,9 +16,8 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
-import java.net.URL
 
-class MockInterceptor(private val context: Context, private val pegaUrl: String) : Interceptor {
+class MockInterceptor(private val context: Context) : Interceptor {
 
     private val handlers = listOf(
         CdnHandler(),
@@ -51,7 +50,7 @@ class MockInterceptor(private val context: Context, private val pegaUrl: String)
         .code(code)
         .message("OK")
         .header("Content-Type", "application/javascript")
-        .apply { header("Access-Control-Allow-Origin", "https://${URL(pegaUrl).host}") }  // Allow CORS for testing
+        .apply { header("Access-Control-Allow-Origin", "*") }  // Allow CORS for testing
         .body(this)
         .build()
 

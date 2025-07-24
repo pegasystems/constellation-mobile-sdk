@@ -4,6 +4,6 @@ import android.content.Context
 import okhttp3.OkHttpClient
 
 @Suppress("FunctionName")
-fun MockHttpClient(context: Context, pegaUrl: String) = OkHttpClient.Builder()
-    .addInterceptor(MockInterceptor(context, pegaUrl))
+fun MockHttpClient(context: Context) = OkHttpClient.Builder()
+    .addInterceptor(MockInterceptor(context))
     .build()
