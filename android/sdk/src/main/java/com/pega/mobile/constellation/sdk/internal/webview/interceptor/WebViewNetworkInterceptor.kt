@@ -83,7 +83,7 @@ internal class WebViewNetworkInterceptor(private val config: ConstellationSdkCon
 
     companion object {
         private const val TAG = "SdkWebViewNetworkInterceptor"
-        val DISALLOWED_HEADERS_LIST = listOf(
+        private val DISALLOWED_HEADERS_LIST = listOf(
             "Referer",
             "Origin",
             "X-Requested-With",
