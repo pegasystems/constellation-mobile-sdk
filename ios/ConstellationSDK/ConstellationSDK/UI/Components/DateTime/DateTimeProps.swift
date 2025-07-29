@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 import Combine
-import OSLog
 
 public class DateTimeProps : ObservableObject {
 
@@ -33,7 +32,7 @@ public class DateTimeProps : ObservableObject {
             if let parsedDate = DateTimeProps.gmtFormatter.date(from: newValue) {
                 self.selectedDate = parsedDate
             } else {
-                Logger.current().warning("Cannot parse dateTime value: <\(newValue)>. Falling back to current timestamp.")
+                Log.warning("Cannot parse dateTime value: <\(newValue)>. Falling back to current timestamp.")
                 self.selectedDate = .now
             }
         }

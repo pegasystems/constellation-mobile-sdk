@@ -1,5 +1,4 @@
 import Foundation
-import OSLog
 
 public struct CountryData: Codable, Identifiable {
     public let id: String
@@ -24,7 +23,7 @@ public struct CountryData: Codable, Identifiable {
         do {
             return try Bundle(for: PhoneNumberProps.self).decode(jsonResource: "CountryData.json")
         } catch {
-            Logger.current().error("Couldn't load country data: \(error)")
+            Log.error("Couldn't load country data: \(error)")
             return [CountryData.default]
         }
     }()

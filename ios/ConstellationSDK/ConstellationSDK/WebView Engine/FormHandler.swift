@@ -1,6 +1,5 @@
 import Foundation
 import WebKit
-import OSLog
 
 class FormHandler: NSObject, WKScriptMessageHandler {
     weak var manager: ComponentManager?
@@ -20,7 +19,7 @@ class FormHandler: NSObject, WKScriptMessageHandler {
             let array = message.body as? [Any],
             let type = array[0] as? String
         else {
-            Logger.current().error("Can not decode message")
+            Log.error("Can not decode message")
             return
         }
         switch type {
@@ -32,7 +31,7 @@ class FormHandler: NSObject, WKScriptMessageHandler {
         case "cancelled": handleFormCancel()
         case "error": handleFormError(array)
         default:
-            Logger.current().error("Unexpected message type: \(type)")
+            Log.error("Unexpected message type: \(type)")
         }
     }
 
@@ -46,13 +45,13 @@ class FormHandler: NSObject, WKScriptMessageHandler {
             let props = input[2] as? String {
             manager?.updateComponent(cId, props)
         } else {
-            Logger.current().error("Unexpected parameters types in updateComponent")
+            Log.error("Unexpected parameters types in updateComponent")
         }
     }
 
     private func handleAddComponent(_ input: [Any]) {
         guard let cId = input.componentId, let cType = input[2] as? String else {
-            Logger.current().error("Unexpected input for addComponent.")
+            Log.error("Unexpected input for addComponent.")
             return
         }
         manager?.addComponent(cId, type: cType)
@@ -60,29 +59,29 @@ class FormHandler: NSObject, WKScriptMessageHandler {
 
     private func handleRemoveComponent(_ input: [Any]) {
         guard let cId = input.componentId  else {
-            Logger.current().error("Unexpected input for removeComponent.")
+            Log.error("Unexpected input for removeComponent.")
             return
         }
         manager?.removeComponent(cId)
     }
 
     private func handleFormReady() {
-        Logger.current().debug("Form ready.")
+        Log.debug("Form ready.")
     }
 
     private func handleFormFinished(_ input: [Any]) {
-        Logger.current().debug("Form finished.")
+        Log.debug("Form finished.")
         continuation.proceed(.finished(input[1] as? String))
     }
 
     private func handleFormCancel() {
-        Logger.current().debug("Form cancelled.")
+        Log.debug("Form cancelled.")
         continuation.proceed(.cancelled)
     }
 
     private func handleFormError(_ input: [Any]) {
         let errorMessage = input[1] as? String ?? "Unexpected."
-        Logger.current().debug("Form encountered an error: \(errorMessage)")
+        Log.debug("Form encountered an error: \(errorMessage)")
         continuation.proceed(.error(errorMessage))
     }
 }

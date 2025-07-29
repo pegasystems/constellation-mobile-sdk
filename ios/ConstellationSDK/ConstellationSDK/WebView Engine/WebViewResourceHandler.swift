@@ -1,7 +1,6 @@
 import Foundation
 import WebKit
 import Combine
-import OSLog
 
 class ResourceHandler: NSObject, WKURLSchemeHandler {
     private var tasks = [URLRequest: AnyCancellable]()
@@ -14,7 +13,7 @@ class ResourceHandler: NSObject, WKURLSchemeHandler {
 
     func webView(_ webView: WKWebView, start urlSchemeTask: any WKURLSchemeTask) {
         let absoluteUrl = (urlSchemeTask.request.url?.absoluteString ?? "")
-        Logger.current().debug("Starting task for \(absoluteUrl)")
+        Log.debug("Starting task for \(absoluteUrl)")
         let task = Task {
             do {
                 let (data, response) = try await PMSDKNetwork.send(urlSchemeTask.request)

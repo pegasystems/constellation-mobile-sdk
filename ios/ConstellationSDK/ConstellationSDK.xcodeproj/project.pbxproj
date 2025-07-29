@@ -44,6 +44,7 @@
 		65E617922DF19DBE00DD83BB /* DateTimeProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617912DF19DB700DD83BB /* DateTimeProps.swift */; };
 		65E617942DF19F0900DD83BB /* DateTimeComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617932DF19F0100DD83BB /* DateTimeComponentProvider.swift */; };
 		65E617962DF1A41100DD83BB /* DateTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617952DF1A40C00DD83BB /* DateTimeView.swift */; };
+		B50739032E38C857000A70E2 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50739022E38C854000A70E2 /* Log.swift */; };
 		B52348AF2D53A31D0042F27B /* ConstellationSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = B52348AE2D53A31D0042F27B /* ConstellationSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B52349882D53ACD80042F27B /* ComponentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523497E2D53ACD70042F27B /* ComponentEvent.swift */; };
 		B52349CB2D53AD010042F27B /* CheckboxComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349922D53AD010042F27B /* CheckboxComponentProvider.swift */; };
@@ -58,7 +59,6 @@
 		B52349EC2D53AD010042F27B /* EmailComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349BB2D53AD010042F27B /* EmailComponentProvider.swift */; };
 		B52349ED2D53AD010042F27B /* EmailProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349BC2D53AD010042F27B /* EmailProps.swift */; };
 		B52349EE2D53AD010042F27B /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349BD2D53AD010042F27B /* EmailView.swift */; };
-		B52349F62D53AD5D0042F27B /* Logger+Subsystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349F42D53AD5D0042F27B /* Logger+Subsystem.swift */; };
 		B52349FE2D53ADF40042F27B /* ComponentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349FC2D53ADF40042F27B /* ComponentManager.swift */; };
 		B53C2D0A2D81CD9900DB47FB /* AssignmentCardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53C2D082D81CD9900DB47FB /* AssignmentCardComponent.swift */; };
 		B53C2D0B2D81CD9900DB47FB /* AssignmentCardComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53C2D092D81CD9900DB47FB /* AssignmentCardComponentProps.swift */; };
@@ -131,6 +131,7 @@
 		65E617912DF19DB700DD83BB /* DateTimeProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeProps.swift; sourceTree = "<group>"; };
 		65E617932DF19F0100DD83BB /* DateTimeComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeComponentProvider.swift; sourceTree = "<group>"; };
 		65E617952DF1A40C00DD83BB /* DateTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeView.swift; sourceTree = "<group>"; };
+		B50739022E38C854000A70E2 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		B52348AB2D53A31D0042F27B /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52348AE2D53A31D0042F27B /* ConstellationSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstellationSDK.h; sourceTree = "<group>"; };
 		B523497E2D53ACD70042F27B /* ComponentEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentEvent.swift; sourceTree = "<group>"; };
@@ -165,7 +166,6 @@
 		B52349BB2D53AD010042F27B /* EmailComponentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailComponentProvider.swift; sourceTree = "<group>"; };
 		B52349BC2D53AD010042F27B /* EmailProps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailProps.swift; sourceTree = "<group>"; };
 		B52349BD2D53AD010042F27B /* EmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
-		B52349F42D53AD5D0042F27B /* Logger+Subsystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+Subsystem.swift"; sourceTree = "<group>"; };
 		B52349FC2D53ADF40042F27B /* ComponentManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentManager.swift; sourceTree = "<group>"; };
 		B53C2D082D81CD9900DB47FB /* AssignmentCardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCardComponent.swift; sourceTree = "<group>"; };
 		B53C2D092D81CD9900DB47FB /* AssignmentCardComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCardComponentProps.swift; sourceTree = "<group>"; };
@@ -345,14 +345,14 @@
 		B52348AD2D53A31D0042F27B /* ConstellationSDK */ = {
 			isa = PBXGroup;
 			children = (
+				B52348AE2D53A31D0042F27B /* ConstellationSDK.h */,
+				B52348B62D53A40C0042F27B /* JS */,
+				B50739022E38C854000A70E2 /* Log.swift */,
 				B5ACA2EB2D56496300F7AE9D /* Public */,
 				B53C47102E1D23C100ACA92B /* Resource Providers */,
-				B52349F42D53AD5D0042F27B /* Logger+Subsystem.swift */,
 				B58637D52D79D826007E3020 /* String+NilIfEmpty.swift */,
 				B52348D72D53AAAB0042F27B /* UI */,
 				B52348C22D53AA610042F27B /* WebView Engine */,
-				B52348B62D53A40C0042F27B /* JS */,
-				B52348AE2D53A31D0042F27B /* ConstellationSDK.h */,
 			);
 			path = ConstellationSDK;
 			sourceTree = "<group>";
@@ -706,7 +706,6 @@
 				B57789DC2D8083B20036B039 /* CaseProcessingResult.swift in Sources */,
 				B52349CC2D53AD010042F27B /* CheckboxProps.swift in Sources */,
 				657593FE2DAEAB9800B7D73A /* IntegerView.swift in Sources */,
-				B52349F62D53AD5D0042F27B /* Logger+Subsystem.swift in Sources */,
 				657594082DAEC3A500B7D73A /* DropdownView.swift in Sources */,
 				6573708F2D8DBE8F001CC458 /* AlertBannerComponentProps.swift in Sources */,
 				65E617962DF1A41100DD83BB /* DateTimeView.swift in Sources */,
@@ -729,6 +728,7 @@
 				B54FD7632DD3765900DC6938 /* PhoneNumberComponentProvider.swift in Sources */,
 				B52349E62D53AD010042F27B /* TextInputProps.swift in Sources */,
 				B54FD7612DD36DE600DC6938 /* CountryData.swift in Sources */,
+				B50739032E38C857000A70E2 /* Log.swift in Sources */,
 				B58637CC2D71E3CA007E3020 /* ViewComponent.swift in Sources */,
 				B52349ED2D53AD010042F27B /* EmailProps.swift in Sources */,
 				657D9D612D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift in Sources */,
