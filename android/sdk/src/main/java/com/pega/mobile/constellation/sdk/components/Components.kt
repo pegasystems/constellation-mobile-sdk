@@ -6,6 +6,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.Assignment
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.AssignmentCard
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Checkbox
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Currency
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.DataReference
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Date
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.DateTime
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Decimal
@@ -21,6 +22,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.RadioButtons
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Region
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.RootContainer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.SimpleTable
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.SimpleTableSelect
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextArea
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.TextInput
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Time
@@ -32,6 +34,8 @@ import com.pega.mobile.constellation.sdk.components.containers.AssignmentCardCom
 import com.pega.mobile.constellation.sdk.components.containers.AssignmentCardRenderer
 import com.pega.mobile.constellation.sdk.components.containers.AssignmentComponent
 import com.pega.mobile.constellation.sdk.components.containers.AssignmentRenderer
+import com.pega.mobile.constellation.sdk.components.containers.DataReferenceComponent
+import com.pega.mobile.constellation.sdk.components.containers.DataReferenceRenderer
 import com.pega.mobile.constellation.sdk.components.containers.DefaultFormComponent
 import com.pega.mobile.constellation.sdk.components.containers.DefaultFormRenderer
 import com.pega.mobile.constellation.sdk.components.containers.FieldGroupTemplateComponent
@@ -46,6 +50,8 @@ import com.pega.mobile.constellation.sdk.components.containers.RootContainerComp
 import com.pega.mobile.constellation.sdk.components.containers.RootContainerRenderer
 import com.pega.mobile.constellation.sdk.components.containers.SimpleTableComponent
 import com.pega.mobile.constellation.sdk.components.containers.SimpleTableRenderer
+import com.pega.mobile.constellation.sdk.components.containers.SimpleTableSelectComponent
+import com.pega.mobile.constellation.sdk.components.containers.SimpleTableSelectRenderer
 import com.pega.mobile.constellation.sdk.components.containers.ViewComponent
 import com.pega.mobile.constellation.sdk.components.containers.ViewContainerComponent
 import com.pega.mobile.constellation.sdk.components.containers.ViewContainerRenderer
@@ -103,6 +109,7 @@ object Components {
         Def(Checkbox) { CheckboxComponent(it) },
         Def(Currency) { CurrencyComponent(it) },
         Def(Date) { DateComponent(it) },
+        Def(DataReference) { DataReferenceComponent(it)},
         Def(DateTime) { DateTimeComponent(it) },
         Def(Decimal) { DecimalComponent(it) },
         Def(DefaultForm) { DefaultFormComponent(it) },
@@ -117,6 +124,7 @@ object Components {
         Def(Region) { RegionComponent(it) },
         Def(RootContainer) { RootContainerComponent(it) },
         Def(SimpleTable) { SimpleTableComponent(it) },
+        Def(SimpleTableSelect) { SimpleTableSelectComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(TextInput) { TextInputComponent(it) },
         Def(Time) { TimeComponent(it) },
@@ -136,6 +144,7 @@ object Components {
         AssignmentCard to AssignmentCardRenderer(),
         Checkbox to CheckboxRenderer(),
         Currency to CurrencyRenderer(),
+        DataReference to DataReferenceRenderer(),
         Date to DateRenderer(),
         DateTime to DateTimeRenderer(),
         Decimal to DecimalRenderer(),
@@ -151,6 +160,7 @@ object Components {
         Region to RegionRenderer(),
         RootContainer to RootContainerRenderer(),
         SimpleTable to SimpleTableRenderer(),
+        SimpleTableSelect to SimpleTableSelectRenderer(),
         TextArea to TextAreaRenderer(),
         TextInput to TextInputRenderer(),
         Time to TimeRenderer(),

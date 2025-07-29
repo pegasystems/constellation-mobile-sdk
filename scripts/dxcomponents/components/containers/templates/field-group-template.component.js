@@ -130,7 +130,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
 
   onEvent(event) {
     if (!this.readonlyMode) {
-      this.referenceList?.forEach((item) => {
+      this.items?.forEach((item) => {
           item.component.onEvent(event);
         }
       )

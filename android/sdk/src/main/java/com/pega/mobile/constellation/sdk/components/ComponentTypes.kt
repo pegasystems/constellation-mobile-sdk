@@ -9,6 +9,7 @@ object ComponentTypes {
     // containers
     val Assignment = ComponentType("Assignment")
     val AssignmentCard = ComponentType("AssignmentCard")
+    val DataReference = ComponentType("DataReference")
     val DefaultForm = ComponentType("DefaultForm")
     val FlowContainer = ComponentType("FlowContainer")
     val OneColumn = ComponentType("OneColumn")
@@ -19,6 +20,7 @@ object ComponentTypes {
 
     // templates
     val SimpleTable = ComponentType("SimpleTable")
+    val SimpleTableSelect = ComponentType("SimpleTableSelect")
     val FieldGroupTemplate = ComponentType("FieldGroupTemplate")
 
     // fields

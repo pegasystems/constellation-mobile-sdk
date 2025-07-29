@@ -16,33 +16,32 @@ import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_JAVASCRIPT_IMPLEMENTATION
-import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.UNKNOWN_CAUSE
 import com.pega.mobile.dxcomponents.compose.controls.form.Unsupported
 import org.json.JSONObject
 
 class UnsupportedComponent(
     context: ComponentContext,
-    type: ComponentType = ComponentType("Unknown"),
-    cause: Cause = UNKNOWN_CAUSE,
+    unsupportedType: ComponentType = ComponentType("Unknown"),
+    val cause: Cause = MISSING_JAVASCRIPT_IMPLEMENTATION,
 ) : BaseComponent(context) {
-    var type by mutableStateOf(type)
+    var unsupportedType by mutableStateOf(unsupportedType)
         private set
-    var cause by mutableStateOf(cause)
-        private set
-    var visible by mutableStateOf(false)
+    var visible by mutableStateOf(true)
         private set
 
     override fun onUpdate(props: JSONObject) {
-        type = ComponentType(props.getString("type"))
-        cause = MISSING_JAVASCRIPT_IMPLEMENTATION
-        visible = props.getBoolean("visible")
+        // for MISSING_JAVASCRIPT_IMPLEMENTATION, we get missing type in props
+        // for other causes, we use the type from the context and pass here in constructor
+        if (cause == MISSING_JAVASCRIPT_IMPLEMENTATION) {
+            unsupportedType = ComponentType(props.getString("type"))
+        }
+        visible = props.optBoolean("visible", true)
     }
 
     enum class Cause {
         MISSING_JAVASCRIPT_IMPLEMENTATION,
         MISSING_COMPONENT_DEFINITION,
-        MISSING_COMPONENT_RENDERER,
-        UNKNOWN_CAUSE
+        MISSING_COMPONENT_RENDERER
     }
 
     companion object {
@@ -53,7 +52,7 @@ class UnsupportedComponent(
                 componentManager = context.componentManager,
                 onComponentEvent = { Log.w(TAG, "Cannot send event to unsupported: $it") }
             ),
-            type = context.type,
+            unsupportedType = context.type,
             cause = cause
         )
     }
@@ -64,9 +63,9 @@ private const val TAG = "Unsupported"
 class UnsupportedRenderer : ComponentRenderer<UnsupportedComponent> {
     @Composable
     override fun UnsupportedComponent.Render() {
-        Log.w(TAG, "Unsupported component '$type' due to ${cause.message()}")
+        Log.w(TAG, "Unsupported component '$unsupportedType' due to ${cause.message()}")
         WithVisibility(visible) {
-            Unsupported("Unsupported component '$type'")
+            Unsupported("Unsupported component '$unsupportedType'")
         }
     }
 
@@ -74,6 +73,5 @@ class UnsupportedRenderer : ComponentRenderer<UnsupportedComponent> {
         MISSING_JAVASCRIPT_IMPLEMENTATION -> "missing JavaScript implementation"
         MISSING_COMPONENT_DEFINITION -> "missing component definition"
         MISSING_COMPONENT_RENDERER -> "missing component renderer"
-        UNKNOWN_CAUSE -> "unknown cause"
     }
 }

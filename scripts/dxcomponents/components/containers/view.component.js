@@ -13,7 +13,7 @@ export class ViewComponent extends ContainerBaseComponent {
 
   FORM_TEMPLATES = ['DefaultForm', 'OneColumn', 'TwoColumn', 'ThreeColumn', 'WideNarrow'];
   SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'OneColumn'];
-  VIEW_TEMPLATES = ['SimpleTable'];
+  VIEW_TEMPLATES = ['SimpleTable','DataReference'];
 
   jsComponentPConnectData = {};
   props = {
