@@ -46,10 +46,13 @@ internal class WebViewNetworkInterceptor(private val config: ConstellationSdkCon
         val body = requestBody.takeIf { request.method in listOf("POST", "PATCH") }
             ?.getAndSet(null)
             ?.toRequestBody()
+        val filteredHeaders = request.requestHeaders.filterNot {
+            isAuthorizationHeaderUndefined(it.key, it.value) || isHeaderDisallowed(it.key)
+        }
         val okHttpRequest = Request.Builder()
             .method(request.method, body)
             .url(request.url.toString())
-            .headers(request.requestHeaders.toHeaders())
+            .headers(filteredHeaders.toHeaders())
             .build()
         return newCall(okHttpRequest).execute()
     }
@@ -62,11 +65,30 @@ internal class WebViewNetworkInterceptor(private val config: ConstellationSdkCon
         headers.toMap(),
         body?.byteStream()
     )
+    /**
+     *  Remove "Authorization" header if necessary due to JS layer unnecessarily appending
+     * `undefined` value to it
+     */
+    private fun isAuthorizationHeaderUndefined(headerKey: String, headerValue: String) =
+        headerKey.lowercase() == "authorization" && headerValue.lowercase() == "undefined"
+
+    private fun isHeaderDisallowed(headerKey: String) =
+        DISALLOWED_HEADERS_LIST.any {
+            if (it.endsWith("*")) {
+                headerKey.lowercase().startsWith(it.removeSuffix("*"))
+            } else {
+                headerKey.lowercase() == it
+            }
+        }
 
     companion object {
         private const val TAG = "SdkWebViewNetworkInterceptor"
+        private val DISALLOWED_HEADERS_LIST = listOf(
+            "Referer",
+            "Origin",
+            "X-Requested-With",
+            "User-Agent",
+            "sec-ch-ua*"
+        ).map { it.lowercase() }
     }
 }
-
-
-
