@@ -11,8 +11,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configurePegaSDK()
-
         let welcomeLabel: UILabel = {
             let label = UILabel()
             label.text = "Pega Mobile Constellation SDK"
@@ -46,14 +44,8 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(showNewPegaCase), for: .touchUpInside)
     }
 
-    private func configurePegaSDK() {
-        // 1. Registering HTTP interceptor
-        PMSDKNetwork.shared.requestDelegate = mockedNetwork
-    }
-
     @objc private func showNewPegaCase(_ sender: UIButton) {
         Task {
-            // 2. Create case form creation
             let startingFields = PMSDKCreateCaseStartingFields()
             // Set proper starting fields as defined in casetype model:
             // startingFields.set(value: "Johnny", forKey: "FirstName")
@@ -64,7 +56,8 @@ class ViewController: UIViewController {
                     pegaVersion: SDKConfiguration.environmentVersion,
                     caseClass: SDKConfiguration.caseClassName,
                     startingFields: startingFields,
-                    delegate: self
+                    createCaseDelegate: self,
+                    networkDelegate: mockedNetwork
                 )
             )
             hostingController.modalPresentationStyle = .formSheet
