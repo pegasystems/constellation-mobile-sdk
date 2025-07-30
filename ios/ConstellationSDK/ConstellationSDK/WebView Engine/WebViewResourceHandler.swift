@@ -4,11 +4,10 @@ import Combine
 
 class ResourceHandler: NSObject, WKURLSchemeHandler {
     private var tasks = [URLRequest: AnyCancellable]()
-    private var bundle = Bundle(for: WebViewEngine.self)
-    private let baseURL: URL
+    private var httpHandler: HTTPHandler
 
-    init(baseURL: URL) {
-        self.baseURL = baseURL
+    init(httpHandler: HTTPHandler) {
+        self.httpHandler = httpHandler
     }
 
     func webView(_ webView: WKWebView, start urlSchemeTask: any WKURLSchemeTask) {
@@ -16,13 +15,14 @@ class ResourceHandler: NSObject, WKURLSchemeHandler {
         Log.debug("Starting task for \(absoluteUrl)")
         let task = Task {
             do {
-                let (data, response) = try await PMSDKNetwork.send(urlSchemeTask.request)
+                let (data, response) = try await httpHandler.send(urlSchemeTask.request)
                 guard !Task.isCancelled else { return }
                 urlSchemeTask.didReceive(response)
                 urlSchemeTask.didReceive(data)
                 urlSchemeTask.didFinish()
             } catch {
                 guard !Task.isCancelled else { return }
+                Log.debug("Task for \(absoluteUrl) has finished with error: \(error)")
                 urlSchemeTask.didFailWithError(error)
             }
         }

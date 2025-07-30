@@ -14,7 +14,6 @@ Project Structure
 
 Pega Constellation Mobile SDK exposes the following classes to be used as main integration points:
 
-* `PMSDKNetwork` - Controls network communications, holds weak reference to the delegate, which will perform network requests on behalf of SDK
 * `PMSDKComponentManager` - Singleton, which holds the registry of default and custom component providers
 * `PMSDKCreateCaseStartingFields` - Responsible for storage and coding of starting fields
 * `PMSDKCreateCaseView` - SwiftUI view which handles case processing lifecycle.
@@ -24,17 +23,12 @@ Other public classes, like properties, views, and providers are present to perfo
 Integration
 -----------
 
-Before Case processing can be started, the application needs to provide a network request delegate. To do so, an instance of class implementing `PMSDKNetworkRequestDelegate` protocol shall be created.
+The application may provide a network request delegate. To do so, an instance of class implementing `PMSDKNetworkRequestDelegate` protocol shall be created.
 
 `PMSDKNetworkRequestDelegate` requires two methods:
-* `func shouldHandle(request: URLRequest) -> Bool` - Decides if the request should be handled. The main purpose of this function is to reject unwanted requests.
+* `func shouldHandle(request: URLRequest) -> Bool` - Decides if the request should be handled. The purpose of this function is to pass requests to the default network handler.
 * `func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse)` - Handles network requests asynchronously and returns data and the response.
    It is the responsibility of the enclosing application to handle authorization. Most Pega instances use OAuth2 protocol, so this method shall authorize requests with proper tokens and handle token expiration and refreshment processes.
-
-Prepared network delegate shall be assigned to the `PMSDKNetwork` shared instance:
-```swift
-PMSDKNetwork.shared.requestDelegate = self
-```
 
 Optionally, `PMSDKCreateCaseViewDelegate` can be prepared. This delegate is notified during the Case processing lifecycle. The following methods are provided:
 
@@ -60,7 +54,8 @@ PMSDKCreateCaseView(
    pegaURL: <URL to Pega instance>,
    caseClass: <case class name>,
    startingFields: <starting fields|nil>,
-   delegate: <delegate|nil>,
+   createCaseDelegate: <delegate|nil>,
+   networkDelegate: <delegate|nil>,
    debuggable: <true|false>
 )
 ```

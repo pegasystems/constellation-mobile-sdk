@@ -45,6 +45,9 @@
 		65E617942DF19F0900DD83BB /* DateTimeComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617932DF19F0100DD83BB /* DateTimeComponentProvider.swift */; };
 		65E617962DF1A41100DD83BB /* DateTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E617952DF1A40C00DD83BB /* DateTimeView.swift */; };
 		B50739032E38C857000A70E2 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50739022E38C854000A70E2 /* Log.swift */; };
+		B50739052E38EFF5000A70E2 /* HTTPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50739042E38EFF2000A70E2 /* HTTPHandler.swift */; };
+		B507390A2E38F29D000A70E2 /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50739092E38F29A000A70E2 /* NetworkProvider.swift */; };
+		B507390C2E38F4A9000A70E2 /* URLRequest+Headers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507390B2E38F4A1000A70E2 /* URLRequest+Headers.swift */; };
 		B52348AF2D53A31D0042F27B /* ConstellationSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = B52348AE2D53A31D0042F27B /* ConstellationSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B52349882D53ACD80042F27B /* ComponentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523497E2D53ACD70042F27B /* ComponentEvent.swift */; };
 		B52349CB2D53AD010042F27B /* CheckboxComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52349922D53AD010042F27B /* CheckboxComponentProvider.swift */; };
@@ -95,7 +98,7 @@
 		B58C94DB2DA5516A00B978E6 /* UnsupportedComponentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C94DA2DA5516300B978E6 /* UnsupportedComponentProvider.swift */; };
 		B58C94DF2DA551A500B978E6 /* UnsupportedComponentProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C94DE2DA551A200B978E6 /* UnsupportedComponentProps.swift */; };
 		B5ACA2ED2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2EC2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift */; };
-		B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetwork.swift */; };
+		B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift */; };
 		B5E2EBAA2DDC712200FDA639 /* PhoneParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E2EBA92DDC711C00FDA639 /* PhoneParser.swift */; };
 		B5F1A3982D6761B80026527C /* ScriptInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F1A3972D6761B80026527C /* ScriptInjector.swift */; };
 		B5F1A39A2D6767820026527C /* ConsoleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F1A3992D6767820026527C /* ConsoleHandler.swift */; };
@@ -132,6 +135,9 @@
 		65E617932DF19F0100DD83BB /* DateTimeComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeComponentProvider.swift; sourceTree = "<group>"; };
 		65E617952DF1A40C00DD83BB /* DateTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeView.swift; sourceTree = "<group>"; };
 		B50739022E38C854000A70E2 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		B50739042E38EFF2000A70E2 /* HTTPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHandler.swift; sourceTree = "<group>"; };
+		B50739092E38F29A000A70E2 /* NetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
+		B507390B2E38F4A1000A70E2 /* URLRequest+Headers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Headers.swift"; sourceTree = "<group>"; };
 		B52348AB2D53A31D0042F27B /* ConstellationSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ConstellationSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52348AE2D53A31D0042F27B /* ConstellationSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstellationSDK.h; sourceTree = "<group>"; };
 		B523497E2D53ACD70042F27B /* ComponentEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentEvent.swift; sourceTree = "<group>"; };
@@ -196,7 +202,7 @@
 		B58C94DA2DA5516300B978E6 /* UnsupportedComponentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedComponentProvider.swift; sourceTree = "<group>"; };
 		B58C94DE2DA551A200B978E6 /* UnsupportedComponentProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedComponentProps.swift; sourceTree = "<group>"; };
 		B5ACA2EC2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMSDKCreateCaseView.swift; sourceTree = "<group>"; };
-		B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMSDKNetwork.swift; sourceTree = "<group>"; };
+		B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMSDKNetworkRequestDelegate.swift; sourceTree = "<group>"; };
 		B5E2EBA92DDC711C00FDA639 /* PhoneParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneParser.swift; sourceTree = "<group>"; };
 		B5F1A3972D6761B80026527C /* ScriptInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptInjector.swift; sourceTree = "<group>"; };
 		B5F1A3992D6767820026527C /* ConsoleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleHandler.swift; sourceTree = "<group>"; };
@@ -369,6 +375,8 @@
 		B52348C22D53AA610042F27B /* WebView Engine */ = {
 			isa = PBXGroup;
 			children = (
+				B507390B2E38F4A1000A70E2 /* URLRequest+Headers.swift */,
+				B50739042E38EFF2000A70E2 /* HTTPHandler.swift */,
 				B5F4C7912DAE925000745729 /* DeferedContinuation.swift */,
 				B57789DB2D8083AD0036B039 /* CaseProcessingResult.swift */,
 				B523497E2D53ACD70042F27B /* ComponentEvent.swift */,
@@ -503,6 +511,7 @@
 		B53C47102E1D23C100ACA92B /* Resource Providers */ = {
 			isa = PBXGroup;
 			children = (
+				B50739092E38F29A000A70E2 /* NetworkProvider.swift */,
 				B53C470D2E1D1F8C00ACA92B /* BundledResourcesProvider.swift */,
 				B53C47FF2E1D55D500ACA92B /* ComponentAssetsProvider.swift */,
 				B53C47112E1D23D300ACA92B /* DefaultProvider.swift */,
@@ -571,7 +580,7 @@
 			isa = PBXGroup;
 			children = (
 				B5ACA2EC2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift */,
-				B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetwork.swift */,
+				B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift */,
 				B52349A02D53AD010042F27B /* PMSDKComponentManager.swift */,
 				657D9D602D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift */,
 			);
@@ -712,11 +721,13 @@
 				B56F83732D5B879A0093E00D /* WebViewOverride.swift in Sources */,
 				B53C47122E1D23D600ACA92B /* DefaultProvider.swift in Sources */,
 				B52349EE2D53AD010042F27B /* EmailView.swift in Sources */,
+				B507390A2E38F29D000A70E2 /* NetworkProvider.swift in Sources */,
 				65E617942DF19F0900DD83BB /* DateTimeComponentProvider.swift in Sources */,
 				B58C94DF2DA551A500B978E6 /* UnsupportedComponentProps.swift in Sources */,
 				651EF97C2D807D3000227F57 /* TextAreaProps.swift in Sources */,
 				B5E2EBAA2DDC712200FDA639 /* PhoneParser.swift in Sources */,
 				65038CE72D81BF810070D125 /* UrlProps.swift in Sources */,
+				B50739052E38EFF5000A70E2 /* HTTPHandler.swift in Sources */,
 				657594062DAEC20700B7D73A /* DropdownProps.swift in Sources */,
 				B52349E02D53AD010042F27B /* ComponentProps.swift in Sources */,
 				B58C94DB2DA5516A00B978E6 /* UnsupportedComponentProvider.swift in Sources */,
@@ -727,6 +738,7 @@
 				B52349D72D53AD010042F27B /* ComponentProvider.swift in Sources */,
 				B54FD7632DD3765900DC6938 /* PhoneNumberComponentProvider.swift in Sources */,
 				B52349E62D53AD010042F27B /* TextInputProps.swift in Sources */,
+				B507390C2E38F4A9000A70E2 /* URLRequest+Headers.swift in Sources */,
 				B54FD7612DD36DE600DC6938 /* CountryData.swift in Sources */,
 				B50739032E38C857000A70E2 /* Log.swift in Sources */,
 				B58637CC2D71E3CA007E3020 /* ViewComponent.swift in Sources */,
@@ -749,7 +761,7 @@
 				B53C470E2E1D1F9000ACA92B /* BundledResourcesProvider.swift in Sources */,
 				B5F1A39A2D6767820026527C /* ConsoleHandler.swift in Sources */,
 				65038CEE2D81C8B40070D125 /* UrlComponentProvider.swift in Sources */,
-				B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetwork.swift in Sources */,
+				B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift in Sources */,
 				6573708A2D8DB99B001CC458 /* FlowContainerComponentProps.swift in Sources */,
 				655DE5DA2DC8FD6800326109 /* RadioButtonsProps.swift in Sources */,
 				65E617922DF19DBE00DD83BB /* DateTimeProps.swift in Sources */,

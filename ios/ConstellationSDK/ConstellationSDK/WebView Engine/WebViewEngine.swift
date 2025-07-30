@@ -3,12 +3,18 @@ import WebKit
 import Combine
 
 extension WebViewEngine {
-    struct Configuration: Codable {
+    struct Configuration: Encodable {
         let url: URL
         let version: String
         let caseClassName: String
         let startingFields: PMSDKCreateCaseStartingFields
         let debuggable: Bool
+        weak var requestDelegate: PMSDKNetworkRequestDelegate?
+
+        // do not encode 'debuggable' and 'requestDelegate'
+        private enum CodingKeys: String, CodingKey {
+            case url, version, caseClassName, startingFields
+        }
 
         fileprivate func toString() throws -> String {
             String(
@@ -73,7 +79,12 @@ class WebViewEngine: NSObject {
             return await formHandler.processingResult()
         }
 
-        let resourceHandler = ResourceHandler(baseURL: baseURL)
+        let resourceHandler = ResourceHandler(
+            httpHandler: HTTPHandler(
+                baseURL: baseURL,
+                customDelegate: configuration.requestDelegate
+            )
+        )
 
         let formHandler = FormHandler(manager: manager)
 

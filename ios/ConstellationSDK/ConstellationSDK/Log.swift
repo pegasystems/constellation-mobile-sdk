@@ -3,7 +3,7 @@ import OSLog
 
 final class Log {
     private static var loggers = [String: Logger]()
-    private static let subsystem = Bundle(for: PMSDKNetwork.self).bundleIdentifier ?? "Unknown"
+    private static let subsystem = Bundle(for: Log.self).bundleIdentifier ?? "Unknown"
     private static let queue = DispatchQueue(label: "Logger")
     private static var logLevel: OSLogType = .debug
 
