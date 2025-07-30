@@ -1,7 +1,6 @@
 import Foundation
 import WebKit
 import Combine
-import OSLog
 
 extension WebViewEngine {
     struct Configuration: Codable {
@@ -9,6 +8,7 @@ extension WebViewEngine {
         let version: String
         let caseClassName: String
         let startingFields: PMSDKCreateCaseStartingFields
+        let debuggable: Bool
 
         fileprivate func toString() throws -> String {
             String(
@@ -34,14 +34,14 @@ class WebViewEngine: NSObject {
 
     init(configuration: Configuration) throws {
         guard (try? configuration.url.standardizingBaseURL()) != nil else {
-            Logger.current().error("Can not get standardized base url from configuration.")
+            Log.error("Can not get standardized base url from configuration.")
             throw WebViewEngineError.incorrectBaseURL
         }
         self.configuration = configuration
     }
 
     deinit {
-        Logger.current().debug("Engine deinit.")
+        Log.debug("Engine deinit.")
     }
 
     private func createWebView(with resourceHandler: ResourceHandler, formHandler: FormHandler) -> WKWebView {
@@ -55,7 +55,7 @@ class WebViewEngine: NSObject {
         config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
         config.userContentController.add(formHandler, name: "formHandler")
         config.userContentController.add(
-            ConsoleHandler(),
+            ConsoleHandler(showDebugLogs: configuration.debuggable),
             name: "consoleHandler"
         )
 
@@ -65,7 +65,7 @@ class WebViewEngine: NSObject {
     @MainActor
     func startProcessing() async -> CaseProcessingResult {
         guard let baseURL = try? configuration.url.standardizingBaseURL() else {
-            Logger.current().error("Can not get standardized base url from configuration.")
+            Log.error("Can not get standardized base url from configuration.")
             return .error("Can not get standardized base url from configuration.")
         }
 
@@ -82,7 +82,7 @@ class WebViewEngine: NSObject {
         webView.navigationDelegate = self
         self.webView = webView
 
-        webView.isInspectable = true
+        webView.isInspectable = configuration.debuggable
 
         let indexURL = baseURL.appending(
             path: "constellation-mobile-sdk-assets/scripts/index.html"
@@ -150,7 +150,7 @@ extension WebViewEngine: WKNavigationDelegate {
         guard navigation == initialNavigation else {
             return
         }
-        Logger.current().info("Initial navigation completed, injecting scripts.")
+        Log.info("Initial navigation completed, injecting scripts.")
         manager.rootComponent.injectInvisible(webView)
         let injector = ScriptInjector()
         Task {
@@ -160,7 +160,7 @@ extension WebViewEngine: WKNavigationDelegate {
                 injector.append(script: try initScript(configuration))
                 try await injector.inject(into: webView)
             } catch {
-                Logger.current().error("Error during engine initialisation: \(error)")
+                Log.error("Error during engine initialisation: \(error)")
             }
         }
     }

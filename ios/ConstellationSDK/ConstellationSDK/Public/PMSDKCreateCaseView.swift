@@ -10,13 +10,16 @@ public struct PMSDKCreateCaseView: View {
                 pegaVersion: String,
                 caseClass: String,
                 startingFields: PMSDKCreateCaseStartingFields = .init(),
-                delegate: PMSDKCreateCaseViewDelegate? = nil
+                delegate: PMSDKCreateCaseViewDelegate? = nil,
+                debuggable: Bool = false
     ) {
         engineConfiguration = .init(
             url: pegaURL,
             version: pegaVersion,
             caseClassName: caseClass,
-            startingFields: startingFields)
+            startingFields: startingFields,
+            debuggable: debuggable
+        )
         self.delegate = delegate
     }
 

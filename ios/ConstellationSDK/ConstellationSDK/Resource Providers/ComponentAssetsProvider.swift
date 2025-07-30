@@ -1,5 +1,4 @@
 import Foundation
-import OSLog
 import UniformTypeIdentifiers
 
 class ComponentAssetsProvider: PMSDKNetworkRequestDelegate {

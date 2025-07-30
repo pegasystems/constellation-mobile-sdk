@@ -58,7 +58,8 @@ class ViewController: UIViewController {
                     pegaVersion: SDKConfiguration.environmentVersion,
                     caseClass: SDKConfiguration.caseClassName,
                     startingFields: startingFields,
-                    delegate: self
+                    delegate: self,
+                    debuggable: true
                 )
             )
             hostingController.modalPresentationStyle = .formSheet

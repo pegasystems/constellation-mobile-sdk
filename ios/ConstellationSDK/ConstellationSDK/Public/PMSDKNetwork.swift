@@ -1,5 +1,4 @@
 import Foundation
-import OSLog
 
 public class PMSDKNetwork {
 
@@ -34,7 +33,7 @@ extension PMSDKNetwork {
     private func delegate(for request: URLRequest) throws -> PMSDKNetworkRequestDelegate {
         guard let requestDelegate else {
             // customer-provided network delegate is always required
-            Logger.current().error("Network delegate not defined, cannot send request.")
+            Log.error("Network delegate not defined, cannot send request.")
             throw HTTPHandlerError.delegateNotDefined
         }
 

@@ -49,6 +49,10 @@ let startingFields = PMSDKCreateCaseStartingFields()
 startingFields.set(value: "Johnny", forKey: "FirstName")
 ``` 
 
+The `debuggable` flag have two effects when it is set to `true`:
+* Makes underlying webview inspectable.
+* Propagates all logs from JS to application logs. When debuggable is set to `false`, only `warning` and `error` logs are propagated.
+
 After all preparations are complete, `PMSDKCreateCaseView` can be created to perform actual Case creation and processing:
 
 ```swift
@@ -56,7 +60,8 @@ PMSDKCreateCaseView(
    pegaURL: <URL to Pega instance>,
    caseClass: <case class name>,
    startingFields: <starting fields|nil>,
-   delegate: <delegate|nil>
+   delegate: <delegate|nil>,
+   debuggable: <true|false>
 )
 ```
 

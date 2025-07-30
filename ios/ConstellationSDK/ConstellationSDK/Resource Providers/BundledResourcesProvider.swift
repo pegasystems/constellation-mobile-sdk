@@ -1,5 +1,4 @@
 import Foundation
-import OSLog
 import UniformTypeIdentifiers
 
 class BundledResourcesProvider: PMSDKNetworkRequestDelegate {
@@ -14,7 +13,7 @@ class BundledResourcesProvider: PMSDKNetworkRequestDelegate {
             throw LocalProviderError.unexpectedURL
         }
 
-        Logger.current().debug("Local response for \(url)")
+        Log.debug("Local response for \(url)")
 
         let data = try data(from: extractResourcePath(from: url))
         let response = try createResponse(to: url)
