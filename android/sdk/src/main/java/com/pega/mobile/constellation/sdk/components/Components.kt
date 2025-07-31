@@ -15,6 +15,7 @@ import com.pega.mobile.constellation.sdk.components.ComponentTypes.Dropdown
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Email
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FieldGroupTemplate
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.FlowContainer
+import com.pega.mobile.constellation.sdk.components.ComponentTypes.Group
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Integer
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.OneColumn
 import com.pega.mobile.constellation.sdk.components.ComponentTypes.Phone
@@ -42,6 +43,8 @@ import com.pega.mobile.constellation.sdk.components.containers.FieldGroupTemplat
 import com.pega.mobile.constellation.sdk.components.containers.FieldGroupTemplateRenderer
 import com.pega.mobile.constellation.sdk.components.containers.FlowContainerComponent
 import com.pega.mobile.constellation.sdk.components.containers.FlowContainerRenderer
+import com.pega.mobile.constellation.sdk.components.containers.GroupComponent
+import com.pega.mobile.constellation.sdk.components.containers.GroupRenderer
 import com.pega.mobile.constellation.sdk.components.containers.OneColumnComponent
 import com.pega.mobile.constellation.sdk.components.containers.OneColumnRenderer
 import com.pega.mobile.constellation.sdk.components.containers.RegionComponent
@@ -117,6 +120,7 @@ object Components {
         Def(Email) { EmailComponent(it) },
         Def(FieldGroupTemplate) { FieldGroupTemplateComponent(it) },
         Def(FlowContainer) { FlowContainerComponent(it) },
+        Def(Group) { GroupComponent(it)},
         Def(Integer) { IntegerComponent(it) },
         Def(OneColumn) { OneColumnComponent(it) },
         Def(Phone) { PhoneComponent(it) },
@@ -153,6 +157,7 @@ object Components {
         Email to EmailRenderer(),
         FieldGroupTemplate to FieldGroupTemplateRenderer(),
         FlowContainer to FlowContainerRenderer(),
+        Group to GroupRenderer(),
         Integer to IntegerRenderer(),
         OneColumn to OneColumnRenderer(),
         Phone to PhoneRenderer(),

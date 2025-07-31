@@ -147,7 +147,9 @@ export class DataReferenceComponent extends ContainerBaseComponent {
   }
 
   onEvent(event) {
-    this.childComponent.onEvent(event)
+    this.childrenComponents.forEach((component) => {
+      component.onEvent(event);
+    })
   }
 
   sendPropsUpdate() {

@@ -75,9 +75,8 @@ export class SimpleTableComponent extends BaseComponent {
       }
       this.sendPropsUpdate();
     } else {
-      console.log(TAG, "ListView and SimpleTableManual are not supported yet.");
+      console.log(TAG, `Unsupported display mode: ${multiRecordDisplayAs}. ListView and SimpleTableManual are not supported yet.`);
     }
-
   }
 
 
