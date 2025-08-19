@@ -90,7 +90,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     if (this.readonlyMode) {
       this.pConn.setInheritedProp('displayMode', 'DISPLAY_ONLY');
     }
-    this.referenceList = this.configProps.referenceList;
+    this.referenceList = this.configProps.referenceList ?? [];
     if (this.prevRefLength !== this.referenceList.length) {
       // eslint-disable-next-line sonarjs/no-collapsible-if
       if (!this.readonlyMode) {
@@ -130,7 +130,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
 
   onEvent(event) {
     if (!this.readonlyMode) {
-      this.referenceList?.forEach((item) => {
+      this.items?.forEach((item) => {
           item.component.onEvent(event);
         }
       )
