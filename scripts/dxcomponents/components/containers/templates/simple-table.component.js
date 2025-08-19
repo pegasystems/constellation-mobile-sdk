@@ -22,10 +22,14 @@ export class SimpleTableComponent extends BaseComponent {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
+    this.initialized = true;
   }
 
   destroy() {
     this.jsComponentPConnectData.unsubscribeFn?.();
+    this.childComponent.destroy?.();
+    this.props.child = undefined;
+    this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }
 

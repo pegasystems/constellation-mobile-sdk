@@ -66,6 +66,7 @@ export class AssignmentComponent extends BaseComponent {
     this.bInitialized = true;
     this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
     this.localeReference = `${this.pConn.getCaseInfo().getClassName()}!CASE!${this.pConn.getCaseInfo().getName()}`.toUpperCase();
+    this.initialized = true;
   }
 
   destroy() {

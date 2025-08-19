@@ -22,6 +22,7 @@ export class RootContainerComponent extends BaseComponent {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
     this.#checkAndUpdate()
+    this.initialized = true;
   }
 
   destroy() {

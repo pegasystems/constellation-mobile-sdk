@@ -42,6 +42,7 @@ export class ViewContainerComponent extends BaseComponent {
     // however, need jsComponentPConnect to be initialized with currentProps for future updates, so calling shouldComponentUpdate directly
     // without checking to update here in init, will initialize and this is correct
     this.jsComponentPConnect.shouldComponentUpdate(this);
+    this.initialized = true;
   }
 
   destroy() {

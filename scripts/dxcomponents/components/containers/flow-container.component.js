@@ -41,6 +41,7 @@ export class FlowContainerComponent extends BaseComponent {
     this.#checkAndUpdate();
     this.#createAndInitAssignmentComponent(); // needs to be called after #initComponent and #checkAndUpdate
     this.#subscribeForEvents();
+    this.initialized = true;
   }
 
   destroy() {

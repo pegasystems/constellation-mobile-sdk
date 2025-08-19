@@ -40,10 +40,14 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
+    this.initialized = true;
   }
 
   destroy() {
     this.jsComponentPConnectData.unsubscribeFn?.();
+    this.destroyItems();
+    this.props.items = [];
+    this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }
 
@@ -95,7 +99,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
       // eslint-disable-next-line sonarjs/no-collapsible-if
       if (!this.readonlyMode) {
         if (this.referenceList?.length === 0 && this.allowAddEdit !== false) {
-          this.addFieldGroupItem();
+          setTimeout(() => { this.addFieldGroupItem(); })
         }
       }
       const items = [];
@@ -208,4 +212,11 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     }
     return resolvePage;
   };
+
+  destroyItems() {
+    this.items.forEach(item => {
+      item.component.destroy?.();
+    })
+    this.items = [];
+  }
 }
