@@ -56,9 +56,9 @@ export class ReferenceComponent {
         referenceContext: inPConn.getPageReference()
       }
     };
-
+    const context = theResolvedConfigProps.context
     const viewComponent = inPConn.createComponent(viewObject, null, null, {
-      pageReference: theResolvedConfigProps.context
+      pageReference: context && context.startsWith('@CLASS') ? '' : context
     });
 
     const newCompPConnect = viewComponent.getPConnect();
