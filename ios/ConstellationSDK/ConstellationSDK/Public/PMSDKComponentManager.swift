@@ -53,6 +53,8 @@ public class PMSDKComponentManager {
         "RootContainer": RootContainerComponentProvider.self,
         "DefaultForm": ViewComponentProvider.self,
         "OneColumn": ViewComponentProvider.self,
+        "SimpleTable": SimpleTableProvider.self,
+        "FieldGroupTemplate": FieldGroupTemplateProvider.self,
 
         "ActionButtons": ActionButtonsProvider.self,
         "AlertBanner": AlertBannerComponentProvider.self,

@@ -26,6 +26,7 @@ fileprivate struct DecodableIntegerProps: Decodable {
     let readOnly: Bool
     let validateMessage: String?
     let helperText: String?
+    let displayMode: String?
 
     func apply(to observableProps: IntegerProps) {
         observableProps.value = value
@@ -33,7 +34,11 @@ fileprivate struct DecodableIntegerProps: Decodable {
         observableProps.helperText = helperText?.nilIfEmpty
         observableProps.placeholder = placeholder?.nilIfEmpty
         observableProps.required = required
-        observableProps.disabled = disabled
+        observableProps.disabled = if displayMode == "DISPLAY_ONLY" {
+            true
+        } else {
+            disabled
+        }
         observableProps.readOnly = readOnly
         observableProps.validateMessage = validateMessage?.nilIfEmpty
         observableProps.helperText = helperText?.nilIfEmpty

@@ -100,6 +100,10 @@
 		B5ACA2ED2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2EC2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift */; };
 		B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift */; };
 		B5E2EBAA2DDC712200FDA639 /* PhoneParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E2EBA92DDC711C00FDA639 /* PhoneParser.swift */; };
+		B5ECF6AB2E571C2C0004F83B /* FieldGroupTemplateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECF6AA2E571C250004F83B /* FieldGroupTemplateComponent.swift */; };
+		B5ECF6AD2E571C380004F83B /* FieldGroupTemplateProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECF6AC2E571C340004F83B /* FieldGroupTemplateProps.swift */; };
+		B5ECF6B22E57287C0004F83B /* SimpleTableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECF6B12E5728760004F83B /* SimpleTableComponent.swift */; };
+		B5ECF6B42E5728840004F83B /* SimpleTableProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECF6B32E5728810004F83B /* SimpleTableProps.swift */; };
 		B5F1A3982D6761B80026527C /* ScriptInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F1A3972D6761B80026527C /* ScriptInjector.swift */; };
 		B5F1A39A2D6767820026527C /* ConsoleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F1A3992D6767820026527C /* ConsoleHandler.swift */; };
 		B5F4C7922DAE925900745729 /* DeferedContinuation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F4C7912DAE925000745729 /* DeferedContinuation.swift */; };
@@ -204,6 +208,10 @@
 		B5ACA2EC2D5649AB00F7AE9D /* PMSDKCreateCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMSDKCreateCaseView.swift; sourceTree = "<group>"; };
 		B5ACA2EE2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMSDKNetworkRequestDelegate.swift; sourceTree = "<group>"; };
 		B5E2EBA92DDC711C00FDA639 /* PhoneParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneParser.swift; sourceTree = "<group>"; };
+		B5ECF6AA2E571C250004F83B /* FieldGroupTemplateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGroupTemplateComponent.swift; sourceTree = "<group>"; };
+		B5ECF6AC2E571C340004F83B /* FieldGroupTemplateProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGroupTemplateProps.swift; sourceTree = "<group>"; };
+		B5ECF6B12E5728760004F83B /* SimpleTableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTableComponent.swift; sourceTree = "<group>"; };
+		B5ECF6B32E5728810004F83B /* SimpleTableProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTableProps.swift; sourceTree = "<group>"; };
 		B5F1A3972D6761B80026527C /* ScriptInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptInjector.swift; sourceTree = "<group>"; };
 		B5F1A3992D6767820026527C /* ConsoleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleHandler.swift; sourceTree = "<group>"; };
 		B5F4C7912DAE925000745729 /* DeferedContinuation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferedContinuation.swift; sourceTree = "<group>"; };
@@ -490,11 +498,13 @@
 		B53C2D062D81CD5300DB47FB /* Containers */ = {
 			isa = PBXGroup;
 			children = (
-				B53C2D0C2D81CDD600DB47FB /* ViewID.swift */,
+				B5ECF6B02E57286F0004F83B /* SimpleTable */,
 				B53C2D072D81CD5D00DB47FB /* AssignmentCard */,
 				657370862D8DB95E001CC458 /* FlowContainer */,
 				657370902D8DC3C3001CC458 /* RootContainer */,
+				B5ECF6A92E571C020004F83B /* FieldGroupTemplate */,
 				B58637C92D71E31A007E3020 /* View */,
+				B53C2D0C2D81CDD600DB47FB /* ViewID.swift */,
 			);
 			path = Containers;
 			sourceTree = "<group>";
@@ -585,6 +595,24 @@
 				657D9D602D7B3D8200F8BB89 /* PMSDKCreateCaseStartingFields.swift */,
 			);
 			path = Public;
+			sourceTree = "<group>";
+		};
+		B5ECF6A92E571C020004F83B /* FieldGroupTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				B5ECF6AC2E571C340004F83B /* FieldGroupTemplateProps.swift */,
+				B5ECF6AA2E571C250004F83B /* FieldGroupTemplateComponent.swift */,
+			);
+			path = FieldGroupTemplate;
+			sourceTree = "<group>";
+		};
+		B5ECF6B02E57286F0004F83B /* SimpleTable */ = {
+			isa = PBXGroup;
+			children = (
+				B5ECF6B32E5728810004F83B /* SimpleTableProps.swift */,
+				B5ECF6B12E5728760004F83B /* SimpleTableComponent.swift */,
+			);
+			path = SimpleTable;
 			sourceTree = "<group>";
 		};
 		B5F1A39B2D6775DE0026527C /* Components */ = {
@@ -747,6 +775,7 @@
 				6573708D2D8DBE82001CC458 /* AlertBannerComponent.swift in Sources */,
 				B52349CD2D53AD010042F27B /* CheckboxView.swift in Sources */,
 				657594032DAEB20800B7D73A /* CurrencyProps.swift in Sources */,
+				B5ECF6AD2E571C380004F83B /* FieldGroupTemplateProps.swift in Sources */,
 				656AA5822DBA4D0200312BE2 /* DecimalComponentProvider.swift in Sources */,
 				B58637CD2D75F63D007E3020 /* ViewComponentProps.swift in Sources */,
 				655DE5D82DC8FD1000326109 /* RadioButtonsComponentProvider.swift in Sources */,
@@ -759,6 +788,7 @@
 				B53C2D0B2D81CD9900DB47FB /* AssignmentCardComponentProps.swift in Sources */,
 				B56F836D2D5B84060093E00D /* FormHandler.swift in Sources */,
 				B53C470E2E1D1F9000ACA92B /* BundledResourcesProvider.swift in Sources */,
+				B5ECF6AB2E571C2C0004F83B /* FieldGroupTemplateComponent.swift in Sources */,
 				B5F1A39A2D6767820026527C /* ConsoleHandler.swift in Sources */,
 				65038CEE2D81C8B40070D125 /* UrlComponentProvider.swift in Sources */,
 				B5ACA2EF2D564E0C00F7AE9D /* PMSDKNetworkRequestDelegate.swift in Sources */,
@@ -777,9 +807,11 @@
 				657593FC2DAEAB7300B7D73A /* IntegerProps.swift in Sources */,
 				B52349FE2D53ADF40042F27B /* ComponentManager.swift in Sources */,
 				6538731B2D9AC54F00FB29AF /* DateProps.swift in Sources */,
+				B5ECF6B22E57287C0004F83B /* SimpleTableComponent.swift in Sources */,
 				657370942D8DC3EB001CC458 /* RootContainerComponentProps.swift in Sources */,
 				656AA5862DBA4DA100312BE2 /* DecimalView.swift in Sources */,
 				657594072DAEC27B00B7D73A /* DropdownComponentProvider.swift in Sources */,
+				B5ECF6B42E5728840004F83B /* SimpleTableProps.swift in Sources */,
 				B52349D62D53AD010042F27B /* PMSDKComponentManager.swift in Sources */,
 				657593F92DAEAB0E00B7D73A /* IntegerComponentProvider.swift in Sources */,
 			);
