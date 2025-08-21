@@ -19,6 +19,7 @@ class DxAssignmentsHandler : MockHandler {
 
         return when {
             assignmentId.contains("S-17098") && actionId == "Create" -> Asset("responses/dx/assignments/SDKTesting-1-Create.json")
+            assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
             assignmentId.contains("N-16042") -> when (actionId) {
                 "Customer" -> Asset("responses/dx/assignments/NewService-1-Customer.json")
                 "Address" -> Asset("responses/dx/assignments/NewService-2-Address.json")
