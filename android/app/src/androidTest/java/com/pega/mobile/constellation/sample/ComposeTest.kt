@@ -1,13 +1,12 @@
 package com.pega.mobile.constellation.sample
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -31,27 +30,20 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
 import com.pega.mobile.constellation.sdk.components.core.ComponentManager
 import okhttp3.OkHttpClient
 import org.junit.Before
-import org.junit.Rule
 
 abstract class ComposeTest {
     enum class Mode { MOCK_SERVER, REAL_SERVER }
 
     private val mode = MOCK_SERVER
 
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
     @Before
     fun setUp() {
         hideKeyboard()
     }
 
-    protected fun runComposeTest(test: ComposeTestRule.() -> Unit) {
-        test(composeTestRule)
-    }
-
-    protected fun setupApp(caseClassName: String) {
-        composeTestRule.setContent {
+    @OptIn(ExperimentalTestApi::class)
+    protected fun ComposeUiTest.setupApp(caseClassName: String) {
+        setContent {
             MediaCoTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
                     Box(Modifier.padding(innerPadding)) {

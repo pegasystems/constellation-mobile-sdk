@@ -1,5 +1,6 @@
 package com.pega.mobile.constellation.sample
 
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
@@ -9,11 +10,13 @@ import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.runComposeUiTest
 import org.junit.Test
 
+@OptIn(ExperimentalTestApi::class)
 class CaseProcessingTest : ComposeTest() {
     @Test
-    fun test_case_processing_sdk_testing() = runComposeTest {
+    fun test_case_processing_sdk_testing() = runComposeUiTest {
         setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
 
         onNodeWithText(CREATE_CASE_TEXT).performClick()
@@ -34,7 +37,7 @@ class CaseProcessingTest : ComposeTest() {
     }
 
     @Test
-    fun test_case_processing_service() = runComposeTest {
+    fun test_case_processing_service() = runComposeUiTest {
         setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
 
         onNodeWithText(CREATE_CASE_TEXT).performClick()
@@ -71,7 +74,7 @@ class CaseProcessingTest : ComposeTest() {
     }
 
     @Test
-    fun test_case_processing_embedded_data() = runComposeTest {
+    fun test_case_processing_embedded_data() = runComposeUiTest {
         setupApp("DIXL-MediaCo-Work-EmbeddedData")
 
         // create case
