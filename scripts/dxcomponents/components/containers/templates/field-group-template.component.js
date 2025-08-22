@@ -87,8 +87,9 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     if (this.readonlyMode) {
       this.pConn.setInheritedProp('displayMode', 'DISPLAY_ONLY');
     }
-    this.referenceList = this.configProps.referenceList ?? [];
-    if (this.prevRefLength !== this.referenceList.length) {
+    const newReferenceList = this.configProps.referenceList ?? [];
+    if (this.referenceList === undefined || JSON.stringify(this.referenceList) !== JSON.stringify(newReferenceList)) {
+      this.referenceList = newReferenceList;
       // eslint-disable-next-line sonarjs/no-collapsible-if
       if (!this.readonlyMode) {
         if (this.referenceList?.length === 0 && this.allowAddEdit !== false) {
