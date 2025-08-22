@@ -66,7 +66,6 @@ export class AssignmentComponent extends BaseComponent {
     this.bInitialized = true;
     this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
     this.localeReference = `${this.pConn.getCaseInfo().getClassName()}!CASE!${this.pConn.getCaseInfo().getName()}`.toUpperCase();
-    this.initialized = true;
   }
 
   destroy() {
@@ -78,8 +77,6 @@ export class AssignmentComponent extends BaseComponent {
   update(pConn, pConnChildren, itemKey) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
-      this.jsComponentPConnectData.unsubscribeFn?.();
-      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
     }
     this.childrenPConns = pConnChildren;
     this.itemKey$ = itemKey;

@@ -187,9 +187,7 @@ export class JsComponentPConnectService {
     // Now proceed to register and subscribe...
     const theCompID = compId
     const theUnsub = this.subscribeToStore(inComp, () => {
-      if (inComp.initialized) {
         inCallback();
-      }
     });
 
     if (inComp.jsComponentPConnectData === undefined) {

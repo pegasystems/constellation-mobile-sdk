@@ -30,7 +30,6 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
     this.actionButtonsComponent.init();
 
     this.sendPropsUpdate();
-    this.initialized = true;
   }
 
   destroy() {

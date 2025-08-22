@@ -17,7 +17,6 @@ export class OneColumnComponent extends ContainerBaseComponent {
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.initReconciledComponents(reconciledComponents);
     this.sendPropsUpdate();
-    this.initialized = true;
   }
 
   destroy() {

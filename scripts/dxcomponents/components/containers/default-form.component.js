@@ -22,7 +22,6 @@ export class DefaultFormComponent extends ContainerBaseComponent {
     this.initReconciledComponents(reconciledComponents);
 
     this.sendPropsUpdate();
-    this.initialized = true;
   }
 
   destroy() {

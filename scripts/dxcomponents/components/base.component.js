@@ -4,7 +4,6 @@ export class BaseComponent {
   jsComponentPConnect;
   compId;
   type;
-  initialized = false; // used to block any calls from redux before component is initialized
 
   constructor(componentsManager, pConn) {
     this.pConn = pConn;

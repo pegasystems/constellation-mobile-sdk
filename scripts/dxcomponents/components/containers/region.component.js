@@ -9,7 +9,6 @@ export class RegionComponent extends ContainerBaseComponent {
   init() {
     this.componentsManager.onComponentAdded(this);
     this.#updateSelf();
-    this.initialized = true;
   }
 
   destroy() {

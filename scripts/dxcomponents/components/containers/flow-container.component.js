@@ -41,7 +41,6 @@ export class FlowContainerComponent extends BaseComponent {
     this.#checkAndUpdate();
     this.#createAndInitAssignmentComponent(); // needs to be called after #initComponent and #checkAndUpdate
     this.#subscribeForEvents();
-    this.initialized = true;
   }
 
   destroy() {
@@ -54,8 +53,6 @@ export class FlowContainerComponent extends BaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
-      this.jsComponentPConnectData.unsubscribeFn?.();
-      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
       this.#checkAndUpdate();
     }
   }
