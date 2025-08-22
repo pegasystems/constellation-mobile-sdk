@@ -172,7 +172,6 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   #updateSelf() {
-    this.assignmentComponent.update(this.assignmentPConn, this.childrenPConns, this.containerContextKey);
     const caseViewMode = this.assignmentPConn.getValue('context_data.caseViewMode');
     if (caseViewMode === 'perform') {
       if (Utils.okToInitFlowContainer()) {
