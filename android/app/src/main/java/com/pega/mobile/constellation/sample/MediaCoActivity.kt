@@ -9,6 +9,7 @@ import com.pega.mobile.constellation.sample.ui.screens.home.HomeScreen
 import com.pega.mobile.constellation.sample.ui.theme.MediaCoTheme
 
 class MediaCoActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
