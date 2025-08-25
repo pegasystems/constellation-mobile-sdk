@@ -25,12 +25,17 @@ fileprivate struct DecodableTextEmailProps: Decodable {
     let readOnly: Bool
     let validateMessage: String?
     let helperText: String?
+    let displayMode: String?
 
     func apply(to observableProps: EmailProps) {
         observableProps.value = value
         observableProps.label = label
         observableProps.required = required
-        observableProps.disabled = disabled
+        observableProps.disabled = if displayMode == "DISPLAY_ONLY" {
+            true
+        } else {
+            disabled
+        }
         observableProps.readOnly = readOnly
         observableProps.validateMessage = validateMessage?.nilIfEmpty
         observableProps.helperText = helperText?.nilIfEmpty

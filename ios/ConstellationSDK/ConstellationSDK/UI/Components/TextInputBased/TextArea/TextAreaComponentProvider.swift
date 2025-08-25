@@ -27,6 +27,7 @@ fileprivate struct DecodableTextAreaProps: Decodable {
     let disabled: Bool
     let readOnly: Bool
     let validateMessage: String?
+    let displayMode: String?
 
     func apply(to observableProps: TextAreaProps) {
         observableProps.value = value
@@ -34,7 +35,11 @@ fileprivate struct DecodableTextAreaProps: Decodable {
         observableProps.helperText = helperText?.nilIfEmpty
         observableProps.placeholder = placeholder?.nilIfEmpty
         observableProps.required = required
-        observableProps.disabled = disabled
+        observableProps.disabled = if displayMode == "DISPLAY_ONLY" {
+            true
+        } else {
+            disabled
+        }
         observableProps.readOnly = readOnly
         observableProps.validateMessage = validateMessage?.nilIfEmpty
         observableProps.visible = visible ?? true

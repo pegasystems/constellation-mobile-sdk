@@ -48,6 +48,7 @@ fileprivate struct DecodableTimeProps: Decodable {
     let validateMessage: String?
     let helperText: String?
     let clockFormat: String?
+    let displayMode: String?
 
     func apply(to observableProps: TimeProps) {
         observableProps.value = value
@@ -55,7 +56,11 @@ fileprivate struct DecodableTimeProps: Decodable {
         observableProps.helperText = helperText?.nilIfEmpty
         observableProps.placeholder = placeholder?.nilIfEmpty
         observableProps.required = required
-        observableProps.disabled = disabled
+        observableProps.disabled = if displayMode == "DISPLAY_ONLY" {
+            true
+        } else {
+            disabled
+        }
         observableProps.readOnly = readOnly
         observableProps.validateMessage = validateMessage?.nilIfEmpty
         observableProps.helperText = helperText?.nilIfEmpty
