@@ -26,11 +26,12 @@ export class RegionComponent extends ContainerBaseComponent {
   }
 
   onEvent(event) {
-    this.childrenComponents.forEach((component) => {component.onEvent(event);})
+    // need copy because this.childrenComponents is updated while iterating
+    const childrenComponents = [...this.childrenComponents];
+    childrenComponents.forEach((component) => {component.onEvent(event);})
   }
 
   #updateSelf() {
-    // The children may contain 'reference' components, so normalize the children...
     this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
     const reconciledComponents = this.reconcileChildren();
