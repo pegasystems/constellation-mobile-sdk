@@ -22,7 +22,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   pageReference;
   heading;
   children;
-  childrenPConns;
   // menuIconOverride$;
   prevRefLength;
   allowAddEdit;

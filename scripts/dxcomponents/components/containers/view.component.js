@@ -99,14 +99,14 @@ export class ViewComponent extends ContainerBaseComponent {
         this.#reconcileSimpleTableChildComponent();
       } else {
         console.warn(TAG, `${templateName} not supported. Rendering children components directly.`);
-        this.#reconcileChildrenComponents()
+        this.#reconcileChildrenComponents();
       }
     } else {
-      this.#reconcileChildrenComponents()
+      this.#reconcileChildrenComponents();
     }
 
     this.props.children = this.getChildrenComponentsIds();
-    this.componentsManager.onComponentPropsUpdate(this)
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
   #reconcileFormTemplateChildComponent(templateName) {

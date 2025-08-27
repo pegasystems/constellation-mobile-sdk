@@ -4,6 +4,8 @@ export class BaseComponent {
   jsComponentPConnect;
   compId;
   type;
+  // sometimes store notifies component despite it unsubscribed itself
+  subscribedToStore = false;
 
   constructor(componentsManager, pConn) {
     this.pConn = pConn;

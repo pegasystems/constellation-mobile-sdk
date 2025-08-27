@@ -186,7 +186,15 @@ export class JsComponentPConnectService {
 
     // Now proceed to register and subscribe...
     const theCompID = compId
-    const theUnsub = this.subscribeToStore(inComp, inCallback);
+    inComp.subscribedToStore = true;
+    const subscribeFn = () => {
+      if (inComp.subscribedToStore === true) {
+        inCallback();
+      } else {
+        console.debug(TAG, `Skipping store event - component ${inComp.pConn.meta.type}#${theCompID} is no longer subscribed to store.`);
+      }
+    };
+    const theUnsub = this.subscribeToStore(inComp, subscribeFn);
 
     if (inComp.jsComponentPConnectData === undefined) {
       inComp.bridgeComponentID = theCompID;
@@ -194,6 +202,7 @@ export class JsComponentPConnectService {
       returnObject.compID = theCompID;
       returnObject.unsubscribeFn = () => {
         console.log(TAG, `Unsubscribing component from store: ${inComp.pConn.meta.type}#${theCompID}`);
+        inComp.subscribedToStore = false;
         this.removeFormField(inComp);
         theUnsub();
       };
