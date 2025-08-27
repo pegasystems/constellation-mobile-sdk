@@ -188,6 +188,9 @@ export class JsComponentPConnectService {
     const theCompID = compId
     inComp.subscribedToStore = true;
     const subscribeFn = () => {
+      // store may still notify component right after it unsubscribed itself so we need a flag to prevent that.
+      // When component unsubscribes while reduxBatch is performing notifyListeners loop, listener is removed from the listeners array
+      // but the loop still goes through the original listeners array and calls all listeners including the one that just unsubscribed itself.
       if (inComp.subscribedToStore === true) {
         inCallback();
       } else {
