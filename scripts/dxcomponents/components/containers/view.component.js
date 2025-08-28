@@ -1,6 +1,7 @@
 import { ReferenceComponent } from './reference.component.js';
 import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
 import {ContainerBaseComponent} from './container-base.component.js';
+import {SimpleTableComponent} from './templates/simple-table.component.js';
 
 const TAG = '[ViewComponent]';
 
@@ -13,7 +14,6 @@ export class ViewComponent extends ContainerBaseComponent {
 
   FORM_TEMPLATES = ['DefaultForm', 'OneColumn', 'TwoColumn', 'ThreeColumn', 'WideNarrow'];
   SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'OneColumn'];
-  VIEW_TEMPLATES = ['SimpleTable'];
 
   jsComponentPConnectData = {};
   props = {
@@ -40,8 +40,6 @@ export class ViewComponent extends ContainerBaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
-      this.jsComponentPConnectData.unsubscribeFn?.();
-      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
       this.#checkAndUpdate();
     }
   }
@@ -53,7 +51,9 @@ export class ViewComponent extends ContainerBaseComponent {
   }
 
   #checkAndUpdate() {
-    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
+    // sometimes (e.g.: when going "previous" on form) the response contains view (pzCreateDetails) which is 'dynamic'
+    // and no matter of its children shouldComponentUpdate returns false and form is not re-rendered correctly
+    if (this.jsComponentPConnect.shouldComponentUpdate(this) || this.pConn.meta.isDynamicView?.toString() === 'true') {
       this.#updateSelf();
     }
   }
@@ -92,35 +92,63 @@ export class ViewComponent extends ContainerBaseComponent {
     this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
 
     if (templateName !== '') {
-      if (this.childrenComponents[0] !== undefined) {
-        this.childrenComponents[0].update(this.pConn, this.childrenPConns);
+      if (this.FORM_TEMPLATES.includes(templateName)) {
+        const template = this.SUPPORTED_FORM_TEMPLATES.includes(templateName) ? templateName : 'DefaultForm';
+        this.#reconcileFormTemplateChildComponent(template);
+      } else if (templateName === 'SimpleTable') {
+        this.#reconcileSimpleTableChildComponent();
       } else {
-        if (this.FORM_TEMPLATES.includes(templateName)) {
-          const template = this.SUPPORTED_FORM_TEMPLATES.includes(templateName) ? templateName : 'DefaultForm';
-          this.#createTemplateChildComponent(template);
-        } else if (this.VIEW_TEMPLATES.includes(templateName)) {
-          this.#createTemplateChildComponent(templateName)
-        } else {
-          console.warn(TAG, `${templateName} not supported. Rendering children components directly.`);
-          this.#createChildrenComponents()
-        }
+        console.warn(TAG, `${templateName} not supported. Rendering children components directly.`);
+        this.#reconcileChildrenComponents();
       }
     } else {
-      this.#createChildrenComponents()
+      this.#reconcileChildrenComponents();
     }
 
     this.props.children = this.getChildrenComponentsIds();
-    this.componentsManager.onComponentPropsUpdate(this)
+    this.componentsManager.onComponentPropsUpdate(this);
   }
 
-  #createTemplateChildComponent(templateName) {
+  #reconcileFormTemplateChildComponent(templateName) {
+    if (this.childrenComponents.length === 0) {
+      this.childrenComponents.push(this.#createFormTemplateChildComponent(templateName));
+    } else if (this.childrenComponents.length > 0) {
+      if (this.childrenComponents[0].type === templateName && this.isEqualNameType(this.childrenComponents[0].pConn, this.pConn)) {
+        this.childrenComponents[0].update(this.pConn, this.childrenPConns);
+      } else {
+        this.destroyChildren();
+        this.childrenComponents.push(this.#createFormTemplateChildComponent(templateName));
+      }
+    }
+  }
+
+  #createFormTemplateChildComponent(templateName) {
     const templateComponentClass = getComponentFromMap(templateName);
     const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn, this.childrenPConns);
     templateComponentInstance.init();
-    this.childrenComponents.push(templateComponentInstance);
+    return templateComponentInstance;
   }
 
-  #createChildrenComponents() {
+  #reconcileSimpleTableChildComponent() {
+    if (this.childrenComponents.length === 0) {
+      this.childrenComponents.push(this.#createSimpleTableChildComponent());
+    } else if (this.childrenComponents.length > 0) {
+      if (this.childrenComponents[0] instanceof SimpleTableComponent && this.isEqualNameType(this.childrenComponents[0].pConn, this.pConn)) {
+        this.childrenComponents[0].update(this.pConn);
+      } else {
+        this.destroyChildren();
+        this.childrenComponents.push(this.#createSimpleTableChildComponent());
+      }
+    }
+  }
+
+  #createSimpleTableChildComponent() {
+    const simpleTableComponent = new SimpleTableComponent(this.componentsManager, this.pConn);
+    simpleTableComponent.init();
+    return simpleTableComponent;
+  }
+
+  #reconcileChildrenComponents() {
     const reconciledComponents = this.reconcileChildren();
     this.childrenComponents = reconciledComponents.map((item) => item.component);
     this.initReconciledComponents(reconciledComponents);

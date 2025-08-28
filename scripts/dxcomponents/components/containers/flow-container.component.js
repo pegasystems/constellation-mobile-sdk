@@ -53,8 +53,6 @@ export class FlowContainerComponent extends BaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
-      this.jsComponentPConnectData.unsubscribeFn?.();
-      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
       this.#checkAndUpdate();
     }
   }
@@ -171,7 +169,6 @@ export class FlowContainerComponent extends BaseComponent {
   }
 
   #updateSelf() {
-    this.assignmentComponent.update(this.assignmentPConn, this.childrenPConns, this.containerContextKey);
     const caseViewMode = this.assignmentPConn.getValue('context_data.caseViewMode');
     if (caseViewMode === 'perform') {
       if (Utils.okToInitFlowContainer()) {

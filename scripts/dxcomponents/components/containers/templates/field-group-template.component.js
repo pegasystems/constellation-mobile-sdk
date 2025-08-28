@@ -22,7 +22,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   pageReference;
   heading;
   children;
-  childrenPConns;
   // menuIconOverride$;
   prevRefLength;
   allowAddEdit;
@@ -37,13 +36,14 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   }
 
   init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
 
   destroy() {
-    this.jsComponentPConnectData.unsubscribeFn?.();
+    this.destroyItems();
+    this.props.items = [];
+    this.componentsManager.onComponentPropsUpdate(this);
     this.componentsManager.onComponentRemoved(this);
   }
 
@@ -53,8 +53,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         this.configProps = configProps;
         if (pConn) {
           this.pConn = pConn;
-          this.jsComponentPConnectData.unsubscribeFn?.();
-          this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
         }
         this.updateSelf();
       }
@@ -62,9 +60,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   }
 
   checkAndUpdate() {
-    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-      this.updateSelf();
-    }
+    this.updateSelf();
   }
 
   updateSelf() {
@@ -90,12 +86,13 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     if (this.readonlyMode) {
       this.pConn.setInheritedProp('displayMode', 'DISPLAY_ONLY');
     }
-    this.referenceList = this.configProps.referenceList ?? [];
-    if (this.prevRefLength !== this.referenceList.length) {
+    const newReferenceList = this.configProps.referenceList ?? [];
+    if (this.referenceList === undefined || JSON.stringify(this.referenceList) !== JSON.stringify(newReferenceList)) {
+      this.referenceList = newReferenceList;
       // eslint-disable-next-line sonarjs/no-collapsible-if
       if (!this.readonlyMode) {
         if (this.referenceList?.length === 0 && this.allowAddEdit !== false) {
-          this.addFieldGroupItem();
+          setTimeout(() => { this.addFieldGroupItem(); })
         }
       }
       const items = [];
@@ -208,4 +205,11 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     }
     return resolvePage;
   };
+
+  destroyItems() {
+    this.items.forEach(item => {
+      item.component.destroy?.();
+    })
+    this.items = [];
+  }
 }

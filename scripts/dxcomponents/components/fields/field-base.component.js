@@ -39,8 +39,6 @@ export class FieldBaseComponent extends BaseComponent {
   update(pConn) {
     if (this.pConn !== pConn) {
       this.pConn = pConn;
-      this.jsComponentPConnectData.unsubscribeFn?.();
-      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
       this.checkAndUpdate();
     }
   }
@@ -95,9 +93,9 @@ export class FieldBaseComponent extends BaseComponent {
   }
 
   fieldOnBlur(value) {
-    this.props.value = value ?? this.props.value
+    this.props.value = value ?? this.props.value ?? ""
 
-    const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value;
+    const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value ?? "";
     // Preventing 'changeNblur' events for unchanged field values.
     // Sending it for field which is a dropdown param causes dropdown value to be cleared
     if (submittedValue !== this.props.value) {
