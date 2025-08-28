@@ -23,12 +23,5 @@ class SDKConfiguration {
         }
         return oauth2Config
     }()
-
-    static var caseClassName: String = {
-        guard let className = Bundle.main.infoDictionary?["PegaCaseClassName"] as? String else {
-            fatalError("Cannot retrieve Case class name.")
-        }
-        return className
-    }()
 }
 

@@ -48,8 +48,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				MockedResponses/responses/cdn/LICENSE,
-				MockedResponses/responses/cdn/README.md,
 				MockedResponses/responses/README.md,
 			);
 			target = 594E50F92D9C3ED3005DD047 /* SampleMockedApp */;

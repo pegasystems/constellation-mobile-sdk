@@ -6,7 +6,7 @@ class ViewController: UIViewController {
 
     var loadMobileSDKContent: UIButton!
     weak var controller: UIHostingController<PMSDKCreateCaseView>?
-    let mockedNetwork = MockedNetwork()
+    let mockedNetwork = MockedNetwork.create()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,25 +26,44 @@ class ViewController: UIViewController {
         welcomeLabel.widthAnchor.constraint(equalToConstant: 300).isActive = true
         welcomeLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
 
-        let button: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitle("Create a new Case", for: .normal)
-            button.backgroundColor = UIColor.systemBlue
-            button.setTitleColor(.white, for: .normal)
-            button.layer.cornerRadius = 10
-            button.clipsToBounds = true
-            return button
-        }()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = createButton("Create a new Case")
+
         view.addSubview(button)
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200).isActive = true
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.addTarget(self, action: #selector(showNewPegaCase), for: .touchUpInside)
+        button.addTarget(self, action: #selector(showNewSDKTesting), for: .touchUpInside)
+
+        let embeddedDataButton = createButton("Create EmbeddedData Case")
+        view.addSubview(embeddedDataButton)
+        embeddedDataButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        embeddedDataButton.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20).isActive = true
+        embeddedDataButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        embeddedDataButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        embeddedDataButton.addTarget(self, action: #selector(showNewEmbeddedDataCase), for: .touchUpInside)
     }
 
-    @objc private func showNewPegaCase(_ sender: UIButton) {
+    private func createButton(_ title: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.backgroundColor = UIColor.systemBlue
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+
+    @objc private func showNewSDKTesting(_ sender: UIButton) {
+        createCase("DIXL-MediaCo-Work-SDKTesting")
+    }
+
+    @objc private func showNewEmbeddedDataCase(_ sender: UIButton) {
+        createCase("DIXL-MediaCo-Work-EmbeddedData")
+    }
+
+    private func createCase(_ caseClass: String) {
         Task {
             let startingFields = PMSDKCreateCaseStartingFields()
             // Set proper starting fields as defined in casetype model:
@@ -54,7 +73,7 @@ class ViewController: UIViewController {
                 rootView: PMSDKCreateCaseView(
                     pegaURL: SDKConfiguration.environmentURL,
                     pegaVersion: SDKConfiguration.environmentVersion,
-                    caseClass: SDKConfiguration.caseClassName,
+                    caseClass: caseClass,
                     startingFields: startingFields,
                     createCaseDelegate: self,
                     networkDelegate: mockedNetwork
