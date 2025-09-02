@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit
 /**
  * Configuration of Pega Constellation Mobile SDK.
  *
- * @param pegaUrl URL to Pega server e.g.: *https://lab-05423-bos.lab.pega.com/prweb*
- * @param pegaVersion version of Pega server e.g.: *8.24.1*. Determines Constellation Core JS library version used by SDK.
- * @param okHttpClient (optional) - instance of OkHttpClient which can be passed to SDK for advanced networking control.
+ * @param pegaUrl URL to Pega server
+ * @param pegaVersion version of Pega server e.g.: *24.1.0*. Determines Constellation Core JS library version used by SDK.
+ * @param okHttpClient (optional) - instance of OkHttpClient used for Pega DX API communication.
  * @param componentManager (optional) - instance of ComponentManager which is responsible for providing component definitions and manages them in the runtime
  * @param debuggable (optional) - flag which allows for debugging of underlying WebView engine
  */
@@ -20,6 +20,8 @@ data class ConstellationSdkConfig(
     val componentManager: ComponentManager = ComponentManager.create(),
     val debuggable: Boolean = false
 ) {
+    internal var nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
+
     companion object {
         fun defaultHttpClient() = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -28,4 +30,3 @@ data class ConstellationSdkConfig(
             .build()
     }
 }
-

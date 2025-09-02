@@ -37,9 +37,12 @@ public class PMSDKComponentManager {
         "Currency": CurrencyComponentProvider.self,
         "Decimal": DecimalComponentProvider.self,
         "Date": DefaultDateComponentProvider.self,
+        "DateTime": DefaultDateTimeComponentProvider.self,
+        "Time": DefaultTimeComponentProvider.self,
         "Integer": IntegerComponentProvider.self,
         "Dropdown": DropdownComponentProvider.self,
-        "RadioButtons": DropdownComponentProvider.self,
+        "RadioButtons": RadioButtonsComponentProvider.self,
+        "Phone": PhoneNumberComponentProvider.self,
 
         "Region": ViewComponentProvider.self,
         "View": ViewComponentProvider.self,
@@ -49,6 +52,9 @@ public class PMSDKComponentManager {
         "AssignmentCard": AssignmentCardComponentProvider.self,
         "RootContainer": RootContainerComponentProvider.self,
         "DefaultForm": ViewComponentProvider.self,
+        "OneColumn": ViewComponentProvider.self,
+        "SimpleTable": SimpleTableProvider.self,
+        "FieldGroupTemplate": FieldGroupTemplateProvider.self,
 
         "ActionButtons": ActionButtonsProvider.self,
         "AlertBanner": AlertBannerComponentProvider.self,
@@ -77,9 +83,9 @@ public class PMSDKComponentManager {
         { string } else { "" }
     }
 
-    func componentFileContents(_ type: String) throws -> String {
+    func componentFileContents(_ type: String) throws -> Data {
         if let url = jsFilesRegistry[type] {
-            try String(contentsOf: url)
+            try Data(contentsOf: url)
         } else {
             throw ComponentManagerError.unknownComponent
         }

@@ -1,142 +1,103 @@
-import { handleEvent } from '../../helpers/event-util.js';
-import { Utils } from '../../helpers/utils.js';
+import { PicklistBaseComponent } from './picklist-base.component.js';
+import {
+  buildListSourceItems,
+  Constants,
+  extractFieldMetadata,
+  getDisplayFieldsMetaData,
+  populateItems, preProcessColumns, useDropdownInitialProcessing
+} from './dropdown_utils.js';
 
-export class DropdownComponent {
-  pConn$;
-  jsComponentPConnect;
-  jsComponentPConnectData = {};
-  propName;
-  compId;
-  type;
-
-  props = {
-    value: '',
-    label: '',
-    visible: true,
-    required: false,
-    disabled: false,
-    readOnly: false,
-    helperText: '',
-    placeholder: '',
-    options: [],
-    validateMessage: ''
-  }
-
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.utils = new Utils();
-    this.componentsManager = componentsManager;
-    this.compId = this.componentsManager.getNextComponentId();
-    this.jsComponentPConnect = componentsManager.jsComponentPConnect
-    this.type = pConn$.meta.type
-  }
-
-  init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
-    this.componentsManager.onComponentAdded(this);
-    this.checkAndUpdate();
-  }
-
-  destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
-    this.componentsManager.onComponentRemoved(this);
-  }
-
-  update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
-      this.checkAndUpdate();
-    }
-  }
-
-  onStateChange() {
-    this.checkAndUpdate();
-  }
-
-  checkAndUpdate() {
-    const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
-
-    if (bUpdateSelf) {
-      this.updateSelf();
-    }
-  }
+export class DropdownComponent extends PicklistBaseComponent {
+  listItems = [];
 
   updateSelf() {
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    this.props.label = configProps.label;
+    this.updateBaseProps();
 
-    // if there is param for picklist for submit it gets un-focus and this control gets re-loaded for param change
-    if (configProps.value != undefined) {
-      this.props.value = configProps.value;
-    }
-    this.props.helperText = configProps.helperText || '';
-    this.props.placeholder = configProps.placeholder || '';
+    const configProps = this.pConn.getConfigProps();
 
-    if (configProps.required != null) {
-      this.props.required = this.utils.getBooleanValue(configProps.required);
-    }
-
-    if (configProps.visibility != null) {
-      this.props.visible = this.utils.getBooleanValue(configProps.visibility);
-    }
-
-    if (configProps.disabled != undefined) {
-      this.props.disabled = this.utils.getBooleanValue(configProps.disabled);
-    }
-
-    if (configProps.readOnly != null) {
-      this.props.readOnly = this.utils.getBooleanValue(configProps.readOnly);
-    }
-
-    const options = this.utils.getOptionList(configProps, this.pConn$.getDataObject());
-
-    const className = this.pConn$.getCaseInfo().getClassName();
-    const refName = this.propName?.slice(this.propName.lastIndexOf('.') + 1);
     const fieldMetadata = configProps.fieldMetadata;
-    const metaData = Array.isArray(fieldMetadata) ? fieldMetadata.filter(field => field?.classID === className)[0] : fieldMetadata;
+    const descriptors = configProps.descriptors;
+    const dataRelationshipContext = configProps.dataRelationshipContext;
+    const datasourceMetadata = configProps.datasourceMetadata;
+    const contextClass = configProps.contextClass;
+    const compositeKeys = configProps.compositeKeys;
+    let parameters = configProps.parameters;
+    let datasource = configProps.datasource;
+    let columns = configProps.columns;
+    let listType = configProps.listType;
+    let isDeferredDatasource = configProps.deferDatasource;
+    const className = this.pConn.getCaseInfo().getClassName();
+    const contextName = this.pConn.getContextName();
+
+    if (descriptors && datasourceMetadata?.datasource?.name) {
+      isDeferredDatasource = true;
+    }
+    const isTableTypeDataPage = datasourceMetadata?.datasource?.tableType?.toLowerCase() === Constants.DATAPAGE;
+    const isReferenceField = !!configProps.referenceType && ['case', 'data'].includes(configProps.referenceType.toLowerCase());
+
+    [listType, columns, datasource, parameters] = useDropdownInitialProcessing(
+      isDeferredDatasource,
+      isTableTypeDataPage,
+      isReferenceField,
+      datasourceMetadata,
+      listType,
+      columns,
+      datasource,
+      parameters,
+      descriptors,
+      extractFieldMetadata,
+      dataRelationshipContext,
+      contextClass,
+      compositeKeys
+    );
+
+    const isSourceDataPage = listType === Constants.DATAPAGE;
+
+    const dataConfig = {
+      dataSource: datasource,
+      parameters: parameters,
+      matchPosition: 'contains',
+      listType: listType,
+      columns: preProcessColumns(columns),
+      cacheLifeSpan: 'form', // causes caching reposes with given parameters
+      deferDatasource: isDeferredDatasource,
+      maxResultsDisplay: '5000'
+    };
+
+    if (isDeferredDatasource && isSourceDataPage) {
+      (PCore.getDataApi().init(dataConfig, contextName)).then((dataApiObj) => {
+        dataApiObj.fetchData('').then((response) => {
+          const displayFieldMeta = getDisplayFieldsMetaData(dataConfig.columns);
+          this.listItems = populateItems(response, displayFieldMeta, dataApiObj);
+          this.updateOptions(configProps, fieldMetadata, className, isDeferredDatasource, isSourceDataPage, datasource);
+        });
+      });
+    }
+    this.updateOptions(fieldMetadata, className, isDeferredDatasource, isSourceDataPage, datasource);
+  }
+
+  updateOptions(fieldMetadata, className, deferDatasource, isSourceDataPage, datasource) {
+    const metaData = Array.isArray(fieldMetadata)
+      ? fieldMetadata.filter((field) => field?.classID === className)[0]
+      : fieldMetadata;
+
     let displayName = metaData?.datasource?.propertyForDisplayText;
     displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
-    const localeContext = metaData?.datasource?.tableType === 'DataPage' ? 'datapage' : 'associated';
-    const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
+    const localeContext = metaData?.datasource?.tableType === 'DataPage' ? Constants.DATAPAGE : Constants.ASSOCIATED;
+
+    const datasourceItems = Array.isArray(datasource) ? datasource.map(item => {return { key: item.key, text: item.value }; }) : [];
+    const options = buildListSourceItems(deferDatasource, isSourceDataPage, this.listItems, this.pConn, datasourceItems);
+
+    this.propName = this.pConn.getStateProps().value;
+    const refName = this.propName?.slice(this.propName.lastIndexOf('.') + 1);
     const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : refName;
     const localePath = localeContext === 'datapage' ? displayName : localeName;
-
+    const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
 
     this.props.options = options.map(option => {
       const localizedValue = this.getLocalizedOptionValue(option, localePath, localeClass, localeContext, localeName);
       return { key: option.key.toString(), label: localizedValue.toString() };
     });
-
-    this.props.validateMessage = this.jsComponentPConnectData.validateMessage || ''
-    this.propName = this.pConn$.getStateProps().value;
     this.componentsManager.onComponentPropsUpdate(this);
-  }
-
-  onEvent(event) {
-    this.componentsManager.handleNativeEvent(this, event)
-  }
-
-  fieldOnChange(value) {
-    this.props.value = value;
-    handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
-  }
-
-  fieldOnBlur(value) {
-    this.props.value = value || this.props.value
-    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
-    if (submittedValue !== this.props.value) {
-      handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
-    }
-    Utils.clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
-  }
-
-  getLocalizedOptionValue(opt, localePath, localeClass, localeContext, localeName) {
-    return this.pConn$.getLocalizedValue(
-      opt.value,
-      localePath,
-      this.pConn$.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-    );
   }
 }

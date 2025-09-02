@@ -11,15 +11,21 @@ object ComponentTypes {
     val AssignmentCard = ComponentType("AssignmentCard")
     val DefaultForm = ComponentType("DefaultForm")
     val FlowContainer = ComponentType("FlowContainer")
+    val OneColumn = ComponentType("OneColumn")
     val Region = ComponentType("Region")
     val RootContainer = ComponentType("RootContainer")
     val View = ComponentType("View")
     val ViewContainer = ComponentType("ViewContainer")
 
+    // templates
+    val SimpleTable = ComponentType("SimpleTable")
+    val FieldGroupTemplate = ComponentType("FieldGroupTemplate")
+
     // fields
     val Checkbox = ComponentType("Checkbox")
     val Currency = ComponentType("Currency")
     val Date = ComponentType("Date")
+    val DateTime = ComponentType("DateTime")
     val Decimal = ComponentType("Decimal")
     val Dropdown = ComponentType("Dropdown")
     val Email = ComponentType("Email")
@@ -28,6 +34,7 @@ object ComponentTypes {
     val RadioButtons = ComponentType("RadioButtons")
     val TextArea = ComponentType("TextArea")
     val TextInput = ComponentType("TextInput")
+    val Time = ComponentType("Time")
     val URL = ComponentType("URL")
 
     // widgets

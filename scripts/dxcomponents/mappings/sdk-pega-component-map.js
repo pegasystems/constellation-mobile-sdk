@@ -23,7 +23,7 @@ import { ViewContainerComponent } from '../components/containers/view-container.
 import { CheckBoxComponent } from '../components/fields/check-box.component.js';
 import { CurrencyComponent } from '../components/fields/currency.component.js';
 import { DateComponent } from '../components/fields/date.component.js';
-// import { DateTimeComponent } from './_components/field/date-time/date-time.component';
+import { DateTimeComponent } from '../components/fields/date-time.component.js';
 import { DecimalComponent } from '../components/fields/decimal.component.js';
 import { DropdownComponent } from '../components/fields/dropdown.component.js';
 import { EmailComponent } from '../components/fields/email.component.js';
@@ -38,7 +38,7 @@ import { TextAreaComponent } from '../components/fields/text-area.component.js';
 // import { TextComponent } from './_components/field/text/text.component';
 // import { TextContentComponent } from './_components/field/text-content/text-content.component';
 import { TextInputComponent } from '../components/fields/text-input.component.js';
-// import { TimeComponent } from './_components/field/time/time.component';
+import { TimeComponent } from '../components/fields/time.component.js';
 import { UrlComponent } from '../components/fields/url.component.js';
 // import { UserReferenceComponent } from './_components/field/user-reference/user-reference.component';
 // import { ScalarListComponent } from './_components/field/scalar-list/scalar-list.component';
@@ -62,7 +62,7 @@ import { DefaultFormComponent } from '../components/containers/default-form.comp
 // import { DetailsWideNarrowComponent } from './_components/template/details-wide-narrow/details-wide-narrow.component';
 // import { DynamicTabsComponent } from './_components/template/dynamic-tabs/dynamic-tabs.component';
 // import { FieldGroupListComponent } from './_components/template/field-group-list/field-group-list.component';
-// import { FieldGroupTemplateComponent } from './_components/template/field-group-template/field-group-template.component';
+import { FieldGroupTemplateComponent } from '../components/containers/templates/field-group-template.component.js';
 // import { FieldValueListComponent } from './_components/template/field-value-list/field-value-list.component';
 // import { InlineDashboardComponent } from './_components/template/inline-dashboard/inline-dashboard.component';
 // import { InlineDashboardPageComponent } from './_components/template/inline-dashboard-page/inline-dashboard-page.component';
@@ -71,12 +71,12 @@ import { DefaultFormComponent } from '../components/containers/default-form.comp
 // import { MultiReferenceReadonlyComponent } from './_components/template/multi-reference-readonly/multi-reference-readonly.component';
 // import { MultiselectComponent } from './_components/field/multiselect/multiselect.component';
 // import { NarrowWideFormComponent } from './_components/template/narrow-wide-form/narrow-wide-form.component';
-// import { OneColumnComponent } from './_components/template/one-column/one-column.component';
+import { OneColumnComponent } from '../components/containers/one-column.component.js';
 // import { OneColumnPageComponent } from './_components/template/one-column-page/one-column-page.component';
 // import { OneColumnTabComponent } from './_components/template/one-column-tab/one-column-tab.component';
 // import { PageComponent } from './_components/template/page/page.component';
 // import { PromotedFiltersComponent } from './_components/template/promoted-filters/promoted-filters.component';
-// import { SimpleTableComponent } from './_components/template/simple-table/simple-table.component';
+import { SimpleTableComponent } from '../components/containers/templates/simple-table.component.js';
 // import { SimpleTableManualComponent } from './_components/template/simple-table-manual/simple-table-manual.component';
 // import { SimpleTableSelectComponent } from './_components/template/simple-table-select/simple-table-select.component';
 // import { SingleReferenceReadonlyComponent } from './_components/template/single-reference-readonly/single-reference-readonly.component';
@@ -152,7 +152,7 @@ const pegaSdkComponentMap = {
   // DashboardFilter: DashboardFilterComponent,
   // DataReference: DataReferenceComponent,
   Date: DateComponent,
-  // DateTime: DateTimeComponent,
+  DateTime: DateTimeComponent,
   Decimal: DecimalComponent,
   DefaultForm: DefaultFormComponent,
   // DeferLoad: DeferLoadComponent,
@@ -169,7 +169,7 @@ const pegaSdkComponentMap = {
   // FeedContainer: FeedContainerComponent,
   // FieldGroup: FieldGroupComponent,
   // FieldGroupList: FieldGroupListComponent,
-  // FieldGroupTemplate: FieldGroupTemplateComponent,
+  FieldGroupTemplate: FieldGroupTemplateComponent,
   // FieldValueList: FieldValueListComponent,
   // FileUtility: FileUtilityComponent,
   FlowContainer: FlowContainerComponent,
@@ -194,7 +194,7 @@ const pegaSdkComponentMap = {
   // NarrowWideForm: NarrowWideFormComponent,
   // //   'NarrowWidePage': NarrowWidePage,
   // NavBar: NavbarComponent,
-  // OneColumn: OneColumnComponent,
+  OneColumn: OneColumnComponent,
   // OneColumnPage: OneColumnPageComponent,
   // OneColumnTab: OneColumnTabComponent,
   // Operator: OperatorComponent,
@@ -212,7 +212,7 @@ const pegaSdkComponentMap = {
   RootContainer: RootContainerComponent,
   // ScalarList: ScalarListComponent,
   // SemanticLink: SemanticLinkComponent,
-  // SimpleTable: SimpleTableComponent,
+  SimpleTable: SimpleTableComponent,
   // SimpleTableManual: SimpleTableManualComponent,
   // SimpleTableSelect: SimpleTableSelectComponent,
   // SingleReferenceReadOnly: SingleReferenceReadonlyComponent,
@@ -226,7 +226,7 @@ const pegaSdkComponentMap = {
   TextInput: TextInputComponent,
   // ThreeColumn: ThreeColumnComponent,
   // ThreeColumnPage: ThreeColumnPageComponent,
-  // Time: TimeComponent,
+  Time: TimeComponent,
   // Todo: TodoComponent,
   // TwoColumn: TwoColumnComponent,
   // TwoColumnPage: TwoColumnPageComponent,

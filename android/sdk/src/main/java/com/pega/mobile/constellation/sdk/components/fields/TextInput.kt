@@ -10,7 +10,7 @@ class TextInputComponent(context: ComponentContext) : FieldComponent(context)
 class TextInputRenderer : ComponentRenderer<TextInputComponent> {
     @Composable
     override fun TextInputComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             TextInput(
                 value = value,
                 label = label,

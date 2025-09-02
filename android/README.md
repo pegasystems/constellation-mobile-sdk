@@ -62,7 +62,7 @@ where:
 - **context** - Android application context
 - **config** - constellation sdk config object with parameters:
     - **pegaUrl** — URL to Pega server e.g.: *https://insert-url-here.example/prweb*
-    - **pegaVersion** — Version of Pega server. For example, *8.24.1*. Determines the Constellation Core JS library version used by the SDK.
+    - **pegaVersion** — Version of Pega server. For example, *24.1.0*. Determines the Constellation Core JS library version used by the SDK.
     - **okHttpClient** (optional) — Instance of OkHttpClient that can be passed to the SDK for advanced networking control.
     - **componentManager** (optional) — Instance of ComponentManager that is responsible for providing component definitions and managing them in the runtime
     - **debuggable** (optional) — Flag that allows for debugging of the underlying WebView engine
@@ -269,3 +269,17 @@ JavaScript Components use PCore and PConn API which is provided by the Constella
 Library:<br>
 https://docs.pega.com/bundle/pcore-pconnect/page/pcore-pconnect-public-apis/api/using-pcore-pconnect-public-apis.html
 
+
+### Adding Kotlin sources for browsing SDK code in Android Studio
+
+To be able to browse the SDK code in Android Studio, you need to download sdk-sources.jar file and place it 'android/libs' folder.
+Then after opening any SDK class definition, you can click on the "Choose Sources..." link in the top right corner of the editor.
+Find the sdk-sources.jar file and click "open". After that, you will be able to browse the SDK code in Android Studio.
+
+sdk-sources.jar file can be downloaded from github releases page:<br> 
+https://github.com/pegasystems/constellation-mobile-sdk/releases
+
+It can also be built from the source code by running the following command in the 'android' directory of the SDK:
+
+```bash 
+./gradlew :sdk:sourcesJar

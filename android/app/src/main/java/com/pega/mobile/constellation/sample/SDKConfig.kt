@@ -15,7 +15,7 @@ object SDKConfig {
     /**
      * The version of the Pega Platform being used. Determines the Constellation Core JS library version used by the SDK.
      */
-    const val PEGA_VERSION = "8.24.1"
+    const val PEGA_VERSION = "24.1.0"
 
     /**
      * The name of the Pega case class to be created.

@@ -7,8 +7,17 @@ struct DateView: View {
     init(properties: DateProps) {
         self.properties = properties
     }
-    
+
     var body: some View {
+        VStack {
+            if properties.visible {
+                contentView
+            }
+        }
+        .animation(.easeInOut, value: properties.visible)
+    }
+
+    private var contentView: some View {
         VStack(alignment: .leading, spacing: 5) {
             
             DatePicker(selection: $properties.selectedDate,

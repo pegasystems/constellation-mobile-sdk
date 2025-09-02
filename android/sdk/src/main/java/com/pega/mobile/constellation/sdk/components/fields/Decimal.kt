@@ -26,7 +26,7 @@ class DecimalComponent(context: ComponentContext) : FieldComponent(context) {
 class DecimalRenderer : ComponentRenderer<DecimalComponent> {
     @Composable
     override fun DecimalComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Decimal(
                 value = value,
                 label = label,

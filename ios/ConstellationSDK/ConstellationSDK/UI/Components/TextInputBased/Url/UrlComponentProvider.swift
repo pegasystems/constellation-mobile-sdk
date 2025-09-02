@@ -26,6 +26,7 @@ fileprivate struct DecodableUrlProps: Decodable {
     let readOnly: Bool
     let validateMessage: String?
     let helperText: String?
+    let displayMode: String?
 
     func apply(to observableProps: UrlProps) {
         observableProps.value = value
@@ -33,7 +34,11 @@ fileprivate struct DecodableUrlProps: Decodable {
         observableProps.helperText = helperText?.nilIfEmpty
         observableProps.placeholder = placeholder?.nilIfEmpty
         observableProps.required = required
-        observableProps.disabled = disabled
+        observableProps.disabled = if displayMode == "DISPLAY_ONLY" {
+            true
+        } else {
+            disabled
+        }
         observableProps.readOnly = readOnly
         observableProps.validateMessage = validateMessage?.nilIfEmpty
         observableProps.helperText = helperText?.nilIfEmpty

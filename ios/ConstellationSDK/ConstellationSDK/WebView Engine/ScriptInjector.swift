@@ -1,6 +1,5 @@
 import Foundation
 import WebKit
-import OSLog
 
 class ScriptInjector {
     private var bundle = Bundle(for: WebViewEngine.self)
@@ -14,9 +13,9 @@ class ScriptInjector {
     }
 
     func load(_ name: String) throws {
-        Logger.current().debug("Loading \(name)")
+        Log.debug("Loading \(name)")
         let script = try loadScript(name)
-        Logger.current().debug("\(name) loaded, size = \(script.count)")
+        Log.debug("\(name) loaded, size = \(script.count)")
         scripts.append(script)
     }
 

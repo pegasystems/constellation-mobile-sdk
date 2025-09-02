@@ -32,11 +32,11 @@ fun Currency(
 ) {
     val keyboardType =
         if (decimalPrecision == 0) KeyboardType.NumberPassword else KeyboardType.Number
-    val leadingIcon: @Composable (() -> Unit)? =
+    val leadingIcon: @Composable () -> Unit =
         if (showIsoCode) {
             { Text(isoCode) }
         } else {
-            null
+            { Text(getCurrencySymbol(isoCode))}
         }
     Input(
         value = value,
@@ -55,6 +55,11 @@ fun Currency(
         leadingIcon = leadingIcon
     )
 }
+
+private fun getCurrencySymbol(isoCode: String) =
+    runCatching {
+        java.util.Currency.getInstance(isoCode).symbol
+    }.getOrNull() ?: isoCode
 
 private fun formatValue(value: String, decimalPrecision: Int) =
     value.replace(",", "").let {
@@ -81,7 +86,7 @@ fun CurrencyPreview() {
         helperText = "What is your salary",
         placeholder = "Salary placeholder",
         isoCode = "USD",
-        showIsoCode = true,
+        showIsoCode = false,
         decimalPrecision = 2,
         onValueChange = { value = it }
     )

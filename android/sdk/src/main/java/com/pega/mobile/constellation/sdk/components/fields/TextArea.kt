@@ -22,7 +22,7 @@ class TextAreaComponent(context: ComponentContext) : FieldComponent(context) {
 class TextAreaRenderer : ComponentRenderer<TextAreaComponent> {
     @Composable
     override fun TextAreaComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             TextArea(
                 value = value,
                 label = label,

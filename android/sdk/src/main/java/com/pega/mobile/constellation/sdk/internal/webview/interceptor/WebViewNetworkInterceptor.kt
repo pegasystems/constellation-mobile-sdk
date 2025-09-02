@@ -5,6 +5,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.lifecycle.AtomicReference
+import com.pega.mobile.constellation.sdk.ConstellationSdkConfig
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -12,14 +13,17 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.ByteArrayInputStream
 
-internal class WebViewNetworkInterceptor(
-    private val httpClient: OkHttpClient
-) : WebViewInterceptor {
+internal class WebViewNetworkInterceptor(private val config: ConstellationSdkConfig) :
+    WebViewInterceptor {
     private var requestBody = AtomicReference<String?>(null)
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
         runCatching {
-            httpClient.execute(request).toWebResourceResponse()
+            if (request.url.toString().startsWith(config.pegaUrl)) {
+                config.okHttpClient.execute(request).toWebResourceResponse()
+            } else {
+                config.nonDxOkHttpClient.execute(request).toWebResourceResponse()
+            }
         }.getOrElse {
             val message = it.message.orEmpty()
             Log.e(TAG, "Network error: $message", it)
@@ -42,10 +46,13 @@ internal class WebViewNetworkInterceptor(
         val body = requestBody.takeIf { request.method in listOf("POST", "PATCH") }
             ?.getAndSet(null)
             ?.toRequestBody()
+        val filteredHeaders = request.requestHeaders.filterNot {
+            isAuthorizationHeaderUndefined(it.key, it.value) || isHeaderDisallowed(it.key)
+        }
         val okHttpRequest = Request.Builder()
             .method(request.method, body)
             .url(request.url.toString())
-            .headers(request.requestHeaders.toHeaders())
+            .headers(filteredHeaders.toHeaders())
             .build()
         return newCall(okHttpRequest).execute()
     }
@@ -58,11 +65,30 @@ internal class WebViewNetworkInterceptor(
         headers.toMap(),
         body?.byteStream()
     )
+    /**
+     *  Remove "Authorization" header if necessary due to JS layer unnecessarily appending
+     * `undefined` value to it
+     */
+    private fun isAuthorizationHeaderUndefined(headerKey: String, headerValue: String) =
+        headerKey.lowercase() == "authorization" && headerValue.lowercase() == "undefined"
+
+    private fun isHeaderDisallowed(headerKey: String) =
+        DISALLOWED_HEADERS_LIST.any {
+            if (it.endsWith("*")) {
+                headerKey.lowercase().startsWith(it.removeSuffix("*"))
+            } else {
+                headerKey.lowercase() == it
+            }
+        }
 
     companion object {
         private const val TAG = "SdkWebViewNetworkInterceptor"
+        private val DISALLOWED_HEADERS_LIST = listOf(
+            "Referer",
+            "Origin",
+            "X-Requested-With",
+            "User-Agent",
+            "sec-ch-ua*"
+        ).map { it.lowercase() }
     }
 }
-
-
-

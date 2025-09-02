@@ -1,15 +1,6 @@
-// export interface JsComponentPConnectData {
-//   compID?: string;
-//   unsubscribeFn?: Function;
-//   validateMessage?: string;
-//   actions?: {
-//     onChange: Function;
-//     onBlur: Function;
-//   };
-// }
+const TAG = '[PConnBridge]';
 
 export class JsComponentPConnectService {
-
   /**
    * Local variable for access to the store once the service is connected to it.
    */
@@ -23,9 +14,6 @@ export class JsComponentPConnectService {
    */
   componentPropsArr = [];
 
-  /* Used to toggle some class-wide logging */
-  static bLogging = false;
-
   constructor() {
     // Establish necessary override flags for our use of Core
     // const coreOverrides = { "dynamicLoadComponents": false };
@@ -33,13 +21,6 @@ export class JsComponentPConnectService {
     // coreOverrides["dynamicLoadComponents"] = false;
     // PCore.setBehaviorOverrides( coreOverrides );
     PCore.setBehaviorOverride('dynamicLoadComponents', false);
-
-    // Always best to use deep object compare when it's available
-    // if (isEqual !== undefined) {
-    // console.log(`JsComponentPConnect is using deep object compare`);
-    // } else {
-    // console.log(`JsComponentPConnect is using JSON.stringify compare`);
-    // }
   }
 
   /**
@@ -51,9 +32,8 @@ export class JsComponentPConnectService {
    * to unsubscribe from the store. (Typically during ngOnDestroy)
    */
   subscribeToStore(inComp = null, inCallback = null) {
-    // const theCompName: string = inComp ? `${inComp.constructor.name}` : 'no component provided';
     let fnUnsubscribe;
-    // console.log( `Bridge subscribing: ${theCompName} `);
+    console.log(TAG, `Subscribing component to store: ${inComp.pConn.meta.type}#${inComp.compId}`);
     if (inComp) {
       fnUnsubscribe = this.getStore().subscribe(inCallback);
     }
@@ -70,38 +50,28 @@ export class JsComponentPConnectService {
     let addProps = {};
 
     if (inComp === null) {
-      console.error(`JsComponentPConnect: getComponentProps called with bad component: ${inComp}`);
+      console.error(TAG, `Cannot get component props on 'null' component`);
     }
-
-    // if ((inComp.constructor.name === "FlowContainerComponent") || (inComp.constructor.name === "ViewContainerComponent")
-    //     || (inComp.constructor.name === "ViewComponent") || (inComp.constructor.name === "DeferLoadComponent")) {
-    //   console.log(`--> JsComponentPConnect getComponentProps: ${inComp.constructor.name}`);
-    // }
 
     if (inComp.additionalProps !== undefined) {
       if (typeof inComp.additionalProps === 'object') {
-        addProps = inComp.pConn$.resolveConfigProps(inComp.additionalProps);
+        addProps = inComp.pConn.resolveConfigProps(inComp.additionalProps);
       } else if (typeof inComp.additionalProps === 'function') {
-        const propsToAdd = inComp.additionalProps(PCore.getStore().getState(), inComp.pConn$);
-        addProps = inComp.pConn$.resolveConfigProps(propsToAdd);
+        const propsToAdd = inComp.additionalProps(PCore.getStore().getState(), inComp.pConn);
+        addProps = inComp.pConn.resolveConfigProps(propsToAdd);
       }
     }
 
-    compProps = inComp.pConn$.getConfigProps();
-
-    // const componentName = inComp.constructor.name;
+    compProps = inComp.pConn.getConfigProps();
 
     // The following comment is from the Nebula/Constellation version of this code. Meant as a reminder to check this occasionally
     // populate additional props which are component specific and not present in configurations
     // This block can be removed once all these props will be added as part of configs
-    // side-effect: this causes call to addFieldToForm() in form-handler in c11n core js
-    inComp.pConn$.populateAdditionalProps(compProps);
+    // side effect: call to populateAdditionalProps causes given field to be added/removed to field list for next submit
+    // depending on visibility, redonly, etc.
+    this.populateAdditionalProps(inComp, compProps)
 
-    compProps = inComp.pConn$.resolveConfigProps(compProps);
-
-    if (compProps && undefined !== compProps.validatemessage && compProps.validatemessage != '') {
-      // console.log( `   validatemessage for ${inComp.constructor.name} ${inComp.jsComponentPConnectData.compID}: ${compProps.validatemessage}`);
-    }
+    compProps = inComp.pConn.resolveConfigProps(compProps);
 
     return {
       ...compProps,
@@ -126,7 +96,7 @@ export class JsComponentPConnectService {
    */
   getComponentProp(inComp = null, inProp = '') {
     if (inComp === null) {
-      console.error(`JsComponentPConnect: getComponentProp called with bad component: ${inComp}`);
+      console.error(TAG, `Cannot get component prop on 'null' component`);
     }
 
     const compID = inComp.jsComponentPConnectData.compID;
@@ -143,7 +113,7 @@ export class JsComponentPConnectService {
    */
   getCurrentCompleteProps(inComp = null) {
     if (inComp === null) {
-      console.error(`JsComponentPConnect: getCurrentCompleteProps called with bad component: ${inComp}`);
+      console.error(TAG, `Cannot get current complete props on 'null' component`);
     }
     return this.componentPropsArr[inComp.jsComponentPConnectData.compID];
   }
@@ -164,8 +134,7 @@ export class JsComponentPConnectService {
    * validateMessage: any validation/error message that gets generated for this object,
    * actions: any actions that are defined for this object
    */
-  registerAndSubscribeComponent(inComp, inCallback = null, compId) {
-    // Create an initial object to be returned.
+  registerAndSubscribeComponent(inComp, inCallback = null) {
     const returnObject = {
       compID: '',
       unsubscribeFn: undefined,
@@ -173,48 +142,43 @@ export class JsComponentPConnectService {
       actions: undefined
     };
 
-    if (inComp === null || inCallback === null) {
-      console.error(`JsComponentPConnect: bad call to registerAndSubscribe: inComp: ${inComp} inCallback: ${inCallback}`);
+    if (inComp === undefined || inComp === null) {
+      console.error(TAG, `Cannot register '${inComp}' component`);
+      return returnObject;
+    }
+
+    const compId = inComp.compId
+
+    if (inCallback === undefined || inCallback === null) {
+      console.error(TAG, `Cannot register component with '${inCallback}' callback function`);
       return returnObject;
     }
 
     const compType = inComp.constructor.name;
 
-    if (JsComponentPConnectService.bLogging) {
-      console.log(`registerAndSubscribeComponent: ${compType}`);
-    }
-
-    if (undefined !== inComp.bridgeComponentID) {
-      console.error(`OLD SCHOOL: ${compType}`);
-    }
-
-    if (undefined === inComp.actions && undefined === inComp.jsComponentPConnectData) {
-      console.error(`JsComponentPConnect: bad call to registerAndSubscribe from ${compType}: actions not defined as a class variable for inComp`);
+    if (inComp.jsComponentPConnectData === undefined && inComp.actions === undefined) {
+      console.error(TAG, `Cannot register component ${compType}: jsComponentPConnectData is 'undefined' and actions not defined as a class variable for inComp`);
       return returnObject;
     }
-    if (undefined === inComp.bridgeComponentID && undefined === inComp.jsComponentPConnectData) {
-      console.error(
-        `JsComponentPConnect: bad call to registerAndSubscribe from ${compType}: bridgeComponentID not defined as a class variable for inComp`
-      );
+    if (inComp.jsComponentPConnectData === undefined && inComp.bridgeComponentID === undefined) {
+      console.error(TAG, `Cannot register component ${compType}: jsComponentPConnectData is 'undefined' and bridgeComponentID not defined as a class variable for inComp`);
       return returnObject;
     }
-    if (undefined === inComp.unsubscribeStore && undefined === inComp.jsComponentPConnectData) {
-      console.error(
-        `JsComponentPConnect: bad call to registerAndSubscribe from ${compType}: unsubscribeStore not defined as a class variable for inComp`
-      );
+    if (inComp.jsComponentPConnectData === undefined && inComp.unsubscribeStore === undefined) {
+      console.error(TAG, `Cannot register component ${compType}: jsComponentPConnectData is 'undefined' and unsubscribeStore not defined as a class variable for inComp`);
       return returnObject;
     }
-    if (undefined === inComp.validateMessage && undefined === inComp.jsComponentPConnectData) {
-      console.error(`JsComponentPConnect: bad call to registerAndSubscribe from ${compType}: validateMessage not defined as a class variable for inComp`);
+    if (inComp.jsComponentPConnectData === undefined && inComp.validateMessage === undefined) {
+      console.error(TAG, `Cannot register component ${compType}: jsComponentPConnectData is 'undefined' and validateMessage not defined as a class variable for inComp`);
       return returnObject;
     }
 
     // call processActions to populate metadata with actions as in PConnectHOR initialize
     this.processActions(inComp);
-    if (undefined === inComp.actions) {
-      returnObject.actions = inComp.pConn$.getActions();
+    if (inComp.actions === undefined) {
+      returnObject.actions = inComp.pConn.getActions();
     } else {
-      inComp.actions = inComp.pConn$.getActions();
+      inComp.actions = inComp.pConn.getActions();
     }
 
     // bind the provided callback to the component it's associated with
@@ -222,14 +186,26 @@ export class JsComponentPConnectService {
 
     // Now proceed to register and subscribe...
     const theCompID = compId
-    const theUnsub = this.subscribeToStore(inComp, inCallback);
+    inComp.subscribedToStore = true;
+    const subscribeFn = () => {
+      // store may still notify component right after it unsubscribed itself so we need a flag to prevent that.
+      // When component unsubscribes while reduxBatch is performing notifyListeners loop, listener is removed from the listeners array
+      // but the loop still goes through the original listeners array and calls all listeners including the one that just unsubscribed itself.
+      if (inComp.subscribedToStore === true) {
+        inCallback();
+      } else {
+        console.debug(TAG, `Skipping store event - component ${inComp.pConn.meta.type}#${theCompID} is no longer subscribed to store.`);
+      }
+    };
+    const theUnsub = this.subscribeToStore(inComp, subscribeFn);
 
-    if (undefined === inComp.jsComponentPConnectData) {
+    if (inComp.jsComponentPConnectData === undefined) {
       inComp.bridgeComponentID = theCompID;
     } else {
       returnObject.compID = theCompID;
       returnObject.unsubscribeFn = () => {
-        console.log("unsubscribeFn for compId: ", theCompID);
+        console.log(TAG, `Unsubscribing component from store: ${inComp.pConn.meta.type}#${theCompID}`);
+        inComp.subscribedToStore = false;
         this.removeFormField(inComp);
         theUnsub();
       };
@@ -237,39 +213,51 @@ export class JsComponentPConnectService {
 
     // initialize this components entry in the componentPropsArr
     this.componentPropsArr[theCompID] = {};
-
-    this.addFormField(inComp);
+    if (!inComp.pConn.getConfigProps().readOnly) {
+      this.addFormField(inComp);
+    }
 
     // return object with compID and unsubscribe...
     return returnObject;
   }
 
+  /**
+   * Note: This functions internally marks 'isMounted' flag as true for field in formFieldsMap
+   * This causes the field to be sent during submit.
+   * (formFieldsMap[contextName].fieldOrder[propName].isMounted = true)
+   * It does not add field itself to the formFieldsMap, it just marks it as mounted.
+   * It also does not check if given field is editable or not so it may incorrectly set isMounted to true for readOnly fields.
+   */
   addFormField(inComp) {
-    inComp.pConn$?.addFormField();
+    inComp.pConn?.addFormField();
   }
 
+  /**
+   * Note: This functions internally marks 'isMounted' flag as false for field in formFieldsMap
+   * This causes the field NOT to be sent during submit.
+   * (formFieldsMap[contextName].fieldOrder[propName].isMounted = false)
+   * It does not remove field itself from the formFieldsMap, it just marks it as unmounted.
+   */
   removeFormField(inComp) {
-    if (inComp.pConn$?.removeFormField) {
-      inComp.pConn$?.removeFormField();
+    if (inComp.pConn?.removeFormField) {
+      inComp.pConn?.removeFormField();
     }
   }
 
-  // Returns true if the component's entry in ___componentPropsArr___ is
-  //  the same as the inCompProps passed in.
-  //  As a side effect, update the component's entry in componentPropsArr
-  //  NOTE: It is assumed that the incoming component has the following:
-  //  * a bridgeComponentID <string> property - used as lookup key in componentPropsArr
-  //  * a pConn$ <?> property - used to access functions accessed in getComponentProps
-  // Return true: means the component props are different and the component should update itself (re-render)
-  // Return false: means the component props are the same and the component doesn't need to update (re-render)
-  //  On bad input, return false;
+  /**
+   * Note: This function internally adds field to formFieldsMap if it is editable.
+   */
+  populateAdditionalProps(inComp, compProps) {
+    inComp.pConn.populateAdditionalProps(compProps);
+  }
+
   /**
    * Returns **true** if the component's entry in ___componentPropsArr___ is
    * the same as the properties that are current associated with the component (___inComp___) passed in.
    * As a side effect, the component's entry in ___componentPropsArr___ is updated.
    * **Note**: It is assumed that the incoming component has the following:
    * (a) a bridgeComponentID _string_ property used as lookup key in ___componentPropsArr___
-   * and (b) a ___pConn$___ property used to access functions called in ___getComponentProps___
+   * and (b) a ___pConn___ property used to access functions called in ___getComponentProps___
    *
    * @param inComp The component asking if it should update itself
    * @returns Return **true**: means the component props are different and the component should update itself (re-render).
@@ -277,15 +265,13 @@ export class JsComponentPConnectService {
    * If the ***inComp*** input is bad, false is also returned.
    */
   shouldComponentUpdate(inComp) {
-    // const bShowLogging = false;
     let bRet = false;
-    // check for reasonable input
     if (this.isEmptyObject(inComp)) {
-      console.error(`JsComponentPConnect: bad call to shouldComponentUpdate: inComp: ${JSON.stringify(inComp)}`);
+      console.error(TAG, `Cannot check component for update: component is empty object`);
       return bRet;
     }
-    if (undefined === inComp.validateMessage && undefined === inComp.jsComponentPConnectData) {
-      console.error(`JsComponentPConnect: bad call to shouldComponentUpdate: ${inComp.constructor.name} does not have a validateMessage property.`);
+    if (inComp.jsComponentPConnectData === undefined && inComp.validateMessage === undefined) {
+      console.error(TAG, `Cannot check component for update: jsComponentPConnectData is 'undefined' and ${inComp.constructor.name} does not have a validateMessage property.`);
     }
 
     const compID = this.getComponentID(inComp);
@@ -305,7 +291,13 @@ export class JsComponentPConnectService {
       inComp.jsComponentPConnectData.httpMessages = incomingProps.httpMessages;
       delete incomingProps.httpMessages
     }
-  
+
+    // on 24.2 RootContainer properties sometimes contains isLoggedOut=null property and sometimes this property is missing
+    // so we need to remove it to not trigger unnecessary component update
+    if (incomingProps.isLoggedOut === null) {
+      delete incomingProps.isLoggedOut
+    }
+
     const incomingPropsAsStr = JSON.stringify(incomingProps);
 
     bRet = currentPropsAsStr != incomingPropsAsStr;
@@ -317,7 +309,7 @@ export class JsComponentPConnectService {
     }
 
     // Below piece of code is needed to re-render the component since we wanna evaluate the Visibility expression within View component in such cases
-    if (inComp.pConn$.meta.config.context?.length > 0 && inComp.pConn$.getPageReference().length > 'caseInfo.content'.length) {
+    if (inComp.pConn.meta.config.context?.length > 0 && inComp.pConn.getPageReference().length > 'caseInfo.content'.length) {
       return true;
     }
 
@@ -330,11 +322,9 @@ export class JsComponentPConnectService {
       inComp.jsComponentPConnectData.validateMessage = validatemessage;
 
       if (inComp.jsComponentPConnectData.validateMessage != '') {
-        // this.psService.sendMessage(false);
         let sErrorMessage = currentProps && currentProps.label ? currentProps.label.concat(' - ') : '';
         sErrorMessage = sErrorMessage.concat(inComp.jsComponentPConnectData.validateMessage);
-        // this.erService.sendMessage('update', sErrorMessage);
-        console.error(`Validation error: ${sErrorMessage}`);
+        console.error(TAG, `Validation error: ${sErrorMessage}`);
       }
     } else {
       inComp.validateMessage = validatemessage;
@@ -343,27 +333,6 @@ export class JsComponentPConnectService {
     if (bRet && compID === undefined) {
       bRet = false;
     }
-
-    // console.log( `JsComponentPConnect component ${compID} - ${inComp.constructor.name} - shouldComponentUpdate: ${bRet}`);
-    // console.log("current props: " + currentPropsAsStr);
-
-    if (bRet) {
-      // console.log(`**** change for: ${inComp.constructor.name}`);
-      // console.log("current props: " + currentPropsAsStr);
-      // console.log("incoming props: " + incomingPropsAsStr);
-      // console.log(`    ${inComp.constructor.name}: shouldComponentUpdate returning: ${bRet}, compId: ${compID}` );
-      // console.log( `    Updating with componentProps for ${inComp.constructor.name}: ${JSON.stringify(this.componentPropsArr[compID])}`);
-      // console.log( `          and validateMessage: ${inComp.validateMessage}`);
-    }
-    // else if (inComp.constructor.name.indexOf("View") >= 0 || inComp.constructor.name.indexOf("Root") >= 0) {
-    //   console.log("no change");
-    //   console.log("current props: " + currentPropsAsStr);
-    //   console.log("incoming props: " + incomingPropsAsStr);
-    //   console.log(`    ${inComp.constructor.name}: shouldComponentUpdate returning: ${bRet}, compId: ${compID}` );
-
-    // }
-
-    // console.log(`    ${inComp.constructor.name}: shouldComponentUpdate returning: ${bRet}`);
 
     return bRet;
   }
@@ -382,19 +351,14 @@ export class JsComponentPConnectService {
    * @param event The event
    */
   changeHandler(inComp, event) {
-    const bLogging = false;
-    if (bLogging) {
-      // console.log(`JsComponentPConnect.changeHandler`);
-    }
-    // check for reasonable input
-    if (undefined === inComp || this.isEmptyObject(inComp)) {
-      console.error(`JsComponentPConnect: bad call to changeHandler: inComp: ${JSON.stringify(inComp)}`);
+    if (inComp === undefined || inComp === null || this.isEmptyObject(inComp)) {
+      console.error(TAG, `Cannot handle change on undefined/null/empty component`);
       return;
     }
 
-    const pConnect = inComp.pConn$;
-    if (undefined === pConnect) {
-      console.error(`JsComponentPConnect: bad call to changeHandler: inComp.pConn$: ${pConnect}`);
+    const pConnect = inComp.pConn;
+    if (pConnect === undefined) {
+      console.error(TAG, `Cannot handle change for component ${inComp.constructor.name} with undefined pConn`);
       return;
     }
 
@@ -407,19 +371,14 @@ export class JsComponentPConnectService {
    * @param event The event
    */
   eventHandler(inComp, event) {
-    const bLogging = false;
-    if (bLogging) {
-      // console.log(`JsComponentPConnect.eventHandler`);
-    }
-    // check for reasonable input
-    if (undefined === inComp || this.isEmptyObject(inComp)) {
-      console.error(`JsComponentPConnect: bad call to eventHandler: inComp: ${JSON.stringify(inComp)}`);
+    if (inComp === undefined || inComp === null || this.isEmptyObject(inComp)) {
+      console.error(TAG, `Cannot handle event on undefined/null/empty component`);
       return;
     }
 
-    const pConnect = inComp.pConn$;
-    if (undefined === pConnect) {
-      console.error(`JsComponentPConnect: bad call to eventHandler: inComp.pConn$: ${pConnect}`);
+    const pConnect = inComp.pConn;
+    if (pConnect === undefined) {
+      console.error(`Cannot handle event for component ${inComp.constructor.name} with undefined pConn`);
       return;
     }
 
@@ -436,35 +395,21 @@ export class JsComponentPConnectService {
     return this.theStore;
   }
 
-  /**
-   * @param bLogMsg If true, will write the stringified state to the store for debugging/inspection
-   * @param inComp If supplied, the component that is requesting the store's state
-   * @returns A handle to the __state__ of application's store
-   */
-  getState(bLogMsg = false, inComp = null) {
-    const theState = this.getStore().getState();
-    if (bLogMsg) {
-      const theCompName = inComp ? `${inComp.constructor.name}: ` : '';
-      console.log(`${theCompName} Store state: ${JSON.stringify(theState)}`);
-    }
-    return theState;
-  }
-
   // processActions - carried over from PConnectHOC initialize
   /**
    *  processActions exposes all actions in the metadata.
    *  Attaches common handler (eventHandler) for all actions.
    */
   processActions(inComp) {
-    const pConnect = inComp.pConn$;
-    if (undefined === pConnect) {
-      console.error(`JsComponentPConnect: bad call to processActions: pConn$: ${pConnect} from component: ${inComp.constructor.name}`);
+    const pConnect = inComp.pConn;
+    if (pConnect === undefined) {
+      console.error(TAG, `Cannot process action for component ${inComp.constructor.name} with undefined pConn`);
       return;
     }
 
-    if (inComp.pConn$.isEditable()) {
-      inComp.pConn$.setAction('onChange', this.changeHandler.bind(this));
-      inComp.pConn$.setAction('onBlur', this.eventHandler.bind(this));
+    if (inComp.pConn.isEditable()) {
+      inComp.pConn.setAction('onChange', this.changeHandler.bind(this));
+      inComp.pConn.setAction('onBlur', this.eventHandler.bind(this));
     }
   }
 

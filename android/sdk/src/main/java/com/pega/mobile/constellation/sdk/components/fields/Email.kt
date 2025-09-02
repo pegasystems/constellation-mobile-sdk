@@ -10,7 +10,7 @@ class EmailComponent(context: ComponentContext) : FieldComponent(context)
 class EmailRenderer : ComponentRenderer<EmailComponent> {
     @Composable
     override fun EmailComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Email(
                 value = value,
                 label = label,

@@ -1,13 +1,9 @@
-//
-// Copyright (c) 2025 and Confidential to Pegasystems Inc. All rights reserved.
-//
-
 import SwiftUI
 import Combine
 
 public class UnsupportedComponentProvider: ComponentProvider {
     public var eventSubject: AnyPublisher<ComponentEvent, Never>
-    
+
     public var view: AnyView
 
     public var properties: UnsupportedComponentProps
@@ -33,8 +29,17 @@ struct UnsupportedComponentView: View {
     init(properties: UnsupportedComponentProps) {
         self.properties = properties
     }
-
+    
     var body: some View {
+        VStack {
+            if properties.visible {
+                contentView
+            }
+        }
+        .animation(.easeInOut, value: properties.visible)
+    }
+
+    private var contentView: some View {
         HStack(spacing: 10) {
             Text("Component not supported: <\(properties.type)>").padding()
         }

@@ -22,7 +22,7 @@ class CheckboxComponent(context: ComponentContext) : FieldComponent(context) {
 class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
     @Composable
     override fun CheckboxComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Checkbox(
                 value = value.toBoolean(),
                 caption = caption,

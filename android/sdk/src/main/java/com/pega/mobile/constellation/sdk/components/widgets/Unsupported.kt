@@ -11,6 +11,7 @@ import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentContextImpl
 import com.pega.mobile.constellation.sdk.components.core.ComponentRenderer
 import com.pega.mobile.constellation.sdk.components.core.ComponentType
+import com.pega.mobile.constellation.sdk.components.helpers.WithVisibility
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import com.pega.mobile.constellation.sdk.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
@@ -28,10 +29,13 @@ class UnsupportedComponent(
         private set
     var cause by mutableStateOf(cause)
         private set
+    var visible by mutableStateOf(false)
+        private set
 
     override fun onUpdate(props: JSONObject) {
         type = ComponentType(props.getString("type"))
         cause = MISSING_JAVASCRIPT_IMPLEMENTATION
+        visible = props.getBoolean("visible")
     }
 
     enum class Cause {
@@ -61,7 +65,9 @@ class UnsupportedRenderer : ComponentRenderer<UnsupportedComponent> {
     @Composable
     override fun UnsupportedComponent.Render() {
         Log.w(TAG, "Unsupported component '$type' due to ${cause.message()}")
-        Unsupported("Unsupported component '$type'")
+        WithVisibility(visible) {
+            Unsupported("Unsupported component '$type'")
+        }
     }
 
     private fun Cause.message() = when (this) {
