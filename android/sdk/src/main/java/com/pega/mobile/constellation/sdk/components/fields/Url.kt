@@ -10,7 +10,7 @@ class UrlComponent(context: ComponentContext) : FieldComponent(context)
 class UrlRenderer : ComponentRenderer<UrlComponent> {
     @Composable
     override fun UrlComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Url(
                 value = value,
                 label = label,

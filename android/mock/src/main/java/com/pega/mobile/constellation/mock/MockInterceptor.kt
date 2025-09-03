@@ -50,7 +50,7 @@ class MockInterceptor(private val context: Context) : Interceptor {
         .code(code)
         .message("OK")
         .header("Content-Type", "application/javascript")
-        .apply { request.header("Origin")?.let { header("Access-Control-Allow-Origin", it) } }
+        .apply { header("Access-Control-Allow-Origin", "*") }  // Allow CORS for testing
         .body(this)
         .build()
 

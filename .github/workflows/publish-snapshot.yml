@@ -2,10 +2,10 @@ name: "Publish snapshot to github"
 permissions:
   contents: write
 on:
-  # push to main is only allowed from PRs so this is defacto triggered on PR merge
+  # push to master is only allowed from PRs so this is defacto triggered on PR merge
   push:
     branches:
-      - main
+      - master
 env:
   # Bump those versions when needed
   VERSION_MAJOR: 1

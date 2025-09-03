@@ -28,14 +28,19 @@ fileprivate struct DecodableDecimalProps: Decodable {
     let helperText: String?
     let decimalPrecision: Int?
     let showGroupSeparators: Bool
-    
+    let displayMode: String?
+
     func apply(to observableProps: DecimalProps) {
         observableProps.value = value
         observableProps.label = label
         observableProps.helperText = helperText?.nilIfEmpty
         observableProps.placeholder = placeholder?.nilIfEmpty
         observableProps.required = required
-        observableProps.disabled = disabled
+        observableProps.disabled = if displayMode == "DISPLAY_ONLY" {
+            true
+        } else {
+            disabled
+        }
         observableProps.readOnly = readOnly
         observableProps.validateMessage = validateMessage?.nilIfEmpty
         observableProps.helperText = helperText?.nilIfEmpty

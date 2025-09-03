@@ -1,3 +1,4 @@
+const TAG = "[NativeBridge]";
 class NativeBridge {
   componentsMap = {}
 
@@ -40,46 +41,46 @@ class NativeBridge {
     if (component) {
       component.onEvent(event);
     } else {
-      console.log(`[Bridge] Native event not delivered, component #${id} not found.`);
+      console.log(TAG, `Native event not delivered, component #${id} not found.`);
     }
   }
 
   addNativeComponent(component) {
     if (component.compId === undefined) {
-      console.error(`[Bridge] Cannot add component - missing id.`);
+      console.error(TAG, `Cannot add component - missing id.`);
       return;
     }
     const id = parseInt(component.compId);
     if (component.type === undefined) {
-      console.error(`[Bridge] Cannot add component #${id} - missing type.`);
+      console.error(TAG, `Cannot add component #${id} - missing type.`);
       return;
     }
-    console.log(`[Bridge] Adding component ${component.type}#${id}`)
+    console.log(TAG, `Adding component ${component.type}#${id}`)
     sdkbridge.addComponent(id, component.type);
   }
 
   removeNativeComponent(component) {
     if (component.compId === undefined) {
-      console.error(`[Bridge] Cannot remove component - missing id.`);
+      console.error(TAG, `Cannot remove component - missing id.`);
       return;
     }
     const id = parseInt(component.compId);
-    console.log(`[Bridge] Removing component #${id}`)
+    console.log(TAG, `Removing component #${id}`)
     sdkbridge.removeComponent(id);
   }
 
   updateNativeComponent(component) {
     if (component.compId === undefined) {
-      console.error(`[Bridge] Cannot update component - missing id.`);
+      console.error(TAG, `Cannot update component - missing id.`);
       return;
     }
     const id = parseInt(component.compId);
     if (component.props === undefined) {
-      console.error(`[Bridge] Cannot update component #${id} - missing props.`);
+      console.error(TAG, `Cannot update component #${id} - missing props.`);
       return;
     }
     const props = JSON.stringify(component.props)
-    console.log(`[Bridge] Updating component ${component.type}#${id}, props: ${props}`);
+    console.log(TAG, `Updating component ${component.type}#${id}, props: ${props}`);
     sdkbridge.updateComponent(id, props);
   }
 }

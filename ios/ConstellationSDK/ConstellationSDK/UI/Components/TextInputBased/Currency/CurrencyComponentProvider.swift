@@ -29,6 +29,7 @@ fileprivate struct DecodableCurrencyProps: Decodable {
     let currencyISOCode: String?
     let showISOCode: Bool?
     let decimalPrecision: Int
+    let displayMode: String?
 
     func apply(to observableProps: CurrencyProps) {
         observableProps.value = value
@@ -36,7 +37,11 @@ fileprivate struct DecodableCurrencyProps: Decodable {
         observableProps.helperText = helperText?.nilIfEmpty
         observableProps.placeholder = placeholder?.nilIfEmpty
         observableProps.required = required
-        observableProps.disabled = disabled
+        observableProps.disabled = if displayMode == "DISPLAY_ONLY" {
+            true
+        } else {
+            disabled
+        }
         observableProps.readOnly = readOnly
         observableProps.validateMessage = validateMessage?.nilIfEmpty
         observableProps.helperText = helperText?.nilIfEmpty

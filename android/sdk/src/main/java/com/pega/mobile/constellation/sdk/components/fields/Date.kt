@@ -12,7 +12,7 @@ class DateComponent(context: ComponentContext) : FieldComponent(context)
 class DateRenderer : ComponentRenderer<DateComponent> {
     @Composable
     override fun DateComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Date(
                 value = value.asLocalDateOrNull(),
                 label = label,
@@ -22,7 +22,7 @@ class DateRenderer : ComponentRenderer<DateComponent> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                onValueChange = { updateValue(it?.toString() ?: "") },
+                onValueChange = { updateValue(it.toString()) },
                 onFocusChange = { updateFocus(it) }
             )
         }

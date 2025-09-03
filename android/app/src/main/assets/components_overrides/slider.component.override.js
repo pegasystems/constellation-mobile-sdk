@@ -1,5 +1,5 @@
 export class SliderComponent {
-  pConn$;
+  pConn;
 
   jsComponentPConnectData = {};
   configProps$;
@@ -22,33 +22,32 @@ export class SliderComponent {
   propName;
   compId;
 
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
+  constructor(componentsManager, pConn) {
+    this.pConn = pConn;
     this.componentsManager = componentsManager;
     this.compId = this.componentsManager.getNextComponentId();
     this.jsComponentPConnect = this.componentsManager.jsComponentPConnect
     this.controlName$ = this.jsComponentPConnect.getComponentID(this);
-    this.type = pConn$.meta.type
+    this.type = pConn.meta.type
   }
 
   init() {
     console.log("Initiating custom slider component!")
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
   }
 
   destroy() {
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      console.log("destroy for slider component - id:  ", this.jsComponentPConnectData.compID);
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
       this.checkAndUpdate();
     }
   }
@@ -66,7 +65,7 @@ export class SliderComponent {
   }
 
   updateSelf() {
-    this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    this.configProps$ = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     this.testId = this.configProps$.testId;
     this.label$ = this.configProps$.label;
     this.displayMode$ = this.configProps$.displayMode;
@@ -94,10 +93,10 @@ export class SliderComponent {
       this.bReadonly$ = getBooleanValue(this.configProps$.readOnly);
     }
 
-    this.actionsApi = this.pConn$.getActionsApi();
-    this.propName = this.pConn$.getStateProps().value;
+    this.actionsApi = this.pConn.getActionsApi();
+    this.propName = this.pConn.getStateProps().value;
 
-    this.componentReference = this.pConn$.getStateProps().value;
+    this.componentReference = this.pConn.getStateProps().value;
 
     this.props = {
       value: this.value$,
@@ -113,7 +112,22 @@ export class SliderComponent {
   }
 
   onEvent(event) {
-    this.componentsManager.handleNativeEvent(this, event)
+    const value = event.componentData !== undefined ? event.componentData.value : undefined;
+    const focused = event.eventData !== undefined ? event.eventData.focused : undefined
+    switch (event.type) {
+      case 'FieldChange':
+        console.log(`FieldChange for ${this.compId}, value: ${value}`);
+        this.fieldOnChange(value);
+        break;
+      case 'FieldChangeWithFocus':
+        console.log(`FieldChangeWithFocus for ${this.compId}, value: ${value}, focused: ${focused}`);
+        if (focused === "false" || focused === false) {
+          this.fieldOnBlur(value)
+        }
+        break;
+      default:
+        console.log(`unknown event type: ${event.type}`)
+    }
   }
 
   fieldOnChange() {
@@ -122,11 +136,11 @@ export class SliderComponent {
 
   fieldOnBlur(event) {
     this.value$ = event?.target?.value || this.value$;
-    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
+    const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value;
     if (this.value$ !== submittedValue) {
       handleEvent(this.actionsApi, 'changeNblur', this.propName, this.value$);
     }
-    clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
+    clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }
 

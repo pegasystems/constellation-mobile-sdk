@@ -54,7 +54,7 @@ struct CurrencyView: View {
                 .keyboardType(properties.decimalPrecision == 0 ? .numberPad : .decimalPad)
                 .disabled(properties.disabled || properties.readOnly)
                 .focused($isFocused)
-                .onChange(of: properties.value) { newValue in
+                .onChange(of: properties.value) { _, newValue in
                     properties.value = newValue.formattedToDecimalPlaces(properties.decimalPrecision)
                 }
                 

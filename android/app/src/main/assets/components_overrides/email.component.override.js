@@ -1,6 +1,6 @@
 export class EmailComponent {
   // these variables are present in all components
-  pConn$; // object which keeps internal information about component coming from Constellation Core JS library
+  pConn; // object which keeps internal information about component coming from Constellation Core JS library
   jsComponentPConnect; // bridge between JS components and Constellation Core JS Library
   jsComponentPConnectData = {}; // object which contains additional data like validateMessage
   propName; // name of the property which this component represent
@@ -17,22 +17,23 @@ export class EmailComponent {
     readOnly: false,
     helperText: '',
     placeholder: '',
-    validateMessage: ''
+    validateMessage: '',
+    displayMode: ''
   }
 
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
+  constructor(componentsManager, pConn) {
+    this.pConn = pConn;
     this.componentsManager = componentsManager;
     this.compId = this.componentsManager.getNextComponentId();
     this.jsComponentPConnect = componentsManager.jsComponentPConnect
-    this.type = pConn$.meta.type
+    this.type = pConn.meta.type
   }
 
   init() {
     console.log("Initiating custom email component!")
     // registerAndSubscribeComponent registers component to Constellation Core JS redux to receive updates
     // onStateChange is a callback called when some change occurs on any component so it is called very frequently
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange, this.compId);
+    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
     // causes adding component on Native side
     this.componentsManager.onComponentAdded(this);
     this.checkAndUpdate();
@@ -40,17 +41,17 @@ export class EmailComponent {
 
   destroy() {
     // unsubscribing from Constellation Core JS redux
-    if (this.jsComponentPConnectData.unsubscribeFn) {
-      this.jsComponentPConnectData.unsubscribeFn();
-    }
+    this.jsComponentPConnectData.unsubscribeFn?.();
     // causes removing component on Native side
     this.componentsManager.onComponentRemoved(this);
   }
 
   // runs whenever components is updated by its parent
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.onStateChange);
       this.checkAndUpdate();
     }
   }
@@ -69,7 +70,8 @@ export class EmailComponent {
   }
 
   updateSelf() {
-    const configProps = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
+    this.props.displayMode = configProps.displayMode;
     this.props.label = configProps.label;
 
     if (configProps.value != undefined) {
@@ -94,14 +96,29 @@ export class EmailComponent {
       this.props.readOnly = getBooleanValue(configProps.readOnly);
     }
     this.props.validateMessage = this.jsComponentPConnectData.validateMessage || ''
-    this.propName = this.pConn$.getStateProps().value;
+    this.propName = this.pConn.getStateProps().value;
     // sends updated props to Native side
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
   // runs whenever Native side sends event to this component
   onEvent(event) {
-    this.componentsManager.handleNativeEvent(this, event)
+    const value = event.componentData !== undefined ? event.componentData.value : undefined;
+    const focused = event.eventData !== undefined ? event.eventData.focused : undefined
+    switch (event.type) {
+      case 'FieldChange':
+        console.log(`FieldChange for ${this.compId}, value: ${value}`);
+        this.fieldOnChange(value);
+        break;
+      case 'FieldChangeWithFocus':
+        console.log(`FieldChangeWithFocus for ${this.compId}, value: ${value}, focused: ${focused}`);
+        if (focused === "false" || focused === false) {
+          this.fieldOnBlur(value)
+        }
+        break;
+      default:
+        console.log(`unknown event type: ${event.type}`)
+    }
   }
 
   // helper function called by component manager for event of changing field value (FieldChange event)
@@ -112,11 +129,11 @@ export class EmailComponent {
   // helper function called by component manager for event of changing field value with focus (FieldChangeWithFocus event)
   fieldOnBlur(value) {
     this.props.value = value || this.props.value
-    const submittedValue = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps()).value;
+    const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value;
     if (this.props.value !== submittedValue) {
-      handleEvent(this.pConn$.getActionsApi(), 'changeNblur', this.propName, this.props.value);
+      handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, this.props.value);
     }
-    clearErrorMessagesIfNoErrors(this.pConn$, this.propName, this.jsComponentPConnectData.validateMessage);
+    clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
   }
 }
 

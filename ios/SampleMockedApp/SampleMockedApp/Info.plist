@@ -24,7 +24,7 @@
 	<key>PegaSystemURL</key>
 	<string>https://url.example</string>
 	<key>PegaVersion</key>
-	<string>8.24.1</string>
+	<string>24.1.0</string>
 	<key>PegaAuthConfiguration</key>
 	<dict>
 		<key>client_id</key>
@@ -42,7 +42,5 @@
 		<key>keychain</key>
 		<true/>
 	</dict>
-	<key>PegaCaseClassName</key>
-	<string>DIXL-MediaCo-Work-SDKTesting</string>
 </dict>
 </plist>

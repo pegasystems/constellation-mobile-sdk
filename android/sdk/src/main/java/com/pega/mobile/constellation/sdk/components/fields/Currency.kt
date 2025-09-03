@@ -29,7 +29,7 @@ class CurrencyComponent(context: ComponentContext) : FieldComponent(context) {
 class CurrencyRenderer : ComponentRenderer<CurrencyComponent> {
     @Composable
     override fun CurrencyComponent.Render() {
-        WithVisibility {
+        WithFieldHelpers {
             Currency(
                 value = value,
                 label = label,

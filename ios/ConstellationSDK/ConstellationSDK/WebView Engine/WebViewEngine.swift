@@ -1,14 +1,20 @@
 import Foundation
 import WebKit
 import Combine
-import OSLog
 
 extension WebViewEngine {
-    struct Configuration: Codable {
+    struct Configuration: Encodable {
         let url: URL
         let version: String
         let caseClassName: String
         let startingFields: PMSDKCreateCaseStartingFields
+        let debuggable: Bool
+        weak var requestDelegate: PMSDKNetworkRequestDelegate?
+
+        // do not encode 'debuggable' and 'requestDelegate'
+        private enum CodingKeys: String, CodingKey {
+            case url, version, caseClassName, startingFields
+        }
 
         fileprivate func toString() throws -> String {
             String(
@@ -34,14 +40,14 @@ class WebViewEngine: NSObject {
 
     init(configuration: Configuration) throws {
         guard (try? configuration.url.standardizingBaseURL()) != nil else {
-            Logger.current().error("Can not get standardized base url from configuration.")
+            Log.error("Can not get standardized base url from configuration.")
             throw WebViewEngineError.incorrectBaseURL
         }
         self.configuration = configuration
     }
 
     deinit {
-        Logger.current().debug("Engine deinit.")
+        Log.debug("Engine deinit.")
     }
 
     private func createWebView(with resourceHandler: ResourceHandler, formHandler: FormHandler) -> WKWebView {
@@ -55,7 +61,7 @@ class WebViewEngine: NSObject {
         config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
         config.userContentController.add(formHandler, name: "formHandler")
         config.userContentController.add(
-            ConsoleHandler(),
+            ConsoleHandler(showDebugLogs: configuration.debuggable),
             name: "consoleHandler"
         )
 
@@ -65,7 +71,7 @@ class WebViewEngine: NSObject {
     @MainActor
     func startProcessing() async -> CaseProcessingResult {
         guard let baseURL = try? configuration.url.standardizingBaseURL() else {
-            Logger.current().error("Can not get standardized base url from configuration.")
+            Log.error("Can not get standardized base url from configuration.")
             return .error("Can not get standardized base url from configuration.")
         }
 
@@ -73,7 +79,12 @@ class WebViewEngine: NSObject {
             return await formHandler.processingResult()
         }
 
-        let resourceHandler = ResourceHandler(baseURL: baseURL)
+        let resourceHandler = ResourceHandler(
+            httpHandler: HTTPHandler(
+                baseURL: baseURL,
+                customDelegate: configuration.requestDelegate
+            )
+        )
 
         let formHandler = FormHandler(manager: manager)
 
@@ -82,12 +93,13 @@ class WebViewEngine: NSObject {
         webView.navigationDelegate = self
         self.webView = webView
 
-        webView.isInspectable = true
+        webView.isInspectable = configuration.debuggable
 
-        initialNavigation = webView.loadSimulatedRequest(
-            URLRequest(url: baseURL),
-            responseHTML: "<html><header></header><body></body></html>"
+        let indexURL = baseURL.appending(
+            path: "constellation-mobile-sdk-assets/scripts/index.html"
         )
+
+        initialNavigation = webView.load(URLRequest(url: indexURL))
 
         manager.componentEventCallback = { [weak webView] id, event in
             webView?.evaluateJavaScript(
@@ -115,7 +127,7 @@ extension WebViewEngine : WKUIDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping @MainActor () -> Void
     ) {
-        self.manager.rootComponent.presentAlert(message: message) {
+        manager.rootComponent.presentAlert(message: message) {
             completionHandler()
         }
     }
@@ -127,7 +139,7 @@ extension WebViewEngine : WKUIDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping @MainActor (Bool) -> Void
     ) {
-        self.manager.rootComponent.presentConfirm(message: message) { result in
+        manager.rootComponent.presentConfirm(message: message) { result in
             completionHandler(result)
         }
     }
@@ -149,18 +161,17 @@ extension WebViewEngine: WKNavigationDelegate {
         guard navigation == initialNavigation else {
             return
         }
-        Logger.current().info("Initial navigation completed, injecting scripts.")
+        Log.info("Initial navigation completed, injecting scripts.")
         manager.rootComponent.injectInvisible(webView)
         let injector = ScriptInjector()
         Task {
             do {
                 try injector.load("Console")
                 try injector.load("FormHandler")
-                try injector.load("c11n")
                 injector.append(script: try initScript(configuration))
                 try await injector.inject(into: webView)
             } catch {
-                Logger.current().error("Error during engine initialisation: \(error)")
+                Log.error("Error during engine initialisation: \(error)")
             }
         }
     }
@@ -168,7 +179,12 @@ extension WebViewEngine: WKNavigationDelegate {
     private func initScript(_ configuration: Configuration) throws -> String {
         let overrideString = PMSDKComponentManager.shared.componentOverrideString
         let configString = try configuration.toString()
-        return "window.init('\(configString)', '\(overrideString)');"
+
+        return """
+        window.onload = function() {
+           window.init('\(configString)', '\(overrideString)');
+        }
+        """
     }
 }
 

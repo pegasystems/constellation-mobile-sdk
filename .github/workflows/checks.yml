@@ -87,6 +87,9 @@ jobs:
       - name: Install esbuild
         run: brew install esbuild
 
+      - name: Select specific XCode version
+        run: sudo xcode-select -s "/Applications/Xcode_16.4.app"
+
       - name: Create new test simulator
         run: |
           xcodebuild -version
@@ -95,7 +98,7 @@ jobs:
           echo "Deleting simulator SDKTestSimulator (if exists)"
           xcrun simctl delete SDKTestSimulator || true
           echo "Creating new SDKTestSimulator"
-          xcrun simctl create SDKTestSimulator com.apple.CoreSimulator.SimDeviceType.iPhone-16 com.apple.CoreSimulator.SimRuntime.iOS-18-2 | tee simulator.id
+          xcrun simctl create SDKTestSimulator com.apple.CoreSimulator.SimDeviceType.iPhone-16 com.apple.CoreSimulator.SimRuntime.iOS-18-5 | tee simulator.id
 
       - name: iOS sample application UI tests
         run: |

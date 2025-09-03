@@ -1,12 +1,23 @@
 import Combine
 import Foundation
+import SwiftUI
 
-protocol PhoneNumberPropsProtocol : ComponentProps {
-    var value: String { get set }
-}
+public class PhoneNumberProps : ObservableObject {
+    public required init() {}
 
-public class PhoneNumberProps : ObservableObject, PhoneNumberPropsProtocol {
-    public init() {} // in order to allow creating new instances from the host app context.
-    
     @Published public var value: String = ""
+    @Published public var country: CountryData = .default
+    @Published public var domesticNumber: String = ""
+
+    @Published public var label: String = ""
+    @Published public var visible: Bool = true
+    @Published public var required: Bool = false
+    @Published public var disabled: Bool = false
+    @Published public var readOnly: Bool = false
+    @Published public var helperText: String? = nil
+    @Published public var placeholder: String? = nil
+    @Published public var showCountryCode: Bool = true
+    @Published public var validateMessage: String? = nil
+
+    @Published public var isFocused: Bool = false
 }

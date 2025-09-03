@@ -16,11 +16,7 @@ class ViewController: UIViewController {
     }
 
     private func configurePegaSDK() {
-
-        // 1. Registering HTTP interceptor
-        PMSDKNetwork.shared.requestDelegate = self
-
-        // 2. Registering custom SwiftUI controls
+        // Registering custom SwiftUI controls
         PMSDKComponentManager.shared.register("TextArea") {
             CustomTextAreaComponentProvider()
         }
@@ -44,10 +40,12 @@ class ViewController: UIViewController {
     @IBAction
     private func showNewPegaCase(_ sender: UIButton) {
         Task {
-            let authorization = Authorization(settings: SDKConfiguration.oauth2Configuration)
+            let authorization = Authorization(
+                settings: SDKConfiguration.oauth2Configuration
+            )
             oauth = try await authorization.prepareOAuthClient()
 
-            // 3. Create case form creation
+            // Create case form creation
             let startingFields = PMSDKCreateCaseStartingFields()
             // Set proper starting fields as defined in casetype model:
             // startingFields.set(value: "Johnny", forKey: "FirstName")
@@ -58,7 +56,9 @@ class ViewController: UIViewController {
                     pegaVersion: SDKConfiguration.environmentVersion,
                     caseClass: SDKConfiguration.caseClassName,
                     startingFields: startingFields,
-                    delegate: self
+                    createCaseDelegate: self,
+                    networkDelegate: self,
+                    debuggable: true
                 )
             )
             hostingController.modalPresentationStyle = .formSheet
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
     }
 }
 
-// 4. Reacting on CreateCaseController lifecycle events (finish/closure)
+// Reacting on CreateCaseController lifecycle events (finish/closure)
 
 extension ViewController: PMSDKCreateCaseViewDelegate {
     func createCaseView(_ view: PMSDKCreateCaseView, didFinishProcessingWith message: String?) {
@@ -98,24 +98,17 @@ extension ViewController: PMSDKCreateCaseViewDelegate {
     }
 }
 
-// 1.1 - Intercepting HTTP request/response
+// Intercepting HTTP request/response
 extension ViewController: PMSDKNetworkRequestDelegate {
 
     func shouldHandle(request: URLRequest) -> Bool {
-        if [
-            "release.constellation.pega.io",
-            "staging-cdn.constellation.pega.io",
-            SDKConfiguration.environmentURL.host()
-        ].contains(request.url?.host()) {
-            return true
-        }
-        return false
+        SDKConfiguration.environmentURL.host() == request.url?.host()
     }
 
     func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse) {
         var authorizedRequest = try authorize(request)
         if (authorizedRequest.httpMethod == "GET") {
-            authorizedRequest.httpBody = nil;
+            authorizedRequest.httpBody = nil
         }
         let (data, response) = try await URLSession.shared.data(for: authorizedRequest)
 

@@ -1,21 +1,17 @@
 import { Utils } from '../../helpers/utils.js';
+import { BaseComponent } from '../base.component.js';
 
-export class UnsupportedComponent {
+const TAG = '[UnsupportedComponent]';
 
-  pConn$;
-  configProps$;
-  compId;
-  componentsManager;
-  bVisible$ = true;
-  compId;
-  type;
+export class UnsupportedComponent extends BaseComponent {
   utils;
-  props;
+  props = {
+    visible: true,
+    type: ''
+  }
 
-  constructor(componentsManager, pConn$) {
-    this.pConn$ = pConn$;
-    this.compId = componentsManager.getNextComponentId();
-    this.componentsManager = componentsManager;
+  constructor(componentsManager, pConn) {
+    super(componentsManager, pConn);
     this.type = "Unsupported";
     this.utils = new Utils();
   }
@@ -25,35 +21,31 @@ export class UnsupportedComponent {
   }
 
   destroy() {
-    console.log(`Unsupported component ${this.type} for property ${this.propName} destroyed`);
+    console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} destroyed`);
     this.componentsManager.onComponentRemoved(this);
   }
 
   update(pConn) {
-    if (this.pConn$ !== pConn) {
-      this.pConn$ = pConn;
+    if (this.pConn !== pConn) {
+      this.pConn = pConn;
       this.updateSelf();
     }
   }
 
   updateSelf() {
-    this.propName = this.pConn$.getStateProps().value;
-    this.configProps$ = this.pConn$.resolveConfigProps(this.pConn$.getConfigProps());
-    if (this.configProps$.visibility != null) {
-      this.bVisible$ = this.utils.getBooleanValue(this.configProps$.visibility);
+    this.propName = this.pConn.getStateProps().value;
+    const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
+    this.props.type = this.pConn.meta.type;
+    if (configProps.visibility != null) {
+      this.props.visible = this.utils.getBooleanValue(configProps.visibility);
     }
-    console.log(`Unsupported component ${this.type} for property ${this.propName} inited`);
+    console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} inited`);
     this.componentsManager.onComponentAdded(this);
-
-    this.props = {
-      type: this.pConn$.meta.type,
-      visible: this.bVisible$
-    }
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
   destroy() {
-    console.log(`Unsupported component ${this.type} for property ${this.propName} destroyed`);
+    console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} destroyed`);
     this.componentsManager.onComponentRemoved(this);
   }
 

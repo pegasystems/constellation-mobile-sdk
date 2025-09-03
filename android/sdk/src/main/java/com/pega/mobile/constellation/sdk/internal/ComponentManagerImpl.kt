@@ -2,6 +2,7 @@ package com.pega.mobile.constellation.sdk.internal
 
 import android.util.Log
 import com.pega.mobile.constellation.sdk.components.Components.DefaultDefinitions
+import com.pega.mobile.constellation.sdk.components.core.AlertComponent
 import com.pega.mobile.constellation.sdk.components.core.Component
 import com.pega.mobile.constellation.sdk.components.core.ComponentContext
 import com.pega.mobile.constellation.sdk.components.core.ComponentDefinition
@@ -16,6 +17,7 @@ internal class ComponentManagerImpl(
 ) : ComponentManager {
     private val components = mutableMapOf<ComponentId, Component>()
     private val definitions = (DefaultDefinitions + customDefinitions).associateBy { it.type }
+    private var alertComponent: AlertComponent = AlertComponent()
 
     override fun getComponentDefinitions() = customDefinitions
 
@@ -31,12 +33,14 @@ internal class ComponentManagerImpl(
     override fun updateComponent(id: ComponentId, props: JSONObject) {
         val component = getComponent(id)
         runCatching { component?.onUpdate(props) }
-            .onFailure { Log.e(TAG, "Failure during component update: $component") }
+            .onFailure { Log.e(TAG, "Failure during component update: $component, (message: ${it.message})") }
     }
 
     override fun removeComponent(id: ComponentId) {
         components.remove(id)
     }
+
+    override fun getAlertComponent(): AlertComponent = alertComponent
 
     private fun produceComponent(context: ComponentContext): Component =
         definitions[context.type]?.producer?.produce(context)

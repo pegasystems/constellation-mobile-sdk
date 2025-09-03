@@ -7,7 +7,11 @@ class DeferedContinuation<T> {
     }
 
     func proceed(_ result: T) {
+        if continuationHandler == nil {
+            Log.error("Tried to proceed a DeferedContinuation more than once")
+        }
         continuationHandler?(result)
+        continuationHandler = nil
     }
 
     func result() async -> T {
