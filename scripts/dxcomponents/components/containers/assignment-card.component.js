@@ -1,6 +1,6 @@
-import { ReferenceComponent } from './reference.component.js';
-import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
-import { ContainerBaseComponent } from './container-base.component.js';
+import {ReferenceComponent} from './reference.component.js';
+import {getComponentFromMap} from '../../mappings/sdk-component-map.js';
+import {ContainerBaseComponent} from './container-base.component.js';
 
 export class AssignmentCardComponent extends ContainerBaseComponent {
   arMainButtons$;
@@ -20,10 +20,7 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
   init() {
     this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
     this.componentsManager.onComponentAdded(this);
-
-    const reconciledComponents = this.reconcileChildren();
-    this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.initReconciledComponents(reconciledComponents);
+    this.reconcileChildren(this.childrenPConns);
 
     const actionButtonsComponentClass = getComponentFromMap("ActionButtons");
     this.actionButtonsComponent = new actionButtonsComponentClass(this.componentsManager, this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
@@ -40,21 +37,17 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
 
   update(pConn, pConnChildren, mainButtons, secondaryButtons) {
     this.pConn = pConn;
-    this.childrenPConns = pConnChildren;
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(pConnChildren);
     this.arMainButtons$ = mainButtons;
     this.arSecondaryButtons$ = secondaryButtons;
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
 
-    const reconciledComponents = this.reconcileChildren();
-    this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.initReconciledComponents(reconciledComponents);
-
-    this.sendPropsUpdate()
+    this.reconcileChildren(this.childrenPConns);
+    this.sendPropsUpdate();
     this.actionButtonsComponent.update(this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
   }
 
   onEvent(event) {
-    this.childrenComponents.forEach((component) => {component.onEvent(event);})
+    this.childrenComponents.forEach(component => component.onEvent(event));
   }
 
   sendPropsUpdate() {

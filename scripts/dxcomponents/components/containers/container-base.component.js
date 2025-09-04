@@ -3,58 +3,49 @@ import {ReferenceComponent} from './reference.component.js';
 import {getComponentFromMap} from '../../mappings/sdk-component-map.js';
 
 export class ContainerBaseComponent extends BaseComponent {
-  childrenPConns = [];
   childrenComponents = [];
 
-  constructor(componentsManager, pConn) {
-    super(componentsManager, pConn);
-    // children may have a 'reference' so normalize the children array
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
-  }
-
   destroyChildren() {
-    this.childrenComponents.forEach(component => {
-      component.destroy?.();
-    });
+    this.childrenComponents.forEach(component => component.destroy?.());
     this.childrenComponents = [];
   }
 
   getChildrenComponentsIds() {
-    return this.childrenComponents.map(component => {
-      return component.compId;
-    })
+    return this.childrenComponents.map(component => component.compId);
   }
 
   /**
    * Reconciliation logic
    * - Iterate all new children pConns.
    *    - For each of them find existing component with child pConn with the same name and type (e.g.: "TextInput", "Name")
-   *    - If existing component is found then update it with new pConn, push into reconciledComponents with shouldInit: false and remove from oldChildrenComponents
-   *    - If there is no component found then create new component, push into reconciledComponents with shouldInit: true
-   *- Iterate children which left in oldChildrenComponents and destroy them.
-   *- return newChildrenComponents
-   *
-   * @return [] reconciledComponents - array of elements: { component: component, shouldInit: true/false }
+   *    - If existing component is found then update it with new pConn, push into reconciledComponents and remove from oldChildrenComponents
+   *    - If there is no component found then create new component, push into reconciledComponents and uninitializedComponents
+   * - Iterate children which left in oldChildrenComponents and destroy them.
+   * - Update `childrenComponents` with reconciledComponents
+   * - Initialize newly created components
    *
    */
-  reconcileChildren() {
-    const newChildren = this.childrenPConns;
+  reconcileChildren(newChildren = ReferenceComponent.normalizePConnArray(this.pConn.getChildren())) {
+    // children may have a 'reference' so normalize the children array
     const oldChildrenComponents = this.childrenComponents
     const reconciledComponents = [];
+    const uninitializedComponents = [];
 
-    newChildren.forEach((newChild) => {
+    newChildren.forEach(newChild => {
       const oldComponentToReuse = this.getComponentToReuse(oldChildrenComponents, newChild.getPConnect());
       if (oldComponentToReuse !== undefined) {
         this.updateComponentPConn(oldComponentToReuse, newChild.getPConnect());
-        reconciledComponents.push({component: oldComponentToReuse, shouldInit: false});
+        reconciledComponents.push(oldComponentToReuse);
         oldChildrenComponents.splice(oldChildrenComponents.indexOf(oldComponentToReuse), 1);
       } else {
         const newChildComponent = this.createNewChildComponent(this.componentsManager, newChild.getPConnect());
-        reconciledComponents.push({component: newChildComponent, shouldInit: true});
+        reconciledComponents.push(newChildComponent);
+        uninitializedComponents.push(newChildComponent)
       }
     })
-    this.destroyOldChildrenComponents(oldChildrenComponents);
-    return reconciledComponents;
+    this.childrenComponents = reconciledComponents;
+    this.#destroyOldChildrenComponents(oldChildrenComponents);
+    uninitializedComponents.forEach(c => c.init())
   }
 
   getComponentToReuse(oldChildrenComponents, newChildPConn) {
@@ -63,7 +54,7 @@ export class ContainerBaseComponent extends BaseComponent {
     })
   }
 
-  destroyOldChildrenComponents(oldChildrenComponents) {
+  #destroyOldChildrenComponents(oldChildrenComponents) {
     oldChildrenComponents.forEach((component) => {
       if (component === undefined) {
         throw new Error("Reconciliation failed, child component is 'undefined'");
@@ -92,13 +83,5 @@ export class ContainerBaseComponent extends BaseComponent {
 
   isEqualNameType(oldChildPConn, newChildPConn) {
     return newChildPConn.meta.name === oldChildPConn.meta.name && newChildPConn.meta.type === oldChildPConn.meta.type
-  }
-
-  initReconciledComponents(reconciledComponents) {
-    reconciledComponents.forEach((item) => {
-      if (item.shouldInit) {
-        item.component.init();
-      }
-    });
   }
 }

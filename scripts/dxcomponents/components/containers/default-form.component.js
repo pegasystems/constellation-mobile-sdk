@@ -1,5 +1,4 @@
-import { ReferenceComponent } from './reference.component.js';
-import { ContainerBaseComponent } from './container-base.component.js';
+import {ContainerBaseComponent} from './container-base.component.js';
 
 export class DefaultFormComponent extends ContainerBaseComponent {
   instructions;
@@ -15,10 +14,7 @@ export class DefaultFormComponent extends ContainerBaseComponent {
 
     const configProps = this.pConn.getConfigProps();
     this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
-    const reconciledComponents = this.reconcileChildren();
-    this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.initReconciledComponents(reconciledComponents);
-
+    this.reconcileChildren();
     this.sendPropsUpdate();
   }
 
@@ -34,23 +30,18 @@ export class DefaultFormComponent extends ContainerBaseComponent {
     this.pConn = pConn;
     const configProps = this.pConn.getConfigProps();
     this.instructions = this.getInstructions(this.pConn, configProps?.instructions);
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
-
-    const reconciledComponents = this.reconcileChildren();
-    this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.initReconciledComponents(reconciledComponents);
-
+    this.reconcileChildren();
     this.sendPropsUpdate();
   }
 
   onEvent(event) {
-    this.childrenComponents.forEach((component) => {component.onEvent(event);})
+    this.childrenComponents.forEach(component => component.onEvent(event));
   }
 
   sendPropsUpdate() {
     this.props = {
-       children: this.getChildrenComponentsIds(),
-       instructions: this.instructions || ''
+      children: this.getChildrenComponentsIds(),
+      instructions: this.instructions || ''
     };
     this.componentsManager.onComponentPropsUpdate(this);
   }

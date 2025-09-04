@@ -88,7 +88,12 @@ export class ViewComponent extends ContainerBaseComponent {
       this.props.visible = this.#evaluateVisibility(this.pConn, configProps.referenceContext);
     }
 
-    this.#includeTemplate(template)
+    if (this.SUPPORTED_TEMPLATES.includes(template)) {
+      this.#includeTemplate(template);
+    } else {
+      console.warn(TAG, `${template} not supported. Rendering children components directly.`);
+      this.reconcileChildren();
+    }
 
     this.props.children = this.getChildrenComponentsIds();
     this.componentsManager.onComponentPropsUpdate(this)
@@ -102,12 +107,6 @@ export class ViewComponent extends ContainerBaseComponent {
   }
 
   #includeTemplate(template) {
-    if (!this.SUPPORTED_TEMPLATES.includes(template)) {
-      console.warn(TAG, `${template} not supported. Rendering children components directly.`);
-      this.#reconcileChildrenComponents()
-      return;
-    }
-
     if (this.childrenComponents.length === 0) {
       this.childrenComponents.push(this.#createComponent(template));
     } else {
@@ -119,12 +118,6 @@ export class ViewComponent extends ContainerBaseComponent {
         this.childrenComponents.push(this.#createComponent(template));
       }
     }
-  }
-
-  #reconcileChildrenComponents() {
-    const reconciledComponents = this.reconcileChildren();
-    this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.initReconciledComponents(reconciledComponents);
   }
 
   #evaluateVisibility(pConn, referenceContext) {
