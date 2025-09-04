@@ -1,19 +1,19 @@
-import { ReferenceComponent } from './reference.component.js';
-import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
+import {ReferenceComponent} from './reference.component.js';
+import {getComponentFromMap} from '../../mappings/sdk-component-map.js';
 import {ContainerBaseComponent} from './container-base.component.js';
-import {SimpleTableComponent} from './templates/simple-table.component.js';
 
 const TAG = '[ViewComponent]';
 
 export class ViewComponent extends ContainerBaseComponent {
 
+  FORM_TEMPLATES = ['DefaultForm', 'OneColumn', 'TwoColumn', 'ThreeColumn', 'WideNarrow'];
   DETAILS_TEMPLATES = [
     'Details', 'DetailsFields', 'DetailsOneColumn', 'DetailsSubTabs', 'DetailsThreeColumn',
     'DetailsTwoColumn', 'NarrowWideDetails', 'WideNarrowDetails'
   ];
 
-  FORM_TEMPLATES = ['DefaultForm', 'OneColumn', 'TwoColumn', 'ThreeColumn', 'WideNarrow'];
   SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'OneColumn'];
+  SUPPORTED_TEMPLATES = [...this.SUPPORTED_FORM_TEMPLATES, 'SimpleTable'];
 
   jsComponentPConnectData = {};
   props = {
@@ -69,9 +69,9 @@ export class ViewComponent extends ContainerBaseComponent {
     const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     const inheritedProps = this.pConn.getInheritedProps();
 
-    const templateName = configProps.template ?? '';
+    const template = this.#resolveTemplate(configProps);
     const label = configProps.label ?? '';
-    const showLabel = configProps.showLabel || this.#isDetailsTemplate(templateName) || this.props.showLabel;
+    const showLabel = configProps.showLabel || this.DETAILS_TEMPLATES.includes(template) || this.props.showLabel;
 
     this.props.label = inheritedProps.label ?? label;
     this.props.showLabel = inheritedProps.showLabel ?? showLabel;
@@ -88,64 +88,37 @@ export class ViewComponent extends ContainerBaseComponent {
       this.props.visible = this.#evaluateVisibility(this.pConn, configProps.referenceContext);
     }
 
-    // children may have a 'reference' so normalize the children array
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
-
-    if (templateName !== '') {
-      if (this.FORM_TEMPLATES.includes(templateName)) {
-        const template = this.SUPPORTED_FORM_TEMPLATES.includes(templateName) ? templateName : 'DefaultForm';
-        this.#reconcileFormTemplateChildComponent(template);
-      } else if (templateName === 'SimpleTable') {
-        this.#reconcileSimpleTableChildComponent();
-      } else {
-        console.warn(TAG, `${templateName} not supported. Rendering children components directly.`);
-        this.#reconcileChildrenComponents();
-      }
-    } else {
-      this.#reconcileChildrenComponents();
-    }
+    this.#includeTemplate(template)
 
     this.props.children = this.getChildrenComponentsIds();
-    this.componentsManager.onComponentPropsUpdate(this);
+    this.componentsManager.onComponentPropsUpdate(this)
   }
 
-  #reconcileFormTemplateChildComponent(templateName) {
+  #createComponent(componentType) {
+    const componentClass = getComponentFromMap(componentType);
+    const componentInstance = new componentClass(this.componentsManager, this.pConn);
+    componentInstance.init();
+    return componentInstance;
+  }
+
+  #includeTemplate(template) {
+    if (!this.SUPPORTED_TEMPLATES.includes(template)) {
+      console.warn(TAG, `${template} not supported. Rendering children components directly.`);
+      this.#reconcileChildrenComponents()
+      return;
+    }
+
     if (this.childrenComponents.length === 0) {
-      this.childrenComponents.push(this.#createFormTemplateChildComponent(templateName));
-    } else if (this.childrenComponents.length > 0) {
-      if (this.childrenComponents[0].type === templateName && this.isEqualNameType(this.childrenComponents[0].pConn, this.pConn)) {
-        this.childrenComponents[0].update(this.pConn, this.childrenPConns);
+      this.childrenComponents.push(this.#createComponent(template));
+    } else {
+      const child = this.childrenComponents[0];
+      if (child.type === template && this.isEqualNameType(child.pConn, this.pConn)) {
+        child.update(this.pConn);
       } else {
         this.destroyChildren();
-        this.childrenComponents.push(this.#createFormTemplateChildComponent(templateName));
+        this.childrenComponents.push(this.#createComponent(template));
       }
     }
-  }
-
-  #createFormTemplateChildComponent(templateName) {
-    const templateComponentClass = getComponentFromMap(templateName);
-    const templateComponentInstance = new templateComponentClass(this.componentsManager, this.pConn, this.childrenPConns);
-    templateComponentInstance.init();
-    return templateComponentInstance;
-  }
-
-  #reconcileSimpleTableChildComponent() {
-    if (this.childrenComponents.length === 0) {
-      this.childrenComponents.push(this.#createSimpleTableChildComponent());
-    } else if (this.childrenComponents.length > 0) {
-      if (this.childrenComponents[0] instanceof SimpleTableComponent && this.isEqualNameType(this.childrenComponents[0].pConn, this.pConn)) {
-        this.childrenComponents[0].update(this.pConn);
-      } else {
-        this.destroyChildren();
-        this.childrenComponents.push(this.#createSimpleTableChildComponent());
-      }
-    }
-  }
-
-  #createSimpleTableChildComponent() {
-    const simpleTableComponent = new SimpleTableComponent(this.componentsManager, this.pConn);
-    simpleTableComponent.init();
-    return simpleTableComponent;
   }
 
   #reconcileChildrenComponents() {
@@ -196,7 +169,15 @@ export class ViewComponent extends ContainerBaseComponent {
     return page;
   }
 
-  #isDetailsTemplate(template) {
-    return this.DETAILS_TEMPLATES.includes(template);
+  #resolveTemplate(configProps) {
+    const template = configProps.template ?? '';
+    if (this.SUPPORTED_TEMPLATES.includes(template)) {
+      return template;
+    } else if (this.FORM_TEMPLATES.includes(template)) {
+      // fallback to DefaultForm for other form templates
+      return 'DefaultForm';
+    } else {
+      return template;
+    }
   }
 }

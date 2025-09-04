@@ -40,7 +40,6 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
 
   update(pConn, pConnChildren, mainButtons, secondaryButtons) {
     this.pConn = pConn;
-    const oldChildren = this.childrenPConns;
     this.childrenPConns = pConnChildren;
     this.arMainButtons$ = mainButtons;
     this.arSecondaryButtons$ = secondaryButtons;

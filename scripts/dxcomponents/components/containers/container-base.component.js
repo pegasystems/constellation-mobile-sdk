@@ -1,9 +1,16 @@
-import { BaseComponent } from '../base.component.js';
-import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
+import {BaseComponent} from '../base.component.js';
+import {ReferenceComponent} from './reference.component.js';
+import {getComponentFromMap} from '../../mappings/sdk-component-map.js';
 
 export class ContainerBaseComponent extends BaseComponent {
   childrenPConns = [];
   childrenComponents = [];
+
+  constructor(componentsManager, pConn) {
+    super(componentsManager, pConn);
+    // children may have a 'reference' so normalize the children array
+    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
+  }
 
   destroyChildren() {
     this.childrenComponents.forEach(component => {
