@@ -32,6 +32,9 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
-include(":composeApp")
 include(":core")
-include(":android-webview")
+include(":engine:android-webview")
+include(":ui:components:cmp")
+include(":ui:renderer:cmp")
+include(":samples:composeApp")
+include(":samples:android-compose-app")
