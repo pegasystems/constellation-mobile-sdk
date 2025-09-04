@@ -1,4 +1,3 @@
-import {ReferenceComponent} from './reference.component.js';
 import {ContainerBaseComponent} from './container-base.component.js';
 
 export class AssignmentCardComponent extends ContainerBaseComponent {
@@ -19,11 +18,10 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
   }
 
   init() {
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.childrenPConns);
     this.componentsManager.onComponentAdded(this);
     this.reconcileChildren(this.childrenPConns);
 
-    this.actionButtonsComponent = this.createComponent("ActionButtons", [this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick]);
+    this.actionButtonsComponent = this.componentsManager.create("ActionButtons", [this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick]);
     this.sendPropsUpdate();
   }
 
@@ -35,7 +33,7 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
 
   update(pConn, pConnChildren, mainButtons, secondaryButtons) {
     this.pConn = pConn;
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(pConnChildren);
+    this.childrenPConns = pConnChildren;
     this.arMainButtons$ = mainButtons;
     this.arSecondaryButtons$ = secondaryButtons;
 

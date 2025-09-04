@@ -92,9 +92,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
       // eslint-disable-next-line sonarjs/no-collapsible-if
       if (!this.readonlyMode) {
         if (this.referenceList?.length === 0 && this.allowAddEdit !== false) {
-          setTimeout(() => {
-            this.addFieldGroupItem();
-          })
+          setTimeout(() => this.addFieldGroupItem());
         }
       }
       const items = [];
@@ -103,7 +101,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         // all components in list are the same name and type so we can pick any component for re-use.
         const oldComponent = oldItemsComponents.pop();
         const newPConn = this.buildItemPConnect(this.pConn, index, lookForChildInConfig).getPConnect();
-        const newComponent = this.reconcileItemComponent(newPConn, oldComponent);
+        const newComponent = this.componentsManager.upsert(oldComponent, newPConn.meta.type, [newPConn]);
         items.push({
           id: index,
           name: this.fieldHeader === 'propertyRef' ? this.getDynamicHeader(item, index) : this.getStaticHeader(this.heading, index),
@@ -114,14 +112,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
       this.prevRefLength = this.referenceList.length;
     }
     this.sendPropsUpdate();
-  }
-
-  reconcileItemComponent(pConn, oldComponent) {
-    if (oldComponent !== undefined) {
-      oldComponent.update(pConn)
-      return oldComponent;
-    }
-    return this.createComponent(pConn.getRawMetadata().type, [pConn]);
   }
 
   onEvent(event) {

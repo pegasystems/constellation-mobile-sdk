@@ -125,7 +125,7 @@ export class FlowContainerComponent extends BaseComponent {
       ? [{messages: this.bannerMessages?.map(msg => this.localizedVal(msg.message, 'Messages')), variant: 'urgent'}]
       : [];
 
-    this.alertBannerComponents = banners.map(b => this.createComponent("AlertBanner", [b.variant, b.messages]));
+    this.alertBannerComponents = banners.map(b => this.componentsManager.create("AlertBanner", [b.variant, b.messages], true));
   }
 
   #destroyBanners() {
@@ -155,7 +155,7 @@ export class FlowContainerComponent extends BaseComponent {
 
   #createAndInitAssignmentComponent() {
     this.assignmentPConn = this.#getAssignmentPConn(this.pConn) || this.pConn;
-    this.assignmentComponent = this.createComponent("Assignment", [this.assignmentPConn, this.childrenPConns, this.containerContextKey]);
+    this.assignmentComponent = this.componentsManager.create("Assignment", [this.assignmentPConn, this.childrenPConns, this.containerContextKey]);
   }
 
   #updateSelf() {

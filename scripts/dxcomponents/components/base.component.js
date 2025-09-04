@@ -1,5 +1,3 @@
-import {getComponentFromMap} from '../mappings/sdk-component-map.js';
-
 export class BaseComponent {
   pConn;
   componentsManager;
@@ -13,14 +11,5 @@ export class BaseComponent {
     this.jsComponentPConnect = componentsManager.jsComponentPConnect;
     this.compId = componentsManager.getNextComponentId();
     this.type = pConn.meta.type;
-  }
-
-  createComponent(type, createArgs = [], init = true) {
-    const ComponentClass = getComponentFromMap(type);
-    const component = new ComponentClass(this.componentsManager, ...createArgs);
-    if (init) {
-      component.init()
-    }
-    return component;
   }
 }

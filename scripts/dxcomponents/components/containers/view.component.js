@@ -68,7 +68,7 @@ export class ViewComponent extends ContainerBaseComponent {
     const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
     const inheritedProps = this.pConn.getInheritedProps();
 
-    const template = this.#resolveTemplate(configProps);
+    const template = this.#resolveTemplateType(configProps);
     const label = configProps.label ?? '';
     const showLabel = configProps.showLabel || this.DETAILS_TEMPLATES.includes(template) || this.props.showLabel;
 
@@ -99,17 +99,12 @@ export class ViewComponent extends ContainerBaseComponent {
   }
 
   #includeTemplate(template) {
-    if (this.childrenComponents.length === 0) {
-      this.childrenComponents.push(this.createComponent(template, [this.pConn]));
-    } else {
-      const child = this.childrenComponents[0];
-      if (child.type === template && this.isEqualNameType(child.pConn, this.pConn)) {
-        child.update(this.pConn);
-      } else {
-        this.destroyChildren();
-        this.childrenComponents.push(this.createComponent(template, [this.pConn]));
-      }
+    const child = this.childrenComponents[0];
+    if (child && child.type !== template) {
+      this.destroyChildren();
     }
+
+    this.childrenComponents[0] = this.componentsManager.upsert(child, template, [this.pConn]);
   }
 
   #evaluateVisibility(pConn, referenceContext) {
@@ -154,7 +149,7 @@ export class ViewComponent extends ContainerBaseComponent {
     return page;
   }
 
-  #resolveTemplate(configProps) {
+  #resolveTemplateType(configProps) {
     const template = configProps.template ?? '';
     if (this.SUPPORTED_TEMPLATES.includes(template)) {
       return template;

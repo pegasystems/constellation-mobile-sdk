@@ -113,11 +113,7 @@ export class AssignmentComponent extends BaseComponent {
     this.createButtons();
 
     const assignmentCardArgs = [this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick];
-    if (this.assignmentCardComponent) {
-      this.assignmentCardComponent.update(...assignmentCardArgs);
-    } else {
-      this.assignmentCardComponent = this.createComponent("AssignmentCard", assignmentCardArgs);
-    }
+    this.assignmentCardComponent = this.componentsManager.upsert(this.assignmentCardComponent, "AssignmentCard", assignmentCardArgs);
     this.loading = this.newPConn.getLoadingStatus();
     this.sendPropsUpdate();
   }

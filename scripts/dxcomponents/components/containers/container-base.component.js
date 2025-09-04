@@ -24,8 +24,9 @@ export class ContainerBaseComponent extends BaseComponent {
    * - Initialize newly created components
    *
    */
-  reconcileChildren(newChildren = ReferenceComponent.normalizePConnArray(this.pConn.getChildren())) {
+  reconcileChildren(newChildren = this.pConn.getChildren()) {
     // children may have a 'reference' so normalize the children array
+    newChildren = ReferenceComponent.normalizePConnArray(newChildren)
     const oldChildrenComponents = this.childrenComponents
     const reconciledComponents = [];
     const uninitializedComponents = [];
@@ -38,7 +39,7 @@ export class ContainerBaseComponent extends BaseComponent {
         oldChildrenComponents.splice(oldChildrenComponents.indexOf(oldComponentToReuse), 1);
       } else {
         const newPConn = newChild.getPConnect();
-        const newChildComponent = this.createComponent(newPConn.meta.type, [newPConn], false);
+        const newChildComponent = this.componentsManager.create(newPConn.meta.type, [newPConn], false);
         reconciledComponents.push(newChildComponent);
         uninitializedComponents.push(newChildComponent)
       }

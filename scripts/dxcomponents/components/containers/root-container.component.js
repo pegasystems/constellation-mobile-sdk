@@ -85,13 +85,7 @@ export class RootContainerComponent extends BaseComponent {
       options
     };
     const viewContainerPConn = PCore.createPConnect(viewContConfig).getPConnect();
-
-    if (this.#viewContainerComponent) {
-      this.#viewContainerComponent.update(viewContainerPConn);
-    } else {
-      this.#viewContainerComponent = this.createComponent(viewContainerPConn.meta.type, [viewContainerPConn]);
-    }
-
+    this.#viewContainerComponent = this.componentsManager.upsert(this.#viewContainerComponent, viewContainerPConn.meta.type, [viewContainerPConn]);
 
     if (this.compId !== "1") {
       console.error(TAG, "RootComponent id must be '1' to match root container on consumer side");

@@ -87,7 +87,7 @@ export class ViewContainerComponent extends BaseComponent {
         }
         const viewPConn = ReferenceComponent.normalizePConn(newCompPConn);
         this.childComponent?.destroy?.();
-        this.childComponent = this.createComponent(viewPConn.meta.type, [viewPConn]);
+        this.childComponent = this.componentsManager.create(viewPConn.meta.type, [viewPConn]);
         this.props.children = [this.childComponent.compId];
         this.componentsManager.onComponentPropsUpdate(this);
       }

@@ -62,11 +62,7 @@ export class SimpleTableComponent extends BaseComponent {
     }
     if (multiRecordDisplayAs === 'fieldGroup') {
       const fieldGroupProps = {...configProps, contextClass};
-      if (this.childComponent === undefined) {
-        this.childComponent = this.createComponent("FieldGroupTemplate", [this.pConn, fieldGroupProps]);
-      } else {
-        this.childComponent.update(this.pConn, fieldGroupProps)
-      }
+      this.childComponent = this.componentsManager.upsert(this.childComponent, "FieldGroupTemplate", [this.pConn, fieldGroupProps]);
       this.sendPropsUpdate();
     } else {
       console.log(TAG, "ListView and SimpleTableManual are not supported yet.");
