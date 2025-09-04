@@ -62,7 +62,7 @@ PMSDKCreateCaseView(
 
 Such a prepared `PMSDKCreateCaseView` can be presented inside SwiftUI `View`, or might be wrapped in `UIHostingController` to be presented in a UIKit - based application.
 
-Refer to [ViewController.swift](./SampleApp/SampleNativeSwiftApp/ViewController.swift) for a sample implementation.
+Refer to [ViewController.swift](SampleApp/SampleNativeSwiftApp/ViewController.swift) for a sample implementation.
 
 Overriding Component Providers
 ------------------------------
@@ -90,7 +90,7 @@ PMSDKComponentManager.shared.register("TextInput") {
 }
 ```
 
-Refer [CustomTextInput.swift](./SampleApp/SampleNativeSwiftApp/Components/CustomTextInput.swift) for a sample implementation.
+Refer [CustomTextInput.swift](SampleApp/SampleNativeSwiftApp/Components/CustomTextInput.swift) for a sample implementation.
 
 Creating New Components
 -----------------------
@@ -102,13 +102,13 @@ If the component type used in the Case Type definition is not supported by the S
 * Component View - Shows graphical representation of the state
 * Component Provider - Keeps reference to the Component View and updates it when a new state is emitted from the Javascript Component.
 
-The JavaScript Component shall be prepared first. Refer to [slider.component.js](./SampleApp/SampleNativeSwiftApp/Components/Slider/slider.component.js) for an example. [PCore and PConnect public API documentation](https://docs.pega.com/bundle/pcore-pconnect/page/pcore-pconnect-public-apis/api/using-pcore-pconnect-public-apis.html) can also be useful.
+The JavaScript Component shall be prepared first. Refer to [slider.component.js](SampleApp/SampleNativeSwiftApp/Components/Slider/slider.component.js) for an example. [PCore and PConnect public API documentation](https://docs.pega.com/bundle/pcore-pconnect/page/pcore-pconnect-public-apis/api/using-pcore-pconnect-public-apis.html) can also be useful.
 
-Component Properties shall reflect the model defined by the JavaScript component. For convenience, it can be split into the `Decodable` part, responsible for decoding of received properties, and the observable (`ObservableObject`) part, used as the state of view. A sample implementation of this concept can be found in [CustomSliderProps.swift](./SampleApp/SampleNativeSwiftApp/Components/Slider/CustomSliderProps.swift) file.
+Component Properties shall reflect the model defined by the JavaScript component. For convenience, it can be split into the `Decodable` part, responsible for decoding of received properties, and the observable (`ObservableObject`) part, used as the state of view. A sample implementation of this concept can be found in [CustomSliderProps.swift](SampleApp/SampleNativeSwiftApp/Components/Slider/CustomSliderProps.swift) file.
 
 The Component View represents the received state graphically and is responsible for coordinating any state changes (for example, caused by user interactions) with the Provider. Provider then emits such events to the JavaScript side.
 
-Sample implementation of the Component Provider and the View can be found in [CustomSlider.swift](./SampleApp/SampleNativeSwiftApp/Components/Slider/CustomSlider.swift).
+Sample implementation of the Component Provider and the View can be found in [CustomSlider.swift](SampleApp/SampleNativeSwiftApp/Components/Slider/CustomSlider.swift).
 
 After the component implementation is prepared, it needs to be registered in the Component Manager:
 

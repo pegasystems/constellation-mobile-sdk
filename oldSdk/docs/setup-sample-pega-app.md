@@ -10,6 +10,6 @@ We strongly recommend that you set up the SDK to work with the MediaCo sample Pe
     - *Dev Studio > Records > Security > OAuth 2.0 Client Registration*
     - Add redirect URI: `com.pega.mobile.constellation.sample://redirect`
     - Save the rule
-4. [Configure sample mobile application.](./configure-sample-mobile-app.md)
+4. [Configure sample mobile application.](configure-sample-mobile-app.md)
 5. Run the sample mobile application in Android Studio or XCode.
 

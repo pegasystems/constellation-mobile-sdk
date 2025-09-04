@@ -2,7 +2,7 @@
 
 This section contains information about a configuration of the sample mobile application.
 
-The configuration has been prepared to work with the [MediaCo sample Pega application](./setup-sample-pega-app.md).
+The configuration has been prepared to work with the [MediaCo sample Pega application](setup-sample-pega-app.md).
 
 #### Configuration files
 
