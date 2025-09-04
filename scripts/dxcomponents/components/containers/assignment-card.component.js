@@ -1,10 +1,11 @@
 import {ReferenceComponent} from './reference.component.js';
-import {getComponentFromMap} from '../../mappings/sdk-component-map.js';
 import {ContainerBaseComponent} from './container-base.component.js';
 
 export class AssignmentCardComponent extends ContainerBaseComponent {
+  childrenPConns;
   arMainButtons$;
   arSecondaryButtons$;
+  actionButtonClick;
   props;
   actionButtonsComponent;
 
@@ -22,10 +23,7 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
     this.componentsManager.onComponentAdded(this);
     this.reconcileChildren(this.childrenPConns);
 
-    const actionButtonsComponentClass = getComponentFromMap("ActionButtons");
-    this.actionButtonsComponent = new actionButtonsComponentClass(this.componentsManager, this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
-    this.actionButtonsComponent.init();
-
+    this.actionButtonsComponent = this.createComponent("ActionButtons", [this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick]);
     this.sendPropsUpdate();
   }
 

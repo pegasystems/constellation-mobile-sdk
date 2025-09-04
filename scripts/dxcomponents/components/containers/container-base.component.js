@@ -1,6 +1,5 @@
 import {BaseComponent} from '../base.component.js';
 import {ReferenceComponent} from './reference.component.js';
-import {getComponentFromMap} from '../../mappings/sdk-component-map.js';
 
 export class ContainerBaseComponent extends BaseComponent {
   childrenComponents = [];
@@ -32,13 +31,14 @@ export class ContainerBaseComponent extends BaseComponent {
     const uninitializedComponents = [];
 
     newChildren.forEach(newChild => {
-      const oldComponentToReuse = this.getComponentToReuse(oldChildrenComponents, newChild.getPConnect());
+      const oldComponentToReuse = this.#getComponentToReuse(oldChildrenComponents, newChild.getPConnect());
       if (oldComponentToReuse !== undefined) {
         this.updateComponentPConn(oldComponentToReuse, newChild.getPConnect());
         reconciledComponents.push(oldComponentToReuse);
         oldChildrenComponents.splice(oldChildrenComponents.indexOf(oldComponentToReuse), 1);
       } else {
-        const newChildComponent = this.createNewChildComponent(this.componentsManager, newChild.getPConnect());
+        const newPConn = newChild.getPConnect();
+        const newChildComponent = this.createComponent(newPConn.meta.type, [newPConn], false);
         reconciledComponents.push(newChildComponent);
         uninitializedComponents.push(newChildComponent)
       }
@@ -48,7 +48,7 @@ export class ContainerBaseComponent extends BaseComponent {
     uninitializedComponents.forEach(c => c.init())
   }
 
-  getComponentToReuse(oldChildrenComponents, newChildPConn) {
+  #getComponentToReuse(oldChildrenComponents, newChildPConn) {
     return oldChildrenComponents.find((component) => {
       return this.isEqualNameType(component.pConn, newChildPConn);
     })
@@ -64,11 +64,6 @@ export class ContainerBaseComponent extends BaseComponent {
       }
       component.destroy();
     });
-  }
-
-  createNewChildComponent(componentsManager, childPConn) {
-    const childComponentClass = getComponentFromMap(childPConn.meta.type);
-    return new childComponentClass(componentsManager, childPConn);
   }
 
   updateComponentPConn(childComponent, newChildPConn) {

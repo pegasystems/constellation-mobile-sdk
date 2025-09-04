@@ -1,5 +1,4 @@
 import {ReferenceComponent} from './reference.component.js';
-import {getComponentFromMap} from '../../mappings/sdk-component-map.js';
 import {ContainerBaseComponent} from './container-base.component.js';
 
 const TAG = '[ViewComponent]';
@@ -99,23 +98,16 @@ export class ViewComponent extends ContainerBaseComponent {
     this.componentsManager.onComponentPropsUpdate(this)
   }
 
-  #createComponent(componentType) {
-    const componentClass = getComponentFromMap(componentType);
-    const componentInstance = new componentClass(this.componentsManager, this.pConn);
-    componentInstance.init();
-    return componentInstance;
-  }
-
   #includeTemplate(template) {
     if (this.childrenComponents.length === 0) {
-      this.childrenComponents.push(this.#createComponent(template));
+      this.childrenComponents.push(this.createComponent(template, [this.pConn]));
     } else {
       const child = this.childrenComponents[0];
       if (child.type === template && this.isEqualNameType(child.pConn, this.pConn)) {
         child.update(this.pConn);
       } else {
         this.destroyChildren();
-        this.childrenComponents.push(this.#createComponent(template));
+        this.childrenComponents.push(this.createComponent(template, [this.pConn]));
       }
     }
   }

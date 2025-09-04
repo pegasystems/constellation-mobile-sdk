@@ -1,6 +1,5 @@
-import { ReferenceComponent } from './reference.component.js';
-import { getComponentFromMap } from '../../mappings/sdk-component-map.js';
-import { BaseComponent } from '../base.component.js';
+import {ReferenceComponent} from './reference.component.js';
+import {BaseComponent} from '../base.component.js';
 
 const TAG = '[AssignmentComponent]';
 
@@ -111,17 +110,13 @@ export class AssignmentComponent extends BaseComponent {
 
   updateChanges() {
     this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
+    this.createButtons();
 
-    if (this.childrenPConns) {
-      this.createButtons();
-    }
-
+    const assignmentCardArgs = [this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick];
     if (this.assignmentCardComponent) {
-      this.assignmentCardComponent.update(this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$);
+      this.assignmentCardComponent.update(...assignmentCardArgs);
     } else {
-      const assignmentCardComponentClass = getComponentFromMap("AssignmentCard");
-      this.assignmentCardComponent = new assignmentCardComponentClass(this.componentsManager, this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick);
-      this.assignmentCardComponent.init();
+      this.assignmentCardComponent = this.createComponent("AssignmentCard", assignmentCardArgs);
     }
     this.loading = this.newPConn.getLoadingStatus();
     this.sendPropsUpdate();
@@ -171,6 +166,7 @@ export class AssignmentComponent extends BaseComponent {
   }
 
   createButtons() {
+    if (!this.childrenPConns) return;
     const oData = this.newPConn.getDataObject();
     // inside
     // get fist kid, get the name and display

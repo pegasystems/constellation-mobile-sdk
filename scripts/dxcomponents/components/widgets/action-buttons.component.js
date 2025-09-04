@@ -1,11 +1,8 @@
-
 export class ActionButtonsComponent {
   arMainButtons$ = []
   arSecondaryButtons$ = []
   actionButtonClick;
 
-  localizedVal = PCore.getLocaleUtils().getLocaleValue;
-  localeCategory = 'Assignment';
   compId;
   type;
   props;
@@ -46,10 +43,10 @@ export class ActionButtonsComponent {
 
   sendProps() {
     this.props = {
-      mainButtons: this.arMainButtons$.map((button) => this.toButtonProp(button, 'primary') ),
+      mainButtons: this.arMainButtons$.map(button => this.toButtonProp(button, 'primary')),
       secondaryButtons: this.arSecondaryButtons$
-      .filter((button) => button.jsAction !== 'saveAssignment') // not supported yet
-      .map((button) => this.toButtonProp(button, 'secondary'))
+        .filter(button => button.jsAction !== 'saveAssignment') // not supported yet
+        .map(button => this.toButtonProp(button, 'secondary'))
     };
     this.componentsManager.onComponentPropsUpdate(this);
   }
