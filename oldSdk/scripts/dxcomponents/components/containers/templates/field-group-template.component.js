@@ -1,6 +1,5 @@
-import { Utils } from '../../../helpers/utils.js';
-import {getComponentFromMap} from '../../../mappings/sdk-component-map.js';
-import { BaseComponent } from '../../base.component.js';
+import {Utils} from '../../../helpers/utils.js';
+import {BaseComponent} from '../../base.component.js';
 
 export class FieldGroupTemplateComponent extends BaseComponent {
 
@@ -26,6 +25,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   prevRefLength;
   allowAddEdit;
   fieldHeader;
+
   //
 
   constructor(componentsManager, pConn, configProps) {
@@ -92,7 +92,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
       // eslint-disable-next-line sonarjs/no-collapsible-if
       if (!this.readonlyMode) {
         if (this.referenceList?.length === 0 && this.allowAddEdit !== false) {
-          setTimeout(() => { this.addFieldGroupItem(); })
+          setTimeout(() => this.addFieldGroupItem());
         }
       }
       const items = [];
@@ -101,7 +101,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         // all components in list are the same name and type so we can pick any component for re-use.
         const oldComponent = oldItemsComponents.pop();
         const newPConn = this.buildItemPConnect(this.pConn, index, lookForChildInConfig).getPConnect();
-        const newComponent = this.reconcileItemComponent(newPConn, oldComponent);
+        const newComponent = this.componentsManager.upsert(oldComponent, newPConn.meta.type, [newPConn]);
         items.push({
           id: index,
           name: this.fieldHeader === 'propertyRef' ? this.getDynamicHeader(item, index) : this.getStaticHeader(this.heading, index),
@@ -112,17 +112,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
       this.prevRefLength = this.referenceList.length;
     }
     this.sendPropsUpdate();
-  }
-
-  reconcileItemComponent(pConn, oldComponent) {
-    if (oldComponent !== undefined) {
-      oldComponent.update(pConn)
-      return oldComponent;
-    }
-    const itemComponentClass = getComponentFromMap(pConn.getRawMetadata().type);
-    const itemComponentInstance = new itemComponentClass(this.componentsManager, pConn);
-    itemComponentInstance.init();
-    return itemComponentInstance;
   }
 
   onEvent(event) {
@@ -161,7 +150,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   };
 
   addFieldGroupItem() {
-    this.pConn.getListActions().insert({ classID: this.contextClass }, this.referenceList.length);
+    this.pConn.getListActions().insert({classID: this.contextClass}, this.referenceList.length);
   }
 
   deleteFieldGroupItem(index) {
