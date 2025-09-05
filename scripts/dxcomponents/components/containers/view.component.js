@@ -5,13 +5,14 @@ const TAG = '[ViewComponent]';
 
 export class ViewComponent extends ContainerBaseComponent {
 
-  FORM_TEMPLATES = ['DefaultForm', 'OneColumn', 'TwoColumn', 'ThreeColumn', 'WideNarrow'];
   DETAILS_TEMPLATES = [
     'Details', 'DetailsFields', 'DetailsOneColumn', 'DetailsSubTabs', 'DetailsThreeColumn',
     'DetailsTwoColumn', 'NarrowWideDetails', 'WideNarrowDetails'
   ];
 
   SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'OneColumn'];
+  UNSUPPORTED_FORM_TEMPLATES = ['TwoColumn', 'ThreeColumn', 'WideNarrow'];
+
   SUPPORTED_TEMPLATES = [...this.SUPPORTED_FORM_TEMPLATES, 'SimpleTable'];
 
   jsComponentPConnectData = {};
@@ -90,7 +91,7 @@ export class ViewComponent extends ContainerBaseComponent {
     if (this.SUPPORTED_TEMPLATES.includes(template)) {
       this.#includeTemplate(template);
     } else {
-      console.warn(TAG, `${template} not supported. Rendering children components directly.`);
+      if (template) console.warn(TAG, `${template} not supported. Rendering children components directly.`);
       this.reconcileChildren();
     }
 
@@ -99,12 +100,11 @@ export class ViewComponent extends ContainerBaseComponent {
   }
 
   #includeTemplate(template) {
-    const child = this.childrenComponents[0];
-    if (child && child.type !== template) {
+    if (this.childrenComponents[0] && this.childrenComponents[0].type !== template) {
       this.destroyChildren();
     }
 
-    this.childrenComponents[0] = this.componentsManager.upsert(child, template, [this.pConn]);
+    this.childrenComponents[0] = this.componentsManager.upsert(this.childrenComponents[0], template, [this.pConn]);
   }
 
   #evaluateVisibility(pConn, referenceContext) {
@@ -151,10 +151,8 @@ export class ViewComponent extends ContainerBaseComponent {
 
   #resolveTemplateType(configProps) {
     const template = configProps.template ?? '';
-    if (this.SUPPORTED_TEMPLATES.includes(template)) {
-      return template;
-    } else if (this.FORM_TEMPLATES.includes(template)) {
-      // fallback to DefaultForm for other form templates
+    if (this.UNSUPPORTED_FORM_TEMPLATES.includes(template)) {
+      console.warn(TAG, `${template} not supported. Falling back to DefaultForm.`);
       return 'DefaultForm';
     } else {
       return template;
