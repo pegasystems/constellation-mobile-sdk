@@ -30,14 +30,12 @@ export class ReferenceComponent {
   }
 
   static _createFullReferencedViewFromRef(inPConn) {
-
     if (inPConn.getComponentName() !== 'reference') {
       throw new Error(`inPConn is not a reference. ${inPConn.getComponentName()}`);
     }
 
     const theResolvedConfigProps = inPConn.resolveConfigProps(inPConn.getConfigProps());
-
-    const referenceConfig = { ...inPConn.getComponentConfig() } || {};
+    const referenceConfig = {...inPConn.getComponentConfig()} || {};
 
     // name will not be passed to referenced view (but type and visibility will be passed)
     delete referenceConfig?.name;
@@ -73,11 +71,12 @@ export class ReferenceComponent {
   }
 
   /**
-    Show label by default if 'label' is set but 'showLabel' is missing
+   Show label by default if 'label' is set but 'showLabel' is missing
    */
   static _setShowLabelIfMissing(referenceConfig) {
-    if (referenceConfig.inheritedProps?.find(prop => {return prop.prop === 'label'}) !== undefined &&
-      referenceConfig.inheritedProps?.find(prop => {return prop.prop === 'showLabel'}) === undefined) {
+    const inheritedProps = referenceConfig?.inheritedProps ?? [];
+    if (inheritedProps.some(prop => prop.prop === 'label') &&
+      !inheritedProps.some(prop => prop.prop === 'showLabel')) {
 
       referenceConfig.inheritedProps.push(
         {

@@ -1,5 +1,4 @@
-import { ReferenceComponent } from './reference.component.js';
-import { ContainerBaseComponent } from './container-base.component.js';
+import {ContainerBaseComponent} from './container-base.component.js';
 
 export class RegionComponent extends ContainerBaseComponent {
   props = {
@@ -28,16 +27,11 @@ export class RegionComponent extends ContainerBaseComponent {
   onEvent(event) {
     // need copy because this.childrenComponents is updated while iterating
     const childrenComponents = [...this.childrenComponents];
-    childrenComponents.forEach((component) => {component.onEvent(event);})
+    childrenComponents.forEach(component => component.onEvent(event));
   }
 
   #updateSelf() {
-    this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
-
-    const reconciledComponents = this.reconcileChildren();
-    this.childrenComponents = reconciledComponents.map((item) => item.component);
-    this.initReconciledComponents(reconciledComponents);
-
+    this.reconcileChildren();
     this.props.children = this.getChildrenComponentsIds();
     this.componentsManager.onComponentPropsUpdate(this);
   }

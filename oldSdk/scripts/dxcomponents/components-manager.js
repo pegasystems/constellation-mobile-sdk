@@ -1,3 +1,5 @@
+import {getComponentFromMap} from "./mappings/sdk-component-map.js";
+
 export class ComponentsManager {
 
   constructor(jsComponentPConnect, onComponentAdded, onComponentRemoved, onComponentPropsUpdate) {
@@ -25,5 +27,38 @@ export class ComponentsManager {
     // Note that we use the string version of the number so we have an
     //  associative array that we can clean up later, if needed.
     return this.#counterComponentID.toString();
+  }
+
+  /**
+   * Creates a component.
+   * @param type - type of component to create
+   * @param args - arguments to pass to the component's constructor
+   * @param init - if true, calls the component's init() method after creation
+   * @returns the created component
+   */
+  create(type, args = [], init = true) {
+    const ComponentClass = getComponentFromMap(type);
+    const component = new ComponentClass(this, ...args);
+    if (init) {
+      component.init()
+    }
+    return component;
+  }
+
+  /**
+   * Creates or updates a component.
+   * @param component - component to update, or null/undefined to create a new one
+   * @param type - type of component to create
+   * @param args - arguments to pass to the component's constructor
+   * @param init - if true, calls the component's init() method after creation
+   * @returns created or updated component
+   */
+  upsert(component, type, args = [], init = true) {
+    if (component) {
+      component.update(...args);
+      return component;
+    } else {
+      return this.create(type, args, init);
+    }
   }
 }

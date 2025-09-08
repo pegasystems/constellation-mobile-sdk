@@ -1,7 +1,6 @@
-import { JsComponentPConnectService } from '../dxcomponents/js-component-pconnect.js';
-import { ComponentsManager } from '../dxcomponents/components-manager.js';
-import { getComponentFromMap } from '../dxcomponents/mappings/sdk-component-map.js';
-import { bridge } from '../bridge/native-bridge.js';
+import {JsComponentPConnectService} from '../dxcomponents/js-component-pconnect.js';
+import {ComponentsManager} from '../dxcomponents/components-manager.js';
+import {bridge} from '../bridge/native-bridge.js';
 
 export function initialRender(renderObj) {
   PCore.registerComponentCreator(c11nEnv => c11nEnv);
@@ -12,13 +11,10 @@ export function initialRender(renderObj) {
   const jsComponentPConnect = new JsComponentPConnectService();
   const componentsManager = new ComponentsManager(
     jsComponentPConnect,
-    (component) => { bridge.addComponent(component) },
-    (component) => { bridge.removeComponent(component) },
-    (component) => { bridge.updateNativeComponent(component) }
+    component => bridge.addComponent(component),
+    component => bridge.removeComponent(component),
+    component => bridge.updateNativeComponent(component)
   );
 
-  const rootComponentClass = getComponentFromMap(pconn.meta.type);
-  const rootComponent = new rootComponentClass(componentsManager, pconn);
-  rootComponent.init();
-  return rootComponent;
+  return componentsManager.create('RootContainer', [pconn]);
 }
