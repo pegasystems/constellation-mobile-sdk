@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
-import com.pega.constellation.sdk.kmp.core.components.core.Render
 import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.ui.components.cmp.containers.Column
 import kotlinx.serialization.json.JsonObject

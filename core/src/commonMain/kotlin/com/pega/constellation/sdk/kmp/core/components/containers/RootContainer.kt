@@ -9,7 +9,6 @@ import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
-import com.pega.constellation.sdk.kmp.core.components.core.Render
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
 import com.pega.constellation.sdk.kmp.core.components.getString

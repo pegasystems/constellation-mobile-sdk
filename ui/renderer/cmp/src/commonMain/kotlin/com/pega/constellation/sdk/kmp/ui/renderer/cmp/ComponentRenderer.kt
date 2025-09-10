@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.core
+package com.pega.constellation.sdk.kmp.ui.renderer.cmp
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -6,6 +6,8 @@ import androidx.compose.runtime.compositionLocalOf
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Unsupported
 import com.pega.constellation.sdk.kmp.core.components.Components
+import com.pega.constellation.sdk.kmp.core.components.core.Component
+import com.pega.constellation.sdk.kmp.core.components.core.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
 

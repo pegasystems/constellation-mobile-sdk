@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
-import com.pega.constellation.sdk.kmp.core.components.core.Render
 import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.core.components.optBoolean
 import com.pega.constellation.sdk.kmp.core.components.widgets.ActionButtonsComponent
