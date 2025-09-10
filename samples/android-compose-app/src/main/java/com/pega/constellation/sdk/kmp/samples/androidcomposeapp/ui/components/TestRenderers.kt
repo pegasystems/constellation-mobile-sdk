@@ -5,14 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import com.pega.constellation.sdk.kmp.core.components.core.Component
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
-import com.pega.constellation.sdk.kmp.core.components.core.Render
+import com.pega.constellation.sdk.kmp.core.api.Component
 import com.pega.constellation.sdk.kmp.core.components.fields.IntegerComponent
-import com.pega.constellation.sdk.kmp.core.components.fields.IntegerRenderer
 import com.pega.constellation.sdk.kmp.core.components.fields.TextInputComponent
-import com.pega.constellation.sdk.kmp.core.components.fields.TextInputRenderer
-import kotlin.jvm.java
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.IntegerRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TextInputRenderer
 
 abstract class TestRenderer : ComponentRenderer<Component> {
 
@@ -20,6 +19,7 @@ abstract class TestRenderer : ComponentRenderer<Component> {
 
 class TestTextInputRenderer : ComponentRenderer<TextInputComponent> {
     private var index = 1
+
     @Composable
     override fun TextInputComponent.Render() {
         TextInputRenderer().apply {
@@ -40,7 +40,7 @@ class TestIntegerRenderer : ComponentRenderer<IntegerComponent> {
 var testIndex = 1
 
 @Composable
-fun <C: Component> C.TestRender() {
+fun <C : Component> C.TestRender() {
     Box(modifier = Modifier.testTag("${this@TestRender::class.java}_${label}")) {
         this@TestRender.Render()
     }

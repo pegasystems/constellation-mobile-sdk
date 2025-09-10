@@ -1,13 +1,13 @@
 package com.pega.constellation.sdk.kmp.core.internal
 
 import com.pega.constellation.sdk.kmp.core.Log
-import com.pega.constellation.sdk.kmp.core.components.Components.DefaultDefinitions
-import com.pega.constellation.sdk.kmp.core.components.core.AlertComponent
-import com.pega.constellation.sdk.kmp.core.components.core.Component
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentDefinition
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentManager
+import com.pega.constellation.sdk.kmp.core.components.ComponentRegistry.DefaultDefinitions
+import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.api.Component
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
+import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition
+import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import kotlinx.serialization.json.JsonObject

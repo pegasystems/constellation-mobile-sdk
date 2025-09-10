@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.helpers
+package com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers
 
 import androidx.compose.runtime.Composable
 import com.pega.constellation.sdk.kmp.core.Log

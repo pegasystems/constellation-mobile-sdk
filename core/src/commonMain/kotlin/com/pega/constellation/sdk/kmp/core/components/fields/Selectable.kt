@@ -3,7 +3,7 @@ package com.pega.constellation.sdk.kmp.core.components.fields
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
 import com.pega.constellation.sdk.kmp.core.components.getString

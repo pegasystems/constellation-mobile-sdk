@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.helpers
+package com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable

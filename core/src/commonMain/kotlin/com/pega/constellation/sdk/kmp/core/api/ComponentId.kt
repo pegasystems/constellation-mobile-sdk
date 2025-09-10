@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.core
+package com.pega.constellation.sdk.kmp.core.api
 
 import kotlin.jvm.JvmInline
 

@@ -10,11 +10,11 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
-import com.pega.constellation.sdk.kmp.core.components.core.AlertComponent
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContextImpl
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentEvent
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentType
+import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
+import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
+import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.AddComponent
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.OnCancelled

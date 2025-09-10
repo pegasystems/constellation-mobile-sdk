@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodelCompose)
@@ -53,6 +52,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":engine:android-webview"))
     implementation(project(":ui:components:cmp"))
+    implementation(project(":ui:renderer:cmp"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.testExt.junit)
     androidTestImplementation(libs.androidx.espresso.core)

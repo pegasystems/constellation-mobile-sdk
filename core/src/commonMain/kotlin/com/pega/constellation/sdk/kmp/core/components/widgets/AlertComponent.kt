@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.core
+package com.pega.constellation.sdk.kmp.core.components.widgets
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,5 +23,3 @@ class AlertComponent {
         ALERT, CONFIRM
     }
 }
-
-

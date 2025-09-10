@@ -1,5 +1,6 @@
-package com.pega.constellation.sdk.kmp.core.components.core
+package com.pega.constellation.sdk.kmp.core.api
 
+import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl
 import kotlinx.serialization.json.JsonObject
 

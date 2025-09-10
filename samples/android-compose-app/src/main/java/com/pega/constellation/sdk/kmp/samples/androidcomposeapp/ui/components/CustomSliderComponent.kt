@@ -2,12 +2,12 @@ package com.pega.constellation.sdk.kmp.samples.androidcomposeapp.ui.components
 
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.fields.FieldComponent
-import com.pega.constellation.sdk.kmp.core.components.fields.WithFieldHelpers
 import com.pega.constellation.sdk.kmp.ui.components.cmp.containers.Column
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Label
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
 
 class CustomSliderComponent(context: ComponentContext) : FieldComponent(context)
 

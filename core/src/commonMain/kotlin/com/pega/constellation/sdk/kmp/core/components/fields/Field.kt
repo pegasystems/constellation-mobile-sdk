@@ -1,21 +1,17 @@
 package com.pega.constellation.sdk.kmp.core.components.fields
 
 import androidx.annotation.CallSuper
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.pega.constellation.sdk.kmp.core.api.BaseComponent
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
+import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.components.DisplayMode
 import com.pega.constellation.sdk.kmp.core.components.DisplayMode.Companion.toDisplayMode
-import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.components.getString
-import com.pega.constellation.sdk.kmp.core.components.helpers.WithDisplayMode
-import com.pega.constellation.sdk.kmp.core.components.helpers.WithVisibility
 import com.pega.constellation.sdk.kmp.core.components.optBoolean
 import com.pega.constellation.sdk.kmp.core.components.optString
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.FieldValue
 import kotlinx.serialization.json.JsonObject
 
 abstract class FieldComponent(context: ComponentContext) : BaseComponent(context) {
@@ -72,18 +68,3 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
     }
 }
 
-@Composable
-fun <T : FieldComponent> T.WithFieldHelpers(
-    displayOnly: @Composable T.() -> Unit = { FieldValue(label, value) },
-    editable: @Composable T.() -> Unit,
-) {
-    WithVisibility(visible) {
-        WithDisplayMode(
-            displayMode = displayMode,
-            label = label,
-            value = value,
-            editable = { editable.invoke(this) },
-            displayOnly = { displayOnly.invoke(this) }
-        )
-    }
-}

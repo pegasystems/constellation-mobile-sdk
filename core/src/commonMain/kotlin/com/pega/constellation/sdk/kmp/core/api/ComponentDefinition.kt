@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.core
+package com.pega.constellation.sdk.kmp.core.api
 
 /**
  * Class which defines a component.
@@ -9,7 +9,7 @@ package com.pega.constellation.sdk.kmp.core.components.core
  *  script should be 'components_override/custom_component_email.js'
  * @property producer function which takes component context and returns new Component
  *
- * @see [com.pega.constellation.sdk.kmp.core.components.Components.DefaultDefinitions]
+ * @see [com.pega.constellation.sdk.kmp.core.components.ComponentRegistry.DefaultDefinitions]
  */
 class ComponentDefinition(
     val type: ComponentType,

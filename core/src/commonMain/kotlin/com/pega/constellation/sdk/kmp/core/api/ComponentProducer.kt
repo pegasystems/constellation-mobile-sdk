@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.core
+package com.pega.constellation.sdk.kmp.core.api
 
 /**
  * Functional interface for producing components based on their context.

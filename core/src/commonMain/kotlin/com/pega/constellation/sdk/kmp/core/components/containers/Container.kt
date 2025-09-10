@@ -4,10 +4,10 @@ import androidx.annotation.CallSuper
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
-import com.pega.constellation.sdk.kmp.core.components.core.Component
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.BaseComponent
+import com.pega.constellation.sdk.kmp.core.api.Component
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
+import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
 import kotlinx.serialization.json.JsonObject

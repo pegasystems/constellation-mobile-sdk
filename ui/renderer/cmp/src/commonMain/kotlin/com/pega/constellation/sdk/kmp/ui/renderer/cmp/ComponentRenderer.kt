@@ -5,19 +5,20 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Unsupported
-import com.pega.constellation.sdk.kmp.core.components.Components
-import com.pega.constellation.sdk.kmp.core.components.core.Component
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentType
+import com.pega.constellation.sdk.kmp.core.components.ComponentRegistry
+import com.pega.constellation.sdk.kmp.core.api.Component
+import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderers.DefaultRenderers
 
 private const val TAG = "ComponentRenderer"
-private val LocalRenderers = compositionLocalOf { Components.DefaultRenderers }
+private val LocalRenderers = compositionLocalOf { DefaultRenderers }
 
 /**
  * Allows to render components using Jetpack Compose.
  *
- * @see [Components.DefaultRenderers]
+ * @see [DefaultRenderers]
  */
 interface ComponentRenderer<C : Component> {
     @Composable
@@ -54,6 +55,6 @@ fun ProvideRenderers(
     customRenderers: Map<ComponentType, ComponentRenderer<*>>,
     content: @Composable () -> Unit
 ) {
-    val renderers = Components.DefaultRenderers + customRenderers
+    val renderers = DefaultRenderers + customRenderers
     CompositionLocalProvider(LocalRenderers provides renderers, content)
 }

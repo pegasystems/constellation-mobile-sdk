@@ -1,28 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.components.fields
 
-import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.TextInput
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 
 class TextInputComponent(context: ComponentContext) : FieldComponent(context)
 
-class TextInputRenderer : ComponentRenderer<TextInputComponent> {
-    @Composable
-    override fun TextInputComponent.Render() {
-        WithFieldHelpers {
-            TextInput(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                onValueChange = { updateValue(it) },
-                onFocusChange = { updateFocus(it) }
-            )
-        }
-    }
-}

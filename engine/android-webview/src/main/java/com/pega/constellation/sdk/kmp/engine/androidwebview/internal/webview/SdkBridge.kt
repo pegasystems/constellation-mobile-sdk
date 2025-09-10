@@ -1,8 +1,8 @@
 package com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview
 
 import android.webkit.JavascriptInterface
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentType
+import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.AddComponent
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.OnCancelled
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.OnError

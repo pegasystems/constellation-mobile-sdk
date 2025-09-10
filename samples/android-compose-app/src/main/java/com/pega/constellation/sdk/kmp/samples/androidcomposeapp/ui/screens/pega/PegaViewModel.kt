@@ -16,7 +16,7 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentManager
+import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.engine.androidwebview.buildAndroidConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.engine.androidwebview.defaultHttpClient
 import com.pega.constellation.sdk.kmp.samples.androidcomposeapp.ui.components.CustomComponents.CustomDefinitions

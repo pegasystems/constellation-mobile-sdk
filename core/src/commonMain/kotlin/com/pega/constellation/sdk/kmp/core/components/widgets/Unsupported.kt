@@ -1,25 +1,18 @@
 package com.pega.constellation.sdk.kmp.core.components.widgets
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.Log
+import com.pega.constellation.sdk.kmp.core.api.BaseComponent
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
+import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
+import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes
-import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContextImpl
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getString
-import com.pega.constellation.sdk.kmp.core.components.helpers.WithVisibility
-import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause
-import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
-import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_JAVASCRIPT_IMPLEMENTATION
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.UNKNOWN_CAUSE
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Unsupported
 import kotlinx.serialization.json.JsonObject
 
 class UnsupportedComponent(
@@ -62,20 +55,3 @@ class UnsupportedComponent(
 }
 
 private const val TAG = "Unsupported"
-
-class UnsupportedRenderer : ComponentRenderer<UnsupportedComponent> {
-    @Composable
-    override fun UnsupportedComponent.Render() {
-        Log.w(TAG, "Unsupported component '$type' due to ${cause.message()}")
-        WithVisibility(visible) {
-            Unsupported("Unsupported component '$type'")
-        }
-    }
-
-    private fun Cause.message() = when (this) {
-        MISSING_JAVASCRIPT_IMPLEMENTATION -> "missing JavaScript implementation"
-        MISSING_COMPONENT_DEFINITION -> "missing component definition"
-        MISSING_COMPONENT_RENDERER -> "missing component renderer"
-        UNKNOWN_CAUSE -> "unknown cause"
-    }
-}

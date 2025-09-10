@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.core.components.core
+package com.pega.constellation.sdk.kmp.core.api
 
 
 /**
@@ -6,7 +6,6 @@ package com.pega.constellation.sdk.kmp.core.components.core
  *
  * @property id The unique identifier of the component.
  * @property type The type of the component.
- * @property scope The coroutine scope associated with the component.
  * @property componentManager The manager responsible for handling component-related operations.
  */
 interface ComponentContext {

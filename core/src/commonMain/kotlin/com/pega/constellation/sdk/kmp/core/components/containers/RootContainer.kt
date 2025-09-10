@@ -1,14 +1,11 @@
 package com.pega.constellation.sdk.kmp.core.components.containers
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
+import com.pega.constellation.sdk.kmp.core.api.BaseComponent
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
+import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
 import com.pega.constellation.sdk.kmp.core.components.getString
@@ -36,44 +33,5 @@ class RootContainerComponent(context: ComponentContext) : BaseComponent(context)
 
     fun clearMessages() {
         httpMessages = emptyList()
-    }
-}
-
-class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
-    @Composable
-    override fun RootContainerComponent.Render() {
-        Box {
-            viewContainer?.Render()
-//            Snackbar(
-//                messages = httpMessages,
-//                onSnackbarClose = { clearMessages() },
-//                modifier = Modifier
-//                    .align(Alignment.BottomCenter)
-//                    .padding(bottom = 8.dp)
-//            )
-//            val alert = context.componentManager.getAlertComponent()
-//            alert.info?.let {
-//                when (it.type) {
-//                    AlertComponent.Type.CONFIRM -> Confirm(
-//                        message = it.message,
-//                        onConfirm = {
-//                            it.onConfirm()
-//                            alert.setAlertInfo(null)
-//                        },
-//                        onCancel = {
-//                            it.onCancel()
-//                            alert.setAlertInfo(null)
-//                        })
-//
-//                    AlertComponent.Type.ALERT -> Alert(
-//                        message = it.message,
-//                        onConfirm = {
-//                            it.onConfirm()
-//                            alert.setAlertInfo(null)
-//                        }
-//                    )
-//                }
-//            }
-        }
     }
 }

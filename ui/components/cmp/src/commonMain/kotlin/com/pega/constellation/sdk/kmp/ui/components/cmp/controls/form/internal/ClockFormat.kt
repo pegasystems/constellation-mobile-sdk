@@ -1,6 +1,5 @@
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal
 
-import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
 
 enum class ClockFormat {
     H_12, H_24, FROM_LOCALE;

@@ -1,6 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.components
 
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentType
+import com.pega.constellation.sdk.kmp.core.api.ComponentType
 
 /**
  * Object that holds all known component types.

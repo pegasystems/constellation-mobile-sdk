@@ -1,9 +1,9 @@
 package com.pega.constellation.sdk.kmp.samples.androidcomposeapp.ui.components
 
+import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition
+import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextInput
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentDefinition
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentType
 
 object CustomComponents {
     private val Slider = ComponentType("MyCompany_MyLib_Slider")

@@ -1,20 +1,12 @@
 package com.pega.constellation.sdk.kmp.core.components.containers
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
-import com.pega.constellation.sdk.kmp.core.components.core.Component
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
+import com.pega.constellation.sdk.kmp.core.api.BaseComponent
+import com.pega.constellation.sdk.kmp.core.api.Component
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
+import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.getInt
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
@@ -42,19 +34,4 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
     }
 
     data class Item(val id: Int, val heading: String, val component: Component)
-
-}
-
-class FieldGroupTemplateRenderer : ComponentRenderer<FieldGroupTemplateComponent> {
-    @Composable
-    override fun FieldGroupTemplateComponent.Render() {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            items.forEach {
-                Column {
-                    Text(it.heading, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    it.component.Render()
-                }
-            }
-        }
-    }
 }

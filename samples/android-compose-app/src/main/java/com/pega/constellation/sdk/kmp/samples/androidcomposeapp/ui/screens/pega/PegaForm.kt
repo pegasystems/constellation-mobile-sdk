@@ -15,8 +15,8 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Initial
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Loading
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Ready
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
-import com.pega.constellation.sdk.kmp.core.components.core.ProvideRenderers
-import com.pega.constellation.sdk.kmp.core.components.core.Render
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ProvideRenderers
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 
 @Composable
 fun PegaForm(state: State) {

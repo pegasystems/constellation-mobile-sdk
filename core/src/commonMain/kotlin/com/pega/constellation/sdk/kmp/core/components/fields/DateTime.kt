@@ -1,16 +1,11 @@
 package com.pega.constellation.sdk.kmp.core.components.fields
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.Log
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.getString
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.DateTime
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat.Companion.toClockFormat
-import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.JsonObject
 
 class DateTimeComponent(context: ComponentContext) : FieldComponent(context) {
@@ -41,40 +36,5 @@ class DateTimeComponent(context: ComponentContext) : FieldComponent(context) {
 
     companion object {
         private const val TAG = "DateTimeComponent"
-    }
-}
-
-class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
-//    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-
-    @Composable
-    override fun DateTimeComponent.Render() {
-        WithFieldHelpers {
-            DateTime(
-                value = value.asLocalDateTimeOrNull(),
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                clockFormat = clockFormat.toClockFormat(),
-                onValueChange = {
-//                    updateValue(formatter.format(it.minusMinutes(timeZoneMinutesOffset.toLong())))
-                },
-                onFocusChange = { updateFocus(it) }
-            )
-        }
-
-    }
-
-    private fun String.asLocalDateTimeOrNull() = takeIf { isNotEmpty() }
-        ?.runCatching { LocalDateTime.parse(this.removeSuffix("Z")) }
-        ?.onFailure { Log.e(TAG, "Unable to parse value as DateTime", it) }
-        ?.getOrNull()
-
-    companion object {
-        private const val TAG = "DateTimeRenderer"
     }
 }

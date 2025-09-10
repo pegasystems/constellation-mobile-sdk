@@ -1,28 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.components.fields
 
-import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
-import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.RadioButtons
+import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 
 class RadioButtonsComponent(context: ComponentContext) : SelectableComponent(context)
 
-class RadioButtonsRenderer : ComponentRenderer<SelectableComponent> {
-    @Composable
-    override fun SelectableComponent.Render() {
-        WithFieldHelpers {
-            RadioButtons(
-                value = value,
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                options = options.map { SelectableOption(it.key, it.label) },
-                onValueChange = { updateValue(it) }
-            )
-        }
-    }
-}
