@@ -45,7 +45,6 @@ interface ComponentManager {
      * @param props The new properties to be applied to the component.
      */
     fun updateComponent(id: ComponentId, props: JsonObject)
-    fun updateComponent(id: ComponentId, props: String)
 
     /**
      * Removes a component from the system.

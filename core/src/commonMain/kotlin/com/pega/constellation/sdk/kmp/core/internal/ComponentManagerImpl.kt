@@ -10,9 +10,7 @@ import com.pega.constellation.sdk.kmp.core.components.core.ComponentManager
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
 
 internal class ComponentManagerImpl(
     private val customDefinitions: List<ComponentDefinition>
@@ -39,9 +37,6 @@ internal class ComponentManagerImpl(
                 Log.e(TAG, "Failure during component update: $component, (message: ${it.message})")
             }
     }
-
-    override fun updateComponent(id: ComponentId, props: String) =
-        updateComponent(id, Json.parseToJsonElement(props).jsonObject)
 
     override fun removeComponent(id: ComponentId) {
         components.remove(id)

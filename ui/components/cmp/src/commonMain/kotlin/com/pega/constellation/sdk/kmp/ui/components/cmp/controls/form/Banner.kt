@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ fun Banner(
     ) {
         Row(
             modifier = Modifier
+                .background(color = Color.Red)
 //                .background(colorResource(variant.colorRes))
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
