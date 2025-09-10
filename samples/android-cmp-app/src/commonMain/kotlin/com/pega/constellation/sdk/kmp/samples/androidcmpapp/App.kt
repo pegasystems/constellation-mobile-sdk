@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
-import com.pega.constellation.sdk.kmp.core.components.core.Render
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 import constellation_mobile_sdk.samples.android_cmp_app.generated.resources.Res
 import constellation_mobile_sdk.samples.android_cmp_app.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource

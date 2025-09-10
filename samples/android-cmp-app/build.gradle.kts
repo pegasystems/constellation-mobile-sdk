@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.implementation
+import org.gradle.kotlin.dsl.project
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -27,7 +28,7 @@ kotlin {
         }
     }
 
-    jvm()
+//    jvm()
 
     sourceSets {
         androidMain.dependencies {
@@ -46,14 +47,15 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(project(":core"))
+            implementation(project(":ui:renderer:cmp"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutinesSwing)
-        }
+//        jvmMain.dependencies {
+//            implementation(compose.desktop.currentOs)
+//            implementation(libs.kotlinx.coroutinesSwing)
+//        }
     }
 }
 
