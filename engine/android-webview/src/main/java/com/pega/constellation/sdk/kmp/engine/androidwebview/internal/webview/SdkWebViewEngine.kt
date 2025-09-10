@@ -26,11 +26,13 @@ import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.Sdk
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.UpdateComponent
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.interceptor.WebViewAssetInterceptor
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.interceptor.WebViewNetworkInterceptor
+import okhttp3.OkHttpClient
 import org.json.JSONObject
 
 internal class SdkWebViewEngine(
     private val context: Context,
     private val config: ConstellationSdkConfig,
+    okHttpClient: OkHttpClient,
     private val handler: EngineEventHandler
 ) : ConstellationSdkEngine {
     init {
@@ -38,7 +40,7 @@ internal class SdkWebViewEngine(
     }
 
     private val componentManager = config.componentManager
-    private val networkInterceptor = WebViewNetworkInterceptor()
+    private val networkInterceptor = WebViewNetworkInterceptor(okHttpClient)
     private val assetInterceptor = WebViewAssetInterceptor(context, config)
     private val interceptors = listOf(assetInterceptor, networkInterceptor)
 

@@ -12,24 +12,12 @@ import okhttp3.Response
 import java.io.ByteArrayInputStream
 import java.util.concurrent.atomic.AtomicReference
 
-private val AUTH_HEADER = """
-Bearer YOUR_TOKEN_HERE
-""".trimIndent()
-
-internal class WebViewNetworkInterceptor() : WebViewInterceptor {
+internal class WebViewNetworkInterceptor(private val okHttpClient: OkHttpClient) : WebViewInterceptor {
     private var requestBody = AtomicReference<String?>(null)
-    private val httpClient = OkHttpClient().newBuilder()
-        .addInterceptor { chain ->
-            chain.request().newBuilder()
-                .addHeader("Authorization", AUTH_HEADER)
-                .build()
-                .let { chain.proceed(it) }
-        }
-        .build()
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
         runCatching {
-            httpClient.execute(request).toWebResourceResponse()
+            okHttpClient.execute(request).toWebResourceResponse()
         }.getOrElse {
             val message = it.message.orEmpty()
             Log.e(TAG, "Network error: $message", it)
