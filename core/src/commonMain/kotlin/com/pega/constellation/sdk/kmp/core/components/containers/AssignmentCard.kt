@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.json.JsonObject
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
@@ -25,6 +24,7 @@ import com.pega.constellation.sdk.kmp.core.components.optBoolean
 import com.pega.constellation.sdk.kmp.core.components.widgets.ActionButtonsComponent
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Companion.getComponentTyped
 import com.pega.constellation.sdk.kmp.ui.components.cmp.containers.Column
+import kotlinx.serialization.json.JsonObject
 
 class AssignmentCardComponent(context: ComponentContext) : ContainerComponent(context) {
     var actionButtons: ActionButtonsComponent? by mutableStateOf(null)

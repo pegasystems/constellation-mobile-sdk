@@ -32,7 +32,10 @@ interface ConstellationSdk {
          * @param config Constellation SDK configuration
          */
         @MainThread
-        fun create(config: ConstellationSdkConfig, engine: ConstellationSdkEngineBuilder): ConstellationSdk =
+        fun create(
+            config: ConstellationSdkConfig,
+            engine: ConstellationSdkEngineBuilder
+        ): ConstellationSdk =
             ConstellationSdkImpl(config, engine)
     }
 

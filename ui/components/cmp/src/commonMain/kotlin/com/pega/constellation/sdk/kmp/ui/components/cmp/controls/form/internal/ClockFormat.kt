@@ -13,7 +13,7 @@ enum class ClockFormat {
                 "12" -> H_12
                 "24" -> H_24
                 else -> {
-                    Log.w(TAG, "Unrecognized clock format: $this, fallback to 'FROM_LOCALE'")
+//                    Log.w(TAG, "Unrecognized clock format: $this, fallback to 'FROM_LOCALE'")
                     FROM_LOCALE
                 }
             }

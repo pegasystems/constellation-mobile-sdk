@@ -14,7 +14,7 @@ internal class ConstellationSdkImpl(
     config: ConstellationSdkConfig,
     engineBuilder: ConstellationSdkEngineBuilder
 ) : ConstellationSdk {
-    private val engine = engineBuilder.buildConstellationSdkEngine(config, ::onEngineEvent)
+    private val engine = engineBuilder.build(config, ::onEngineEvent)
     private val componentManager = config.componentManager
 
     private val _state = MutableStateFlow<State>(State.Initial)

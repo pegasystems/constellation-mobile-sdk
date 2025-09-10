@@ -20,8 +20,13 @@ data class ComponentEvent(
         JsonObject(
             mapOf(
                 "type" to JsonPrimitive(type),
-                "componentData" to JsonObject(componentData.map { (key, value) -> key to JsonPrimitive(value) }.toMap()),
-                "eventData" to JsonObject(eventData.map { (key, value) -> key to JsonPrimitive(value) }.toMap())
+                "componentData" to JsonObject(componentData.map { (key, value) ->
+                    key to JsonPrimitive(
+                        value
+                    )
+                }.toMap()),
+                "eventData" to JsonObject(eventData.map { (key, value) -> key to JsonPrimitive(value) }
+                    .toMap())
             )
         ).toString()
 

@@ -18,9 +18,6 @@ sealed class EngineEvent {
 }
 
 interface ConstellationSdkEngineBuilder {
-    fun buildConstellationSdkEngine(
-        config: ConstellationSdkConfig,
-        handler: EngineEventHandler
-    ): ConstellationSdkEngine
+    fun build(config: ConstellationSdkConfig, handler: EngineEventHandler): ConstellationSdkEngine
 }
 

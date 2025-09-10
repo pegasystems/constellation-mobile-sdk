@@ -1,6 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.components
 
-import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
+import com.pega.constellation.sdk.kmp.core.Log
 
 
 enum class DisplayMode {

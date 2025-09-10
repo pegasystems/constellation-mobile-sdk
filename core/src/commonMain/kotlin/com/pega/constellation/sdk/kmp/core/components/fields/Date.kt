@@ -1,10 +1,10 @@
 package com.pega.constellation.sdk.kmp.core.components.fields
 
 import androidx.compose.runtime.Composable
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Date
-import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
 import kotlinx.datetime.LocalDate
 
 class DateComponent(context: ComponentContext) : FieldComponent(context)

@@ -3,11 +3,11 @@ package com.pega.constellation.sdk.kmp.core.components.core
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Unsupported
 import com.pega.constellation.sdk.kmp.core.components.Components
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_RENDERER
-import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
 
 private const val TAG = "ComponentRenderer"
 private val LocalRenderers = compositionLocalOf { Components.DefaultRenderers }

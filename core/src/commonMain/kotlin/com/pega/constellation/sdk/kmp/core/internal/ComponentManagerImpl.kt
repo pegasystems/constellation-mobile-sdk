@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.internal
 
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.Components.DefaultDefinitions
 import com.pega.constellation.sdk.kmp.core.components.core.AlertComponent
 import com.pega.constellation.sdk.kmp.core.components.core.Component
@@ -9,7 +10,6 @@ import com.pega.constellation.sdk.kmp.core.components.core.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentManager
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
-import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
 import kotlinx.serialization.json.JsonObject
 
 internal class ComponentManagerImpl(

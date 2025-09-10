@@ -1,9 +1,9 @@
 package com.pega.constellation.sdk.kmp.core.components.helpers
 
 import androidx.compose.runtime.Composable
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.DisplayMode
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.FieldValue
-import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
 
 @Composable
 fun WithDisplayMode(

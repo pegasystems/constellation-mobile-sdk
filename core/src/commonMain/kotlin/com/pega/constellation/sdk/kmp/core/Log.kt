@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.ui.components.cmp.stub
+package com.pega.constellation.sdk.kmp.core
 
 object Log {
     fun i(tag: String, message: String) {

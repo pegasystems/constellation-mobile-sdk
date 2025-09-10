@@ -90,7 +90,7 @@ class PegaViewModel(
 
         class ConstellationSdkEngineBuilderImpl(private val context: Context, private val okHttpClient: OkHttpClient) :
             ConstellationSdkEngineBuilder {
-            override fun buildConstellationSdkEngine(
+            override fun build(
                 config: ConstellationSdkConfig,
                 handler: EngineEventHandler
             ): ConstellationSdkEngine {

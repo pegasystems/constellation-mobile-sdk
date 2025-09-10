@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes
 import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
@@ -19,7 +20,6 @@ import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedCompone
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_JAVASCRIPT_IMPLEMENTATION
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.UNKNOWN_CAUSE
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Unsupported
-import com.pega.constellation.sdk.kmp.ui.components.cmp.stub.Log
 import kotlinx.serialization.json.JsonObject
 
 class UnsupportedComponent(

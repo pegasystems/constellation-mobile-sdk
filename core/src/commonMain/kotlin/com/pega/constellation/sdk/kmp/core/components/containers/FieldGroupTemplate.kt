@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import kotlinx.serialization.json.JsonObject
 import com.pega.constellation.sdk.kmp.core.components.core.BaseComponent
 import com.pega.constellation.sdk.kmp.core.components.core.Component
 import com.pega.constellation.sdk.kmp.core.components.core.ComponentContext
@@ -21,6 +20,7 @@ import com.pega.constellation.sdk.kmp.core.components.getInt
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
 import com.pega.constellation.sdk.kmp.core.components.getString
+import kotlinx.serialization.json.JsonObject
 
 class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(context) {
     var items by mutableStateOf(emptyList<Item>())
