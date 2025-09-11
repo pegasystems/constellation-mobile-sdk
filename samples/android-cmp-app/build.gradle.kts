@@ -1,6 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
-import org.gradle.kotlin.dsl.project
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -18,23 +15,14 @@ kotlin {
         }
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
-
-//    jvm()
-
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(project(":samples:base-cmp-app"))
+            implementation(project(":core"))
             implementation(project(":engine:android-webview"))
+            implementation(project(":ui:renderer:cmp"))
             implementation(libs.okhttp)
         }
         commonMain.dependencies {
@@ -46,16 +34,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(project(":core"))
-            implementation(project(":ui:renderer:cmp"))
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
-//        jvmMain.dependencies {
-//            implementation(compose.desktop.currentOs)
-//            implementation(libs.kotlinx.coroutinesSwing)
-//        }
     }
 }
 
@@ -88,16 +67,4 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-}
-
-compose.desktop {
-    application {
-        mainClass = "com.pega.constellation.sdk.kmp.samples.androidcmpapp.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.pega.constellation.sdk.kmp.samples.androidcmpapp"
-            packageVersion = "1.0.0"
-        }
-    }
 }

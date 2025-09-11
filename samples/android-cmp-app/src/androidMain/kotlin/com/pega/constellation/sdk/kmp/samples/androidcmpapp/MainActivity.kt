@@ -6,11 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
-import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.engine.androidwebview.buildAndroidConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.engine.androidwebview.defaultHttpClient
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.App
 import okhttp3.OkHttpClient
 
 class MainActivity : ComponentActivity() {
@@ -31,12 +31,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-class ConstellationSdkEngineBuilderImpl(private val context: Context, private val okHttpClient: OkHttpClient) :
-    ConstellationSdkEngineBuilder {
+class ConstellationSdkEngineBuilderImpl(
+    private val context: Context,
+    private val okHttpClient: OkHttpClient
+) : ConstellationSdkEngineBuilder {
     override fun build(
         config: ConstellationSdkConfig,
         handler: EngineEventHandler
-    ): ConstellationSdkEngine {
-        return buildAndroidConstellationSdkEngine(context, config, handler, okHttpClient)
-    }
+    ) = buildAndroidConstellationSdkEngine(context, config, handler, okHttpClient)
 }
