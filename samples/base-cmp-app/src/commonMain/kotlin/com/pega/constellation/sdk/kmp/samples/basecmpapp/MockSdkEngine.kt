@@ -1,7 +1,8 @@
-package com.pega.constellation.sdk.kmp.samples.desktopcmpapp
+package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
@@ -14,8 +15,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 
-
-class DesktopSdkEngine(
+class MockSdkEngine(
     private val config: ConstellationSdkConfig,
     private val handler: EngineEventHandler
 ) : ConstellationSdkEngine {
@@ -63,4 +63,8 @@ class DesktopSdkEngine(
         }
     }
 
+    class MockSdkEngineBuilder() : ConstellationSdkEngineBuilder {
+        override fun build(config: ConstellationSdkConfig, handler: EngineEventHandler) =
+            MockSdkEngine(config, handler)
+    }
 }
