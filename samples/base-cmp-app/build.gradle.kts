@@ -17,6 +17,9 @@ kotlin {
         namespace = "com.pega.constellation.sdk.kmp.samples.basecmpapp"
         compileSdk = 36
         minSdk = 26
+
+        // https://youtrack.jetbrains.com/projects/CMP/issues/CMP-8363/Missing-resource-used-in-shared-module
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
     }
 
     // For iOS targets, this is also where you should
@@ -63,7 +66,9 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(project(":core"))
+                implementation(project(":ui:components:cmp"))
                 implementation(project(":ui:renderer:cmp"))
             }
         }

@@ -35,8 +35,7 @@ interface ConstellationSdk {
         fun create(
             config: ConstellationSdkConfig,
             engine: ConstellationSdkEngineBuilder
-        ): ConstellationSdk =
-            ConstellationSdkImpl(config, engine)
+        ): ConstellationSdk = ConstellationSdkImpl(config, engine)
     }
 
     /**
