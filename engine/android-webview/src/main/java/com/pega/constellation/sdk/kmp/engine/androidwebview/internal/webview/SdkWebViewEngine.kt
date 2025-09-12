@@ -15,6 +15,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
+import com.pega.constellation.sdk.kmp.engine.androidwebview.defaultHttpClient
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.AddComponent
 import com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.SdkBridge.BridgeEvent.OnCancelled
@@ -32,15 +33,16 @@ import org.json.JSONObject
 internal class SdkWebViewEngine(
     private val context: Context,
     private val config: ConstellationSdkConfig,
+    private val handler: EngineEventHandler,
     okHttpClient: OkHttpClient,
-    private val handler: EngineEventHandler
+    nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
 ) : ConstellationSdkEngine {
     init {
         setWebContentsDebuggingEnabled(config.debuggable)
     }
 
     private val componentManager = config.componentManager
-    private val networkInterceptor = WebViewNetworkInterceptor(config.pegaUrl, okHttpClient)
+    private val networkInterceptor = WebViewNetworkInterceptor(config.pegaUrl, okHttpClient, nonDxOkHttpClient)
     private val assetInterceptor = WebViewAssetInterceptor(context, config)
     private val interceptors = listOf(assetInterceptor, networkInterceptor)
 

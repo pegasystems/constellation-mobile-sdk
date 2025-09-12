@@ -15,10 +15,10 @@ import java.util.concurrent.atomic.AtomicReference
 
 internal class WebViewNetworkInterceptor(
     private val pegaUrl: String,
-    private val okHttpClient: OkHttpClient
+    private val okHttpClient: OkHttpClient,
+    private val nonDxOkHttpClient: OkHttpClient
 ) : WebViewInterceptor {
     private var requestBody = AtomicReference<String?>(null)
-    private val nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
         runCatching {
