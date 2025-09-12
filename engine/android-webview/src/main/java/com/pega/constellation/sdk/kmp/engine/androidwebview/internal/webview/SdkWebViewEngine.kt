@@ -40,7 +40,7 @@ internal class SdkWebViewEngine(
     }
 
     private val componentManager = config.componentManager
-    private val networkInterceptor = WebViewNetworkInterceptor(okHttpClient)
+    private val networkInterceptor = WebViewNetworkInterceptor(config.pegaUrl, okHttpClient)
     private val assetInterceptor = WebViewAssetInterceptor(context, config)
     private val interceptors = listOf(assetInterceptor, networkInterceptor)
 
