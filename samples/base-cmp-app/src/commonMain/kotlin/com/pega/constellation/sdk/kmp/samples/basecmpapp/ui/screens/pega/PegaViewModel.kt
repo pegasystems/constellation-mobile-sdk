@@ -10,14 +10,15 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.SDKConfig
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.SDKInitializer
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomComponents.CustomDefinitions
 import kotlinx.coroutines.flow.StateFlow
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State as SdkState
 
 class PegaViewModel(
+    private val authManager: AuthManager,
     private val sdk: ConstellationSdk,
     private val caseClassName: String,
 ) : ViewModel() {
@@ -27,8 +28,7 @@ class PegaViewModel(
 
     fun createCase(onFailure: (String) -> Unit) {
         dismissed = false
-        AuthManager.authenticate(
-            scope = viewModelScope,
+        authManager.authenticate(
             onSuccess = { sdk.createCase(caseClassName) },
             onFailure = onFailure
         )
@@ -37,11 +37,11 @@ class PegaViewModel(
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val sdk = ConstellationSdk.create(
-                    config = buildConfig(),
-                    engine = checkNotNull(SDKInitializer.engineBuilder) { "EngineBuilder is not initialized" }
+                PegaViewModel(
+                    authManager = Injector.authManager,
+                    sdk = ConstellationSdk.create(buildConfig(), Injector.engineBuilder),
+                    caseClassName = SDKConfig.PEGA_CASE_CLASS_NAME
                 )
-                PegaViewModel(sdk, SDKConfig.PEGA_CASE_CLASS_NAME)
             }
         }
 

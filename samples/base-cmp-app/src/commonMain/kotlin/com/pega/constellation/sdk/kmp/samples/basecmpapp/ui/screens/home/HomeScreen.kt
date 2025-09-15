@@ -24,7 +24,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Companion.Factory),
+    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
     pegaViewModel: PegaViewModel = viewModel(factory = PegaViewModel.Factory),
 ) {
     val news by homeViewModel.news.collectAsState()

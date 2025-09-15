@@ -24,16 +24,8 @@ kotlin {
             implementation(project(":engine:android-webview"))
             implementation(project(":ui:renderer:cmp"))
             implementation(libs.okhttp)
-        }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.oidc.appsupport)
+            implementation(libs.oidc.tokenstore)
         }
     }
 }
@@ -48,6 +40,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        manifestPlaceholders["oidcRedirectScheme"] = "com.pega.mobile.constellation.sample"
     }
     packaging {
         resources {

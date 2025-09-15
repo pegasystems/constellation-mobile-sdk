@@ -5,8 +5,8 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
 import com.pega.constellation.sdk.kmp.core.EngineEvent
-import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -25,7 +25,6 @@ internal class ConstellationSdkImpl(
     }
 
     private fun onEngineEvent(event: EngineEvent) {
-        println("SDK onEngineEvent: $event")
         _state.value = when (event) {
             is EngineEvent.Loading -> State.Loading
             is EngineEvent.Ready -> State.Ready(findRootComponent())

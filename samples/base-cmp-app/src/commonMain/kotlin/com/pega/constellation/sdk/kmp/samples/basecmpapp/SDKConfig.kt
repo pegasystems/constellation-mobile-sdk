@@ -33,7 +33,7 @@ object SDKConfig {
      * The redirect URI for authentication.
      *
      * This URI should match the one configured in OAuth 2.0 Client Registration rule and
-     * *appAuthRedirectScheme* placeholder used in the app's manifest file.
+     * *oidcRedirectScheme* placeholder used in the Android's manifest file.
      */
     const val AUTH_REDIRECT_URI = "com.pega.mobile.constellation.sample://redirect"
 }

@@ -22,6 +22,7 @@ kotlin {
                 implementation(project(":core"))
                 implementation(compose.desktop.currentOs)
                 implementation(libs.kotlinx.coroutinesSwing)
+                implementation(libs.oidc.appsupport)
             }
         }
     }

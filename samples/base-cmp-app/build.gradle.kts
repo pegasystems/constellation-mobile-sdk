@@ -56,6 +56,8 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.oidc.appsupport)
+                implementation(libs.oidc.tokenstore)
                 implementation(project(":core"))
                 implementation(project(":ui:components:cmp"))
                 implementation(project(":ui:renderer:cmp"))

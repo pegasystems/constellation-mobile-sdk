@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.News
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.NewsRepository
@@ -21,7 +22,7 @@ class HomeViewModel(authManager: AuthManager, repository: NewsRepository) : View
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                HomeViewModel(AuthManager, NewsRepository())
+                HomeViewModel(Injector.authManager, NewsRepository())
             }
         }
     }
