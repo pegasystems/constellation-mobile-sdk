@@ -20,7 +20,7 @@ class FlowContainerComponent(context: ComponentContext) : BaseComponent(context)
     var alertBanners: List<AlertBannerComponent> by mutableStateOf(emptyList())
         private set
 
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         val manager = context.componentManager
         val assignmentId = ComponentId(props.getString("assignment").toInt())
         val banners = props.getJSONArray("alertBanners")

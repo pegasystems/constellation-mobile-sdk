@@ -15,8 +15,8 @@ class ViewComponent(context: ComponentContext) : ContainerComponent(context) {
     var showLabel: Boolean by mutableStateOf(false)
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         visible = props.getString("visible").toBoolean()
         label = props.getString("label")
         showLabel = props.getString("showLabel").toBoolean()

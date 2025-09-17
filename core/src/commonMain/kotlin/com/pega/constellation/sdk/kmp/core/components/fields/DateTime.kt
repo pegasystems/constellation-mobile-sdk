@@ -14,8 +14,8 @@ class DateTimeComponent(context: ComponentContext) : FieldComponent(context) {
     var timeZoneMinutesOffset: Int by mutableStateOf(0)
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         clockFormat = props.getString("clockFormat")
         // app works with time zone set on server
         // minutes offset between UTC and time zone. For west is minus, for east is plus.

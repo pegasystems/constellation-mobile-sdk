@@ -15,8 +15,8 @@ class DecimalComponent(context: ComponentContext) : FieldComponent(context) {
     var showGroupSeparators: Boolean by mutableStateOf(false)
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         decimalPrecision = props.getInt("decimalPrecision")
         showGroupSeparators = props.getBoolean("showGroupSeparators")
     }

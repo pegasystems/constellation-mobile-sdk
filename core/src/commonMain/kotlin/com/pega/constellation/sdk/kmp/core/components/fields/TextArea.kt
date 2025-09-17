@@ -11,8 +11,8 @@ class TextAreaComponent(context: ComponentContext) : FieldComponent(context) {
     var maxLength: Int by mutableIntStateOf(0)
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         maxLength = props.optString("maxLength").ifEmpty { "100" }.toInt()
     }
 }

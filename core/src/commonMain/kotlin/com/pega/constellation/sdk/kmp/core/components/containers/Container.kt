@@ -17,7 +17,7 @@ abstract class ContainerComponent(context: ComponentContext) : BaseComponent(con
         private set
 
     @CallSuper
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         children = getChildren(props)
     }
 

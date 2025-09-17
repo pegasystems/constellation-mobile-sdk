@@ -27,7 +27,7 @@ class UnsupportedComponent(
     var visible by mutableStateOf(false)
         private set
 
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         type = ComponentType(props.getString("type"))
         cause = MISSING_JAVASCRIPT_IMPLEMENTATION
         visible = props.getBoolean("visible")

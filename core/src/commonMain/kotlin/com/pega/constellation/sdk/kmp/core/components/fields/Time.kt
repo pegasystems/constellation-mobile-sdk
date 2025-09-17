@@ -11,8 +11,8 @@ class TimeComponent(context: ComponentContext) : FieldComponent(context) {
     var clockFormat: String by mutableStateOf("")
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         clockFormat = props.getString("clockFormat")
     }
 }

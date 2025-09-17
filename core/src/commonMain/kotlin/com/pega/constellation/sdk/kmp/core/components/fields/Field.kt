@@ -38,7 +38,7 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
         private set
 
     @CallSuper
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         with(props) {
             value = getString("value")
             label = getString("label")

@@ -11,8 +11,8 @@ class PhoneComponent(context: ComponentContext) : FieldComponent(context) {
     var showCountryCode: Boolean by mutableStateOf(true)
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         showCountryCode = props.getBoolean("showCountryCode")
     }
 }

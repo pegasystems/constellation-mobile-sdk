@@ -17,7 +17,7 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
     var items by mutableStateOf(emptyList<Item>())
         private set
 
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         items = props.getJSONArray("items")
             .mapWithIndex { getJsonObject(it) }
             .mapNotNull { itemJson ->

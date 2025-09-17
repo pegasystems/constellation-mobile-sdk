@@ -18,7 +18,7 @@ class ActionButtonsComponent(context: ComponentContext) : BaseComponent(context)
     var secondaryButtons: List<ActionButton> by mutableStateOf(emptyList())
         private set
 
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         primaryButtons = props.getJSONArray(MAIN_BUTTONS).toActionButtons()
         secondaryButtons = props.getJSONArray(SECONDARY_BUTTONS).toActionButtons()
     }

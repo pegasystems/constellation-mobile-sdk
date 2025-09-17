@@ -16,7 +16,7 @@ class SimpleTableComponent(context: ComponentContext) : BaseComponent(context) {
     var child: Component? by mutableStateOf(null)
         private set
 
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         val childId = props.getString("child").toInt()
         child = context.componentManager.getComponent(ComponentId(childId))
     }

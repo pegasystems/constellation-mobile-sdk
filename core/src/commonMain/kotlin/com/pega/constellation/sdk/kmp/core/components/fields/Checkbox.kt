@@ -11,8 +11,8 @@ class CheckboxComponent(context: ComponentContext) : FieldComponent(context) {
     var caption: String by mutableStateOf("")
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         caption = props.optString("caption")
     }
 }

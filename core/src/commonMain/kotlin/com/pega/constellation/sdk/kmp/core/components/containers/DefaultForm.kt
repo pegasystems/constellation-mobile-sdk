@@ -11,8 +11,8 @@ class DefaultFormComponent(context: ComponentContext) : ContainerComponent(conte
     var instructions: String by mutableStateOf("")
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         instructions = props.getString("instructions")
     }
 }

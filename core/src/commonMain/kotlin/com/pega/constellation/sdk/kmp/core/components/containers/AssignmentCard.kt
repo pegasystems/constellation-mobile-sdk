@@ -17,8 +17,8 @@ class AssignmentCardComponent(context: ComponentContext) : ContainerComponent(co
     var loading by mutableStateOf(true)
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         val actionButtonsId = ComponentId(props.getString("actionButtons").toInt())
         actionButtons = context.componentManager.getComponentTyped(actionButtonsId)
         loading = props.optBoolean("loading", false)

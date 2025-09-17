@@ -13,8 +13,8 @@ abstract class SelectableComponent(context: ComponentContext) : FieldComponent(c
     var options: List<SelectableOption> by mutableStateOf(emptyList())
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         options = props.getJSONArray("options").mapWithIndex { index ->
             getJsonObject(index).let {
                 SelectableOption(it.getString("key"), it.getString("label"))

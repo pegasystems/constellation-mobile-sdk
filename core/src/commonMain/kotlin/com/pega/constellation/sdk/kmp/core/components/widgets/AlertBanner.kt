@@ -16,7 +16,7 @@ class AlertBannerComponent(context: ComponentContext) : BaseComponent(context) {
     var messages: List<String> by mutableStateOf(emptyList())
         private set
 
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         variant = AlertBannerVariant.valueOf(props.getString("variant").uppercase())
         messages = props.getJSONArray("messages").mapWithIndex { getString(it) }
     }

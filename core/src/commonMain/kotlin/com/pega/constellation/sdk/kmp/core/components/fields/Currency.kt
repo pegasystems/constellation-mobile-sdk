@@ -18,8 +18,8 @@ class CurrencyComponent(context: ComponentContext) : FieldComponent(context) {
     var decimalPrecision: Int by mutableIntStateOf(2)
         private set
 
-    override fun onUpdate(props: JsonObject) {
-        super.onUpdate(props)
+    override fun applyProps(props: JsonObject) {
+        super.applyProps(props)
         isoCode = props.getString("currencyISOCode")
         showIsoCode = props.getBoolean("showISOCode")
         decimalPrecision = props.getInt("decimalPrecision")

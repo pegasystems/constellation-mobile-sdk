@@ -18,7 +18,7 @@ class RootContainerComponent(context: ComponentContext) : BaseComponent(context)
     var httpMessages: List<String> by mutableStateOf(emptyList())
         private set
 
-    override fun onUpdate(props: JsonObject) {
+    override fun applyProps(props: JsonObject) {
         val viewContainerId = ComponentId(props.getString("viewContainer").toInt())
         val httpMessagesArray = props.getJSONArray("httpMessages")
         viewContainer = context.componentManager.getComponentTyped(viewContainerId)
