@@ -1,6 +1,7 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.ios
 
 import androidx.compose.ui.window.ComposeUIViewController
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MockSdkEngine.MockSdkEngineBuilder
@@ -14,13 +15,14 @@ import platform.UIKit.UIViewController
 
 // Entry point for the iOS application
 @Suppress("unused")
-fun MediaCoViewController(): UIViewController {
-    Injector.init(createAuthManager(), MockSdkEngineBuilder())
+fun MediaCoViewController(authManager: AuthManager, engineBuilder: ConstellationSdkEngineBuilder): UIViewController {
+    Injector.init(authManager, engineBuilder)
     return ComposeUIViewController { MediaCoApp() }
 }
 
+@Suppress("unused")
 @OptIn(ExperimentalOpenIdConnect::class)
-private fun createAuthManager() =
+fun createAuthManager() =
     AuthManager(
         scope = CoroutineScope(Dispatchers.Main),
         authFlowFactory = IosCodeAuthFlowFactory(),

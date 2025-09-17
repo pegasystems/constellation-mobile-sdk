@@ -4,7 +4,13 @@ import BaseCmpApp
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        MediaCoViewControllerKt.MediaCoViewController()
+        let authManager = MediaCoViewControllerKt.createAuthManager()
+        let provider = AuthenticatedResourceProvider(authManager: authManager)
+        let engineBuilder = BuilderWrapper(customResourceProvider: provider)
+        return MediaCoViewControllerKt.MediaCoViewController(
+            authManager: authManager,
+            engineBuilder: engineBuilder
+        )
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
@@ -16,6 +22,3 @@ struct ContentView: View {
             .ignoresSafeArea()
     }
 }
-
-
-

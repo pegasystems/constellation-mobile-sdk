@@ -4,7 +4,6 @@ import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl
 import kotlinx.serialization.json.JsonObject
 
-
 /**
  * Manages components within the system, providing methods to retrieve, add, update, and remove components.
  */
