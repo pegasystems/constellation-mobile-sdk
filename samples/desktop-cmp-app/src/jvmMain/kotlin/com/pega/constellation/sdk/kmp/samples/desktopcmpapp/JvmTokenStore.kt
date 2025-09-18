@@ -8,7 +8,7 @@ import org.publicvalue.multiplatform.oidc.tokenstore.SettingsTokenStore
 class JvmTokenStore : SettingsTokenStore(settings = JvmSettingsStore()) {
     // simple in-memory settings store for JVM
     class JvmSettingsStore : SettingsStore {
-        private val settings = mutableMapOf<String, String>()
+        private val settings = mutableMapOf("ACCESSTOKEN" to "FAKE")
 
         override suspend fun get(key: String): String? {
             return settings[key]

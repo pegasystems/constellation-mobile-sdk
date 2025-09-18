@@ -7,6 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import constellation_mobile_sdk.ui.components.cmp.generated.resources.Res
+import constellation_mobile_sdk.ui.components.cmp.generated.resources.dismiss
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -17,7 +20,7 @@ fun Snackbar(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     SnackbarHost(hostState = snackbarHostState, modifier = modifier)
-    val dismiss = "Dismiss" // TODO
+    val dismiss = stringResource(Res.string.dismiss)
     LaunchedEffect(messages) {
         messages.forEach {
             snackbarHostState.showSnackbar(

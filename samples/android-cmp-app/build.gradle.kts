@@ -23,6 +23,7 @@ kotlin {
             implementation(project(":core"))
             implementation(project(":engine:android-webview"))
             implementation(project(":ui:renderer:cmp"))
+            implementation(project(":ui:components:cmp"))
             implementation(libs.okhttp)
             implementation(libs.oidc.appsupport)
             implementation(libs.oidc.tokenstore)

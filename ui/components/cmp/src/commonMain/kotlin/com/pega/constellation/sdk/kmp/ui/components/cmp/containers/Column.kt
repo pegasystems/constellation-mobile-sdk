@@ -15,28 +15,23 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun Column(
     modifier: Modifier = Modifier,
-    itemsContent: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        itemsContent()
-    }
+        verticalArrangement = Arrangement.Top,
+        content = content
+    )
 }
 
 @Preview
 @Composable
 fun ColumnPreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        itemsContent = {
-            Button(title = "Cancel")
-            Button(title = "Fill from with AI")
-            Button(title = "Save for later")
-        })
+    Column(Modifier.fillMaxSize().padding(16.dp)) {
+        Button(title = "Cancel")
+        Button(title = "Fill from with AI")
+        Button(title = "Save for later")
+    }
 }
 

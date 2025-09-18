@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
 import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
@@ -24,6 +25,7 @@ class MediaCoActivity : ComponentActivity() {
         val authManager = createAuthManager(authFlowFactory)
 
         Injector.init(authManager, AndroidEngineBuilder(this, authManager))
+        AppContext.init(this)
 
         setContent {
             MediaCoApp()

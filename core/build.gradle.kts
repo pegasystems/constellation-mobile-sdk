@@ -55,7 +55,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
-                // Add KMP dependencies here
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)

@@ -9,10 +9,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.DecimalFormat
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.Input
 
-// TODO
 @Composable
 fun Decimal(
     value: String,
@@ -30,20 +30,20 @@ fun Decimal(
     onValueChange: (String) -> Unit = {},
     onFocusChange: (Boolean) -> Unit = {},
 ) {
-//    val precisionFormat = rememberPrecisionFormat(decimalPrecision)
-//    val precisionGroupFormat = rememberPrecisionGroupFormat(decimalPrecision, showGroupSeparators)
+    val precisionFormat = rememberPrecisionFormat(decimalPrecision)
+    val precisionGroupFormat = rememberPrecisionGroupFormat(decimalPrecision, showGroupSeparators)
 
     // displays group separators only when unfocused to avoid jumping cursor
-//    fun getDisplayValue(value: String, focused: Boolean) = when {
-//        !focused && showGroupSeparators -> precisionGroupFormat
-//        else -> precisionFormat
-//    }.formatOrDefault(value, "")
+    fun getDisplayValue(value: String, focused: Boolean) = when {
+        !focused && showGroupSeparators -> precisionGroupFormat
+        else -> precisionFormat
+    }.formatOrDefault(value, "")
 
-//    var focused by remember { mutableStateOf(false) }
-//    var displayValue by remember(value) { mutableStateOf(getDisplayValue(value, focused)) }
+    var focused by remember { mutableStateOf(false) }
+    var displayValue by remember(value) { mutableStateOf(getDisplayValue(value, focused)) }
 
     Input(
-        value = value,
+        value = displayValue,
         label = label,
         modifier = modifier,
         helperText = helperText,
@@ -64,43 +64,43 @@ fun Decimal(
                     // limit to max value
                     newValue.toDoubleOrNull()?.compareTo(MAX_VALUE) == 1 -> value
                     // use only precision format when editing
-                    else -> ""
+                    else -> precisionFormat.formatOrDefault(newValue, value)
                 }
             )
         },
         onFocusChange = {
-//            focused = it
-//            displayValue = getDisplayValue(value, it)
+            focused = it
+            displayValue = getDisplayValue(value, it)
             onFocusChange(it)
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
     )
 }
 
-//@Composable
-//private fun rememberPrecisionFormat(decimalPrecision: Int) = remember(decimalPrecision) {
-//    createDecimalFormat {
-//        if (decimalPrecision > 0) append(".").append("0".repeat(decimalPrecision))
-//    }
-//}
-//
-//@Composable
-//private fun rememberPrecisionGroupFormat(decimalPrecision: Int, showGroupSeparators: Boolean) =
-//    remember(decimalPrecision, showGroupSeparators) {
-//        createDecimalFormat {
-//            if (showGroupSeparators) append("#,##0") else append("0")
-//            if (decimalPrecision > 0) append(".").append("0".repeat(decimalPrecision))
-//        }
-//    }
+@Composable
+private fun rememberPrecisionFormat(decimalPrecision: Int) = remember(decimalPrecision) {
+    createDecimalFormat {
+        if (decimalPrecision > 0) append(".").append("0".repeat(decimalPrecision))
+    }
+}
+
+@Composable
+private fun rememberPrecisionGroupFormat(decimalPrecision: Int, showGroupSeparators: Boolean) =
+    remember(decimalPrecision, showGroupSeparators) {
+        createDecimalFormat {
+            if (showGroupSeparators) append("#,##0") else append("0")
+            if (decimalPrecision > 0) append(".").append("0".repeat(decimalPrecision))
+        }
+    }
 
 // do not use big numbers as Pega does not support them
 private const val MAX_VALUE = 1E8
 
-//private fun createDecimalFormat(builder: StringBuilder.() -> Unit) =
-//    DecimalFormat(buildString(builder))
+private fun createDecimalFormat(builder: StringBuilder.() -> Unit) =
+    DecimalFormat(buildString(builder))
 
-//private fun DecimalFormat.formatOrDefault(value: String, default: String) =
-//    runCatching { format(value.toDouble()) }.getOrDefault(default)
+private fun DecimalFormat.formatOrDefault(value: String, default: String) =
+    runCatching { format(value.toDouble()) }.getOrDefault(default)
 
 @Preview
 @Composable

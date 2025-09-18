@@ -15,6 +15,9 @@ kotlin {
         namespace = "com.pega.constellation.sdk.kmp.ui.components.cmp"
         compileSdk = 36
         minSdk = 26
+
+        // https://youtrack.jetbrains.com/projects/CMP/issues/CMP-8363/Missing-resource-used-in-shared-module
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
     }
 
     // For iOS targets, this is also where you should

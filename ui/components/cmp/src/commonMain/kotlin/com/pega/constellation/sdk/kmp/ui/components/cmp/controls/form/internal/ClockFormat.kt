@@ -1,22 +1,20 @@
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal
 
-
 enum class ClockFormat {
     H_12, H_24, FROM_LOCALE;
 
     companion object {
-        private const val TAG = "ClockFormat"
-        fun String.toClockFormat() =
-            when (this) {
+        fun from(value: String) =
+            when (value) {
                 "" -> FROM_LOCALE
                 "12" -> H_12
                 "24" -> H_24
                 else -> {
-//                    Log.w(TAG, "Unrecognized clock format: $this, fallback to 'FROM_LOCALE'")
+                    println("Unrecognized clock format: $value, fallback to 'FROM_LOCALE'")
                     FROM_LOCALE
                 }
             }
 
-        fun ClockFormat.is24Hour() = this == H_24 // TODO
+        fun ClockFormat.is24Hour() = this == H_24 || (this == FROM_LOCALE && is24HourLocale())
     }
 }

@@ -2,22 +2,27 @@ package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 
 import androidx.compose.runtime.Composable
 import com.pega.constellation.sdk.kmp.core.Log
-import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DateTime
 import com.pega.constellation.sdk.kmp.core.components.fields.DateTimeComponent
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.DateTime
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat.Companion.toClockFormat
-import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.format.byUnicodePattern
+import kotlin.time.ExperimentalTime
 
+@OptIn(FormatStringsInDatetimeFormats::class, ExperimentalTime::class)
 class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
-//    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private val formatter = LocalDateTime.Format {
+        byUnicodePattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    }
 
     @Composable
     override fun DateTimeComponent.Render() {
         WithFieldHelpers {
             DateTime(
-                value = value.asLocalDateTimeOrNull(),
+                value = value.asLocalDateTimeOrNull()?.plusOffset(),
                 label = label,
                 helperText = helperText,
                 validateMessage = validateMessage,
@@ -25,9 +30,9 @@ class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
                 required = required,
                 disabled = disabled,
                 readOnly = readOnly,
-                clockFormat = clockFormat.toClockFormat(),
+                clockFormat = ClockFormat.from(clockFormat),
                 onValueChange = {
-//                    updateValue(formatter.format(it.minusMinutes(timeZoneMinutesOffset.toLong())))
+                    updateValue(it?.let { formatter.format(it.minusOffset()) }.orEmpty())
                 },
                 onFocusChange = { updateFocus(it) }
             )

@@ -1,19 +1,25 @@
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat.Companion.is24Hour
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.Input
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.TimePickerModal
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.parse
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.utils.interceptInteractionSource
+import constellation_mobile_sdk.ui.components.cmp.generated.resources.Res
+import constellation_mobile_sdk.ui.components.cmp.generated.resources.icon_calendar_range
 import kotlinx.datetime.LocalTime
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -32,6 +38,7 @@ fun Time(
     onValueChange: (LocalTime) -> Unit = {},
     onFocusChange: (Boolean) -> Unit = {}
 ) {
+    val focusManager = LocalFocusManager.current
     var showDialog by remember { mutableStateOf(false) }
     val is24Hour = clockFormat.is24Hour()
 
@@ -40,12 +47,15 @@ fun Time(
             value = value,
             is24Hour = is24Hour,
             onTimeSelected = { onValueChange(it) },
-            onDismiss = { showDialog = false }
+            onDismiss = {
+                focusManager.clearFocus()
+                showDialog = false
+            }
         )
     }
 
     Input(
-        value = value?.toString().orEmpty(),
+        value = value?.parse(is24Hour).orEmpty(),
         label = label,
         modifier = modifier,
         helperText = helperText,
@@ -57,18 +67,11 @@ fun Time(
         readOnly = readOnly,
         onValueChange = {},
         onFocusChange = onFocusChange,
-        trailingIcon = {
-            // TODO
-//            Icon(painterResource(R.drawable.time_icon), "Select date", Modifier.size(24.dp))
-        },
+        trailingIcon = { Icon(painterResource(Res.drawable.icon_calendar_range), "Select date") },
         interactionSource = interceptInteractionSource(disabled, readOnly) { showDialog = true }
     )
 }
 
-//private fun LocalTime.parseTimeValue(is24Hour: Boolean): String {
-//    val pattern = if (is24Hour) "HH:mm" else "hh:mm a"
-//    return DateTimeFormatter.ofPattern(pattern).format(LocalTime.of(hour, minute))
-//}
 
 @Preview
 @Composable

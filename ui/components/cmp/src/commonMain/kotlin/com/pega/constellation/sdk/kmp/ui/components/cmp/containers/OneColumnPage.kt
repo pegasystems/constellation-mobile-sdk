@@ -11,22 +11,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Switch
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.TextInput
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun OneColumnPage(
     modifier: Modifier = Modifier,
-    itemsContent: LazyListScope.() -> Unit
+    content: LazyListScope.() -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        itemsContent()
-    }
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        content = content
+    )
 }
 
 @Preview
@@ -39,7 +38,7 @@ fun OneColumnPagePreview() {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        itemsContent = {
+        content = {
             item {
                 TextInput(
                     value = textValue,
@@ -70,5 +69,6 @@ fun OneColumnPagePreview() {
                     onValueChange = { switchValue = it }
                 )
             }
-        })
+        }
+    )
 }

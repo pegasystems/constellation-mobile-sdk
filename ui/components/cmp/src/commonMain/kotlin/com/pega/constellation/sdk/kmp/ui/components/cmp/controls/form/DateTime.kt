@@ -1,20 +1,27 @@
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat.Companion.is24Hour
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.DatePickerModal
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.Input
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.TimePickerModal
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.parse
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.utils.interceptInteractionSource
+import constellation_mobile_sdk.ui.components.cmp.generated.resources.Res
+import constellation_mobile_sdk.ui.components.cmp.generated.resources.icon_calendar_range
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -30,9 +37,10 @@ fun DateTime(
     disabled: Boolean = false,
     readOnly: Boolean = false,
     clockFormat: ClockFormat = ClockFormat.FROM_LOCALE,
-    onValueChange: (LocalDateTime) -> Unit = {},
+    onValueChange: (LocalDateTime?) -> Unit = {},
     onFocusChange: (Boolean) -> Unit = {}
 ) {
+    val focusManager = LocalFocusManager.current
     var showDateDialog by remember { mutableStateOf(false) }
     var showTimeDialog by remember { mutableStateOf(false) }
     var localDate by remember { mutableStateOf<LocalDate?>(null) }
@@ -40,26 +48,38 @@ fun DateTime(
     if (showDateDialog) {
         DatePickerModal(
             value = value?.date,
-            onDateSelected = {
-                localDate = it
-                showTimeDialog = true
+            onDateSelected = { date ->
+                showDateDialog = false
+                if (date != null) {
+                    localDate = date
+                    showTimeDialog = true
+                } else {
+                    onValueChange(null)
+                    showTimeDialog = false
+                }
             },
-            onDismiss = { showDateDialog = false }
+            onDismiss = {
+                focusManager.clearFocus()
+                showDateDialog = false
+            }
         )
     }
 
-    val is24Hour = false // TODO
+    val is24Hour = clockFormat.is24Hour()
     if (showTimeDialog) {
         TimePickerModal(
             value = value?.time,
             is24Hour = is24Hour,
             onTimeSelected = { onValueChange(LocalDateTime(localDate!!, it)) },
-            onDismiss = { showTimeDialog = false }
+            onDismiss = {
+                focusManager.clearFocus()
+                showTimeDialog = false
+            }
         )
     }
 
     Input(
-        value = value?.parseDateTimeValue(is24Hour) ?: "",
+        value = value?.parse(is24Hour) ?: "",
         label = label,
         modifier = modifier,
         helperText = helperText,
@@ -71,16 +91,9 @@ fun DateTime(
         readOnly = readOnly,
         onValueChange = {},
         onFocusChange = onFocusChange,
-// TODO        trailingIcon = { Icon(Icons.Default.DateRange, "Select date") },
+        trailingIcon = { Icon(painterResource(Res.drawable.icon_calendar_range), "Select date") },
         interactionSource = interceptInteractionSource(disabled, readOnly) { showDateDialog = true }
     )
-}
-
-private fun LocalDateTime.parseDateTimeValue(is24Hour: Boolean): String {
-//    val pattern = if (is24Hour) "HH:mm" else "hh:mm a"
-//    val formattedTime = DateTimeFormatter.ofPattern(pattern).format(LocalTime.of(hour, minute))
-    // TODO
-    return this.toString()
 }
 
 @Preview

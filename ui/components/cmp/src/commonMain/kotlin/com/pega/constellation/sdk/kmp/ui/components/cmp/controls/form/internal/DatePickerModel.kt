@@ -7,29 +7,30 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DatePickerModal(
     value: LocalDate?,
-    onDateSelected: (LocalDate) -> Unit,
+    onDateSelected: (LocalDate?) -> Unit,
     onDismiss: () -> Unit
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = 0
+        initialSelectedDateMillis = value
+            ?.atStartOfDayIn(TimeZone.UTC)
+            ?.toEpochMilliseconds()
     )
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
-                onClick = {
-                    datePickerState.selectedDateMillis?.let {
-                        onDateSelected(it.toLocalDate())
-                    }
-                    onDismiss()
-                },
+                onClick = { onDateSelected(datePickerState.selectedDateMillis?.toLocalDate()) },
                 content = { Text("OK") }
             )
         },
@@ -42,5 +43,7 @@ internal fun DatePickerModal(
     )
 }
 
-private fun Long.toLocalDate() = LocalDate(2020, 6, 6)
-//    Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
+private fun Long.toLocalDate() = Instant.fromEpochMilliseconds(this)
+    .toLocalDateTime(TimeZone.currentSystemDefault())
+    .date
+

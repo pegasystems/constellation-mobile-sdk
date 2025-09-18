@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.Input
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.getCurrencySymbol
 
 @Composable
 fun Currency(
@@ -36,9 +37,7 @@ fun Currency(
         if (showIsoCode) {
             { Text(isoCode) }
         } else {
-            { Text(isoCode) }
-            // TODO
-//            { Text(getCurrencySymbol(isoCode))}
+            { Text(getCurrencySymbol(isoCode))}
         }
     Input(
         value = value,
@@ -57,12 +56,6 @@ fun Currency(
         leadingIcon = leadingIcon
     )
 }
-
-// TODO
-//private fun getCurrencySymbol(isoCode: String) =
-//    runCatching {
-//        Currency.getInstance(isoCode).symbol
-//    }.getOrNull() ?: isoCode
 
 private fun formatValue(value: String, decimalPrecision: Int) =
     value.replace(",", "").let {
