@@ -35,8 +35,8 @@ internal class WebViewNetworkInterceptor(
                 "utf-8",
                 499,
                 "Network error",
-                emptyMap(),
-                ByteArrayInputStream(message.toByteArray())
+                mapOf("Access-Control-Allow-Origin" to "*"), // Allow CORS for dummy response
+                null
             )
         }
 

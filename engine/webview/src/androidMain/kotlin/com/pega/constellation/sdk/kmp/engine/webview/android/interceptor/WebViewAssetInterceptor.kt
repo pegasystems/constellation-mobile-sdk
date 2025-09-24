@@ -1,7 +1,8 @@
-package com.pega.constellation.sdk.kmp.engine.webview.android.interceptor
+package com.pega.constellation.sdk.kmp.engine.androidwebview.internal.webview.interceptor
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -26,19 +27,23 @@ internal class WebViewAssetInterceptor(
     ): WebResourceResponse? {
         val requestUrl = request.url.toString()
         val url = when {
-            requestUrl == pegaUrl -> "$ASSETS_URL/scripts/index.html"
-            requestUrl.contains(baseUrlWithAssetsPath) ->
-                requestUrl.replace(baseUrlWithAssetsPath, ASSETS_URL)
-            else -> null
+            requestUrl == pegaUrl -> "$ASSETS_URL/$INDEX_HTML_PATH"
+            requestUrl.contains(baseUrlWithAssetsPath) -> requestUrl.replace(baseUrl, ASSETS_URL)
+            else -> {
+                if (requestUrl.contains(ASSETS_PATH)) {
+                    Log.w(TAG, "Request for assets ($requestUrl) not handled correctly.")
+                }
+                null
+            }
         }
         return url?.let { assetLoader.shouldInterceptRequest(Uri.parse(it)) }
     }
 
     companion object {
+        private const val TAG = "WebViewAssetInterceptor"
+        private const val ASSETS_URL = "https://appassets.androidplatform.net"
         private const val ASSETS_PATH = "constellation-mobile-sdk-assets"
-        private const val COMPOSE_RES =
-            "composeResources/constellation_mobile_sdk.engine.webview.generated.resources/files"
-        private const val ASSETS_URL =
-            "https://appassets.androidplatform.net/$ASSETS_PATH/$COMPOSE_RES"
+        private const val INDEX_HTML_PATH = "$ASSETS_PATH/scripts/index.html"
+
     }
 }

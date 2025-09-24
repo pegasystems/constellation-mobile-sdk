@@ -18,7 +18,7 @@ function installComponentsOverridesAndroid(componentsOverridesStr, assetsPath) {
   const json = JSON.parse(componentsOverridesStr);
   Object.entries(json).forEach(([key, value]) => {
     console.log(TAG, `Component override: ${key}: ${value}`);
-    fetch(`${assetsPath}/${value}`)
+    fetch(`/${assetsPath}/${value}`)
       .then(
         (response) => {
           response.text().then(textContent => {
