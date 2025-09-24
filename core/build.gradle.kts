@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -67,6 +68,12 @@ kotlin {
             }
         }
 
+        iosMain {
+            dependencies {
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
+
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
@@ -74,4 +81,14 @@ kotlin {
         }
     }
 
+    iosSimulatorArm64() {
+        compilations.getByName("main") {
+            cinterops {
+                create("PegaMobileWKWebViewTweaks") {
+                    defFile(project.file("src/nativeInterop/cinterop/PegaMobileWKWebViewTweaks.def"))
+                    includeDirs(project.file("src/nativeInterop/cinterop/PegaMobileWKWebViewTweaks"))
+                }
+            }
+        }
+    }
 }

@@ -1,0 +1,71 @@
+package com.pega.constellation.sdk.kmp.core.engine
+
+import kotlinx.cinterop.ObjCSignatureOverride
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import platform.Foundation.NSData
+import platform.Foundation.NSError
+import platform.Foundation.NSLocalizedDescriptionKey
+import platform.Foundation.NSURLRequest
+import platform.Foundation.NSURLResponse
+import platform.WebKit.WKURLSchemeHandlerProtocol
+import platform.WebKit.WKURLSchemeTaskProtocol
+import platform.WebKit.WKWebView
+import platform.darwin.NSObject
+
+interface ResourceHandlerDelegate {
+    suspend fun performRequest(request: NSURLRequest): Pair<NSData, NSURLResponse>
+}
+
+class ResourceHandler(
+    private val delegate: ResourceHandlerDelegate
+) : NSObject(), WKURLSchemeHandlerProtocol {
+
+    private val tasks = mutableMapOf<NSURLRequest, Job>()
+
+    private suspend fun send(request: NSURLRequest): Pair<NSData, NSURLResponse> {
+        return delegate.performRequest(request)
+    }
+
+    @ObjCSignatureOverride
+    override fun webView(
+        webView: WKWebView,
+        startURLSchemeTask: WKURLSchemeTaskProtocol
+    ) {
+        val job = CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val (data, response) = send(startURLSchemeTask.request)
+                if (!isActive) return@launch
+                tasks.remove(startURLSchemeTask.request)
+                startURLSchemeTask.didReceiveResponse(response)
+                startURLSchemeTask.didReceiveData(data)
+                startURLSchemeTask.didFinish()
+            } catch (e: Throwable) {
+                if (!isActive) return@launch
+                println("iosMain :: DefaultProvider :: Error: ${e.message}")
+                startURLSchemeTask.didFailWithError(e.toNSError())
+            }
+        }
+        tasks[startURLSchemeTask.request] = job
+    }
+
+    @ObjCSignatureOverride
+    override fun webView(
+        webView: WKWebView,
+        stopURLSchemeTask: WKURLSchemeTaskProtocol
+    ) {
+        tasks[stopURLSchemeTask.request]?.cancel()
+        tasks.remove(stopURLSchemeTask.request)
+    }
+
+}
+private fun Throwable.toNSError(): NSError {
+    val domain = "ResourceHandlerError"
+    val userInfo = mapOf(
+        NSLocalizedDescriptionKey to (this.message ?: this.toString())
+    )
+    return NSError(domain, 0, userInfo.toMap())
+}

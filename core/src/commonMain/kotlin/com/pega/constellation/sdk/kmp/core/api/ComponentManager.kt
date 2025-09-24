@@ -2,7 +2,9 @@ package com.pega.constellation.sdk.kmp.core.api
 
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 
 /**
  * Manages components within the system, providing methods to retrieve, add, update, and remove components.
@@ -45,6 +47,8 @@ interface ComponentManager {
      * @param props The new properties to be applied to the component.
      */
     fun updateComponent(id: ComponentId, props: JsonObject)
+
+    fun updateComponent(id: ComponentId, props: String) = updateComponent(id, Json.parseToJsonElement(props).jsonObject)
 
     /**
      * Removes a component from the system.

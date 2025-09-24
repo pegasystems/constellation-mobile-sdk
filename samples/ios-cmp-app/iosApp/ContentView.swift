@@ -6,7 +6,8 @@ struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let authManager = MediaCoViewControllerKt.createAuthManager()
         let provider = AuthenticatedResourceProvider(authManager: authManager)
-        let engineBuilder = BuilderWrapper(customResourceProvider: provider)
+        let engineBuilder = WKWebViewBasedEngineBuilder(customResourceProvider: provider)
+        
         return MediaCoViewControllerKt.MediaCoViewController(
             authManager: authManager,
             engineBuilder: engineBuilder

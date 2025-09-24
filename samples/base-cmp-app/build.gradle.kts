@@ -33,6 +33,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "BaseCmpApp"
+            export(project(":core"))
             isStatic = true
         }
     }
@@ -47,6 +48,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                api(project(":core"))
                 implementation(libs.kotlin.stdlib)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -58,7 +60,6 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.oidc.appsupport)
                 implementation(libs.oidc.tokenstore)
-                implementation(project(":core"))
                 implementation(project(":ui:components:cmp"))
                 implementation(project(":ui:renderer:cmp"))
             }

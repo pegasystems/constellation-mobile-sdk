@@ -6,38 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		B550C19F2E79758A00DD10E0 /* WebViewEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B550C1992E79621E00DD10E0 /* WebViewEngine.framework */; };
-		B550C1A02E79758A00DD10E0 /* WebViewEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B550C1992E79621E00DD10E0 /* WebViewEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B550C1982E79621E00DD10E0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B550C0EF2E79621E00DD10E0 /* WebViewEngine.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B550BC802E7060D600DD10E0;
-			remoteInfo = WebViewEngine;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		B550C1A12E79758B00DD10E0 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				B550C1A02E79758A00DD10E0 /* WebViewEngine.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		5BFE4BB8553AF1EBC45A1F89 /* constellation-mobile-sdk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "constellation-mobile-sdk.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B550C0EF2E79621E00DD10E0 /* WebViewEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WebViewEngine.xcodeproj; path = "/Users/lukjj/Development/constellation-mobile-sdk-engSandbox/engine/ios-webview/WebViewEngine.xcodeproj"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -71,7 +41,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B550C19F2E79758A00DD10E0 /* WebViewEngine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,14 +55,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B550C1942E79621E00DD10E0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B550C1992E79621E00DD10E0 /* WebViewEngine.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		B550C19E2E79758A00DD10E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,7 +65,6 @@
 		B691FC5DE078F6BCFA0EFBFB = {
 			isa = PBXGroup;
 			children = (
-				B550C0EF2E79621E00DD10E0 /* WebViewEngine.xcodeproj */,
 				97EBCB64C57997EAA37E7D39 /* Configuration */,
 				B202189FB9794989DFF61711 /* iosApp */,
 				B550C19E2E79758A00DD10E0 /* Frameworks */,
@@ -123,7 +83,6 @@
 				E8AF8639736B797BC4687377 /* Sources */,
 				B87129F28968AE640C807A37 /* Frameworks */,
 				024B4FEA7077AAABE37ED18B /* Resources */,
-				B550C1A12E79758B00DD10E0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -166,28 +125,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 97EC146386918569520B7251 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = B550C1942E79621E00DD10E0 /* Products */;
-					ProjectRef = B550C0EF2E79621E00DD10E0 /* WebViewEngine.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				75611E60DB2405C0D67216B3 /* iosApp */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		B550C1992E79621E00DD10E0 /* WebViewEngine.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = WebViewEngine.framework;
-			remoteRef = B550C1982E79621E00DD10E0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		024B4FEA7077AAABE37ED18B /* Resources */ = {
