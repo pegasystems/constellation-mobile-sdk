@@ -3,13 +3,10 @@ plugins {
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
-
-    // Target declarations - add or remove as needed below. These define
-    // which platforms this KMP module supports.
-    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
         namespace = "com.pega.constellation.sdk.kmp.engine.webview"
         compileSdk = 36
@@ -18,42 +15,29 @@ kotlin {
         androidResources.enable = true
     }
 
-    // For iOS targets, this is also where you should
-    // configure native binary output. For more information, see:
-    // https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "engine:webviewKit"
+        }
 
-    // A step-by-step guide on how to include this library in an XCode
-    // project can be found here:
-    // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "engine:webviewKit"
-
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
+        it.compilations.getByName("main") {
+            cinterops {
+                create("PegaMobileWKWebViewTweaks") {
+                    defFile(project.file("src/nativeInterop/cinterop/PegaMobileWKWebViewTweaks.def"))
+                    includeDirs(project.file("src/nativeInterop/cinterop/PegaMobileWKWebViewTweaks"))
+                }
+            }
         }
     }
 
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    // Source set declarations.
-    // Declaring a target automatically creates a source set with the same name. By default, the
-    // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
-    // common to share sources between related targets.
-    // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
     sourceSets {
         commonMain {
             dependencies {
-                api(project(":core"))
+                implementation(project(":core"))
                 implementation(compose.runtime)
                 implementation(compose.components.resources)
                 implementation(libs.kotlin.stdlib)
@@ -68,12 +52,5 @@ kotlin {
                 implementation(libs.androidx.webkit)
             }
         }
-
-        iosMain {
-            dependencies {
-
-            }
-        }
     }
-
 }

@@ -1,8 +1,8 @@
-package com.pega.constellation.sdk.kmp.core.engine.providers
+package com.pega.constellation.sdk.kmp.engine.webview.ios.providers
 
 import com.pega.constellation.sdk.kmp.core.Log
-import com.pega.constellation.sdk.kmp.core.engine.ResourceProvider
-import constellation_mobile_sdk.core.generated.resources.Res
+import com.pega.constellation.sdk.kmp.engine.webview.ios.ResourceProvider
+import constellation_mobile_sdk.engine.webview.generated.resources.Res
 import platform.Foundation.*
 import platform.UniformTypeIdentifiers.*
 

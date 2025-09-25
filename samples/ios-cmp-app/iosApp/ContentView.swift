@@ -4,14 +4,7 @@ import BaseCmpApp
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        let authManager = MediaCoViewControllerKt.createAuthManager()
-        let provider = AuthenticatedResourceProvider(authManager: authManager)
-        let engineBuilder = WKWebViewBasedEngineBuilder(customResourceProvider: provider)
-        
-        return MediaCoViewControllerKt.MediaCoViewController(
-            authManager: authManager,
-            engineBuilder: engineBuilder
-        )
+        return MediaCoViewControllerKt.MediaCoViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}

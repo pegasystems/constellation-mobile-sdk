@@ -1,8 +1,8 @@
-package com.pega.constellation.sdk.kmp.core.engine
+package com.pega.constellation.sdk.kmp.engine.webview.ios
 
-import com.pega.constellation.sdk.kmp.core.engine.providers.BundledResourcesProvider
-import com.pega.constellation.sdk.kmp.core.engine.providers.DefaultProvider
-import com.pega.constellation.sdk.kmp.core.engine.providers.NetworkProvider
+import com.pega.constellation.sdk.kmp.engine.webview.ios.providers.BundledResourcesProvider
+import com.pega.constellation.sdk.kmp.engine.webview.ios.providers.DefaultProvider
+import com.pega.constellation.sdk.kmp.engine.webview.ios.providers.NetworkProvider
 import platform.Foundation.NSData
 import platform.Foundation.NSMutableURLRequest
 import platform.Foundation.NSURL

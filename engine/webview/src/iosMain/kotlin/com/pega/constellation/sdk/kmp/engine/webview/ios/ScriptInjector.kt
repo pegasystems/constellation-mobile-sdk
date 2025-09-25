@@ -1,7 +1,7 @@
-package com.pega.constellation.sdk.kmp.core.engine
+package com.pega.constellation.sdk.kmp.engine.webview.ios
 
 import com.pega.constellation.sdk.kmp.core.Log
-import constellation_mobile_sdk.core.generated.resources.Res
+import constellation_mobile_sdk.engine.webview.generated.resources.Res
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,7 +27,7 @@ class ScriptInjector {
         if (contents != null) {
             return contents
         }
-        Log.w(TAG, "Cannot inject script, file does not exist: $name")
+        Log.w(TAG, "Cannot inject script, file does not exist: $path")
         throw NSError.errorWithDomain(
             domain = NSCocoaErrorDomain,
             code = NSFileNoSuchFileError,

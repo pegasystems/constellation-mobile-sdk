@@ -3,54 +3,27 @@ plugins {
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
-
-    // Target declarations - add or remove as needed below. These define
-    // which platforms this KMP module supports.
-    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
         namespace = "com.pega.constellation.sdk.kmp.core"
         compileSdk = 36
         minSdk = 26
     }
 
-    // For iOS targets, this is also where you should
-    // configure native binary output. For more information, see:
-    // https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
-
-    // A step-by-step guide on how to include this library in an XCode
-    // project can be found here:
-    // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "coreKit"
-
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "coreKit"
         }
     }
 
     jvm()
 
-    // Source set declarations.
-    // Declaring a target automatically creates a source set with the same name. By default, the
-    // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
-    // common to share sources between related targets.
-    // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
     sourceSets {
         commonMain {
             dependencies {
@@ -76,17 +49,6 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
-            }
-        }
-    }
-
-    iosSimulatorArm64() {
-        compilations.getByName("main") {
-            cinterops {
-                create("PegaMobileWKWebViewTweaks") {
-                    defFile(project.file("src/nativeInterop/cinterop/PegaMobileWKWebViewTweaks.def"))
-                    includeDirs(project.file("src/nativeInterop/cinterop/PegaMobileWKWebViewTweaks"))
-                }
             }
         }
     }
