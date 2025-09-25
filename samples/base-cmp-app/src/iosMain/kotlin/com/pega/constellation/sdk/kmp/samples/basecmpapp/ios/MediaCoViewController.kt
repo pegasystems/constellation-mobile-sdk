@@ -10,13 +10,25 @@ import kotlinx.coroutines.Dispatchers
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import org.publicvalue.multiplatform.oidc.appsupport.IosCodeAuthFlowFactory
 import org.publicvalue.multiplatform.oidc.tokenstore.IosKeychainTokenStore
+import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 
 // Entry point for the iOS application
 @Suppress("unused")
 fun MediaCoViewController(authManager: AuthManager, engineBuilder: ConstellationSdkEngineBuilder): UIViewController {
+
+    fun UIViewController.injectEngineHandle() {
+        engineBuilder.registerOnBuiltListener { engine ->
+            (engine.nativeHandle as? UIView)?.let { view ->
+                this.view.addSubview(view)
+            }
+        }
+    }
+
     Injector.init(authManager, engineBuilder)
-    return ComposeUIViewController { MediaCoApp() }
+    return ComposeUIViewController { MediaCoApp() }.also {
+        it.injectEngineHandle()
+    }
 }
 
 @Suppress("unused")

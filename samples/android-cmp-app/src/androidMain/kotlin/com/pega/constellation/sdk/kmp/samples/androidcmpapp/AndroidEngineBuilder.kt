@@ -3,7 +3,7 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp
 import android.content.Context
 import android.util.Log
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
-import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilderBase
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.engine.androidwebview.buildAndroidConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.engine.androidwebview.defaultHttpClient
@@ -14,7 +14,7 @@ import okhttp3.Response
 class AndroidEngineBuilder(
     val context: Context,
     val authManager: AuthManager
-) : ConstellationSdkEngineBuilder {
+) : ConstellationSdkEngineBuilderBase() {
 
     override fun build(config: ConstellationSdkConfig, handler: EngineEventHandler) =
         buildAndroidConstellationSdkEngine(
@@ -22,7 +22,7 @@ class AndroidEngineBuilder(
             config = config,
             handler = handler,
             okHttpClient = buildHttpClient(authManager)
-        )
+        ).also { notifyBuilt(it)}
 
     private fun buildHttpClient(authManager: AuthManager) =
         defaultHttpClient().newBuilder()

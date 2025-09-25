@@ -2,7 +2,7 @@ package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilder
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilderBase
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.api.Component
@@ -122,9 +122,9 @@ class MockSdkEngine(
     private fun ComponentManager.updateComponent(id: Int, props: JsonObjectBuilder.() -> Unit) =
         updateComponent(ComponentId(id), buildJsonObject(props))
 
-    class MockSdkEngineBuilder() : ConstellationSdkEngineBuilder {
+    class MockSdkEngineBuilder() : ConstellationSdkEngineBuilderBase() {
         override fun build(config: ConstellationSdkConfig, handler: EngineEventHandler) =
-            MockSdkEngine(config, handler)
+            MockSdkEngine(config, handler).also { notifyBuilt(it) }
     }
 
     private val Component.value: String

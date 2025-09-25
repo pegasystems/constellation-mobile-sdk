@@ -75,6 +75,9 @@ class WKWebViewBasedEngine(
         wkWebView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
     }
 
+    override val nativeHandle: Any?
+        get() = wkWebView
+
     override fun load(
         caseClassName: String,
         startingFields: Map<String, Any>
