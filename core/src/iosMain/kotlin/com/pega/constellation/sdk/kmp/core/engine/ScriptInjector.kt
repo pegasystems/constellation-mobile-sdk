@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.engine
 
+import com.pega.constellation.sdk.kmp.core.Log
 import constellation_mobile_sdk.core.generated.resources.Res
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +27,7 @@ class ScriptInjector {
         if (contents != null) {
             return contents
         }
-        println("iosMain :: ScriptInjector :: Cannot inject script, file does not exist: $name")
+        Log.w(TAG, "Cannot inject script, file does not exist: $name")
         throw NSError.errorWithDomain(
             domain = NSCocoaErrorDomain,
             code = NSFileNoSuchFileError,
@@ -36,9 +37,9 @@ class ScriptInjector {
 
     @Throws(Exception::class)
     fun load(name: String) {
-        println("Loading $name")
+        Log.i(TAG, "Loading $name")
         val script = loadScript(name)
-        println("$name loaded, size = ${script.length}")
+        Log.i(TAG, "$name loaded, size = ${script.length}")
         scripts.add(script)
     }
 
@@ -53,6 +54,10 @@ class ScriptInjector {
         withContext(Dispatchers.Main) {
             webView.evaluateJavaScript(script, null)
         }
+    }
+
+    companion object {
+        private const val TAG = "ScriptInjector"
     }
 }
 

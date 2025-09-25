@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.engine
 
+import com.pega.constellation.sdk.kmp.core.Log
 import kotlinx.cinterop.ObjCSignatureOverride
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,8 @@ import platform.WebKit.WKURLSchemeHandlerProtocol
 import platform.WebKit.WKURLSchemeTaskProtocol
 import platform.WebKit.WKWebView
 import platform.darwin.NSObject
+
+private const val TAG = "ResourceHandler"
 
 interface ResourceHandlerDelegate {
     suspend fun performRequest(request: NSURLRequest): Pair<NSData, NSURLResponse>
@@ -45,7 +48,7 @@ class ResourceHandler(
                 startURLSchemeTask.didFinish()
             } catch (e: Throwable) {
                 if (!isActive) return@launch
-                println("iosMain :: DefaultProvider :: Error: ${e.message}")
+                Log.e(TAG, "Cannot execute WKWebView scheme task.", e)
                 startURLSchemeTask.didFailWithError(e.toNSError())
             }
         }
@@ -60,7 +63,6 @@ class ResourceHandler(
         tasks[stopURLSchemeTask.request]?.cancel()
         tasks.remove(stopURLSchemeTask.request)
     }
-
 }
 private fun Throwable.toNSError(): NSError {
     val domain = "ResourceHandlerError"

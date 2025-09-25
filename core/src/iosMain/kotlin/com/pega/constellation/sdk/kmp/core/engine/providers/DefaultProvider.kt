@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.engine.providers
 
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.engine.ResourceProvider
 import platform.Foundation.NSData
 import platform.Foundation.NSURLRequest
@@ -17,7 +18,7 @@ class DefaultProvider : ResourceProvider {
     }
 
     override suspend fun performRequest(request: NSURLRequest): Pair<NSData, NSURLResponse> {
-        println("Sending request to ${request.URL?.absoluteString ?: "nil"} using built-in mechanism.")
+        Log.i(TAG, "Sending request to ${request.URL?.absoluteString ?: "nil"} using built-in mechanism.")
         return suspendCoroutine { continuation ->
             NSURLSession.sharedSession.dataTaskWithRequest(request) { data, response, error ->
 
@@ -28,5 +29,9 @@ class DefaultProvider : ResourceProvider {
                 }
             }.resume()
         }
+    }
+
+    companion object {
+        private const val TAG = "DefaultProvider"
     }
 }

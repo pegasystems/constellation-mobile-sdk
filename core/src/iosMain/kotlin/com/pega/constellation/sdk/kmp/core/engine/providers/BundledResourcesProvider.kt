@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.engine.providers
 
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.engine.ResourceProvider
 import constellation_mobile_sdk.core.generated.resources.Res
 import platform.Foundation.*
@@ -18,14 +19,14 @@ class BundledResourcesProvider : ResourceProvider {
         val data = try {
             data(from = "files/${extractResourcePath(url)}")
         } catch (e: Throwable) {
-            println("iosMain :: BundledResourceProvider :: Error while performing local request: $e")
+            Log.e(TAG, "Error while performing local request.", e)
             throw LocalProviderError.FileNotFound
         }
 
         val response = try {
             createResponse(url)
         } catch (e: Throwable) {
-            println("iosMain :: BundledResourceProvider :: Error while creating a response for local request: $e")
+            Log.e(TAG, "Error while creating a response for local request.", e)
             throw LocalProviderError.CannotCreateResponse
         }
 
@@ -69,7 +70,10 @@ class BundledResourcesProvider : ResourceProvider {
             // Just in case failable constructor fails (Kotlin does not see it's failable)
             throw LocalProviderError.CannotCreateResponse
         }
+    }
 
+    companion object {
+        private const val TAG = "BundledResourcesProvider"
     }
 }
 

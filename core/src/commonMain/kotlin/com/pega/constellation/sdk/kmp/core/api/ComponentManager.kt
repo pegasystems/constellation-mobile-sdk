@@ -48,8 +48,6 @@ interface ComponentManager {
      */
     fun updateComponent(id: ComponentId, props: JsonObject)
 
-    fun updateComponent(id: ComponentId, props: String) = updateComponent(id, Json.parseToJsonElement(props).jsonObject)
-
     /**
      * Removes a component from the system.
      * @param id The unique identifier of the component to be removed.

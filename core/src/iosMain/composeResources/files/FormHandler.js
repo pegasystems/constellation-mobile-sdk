@@ -2,16 +2,16 @@
     window.iosWVJSEngine=true;
 
     window.sdkbridge = {
-        updateComponent: function(param, param2) {
-            window.webkit.messageHandlers.formHandler.postMessage(["updateComponent", String(param), param2]);
+        updateComponent: function(cId, props) {
+            window.webkit.messageHandlers.formHandler.postMessage(["updateComponent", String(cId), props]);
         },
 
-        addComponent: function(param, param2) {
-            window.webkit.messageHandlers.formHandler.postMessage(["addComponent", String(param), param2]);
+        addComponent: function(cId, cType) {
+            window.webkit.messageHandlers.formHandler.postMessage(["addComponent", String(cId), cType]);
         },
 
-        removeComponent: function(param) {
-            window.webkit.messageHandlers.formHandler.postMessage(["removeComponent", String(param)]);
+        removeComponent: function(cId) {
+            window.webkit.messageHandlers.formHandler.postMessage(["removeComponent", String(cId)]);
         },
 
         onReady: function() {

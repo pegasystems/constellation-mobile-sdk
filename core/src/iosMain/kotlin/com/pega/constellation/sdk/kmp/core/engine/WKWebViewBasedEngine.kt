@@ -1,8 +1,10 @@
 package com.pega.constellation.sdk.kmp.core.engine
 
+import PegaMobileWKWebViewTweaks.*
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
+import com.pega.constellation.sdk.kmp.core.Log
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSURL
@@ -21,8 +22,6 @@ import platform.WebKit.WKNavigationDelegateProtocol
 import platform.WebKit.WKWebView
 import platform.WebKit.WKWebViewConfiguration
 import platform.darwin.NSObject
-
-import PegaMobileWKWebViewTweaks.*
 
 data class ComponentEvent(
     val id: Int,
@@ -69,7 +68,9 @@ class WKWebViewBasedEngine(
         registerCustomHTTPSchemeHandler(wkConfig)
         wkConfig.setValue(true, forKey = "allowUniversalAccessFromFileURLs")
 
-        // TODO: add console handler
+        wkConfig.userContentController.addScriptMessageHandler(
+            ConsoleScriptMessageHandler(ConsoleHandler(showDebugLogs = true)),
+            name = "consoleHandler")
         wkConfig.userContentController.addScriptMessageHandler(formHandler, name = "formHandler")
         wkWebView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
     }
@@ -92,16 +93,16 @@ class WKWebViewBasedEngine(
         wkWebView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
                 if (didFinishNavigation == initialNavigation) {
-                    println("iosMain :: WKWebViewBasedEngine :: Initial navigation completed, injecting scripts.")
+                    Log.i(TAG, "Initial navigation completed, injecting scripts.")
                     val injector = ScriptInjector()
                     CoroutineScope(Dispatchers.Main).launch {
                         try {
-                            // TODO: injector.load("Console")
+                            injector.load("Console")
                             injector.load("FormHandler")
                             injector.append(initScript ?: "")
                             injector.inject(webView)
                         } catch (e: Throwable) {
-                            println("iosMain :: WKWebViewBasedEngine :: Error during engine initialization: $e")
+                            Log.e(TAG, "Error during engine initialization.", e)
                         }
                     }
                     eventStreamJob = CoroutineScope(Dispatchers.Main).launch {
@@ -137,5 +138,9 @@ class WKWebViewBasedEngine(
            window.init('$configString', '$overrideString');
         }
         """.trimIndent()
+    }
+
+    companion object {
+        private const val TAG = "WKWebViewBasedEngine"
     }
 }
