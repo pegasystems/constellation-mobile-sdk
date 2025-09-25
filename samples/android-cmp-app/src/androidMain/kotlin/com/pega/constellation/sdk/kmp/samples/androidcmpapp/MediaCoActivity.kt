@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.MockSdkEngine
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
@@ -25,6 +26,7 @@ class MediaCoActivity : ComponentActivity() {
         val authManager = createAuthManager(authFlowFactory)
 
         Injector.init(authManager, AndroidEngineBuilder(this, authManager))
+//        Injector.init(authManager, MockSdkEngine.MockSdkEngineBuilder())
         AppContext.init(this)
 
         setContent {

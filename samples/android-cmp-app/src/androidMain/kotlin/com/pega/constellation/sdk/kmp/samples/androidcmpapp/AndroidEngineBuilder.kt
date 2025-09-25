@@ -5,8 +5,7 @@ import android.util.Log
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilderBase
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
-import com.pega.constellation.sdk.kmp.engine.androidwebview.buildAndroidConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.engine.androidwebview.defaultHttpClient
+import com.pega.constellation.sdk.kmp.engine.webview.android.AndroidWebViewEngine
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -17,15 +16,16 @@ class AndroidEngineBuilder(
 ) : ConstellationSdkEngineBuilderBase() {
 
     override fun build(config: ConstellationSdkConfig, handler: EngineEventHandler) =
-        buildAndroidConstellationSdkEngine(
+        AndroidWebViewEngine(
             context = context,
             config = config,
             handler = handler,
             okHttpClient = buildHttpClient(authManager)
-        ).also { notifyBuilt(it)}
+        ).also { notifyBuilt(it) }
 
     private fun buildHttpClient(authManager: AuthManager) =
-        defaultHttpClient().newBuilder()
+        AndroidWebViewEngine.defaultHttpClient()
+            .newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .addNetworkInterceptor(LoggingInterceptor())
             .build()

@@ -33,9 +33,9 @@ plugins {
 }
 
 include(":core")
-include(":engine:android-webview")
 include(":ui:components:cmp")
 include(":ui:renderer:cmp")
 include(":samples:android-cmp-app")
 include(":samples:desktop-cmp-app")
 include(":samples:base-cmp-app")
+include(":engine:webview")
