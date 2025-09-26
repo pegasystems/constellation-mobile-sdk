@@ -26,7 +26,6 @@ class MediaCoActivity : ComponentActivity() {
         val authManager = createAuthManager(authFlowFactory)
 
         Injector.init(authManager, AndroidEngineBuilder(this, authManager))
-//        Injector.init(authManager, MockSdkEngine.MockSdkEngineBuilder())
         AppContext.init(this)
 
         setContent {

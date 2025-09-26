@@ -21,7 +21,6 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(project(":samples:base-cmp-app"))
             implementation(project(":core"))
-//            implementation(project(":engine:android-webview"))
             implementation(project(":engine:webview"))
             implementation(project(":ui:renderer:cmp"))
             implementation(project(":ui:components:cmp"))
