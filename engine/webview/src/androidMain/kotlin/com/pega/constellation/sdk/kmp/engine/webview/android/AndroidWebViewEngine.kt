@@ -13,6 +13,7 @@ import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewAssetInterceptor
@@ -35,28 +36,37 @@ import java.util.concurrent.TimeUnit
 
 class AndroidWebViewEngine(
     private val context: Context,
-    private val config: ConstellationSdkConfig,
-    private val handler: EngineEventHandler,
-    okHttpClient: OkHttpClient,
-    nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
+    private val okHttpClient: OkHttpClient,
+    private val nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
 ) : ConstellationSdkEngine {
-    init {
+
+    private lateinit var config: ConstellationSdkConfig
+    private lateinit var handler: EngineEventHandler
+    private lateinit var componentManager: ComponentManager
+    private lateinit var networkInterceptor: WebViewNetworkInterceptor
+    private lateinit var webViewClient: SdkWebViewClient
+    private lateinit var webView: WebView
+
+    override fun configure(config: ConstellationSdkConfig, handler: EngineEventHandler) {
+        this.config = config
+        this.handler = handler
+
+        this.componentManager = config.componentManager
+        this.networkInterceptor =
+            WebViewNetworkInterceptor(config.pegaUrl, okHttpClient, nonDxOkHttpClient)
+        val assetInterceptor = WebViewAssetInterceptor(context, config)
+
+        val interceptors = listOf(assetInterceptor, networkInterceptor)
+        this.webViewClient = SdkWebViewClient(interceptors)
         setWebContentsDebuggingEnabled(config.debuggable)
+        this.webView = createWebView(webViewClient)
     }
-
-    private val componentManager = config.componentManager
-    private val networkInterceptor =
-        WebViewNetworkInterceptor(config.pegaUrl, okHttpClient, nonDxOkHttpClient)
-    private val assetInterceptor = WebViewAssetInterceptor(context, config)
-    private val interceptors = listOf(assetInterceptor, networkInterceptor)
-
-    private val webViewClient = SdkWebViewClient(interceptors)
-    private val webView = createWebView(webViewClient)
 
     override fun load(caseClassName: String, startingFields: Map<String, Any>) {
         handler.handle(EngineEvent.Loading)
         webViewClient.onPageLoad = { onPageLoad(caseClassName, startingFields) }
         webView.loadUrl(config.pegaUrl)
+
     }
 
     private fun onPageLoad(caseClassName: String, startingFields: Map<String, Any>) {

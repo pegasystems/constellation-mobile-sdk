@@ -39,7 +39,7 @@ class PegaViewModel(
             initializer {
                 PegaViewModel(
                     authManager = Injector.authManager,
-                    sdk = ConstellationSdk.create(buildConfig(), Injector.engineBuilder),
+                    sdk = ConstellationSdk.create(buildConfig(), Injector.engine),
                     caseClassName = SDKConfig.PEGA_CASE_CLASS_NAME
                 )
             }

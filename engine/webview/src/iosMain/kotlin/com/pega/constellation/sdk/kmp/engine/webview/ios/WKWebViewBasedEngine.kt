@@ -50,15 +50,13 @@ data class EngineConfiguration(
 
 @OptIn(ExperimentalForeignApi::class)
 class WKWebViewBasedEngine(
-    val config: ConstellationSdkConfig,
-    val handler: EngineEventHandler,
-    val provider: ResourceProvider,
-    private val resourceProviderManager: ResourceProviderManager = ResourceProviderManager(config.pegaUrl, provider),
-    private val resourceHandler: ResourceHandler = ResourceHandler(delegate = resourceProviderManager),
+    val provider: ResourceProvider
 ) : ConstellationSdkEngine {
-
+    private lateinit var config: ConstellationSdkConfig
+    private lateinit var handler: EngineEventHandler
+    private val formHandler = FormHandler()
+    private val resourceHandler = ResourceHandler()
     private var wkWebView: WKWebView
-    private val formHandler = FormHandler(handler, config.componentManager)
     private var initScript: String? = null
     private var eventStreamJob: Job? = null
     private var initialNavigation: WKNavigation? = null
@@ -77,6 +75,18 @@ class WKWebViewBasedEngine(
 
     override val nativeHandle: Any?
         get() = wkWebView
+
+    override fun configure(
+        config: ConstellationSdkConfig,
+        handler: EngineEventHandler
+    ) {
+        this.config = config
+        this.handler = handler
+        this.formHandler.eventHandler = handler
+        this.formHandler.componentManager = config.componentManager
+        val resourceProviderManager = ResourceProviderManager(config.pegaUrl, provider)
+        this.resourceHandler.delegate = resourceProviderManager
+    }
 
     override fun load(
         caseClassName: String,

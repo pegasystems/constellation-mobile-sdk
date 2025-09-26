@@ -24,8 +24,8 @@ interface ResourceHandlerDelegate {
 }
 
 class ResourceHandler(
-    private val delegate: ResourceHandlerDelegate
 ) : NSObject(), WKURLSchemeHandlerProtocol {
+    lateinit var delegate: ResourceHandlerDelegate
 
     private val tasks = mutableMapOf<NSURLRequest, Job>()
 

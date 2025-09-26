@@ -7,7 +7,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.MockSdkEngine.MockSdkEngineBuilder
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.MockSdkEngine
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ import org.publicvalue.multiplatform.oidc.appsupport.JvmCodeAuthFlowFactory
 
 @OptIn(ExperimentalOpenIdConnect::class)
 fun main() {
-    Injector.init(createAuthManager(), MockSdkEngineBuilder())
+    Injector.init(createAuthManager(), MockSdkEngine())
 
     application {
         Window(

@@ -15,10 +15,9 @@ import platform.darwin.NSObject
 
 private const val TAG = "FormHandler"
 class FormHandler(
-    private val eventHandler: EngineEventHandler,
-    private val componentManager: ComponentManager
 ) : NSObject(), WKScriptMessageHandlerProtocol {
-
+    lateinit var eventHandler: EngineEventHandler
+    lateinit var componentManager: ComponentManager
     private val passthroughSubject = MutableSharedFlow<ComponentEvent>(extraBufferCapacity = 64)
     val eventStream: SharedFlow<ComponentEvent> = passthroughSubject
 

@@ -2,7 +2,6 @@ package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngineBuilderBase
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.api.Component
@@ -23,9 +22,18 @@ import kotlin.random.Random
 
 
 class MockSdkEngine(
-    private val config: ConstellationSdkConfig,
-    private val handler: EngineEventHandler
 ) : ConstellationSdkEngine {
+    private lateinit var config: ConstellationSdkConfig
+    private lateinit var handler: EngineEventHandler
+
+    override fun configure(
+        config: ConstellationSdkConfig,
+        handler: EngineEventHandler
+    ) {
+        this.config = config
+        this.handler = handler
+    }
+
     override fun load(caseClassName: String, startingFields: Map<String, Any>) {
         handler.handle(EngineEvent.Loading)
         config.componentManager.configureComponents()
@@ -121,11 +129,6 @@ class MockSdkEngine(
 
     private fun ComponentManager.updateComponent(id: Int, props: JsonObjectBuilder.() -> Unit) =
         updateComponent(ComponentId(id), buildJsonObject(props))
-
-    class MockSdkEngineBuilder() : ConstellationSdkEngineBuilderBase() {
-        override fun build(config: ConstellationSdkConfig, handler: EngineEventHandler) =
-            MockSdkEngine(config, handler).also { notifyBuilt(it) }
-    }
 
     private val Component.value: String
         get() = (this as? FieldComponent)?.value ?: ""

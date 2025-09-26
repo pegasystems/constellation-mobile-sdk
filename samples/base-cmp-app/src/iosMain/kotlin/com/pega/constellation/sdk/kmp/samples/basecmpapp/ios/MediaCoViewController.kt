@@ -1,7 +1,7 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.ios
 
 import androidx.compose.ui.window.ComposeUIViewController
-import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngineBuilder
+import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
@@ -18,21 +18,16 @@ import platform.UIKit.UIViewController
 fun MediaCoViewController(): UIViewController {
     val authManager = createAuthManager()
     val provider = AuthenticatedResourceProvider(authManager)
-    val engineBuilder = WKWebViewBasedEngineBuilder(provider)
-    fun UIViewController.injectEngineHandle() {
-        engineBuilder.registerOnBuiltListener { engine ->
-            (engine.nativeHandle as? UIView)?.let { view ->
-                this.view.addSubview(view)
-            }
+    val engine = WKWebViewBasedEngine(provider)
+
+    Injector.init(authManager, engine)
+
+    return ComposeUIViewController { MediaCoApp() }.also { vc ->
+        (engine.nativeHandle as? UIView)?.let { view ->
+            vc.view.addSubview(view)
         }
     }
-
-    Injector.init(authManager, engineBuilder)
-    return ComposeUIViewController { MediaCoApp() }.also {
-        it.injectEngineHandle()
-    }
 }
-
 
 @OptIn(ExperimentalOpenIdConnect::class)
 private fun createAuthManager() =
