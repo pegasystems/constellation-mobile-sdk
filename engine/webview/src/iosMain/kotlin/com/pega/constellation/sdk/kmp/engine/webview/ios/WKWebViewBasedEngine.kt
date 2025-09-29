@@ -52,11 +52,11 @@ data class EngineConfiguration(
 class WKWebViewBasedEngine(
     val provider: ResourceProvider
 ) : ConstellationSdkEngine {
+    val webView: WKWebView
     private lateinit var config: ConstellationSdkConfig
     private lateinit var handler: EngineEventHandler
     private val formHandler = FormHandler()
     private val resourceHandler = ResourceHandler()
-    private var wkWebView: WKWebView
     private var initScript: String? = null
     private var eventStreamJob: Job? = null
     private var initialNavigation: WKNavigation? = null
@@ -70,11 +70,8 @@ class WKWebViewBasedEngine(
             ConsoleScriptMessageHandler(ConsoleHandler(showDebugLogs = true)),
             name = "consoleHandler")
         wkConfig.userContentController.addScriptMessageHandler(formHandler, name = "formHandler")
-        wkWebView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
+        webView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
     }
-
-    override val nativeHandle: Any?
-        get() = wkWebView
 
     override fun configure(
         config: ConstellationSdkConfig,
@@ -103,7 +100,7 @@ class WKWebViewBasedEngine(
 
         initScript = buildInitScript(overrideString = "{}", engineConfig)
 
-        wkWebView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
+        webView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
                 if (didFinishNavigation == initialNavigation) {
                     Log.i(TAG, "Initial navigation completed, injecting scripts.")
@@ -129,10 +126,10 @@ class WKWebViewBasedEngine(
                 }
             }
         }
-        wkWebView.setInspectable(config.debuggable)
+        webView.setInspectable(config.debuggable)
 
         val indexURL = NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
-        initialNavigation = wkWebView.loadRequest(NSURLRequest(uRL = indexURL!!))
+        initialNavigation = webView.loadRequest(NSURLRequest(uRL = indexURL!!))
     }
 
     @OptIn(ExperimentalForeignApi::class)

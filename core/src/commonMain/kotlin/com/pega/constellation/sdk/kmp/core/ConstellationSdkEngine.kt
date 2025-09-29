@@ -2,9 +2,6 @@ package com.pega.constellation.sdk.kmp.core
 
 
 interface ConstellationSdkEngine {
-    val nativeHandle: Any?
-        get() = null
-
     fun configure(config: ConstellationSdkConfig, handler: EngineEventHandler)
     fun load(caseClassName: String, startingFields: Map<String, Any>)
 }

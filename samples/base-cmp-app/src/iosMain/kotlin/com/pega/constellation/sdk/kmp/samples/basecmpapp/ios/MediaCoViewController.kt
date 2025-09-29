@@ -23,9 +23,7 @@ fun MediaCoViewController(): UIViewController {
     Injector.init(authManager, engine)
 
     return ComposeUIViewController { MediaCoApp() }.also { vc ->
-        (engine.nativeHandle as? UIView)?.let { view ->
-            vc.view.addSubview(view)
-        }
+        vc.view.addSubview(engine.webView)
     }
 }
 
