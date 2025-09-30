@@ -21,7 +21,8 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "engine:webviewKit"
+            baseName = "WebviewKit"
+            export(projects.core)
         }
 
         it.compilations.getByName("main") {
@@ -37,7 +38,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core"))
+                api(projects.core)
                 implementation(compose.runtime)
                 implementation(compose.components.resources)
                 implementation(libs.kotlin.stdlib)

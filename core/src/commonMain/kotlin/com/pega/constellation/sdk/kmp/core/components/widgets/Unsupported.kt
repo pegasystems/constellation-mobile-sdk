@@ -19,12 +19,13 @@ class UnsupportedComponent(
     context: ComponentContext,
     type: ComponentType = ComponentType("Unknown"),
     cause: Cause = UNKNOWN_CAUSE,
+    visible: Boolean = false
 ) : BaseComponent(context) {
     var type by mutableStateOf(type)
         private set
     var cause by mutableStateOf(cause)
         private set
-    var visible by mutableStateOf(false)
+    var visible by mutableStateOf(visible)
         private set
 
     override fun applyProps(props: JsonObject) {
@@ -49,7 +50,8 @@ class UnsupportedComponent(
                 onComponentEvent = { Log.w(TAG, "Cannot send event to unsupported: $it") }
             ),
             type = context.type,
-            cause = cause
+            cause = cause,
+            visible = true
         )
     }
 }
