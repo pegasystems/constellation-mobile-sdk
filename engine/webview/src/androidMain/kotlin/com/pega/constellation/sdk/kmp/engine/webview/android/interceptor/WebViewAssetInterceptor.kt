@@ -1,57 +1,62 @@
 package com.pega.constellation.sdk.kmp.engine.webview.android.interceptor
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.webkit.WebViewAssetLoader
+import androidx.webkit.WebViewAssetLoader.PathHandler
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
+import com.pega.constellation.sdk.kmp.core.api.ComponentScript
+import com.pega.constellation.sdk.kmp.core.api.ComponentScript.ResourceType.COMPOSE_RESOURCES
+import com.pega.constellation.sdk.kmp.core.api.ComponentScript.ResourceType.PLATFORM_RESOURCES
 import constellation_mobile_sdk.engine.webview.generated.resources.Res
-import java.net.URL
 
+@SuppressLint("UseKtx")
 internal class WebViewAssetInterceptor(
     context: Context,
     config: ConstellationSdkConfig
 ) : WebViewInterceptor {
-    private val pegaUrl = config.pegaUrl
-    private val baseUrl = URL(pegaUrl).run { "${protocol}://${host}" }
-    private val assetsUrl = "$baseUrl/$ASSETS_PATH/"
+    private val pegaUrl = Uri.parse(config.pegaUrl)
 
+    private val assetHandler = WebViewAssetLoader.AssetsPathHandler(context)
     private val assetLoader = WebViewAssetLoader.Builder()
-        .addPathHandler("/$ASSETS_PATH/", WebViewAssetLoader.AssetsPathHandler(context))
+        .setDomain(checkNotNull(pegaUrl.host) { "Invalid host in $pegaUrl" })
+        .addPathHandler("/$SDK_ASSETS/", ComposePathHandler(assetHandler))
+        .addPathHandler("/$CUSTOM_ASSETS/", assetHandler)
         .build()
 
-    override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
-        request.toAssetUri()?.let { uri ->
-            assetLoader.shouldInterceptRequest(uri)
-        }
+    override fun shouldInterceptRequest(
+        view: WebView,
+        request: WebResourceRequest
+    ): WebResourceResponse? {
+        Log.v(TAG, "Intercepting request: ${request.url}")
+        val uri = if (request.url == pegaUrl) indexHtmlUri else request.url
+        return assetLoader.shouldInterceptRequest(uri)
+    }
 
-    private fun WebResourceRequest.toAssetUri(): Uri? {
-        val url = url.toString()
-        return when {
-            // handle base url and load index.html
-            url == pegaUrl -> Res.getUri("files/scripts/index.html")
-            // handle urls with file:///android_asset/
-            url.contains(ANDROID_ASSET_URI) -> url.replaceBefore(ANDROID_ASSET_URI, "")
-            // handle urls with constellation-mobile-sdk-assets
-            url.contains(assetsUrl) -> Res.getUri("files/" + url.removePrefix(assetsUrl))
-            else -> {
-                if (url.contains(ASSETS_PATH)) {
-                    Log.w(TAG, "Request for assets ($url) not handled correctly.")
-                }
-                null
-            }
-        }
-            ?.replace(ANDROID_ASSET_URI, ANDROID_ASSETS_URL)
-            ?.let { Uri.parse(it) }
+    private val indexHtmlUri: Uri
+        get() = pegaUrl.buildUpon().encodedPath("/$SDK_ASSETS/scripts/index.html").build()
+
+    class ComposePathHandler(val assetHandler: PathHandler) : PathHandler {
+        override fun handle(path: String) = assetHandler.handle(
+            Res.getUri("files/$path").removePrefix(ANDROID_ASSET_URI)
+        )
     }
 
     companion object {
         private const val TAG = "WebViewAssetInterceptor"
-        private const val ASSETS_PATH = "constellation-mobile-sdk-assets"
+        private const val SDK_ASSETS = "constellation-mobile-sdk-assets"
+        private const val CUSTOM_ASSETS = "constellation-sdk-custom-assets"
 
         private const val ANDROID_ASSET_URI = "file:///android_asset/"
-        private const val ANDROID_ASSETS_URL = "https://appassets.androidplatform.net/$ASSETS_PATH/"
+
+        fun ComponentScript.assetPath() = when (resourceType) {
+            PLATFORM_RESOURCES -> "$CUSTOM_ASSETS/$file"
+            COMPOSE_RESOURCES -> "$CUSTOM_ASSETS/${file.removePrefix(ANDROID_ASSET_URI)}"
+        }
     }
 }

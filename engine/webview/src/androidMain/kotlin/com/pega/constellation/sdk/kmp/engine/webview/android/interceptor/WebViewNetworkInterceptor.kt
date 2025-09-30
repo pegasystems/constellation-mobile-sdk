@@ -85,7 +85,7 @@ internal class WebViewNetworkInterceptor(
         }
 
     companion object {
-        private const val TAG = "SdkWebViewNetworkInterceptor"
+        private const val TAG = "WebViewNetworkInterceptor"
         private val DISALLOWED_HEADERS_LIST = listOf(
             "Referer",
             "Origin",

@@ -5,10 +5,9 @@ import { installComponentsOverrides } from "../dxcomponents/mappings/components-
 
 export function initPlatforms(componentsOverridesStr) {
   initSessionStorage();
+  installComponentsOverrides(componentsOverridesStr);
   if (isAndroid()) {
     console.log("[InitPlatforms]", "Initializing Android APIs");
     overrideXHRForRequestBody();
   }
-  const assetsPath = isAndroid() ? 'constellation-mobile-sdk-assets' : "/constellation-mobile-sdk-assets/components";
-  installComponentsOverrides(componentsOverridesStr, assetsPath);
 }

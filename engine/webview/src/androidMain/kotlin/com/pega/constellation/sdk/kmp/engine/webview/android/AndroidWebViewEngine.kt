@@ -17,6 +17,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewAssetInterceptor
+import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewAssetInterceptor.Companion.assetPath
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewNetworkInterceptor
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.BridgeEvent
@@ -66,7 +67,6 @@ class AndroidWebViewEngine(
         handler.handle(EngineEvent.Loading)
         webViewClient.onPageLoad = { onPageLoad(caseClassName, startingFields) }
         webView.loadUrl(config.pegaUrl)
-
     }
 
     private fun onPageLoad(caseClassName: String, startingFields: Map<String, Any>) {
@@ -78,8 +78,8 @@ class AndroidWebViewEngine(
                 put("startingFields", JSONObject(startingFields))
             }.toString(),
             scripts = componentManager.getComponentDefinitions()
-                .filter { it.jsFile != null }
-                .associate { it.type.type to it.jsFile }
+                .filter { it.script != null }
+                .associate { it.type.type to it.script!!.assetPath() }
                 .let { JSONObject(it) }
                 .toString()
         )

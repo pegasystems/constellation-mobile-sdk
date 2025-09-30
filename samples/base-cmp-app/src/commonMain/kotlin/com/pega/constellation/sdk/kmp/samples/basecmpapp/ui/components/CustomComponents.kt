@@ -1,6 +1,8 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components
 
 import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition
+import com.pega.constellation.sdk.kmp.core.api.ComponentScript
+import com.pega.constellation.sdk.kmp.core.api.ComponentScript.ResourceType
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.Res
@@ -11,12 +13,18 @@ object CustomComponents {
     val CustomDefinitions = listOf(
         ComponentDefinition(
             type = Email,
-            jsFile = Res.getUri("files/components_overrides/email.component.override.js"),
+            script = ComponentScript(
+                file = Res.getUri("files/components_overrides/email.component.override.js"),
+                resourceType = ResourceType.COMPOSE_RESOURCES
+            ),
             producer = ::CustomEmailComponent
         ),
         ComponentDefinition(
             type = Slider,
-            jsFile = Res.getUri("files/components_overrides/slider.component.override.js"),
+            script = ComponentScript(
+                file = Res.getUri("files/components_overrides/slider.component.override.js"),
+                resourceType = ResourceType.COMPOSE_RESOURCES
+            ),
             producer = ::CustomSliderComponent
         )
     )

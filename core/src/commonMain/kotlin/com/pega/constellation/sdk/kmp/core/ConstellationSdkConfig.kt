@@ -2,9 +2,6 @@ package com.pega.constellation.sdk.kmp.core
 
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 
-//import okhttp3.OkHttpClient
-//import java.util.concurrent.TimeUnit
-
 /**
  * Configuration of Pega Constellation Mobile SDK.
  *
