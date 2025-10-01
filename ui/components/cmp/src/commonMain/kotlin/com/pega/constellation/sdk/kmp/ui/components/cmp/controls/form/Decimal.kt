@@ -79,25 +79,17 @@ fun Decimal(
 
 @Composable
 private fun rememberPrecisionFormat(decimalPrecision: Int) = remember(decimalPrecision) {
-    createDecimalFormat {
-        if (decimalPrecision > 0) append(".").append("0".repeat(decimalPrecision))
-    }
+    DecimalFormat(decimalPrecision)
 }
 
 @Composable
 private fun rememberPrecisionGroupFormat(decimalPrecision: Int, showGroupSeparators: Boolean) =
     remember(decimalPrecision, showGroupSeparators) {
-        createDecimalFormat {
-            if (showGroupSeparators) append("#,##0") else append("0")
-            if (decimalPrecision > 0) append(".").append("0".repeat(decimalPrecision))
-        }
+        DecimalFormat(decimalPrecision, showGroupSeparators)
     }
 
 // do not use big numbers as Pega does not support them
 private const val MAX_VALUE = 1E8
-
-private fun createDecimalFormat(builder: StringBuilder.() -> Unit) =
-    DecimalFormat(buildString(builder))
 
 private fun DecimalFormat.formatOrDefault(value: String, default: String) =
     runCatching { format(value.toDouble()) }.getOrDefault(default)

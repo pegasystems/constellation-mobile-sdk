@@ -8,6 +8,6 @@ expect fun is24HourLocale(): Boolean
 
 expect fun getCurrencySymbol(isoCode: String): String
 
-expect class DecimalFormat(format: String) {
+expect class DecimalFormat(decimalPrecision: Int, showGroupSeparators: Boolean = false) {
     fun format(number: Double): String
 }

@@ -20,13 +20,16 @@ actual fun getCurrencySymbol(isoCode: String): String {
     return symbol ?: isoCode
 }
 
-actual class DecimalFormat actual constructor(format: String) {
+actual class DecimalFormat actual constructor(
+    private val decimalPrecision: Int,
+    private val showGroupSeparators: Boolean
+) {
     actual fun format(number: Double): String {
         val formatter = NSNumberFormatter()
+        formatter.usesGroupingSeparator = showGroupSeparators
         formatter.numberStyle = NSNumberFormatterDecimalStyle
-        formatter.minimumFractionDigits = 2u
-        formatter.maximumFractionDigits = 2u
+        formatter.minimumFractionDigits = decimalPrecision.toULong()
+        formatter.maximumFractionDigits = decimalPrecision.toULong()
         return formatter.stringFromNumber(NSNumber(number)) ?: number.toString()
-
     }
 }

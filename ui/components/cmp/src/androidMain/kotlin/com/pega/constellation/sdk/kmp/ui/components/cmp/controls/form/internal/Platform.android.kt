@@ -23,7 +23,13 @@ actual fun is24HourLocale() = DateFormat.is24HourFormat(AppContext.get())
 actual fun getCurrencySymbol(isoCode: String) =
     runCatching { Currency.getInstance(isoCode).symbol }.getOrNull() ?: isoCode
 
-actual class DecimalFormat actual constructor(format: String) {
-    private val formatter = DecimalFormat(format)
+actual class DecimalFormat actual constructor(decimalPrecision: Int, showGroupSeparators: Boolean) {
+    private val formatter = DecimalFormat(formatString(decimalPrecision, showGroupSeparators))
     actual fun format(number: Double): String = formatter.format(number)
+
+    private fun formatString(decimalPrecision: Int, showGroupSeparators: Boolean) = buildString {
+        append(if (showGroupSeparators) "#,##0" else "0")
+        if (decimalPrecision > 0)
+            append(".").append("0".repeat(decimalPrecision))
+    }
 }
