@@ -12,6 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSURL
@@ -81,7 +83,7 @@ class WKWebViewBasedEngine(
         this.handler = handler
         this.formHandler.eventHandler = handler
         this.formHandler.componentManager = config.componentManager
-        val resourceProviderManager = ResourceProviderManager(config.pegaUrl, provider)
+        val resourceProviderManager = ResourceProviderManager(config.pegaUrl, config.componentManager, provider)
         this.resourceHandler.delegate = resourceProviderManager
     }
 
@@ -98,7 +100,13 @@ class WKWebViewBasedEngine(
             debuggable =  config.debuggable
         )
 
-        initScript = buildInitScript(overrideString = "{}", engineConfig)
+        val scripts = this.formHandler.componentManager.getComponentDefinitions()
+            .filter { it.jsFile != null }
+            .associate { it.type.type to it.jsFile as String }.let {
+                Json.encodeToString(MapSerializer(String.serializer(), String.serializer()), it)
+            }
+
+        initScript = buildInitScript(scripts, engineConfig)
 
         webView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
@@ -141,11 +149,11 @@ class WKWebViewBasedEngine(
         allowForHTTPSchemeHandlerRegistration = false
     }
 
-    private fun buildInitScript(overrideString: String, configuration: EngineConfiguration): String {
+    private fun buildInitScript(scripts: String, configuration: EngineConfiguration): String {
         val configString = configuration.toJsonString()
         return """
         window.onload = function() {
-           window.init('$configString', '$overrideString');
+           window.init('$configString', '$scripts');
         }
         """.trimIndent()
     }
