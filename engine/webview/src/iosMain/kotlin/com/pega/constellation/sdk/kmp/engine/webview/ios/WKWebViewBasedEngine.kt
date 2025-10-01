@@ -5,6 +5,8 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
+import com.pega.constellation.sdk.kmp.core.api.ComponentScript
+import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Companion.COMPONENT_ASSETS_PREFIX
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +27,7 @@ import platform.WebKit.WKWebView
 import platform.WebKit.WKWebViewConfiguration
 import platform.darwin.NSObject
 
+fun ComponentScript.assetPath() = "$COMPONENT_ASSETS_PREFIX$file"
 data class ComponentEvent(
     val id: Int,
     val eventContent: String
@@ -100,11 +103,14 @@ class WKWebViewBasedEngine(
             debuggable =  config.debuggable
         )
 
-        val scripts = this.formHandler.componentManager.getComponentDefinitions()
-            .filter { it.jsFile != null }
-            .associate { it.type.type to it.jsFile as String }.let {
-                Json.encodeToString(MapSerializer(String.serializer(), String.serializer()), it)
+        val scripts = formHandler.componentManager.getComponentDefinitions()
+            .mapNotNull { definition ->
+                definition.script?.assetPath()?.let { path ->
+                    definition.type.type to path
+                }
             }
+            .toMap()
+            .let { Json.encodeToString(MapSerializer(String.serializer(), String.serializer()), it) }
 
         initScript = buildInitScript(scripts, engineConfig)
 
@@ -157,8 +163,8 @@ class WKWebViewBasedEngine(
         }
         """.trimIndent()
     }
-
     companion object {
         private const val TAG = "WKWebViewBasedEngine"
+        const val COMPONENT_ASSETS_PREFIX = "/constellation-mobile-sdk-assets/components/"
     }
 }
