@@ -12,16 +12,13 @@ kotlin {
         compileSdk = 36
         minSdk = 26
 
+        @Suppress("UnstableApiUsage")
         androidResources.enable = true
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
+    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
         it.binaries.framework {
-            baseName = "WebviewKit"
+            baseName = "SdkEngineWebViewKit"
             export(projects.core)
         }
 
@@ -38,14 +35,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(projects.core)
-                implementation(compose.runtime)
+                api(project(":core"))
                 implementation(compose.components.resources)
+                implementation(compose.runtime)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.serialization.json)
             }
         }
-
 
         androidMain {
             dependencies {

@@ -1,4 +1,4 @@
-import WebviewKit
+import SdkEngineWebViewKit
 import SwiftUI
 
 struct TextAreaComponentView: View {

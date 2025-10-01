@@ -10,11 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import org.publicvalue.multiplatform.oidc.appsupport.IosCodeAuthFlowFactory
 import org.publicvalue.multiplatform.oidc.tokenstore.IosKeychainTokenStore
-import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 
 // Entry point for the iOS application
-@Suppress("unused")
+@Suppress("FunctionName", "unused")
 fun MediaCoViewController(): UIViewController {
     val authManager = createAuthManager()
     val provider = AuthenticatedResourceProvider(authManager)

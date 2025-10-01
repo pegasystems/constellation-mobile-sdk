@@ -1,6 +1,6 @@
 import Combine
 import UIKit
-import WebviewKit
+import SdkEngineWebViewKit
 import SwiftUI
 
 class ViewController: UIViewController {

@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 rootProject.name = "constellation-mobile-sdk"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

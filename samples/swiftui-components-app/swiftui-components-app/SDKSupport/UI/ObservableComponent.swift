@@ -1,4 +1,4 @@
-import WebviewKit
+import SdkEngineWebViewKit
 import SwiftUI
 
 class ObservableComponent<C: Component>: ObservableObject, ComponentObserver {

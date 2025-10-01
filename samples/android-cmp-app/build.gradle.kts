@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeHotReload)
 }
 
 kotlin {
@@ -17,16 +16,16 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-            implementation(project(":samples:base-cmp-app"))
             implementation(project(":core"))
             implementation(project(":engine:webview"))
-            implementation(project(":ui:renderer:cmp"))
+            implementation(project(":samples:base-cmp-app"))
             implementation(project(":ui:components:cmp"))
-            implementation(libs.okhttp)
+            implementation(project(":ui:renderer:cmp"))
+            implementation(compose.preview)
+            implementation(libs.androidx.activity.compose)
             implementation(libs.oidc.appsupport)
             implementation(libs.oidc.tokenstore)
+            implementation(libs.okhttp)
         }
     }
 }
@@ -57,8 +56,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-}
-
-dependencies {
-    debugImplementation(compose.uiTooling)
 }
