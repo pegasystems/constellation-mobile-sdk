@@ -79,7 +79,7 @@ class AndroidWebViewEngine(
             }.toString(),
             scripts = componentManager.getComponentDefinitions()
                 .filter { it.script != null }
-                .associate { it.type.type to it.script!!.assetPath() }
+                .associate { it.type.type to it.script!!.assetPath(context) }
                 .let { JSONObject(it) }
                 .toString()
         )

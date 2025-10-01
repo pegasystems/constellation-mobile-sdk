@@ -1,38 +1,26 @@
 package com.pega.constellation.sdk.kmp.core.api
 
+import kotlin.jvm.JvmInline
+
 /**
  * Class which defines a script to be injected for a component.
  *
- * @property file path to the script file.
- * @property resourceType type of resources where the script file is located.
+ * @property file path to the script file. Relative to /assets folder or provided by [Res.getUri].
  *
  * Examples of creating [ComponentScript]:
  * ```kotlin
  * ComponentScript(
- *     file = Res.getUri("files/components_overrides/email.component.override.js"),
- *     resourceType = ComponentScript.ResourceType.COMPOSE_RESOURCES
+ *     file = Res.getUri("files/components_overrides/email.component.override.js")
  * )
  * ```
  *
  * ```kotlin
  * ComponentScript(
- *     file = "components_overrides/email.component.override.js",
- *     resourceType = ComponentScript.ResourceType.PLATFORM_RESOURCES
+ *     file = "components_overrides/email.component.override.js"
  * )
+ * ```
  */
-data class ComponentScript(
-    val file: String,
-    val resourceType: ResourceType
-) {
-    enum class ResourceType {
-        /**
-         * Resources located in the platform resources (e.g., Android assets, iOS main bundle).
-         */
-        PLATFORM_RESOURCES,
-
-        /**
-         * Resources located in the Compose Multiplatform resources (composeMultiplatform).
-         */
-        COMPOSE_RESOURCES
-    }
-}
+@JvmInline
+value class ComponentScript(
+    val file: String
+)

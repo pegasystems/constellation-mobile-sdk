@@ -11,8 +11,6 @@ import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewAssetLoader.PathHandler
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
-import com.pega.constellation.sdk.kmp.core.api.ComponentScript.ResourceType.COMPOSE_RESOURCES
-import com.pega.constellation.sdk.kmp.core.api.ComponentScript.ResourceType.PLATFORM_RESOURCES
 import constellation_mobile_sdk.engine.webview.generated.resources.Res
 
 @SuppressLint("UseKtx")
@@ -54,9 +52,13 @@ internal class WebViewAssetInterceptor(
 
         private const val ANDROID_ASSET_URI = "file:///android_asset/"
 
-        fun ComponentScript.assetPath() = when (resourceType) {
-            PLATFORM_RESOURCES -> "$CUSTOM_ASSETS/$file"
-            COMPOSE_RESOURCES -> "$CUSTOM_ASSETS/${file.removePrefix(ANDROID_ASSET_URI)}"
+        fun ComponentScript.assetPath(context: Context): String {
+            val path = file.removePrefix(ANDROID_ASSET_URI)
+            require(path.isNotBlank()) { "File path cannot be blank" }
+            require(context.assetExists(path)) { "Asset file does not exist: $path" }
+            return "$CUSTOM_ASSETS/$path"
         }
+
+        fun Context.assetExists(path: String) = runCatching { assets.open(path).close() }.isSuccess
     }
 }
