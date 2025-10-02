@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -22,6 +24,7 @@ kotlin {
         }.configure {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
+        androidResources.enable = true
     }
 
     // For iOS targets, this is also where you should
@@ -62,6 +65,8 @@ kotlin {
 //                implementation(libs.kotlin.stdlib)
                 // for testing
                 implementation(libs.kotlin.test)
+                implementation(compose.runtime)
+                implementation(compose.components.resources)
             }
         }
 

@@ -1,6 +1,5 @@
 package com.pega.constellation.sdk.kmp.test.mock
 
-import android.R.attr.path
 import android.content.Context
 import android.util.Log
 import com.pega.constellation.sdk.kmp.test.mock.handlers.CdnHandler
@@ -9,6 +8,7 @@ import com.pega.constellation.sdk.kmp.test.mock.handlers.DxCasesHandler
 import com.pega.constellation.sdk.kmp.test.mock.handlers.DxDataViewsHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
+import constellation_mobile_sdk.test.generated.resources.Res
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
@@ -43,7 +43,9 @@ class MockInterceptor(private val context: Context) : Interceptor {
         is Error -> message.toResponseBody().toResponse(request, code)
     }
 
-    private fun Context.asset(asset: String) = assets.open(asset).bufferedReader().readText()
+    private fun Context.asset(asset: String) = assets.open(asset.formatFileUri()).bufferedReader().readText()
+
+    private fun String.formatFileUri() = Res.getUri("files/$this").removePrefix(ANDROID_ASSETS_PREFIX)
 
     private fun ResponseBody.toResponse(request: Request, code: Int) = Response.Builder()
         .request(request)
@@ -58,6 +60,7 @@ class MockInterceptor(private val context: Context) : Interceptor {
     companion object {
         private const val TAG = "MockInterceptor"
         const val DX_API_PATH = "/prweb/api/application/v2/"
+        private const val ANDROID_ASSETS_PREFIX = "file:///android_asset/"
 
         fun Request.isDxApi(path: String) = url.encodedPath.startsWith(DX_API_PATH + path)
 

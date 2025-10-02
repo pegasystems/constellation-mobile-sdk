@@ -19,14 +19,81 @@ import kotlin.time.Duration.Companion.seconds
 
 abstract class ConstellationSdkBaseTest {
     protected lateinit var engine: ConstellationSdkEngine
+    private val config = buildSdkConfig()
 
     @Test
     fun test_initialization() = runTest {
-        val sdk = ConstellationSdk.create(buildSdkConfig(), engine)
+        val sdk = ConstellationSdk.create(config, engine)
         assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()
         sdk.assertState<State.Ready>()
+    }
+
+    @Test
+    fun test_initialization_with_invalid_url() = runTest {
+        val invalidConfig = config.copy(pegaUrl = "https://invalid.url")
+        val sdk = ConstellationSdk.create(invalidConfig, engine)
+        assertEquals(State.Initial, sdk.state.value)
+        sdk.createCase(CASE_CLASS)
+        sdk.assertState<State.Loading>()
+        sdk.assertError { it == "Engine failed to load init scripts" }
+    }
+
+    @Test
+    fun test_initialization_with_invalid_version() = runTest {
+        val invalidConfig = config.copy(pegaVersion = "1.2.3")
+        val sdk = ConstellationSdk.create(invalidConfig, engine)
+        assertEquals(State.Initial, sdk.state.value)
+        sdk.createCase(CASE_CLASS)
+        sdk.assertState<State.Loading>()
+        sdk.assertError { it.contains("Unsupported Pega version: 1.2.3. Supported version is between 23.1.0 and") }
+    }
+
+    @Test
+    fun test_initialization_invalid_case_id() = runTest {
+        val sdk = ConstellationSdk.create(config, engine)
+        sdk.createCase("DIXL-MediaCo-Work-Invalid-Case-Id")
+        sdk.assertError { it.contains("Constellation SDK initialization failed!") }
+    }
+
+    @Test
+    fun test_component_structure() = runTest {
+        val sdk = ConstellationSdk.create(config, engine)
+        sdk.createCase(CASE_CLASS)
+        val root = sdk.assertState<State.Ready>().root
+        assertEquals(
+            """
+                RootContainer#1
+                -ViewContainer#2
+                --View#3
+                ---OneColumn#4
+                ----Region#5
+                -----View#6
+                ------Region#7
+                -------View#8
+                --------FlowContainer#9
+                ---------Assignment#10
+                ----------AssignmentCard#11
+                -----------View#12
+                ------------DefaultForm#13
+                -------------Region#14
+                --------------TextInput#15
+                --------------TextInput#16
+                --------------TextInput#17
+                --------------Date#18
+                --------------URL#19
+                --------------TextArea#20
+                --------------View#21
+                ---------------DefaultForm#23
+                ----------------Region#24
+                -----------------Checkbox#25
+                -----------------TextArea#26
+                --------------Email#22
+                
+                """.trimIndent(),
+            root.structure()
+        )
     }
 
     companion object {

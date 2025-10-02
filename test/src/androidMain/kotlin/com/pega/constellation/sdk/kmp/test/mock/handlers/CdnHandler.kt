@@ -11,9 +11,7 @@ class CdnHandler : MockHandler {
         "https://release.constellation.pega.io/8.24.1/react/prod/bootstrap-shell.js" to "responses/cdn/bootstrap-shell.js",
         "https://staging-cdn.constellation.pega.io/8.24.2-422/react/prod/lib_asset.json" to "responses/cdn/lib_asset.json",
         "https://staging-cdn.constellation.pega.io/8.24.2-422/react/prod/prerequisite/constellation-core.HASH.js" to "responses/cdn/constellation-core.js",
-    ).mapValues {
-        MockResponse.Asset(it.value)
-    }
+    ).mapValues { MockResponse.Asset(it.value) }
 
     override fun canHandle(request: Request) = assets.containsKey(request.rawUrlWithHashPlaceholder)
 
