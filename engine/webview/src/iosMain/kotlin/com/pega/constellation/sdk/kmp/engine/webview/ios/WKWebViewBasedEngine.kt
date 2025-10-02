@@ -28,6 +28,7 @@ import platform.WebKit.WKWebViewConfiguration
 import platform.darwin.NSObject
 
 fun ComponentScript.assetPath() = "$COMPONENT_ASSETS_PREFIX$file"
+
 data class ComponentEvent(
     val id: Int,
     val eventContent: String
@@ -103,7 +104,7 @@ class WKWebViewBasedEngine(
             debuggable =  config.debuggable
         )
 
-        val scripts = formHandler.componentManager.getComponentDefinitions()
+        val customAndOverriddenComponents = formHandler.componentManager.getCustomComponentDefinitions()
             .mapNotNull { definition ->
                 definition.script?.assetPath()?.let { path ->
                     definition.type.type to path
@@ -112,7 +113,7 @@ class WKWebViewBasedEngine(
             .toMap()
             .let { Json.encodeToString(MapSerializer(String.serializer(), String.serializer()), it) }
 
-        initScript = buildInitScript(scripts, engineConfig)
+        initScript = buildInitScript(customAndOverriddenComponents, engineConfig)
 
         webView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
@@ -148,23 +149,27 @@ class WKWebViewBasedEngine(
 
     @OptIn(ExperimentalForeignApi::class)
     private fun registerCustomHTTPSchemeHandler(config: WKWebViewConfiguration) {
-        applyTweaks()
+        if (!tweaksApplied) {
+            applyTweaks()
+            tweaksApplied = true
+        }
         allowForHTTPSchemeHandlerRegistration = true
         config.setURLSchemeHandler(resourceHandler, forURLScheme = "http")
         config.setURLSchemeHandler(resourceHandler, forURLScheme = "https")
         allowForHTTPSchemeHandlerRegistration = false
     }
 
-    private fun buildInitScript(scripts: String, configuration: EngineConfiguration): String {
+    private fun buildInitScript(customAndOverriddenComponents: String, configuration: EngineConfiguration): String {
         val configString = configuration.toJsonString()
         return """
         window.onload = function() {
-           window.init('$configString', '$scripts');
+           window.init('$configString', '$customAndOverriddenComponents');
         }
         """.trimIndent()
     }
     companion object {
         private const val TAG = "WKWebViewBasedEngine"
         const val COMPONENT_ASSETS_PREFIX = "/constellation-mobile-sdk-assets/components/"
+        private var tweaksApplied = false
     }
 }

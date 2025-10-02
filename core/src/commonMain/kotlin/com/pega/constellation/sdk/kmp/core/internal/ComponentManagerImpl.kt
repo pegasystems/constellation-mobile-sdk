@@ -19,7 +19,7 @@ internal class ComponentManagerImpl(
     private val definitions = (DefaultDefinitions + customDefinitions).associateBy { it.type }
     private var alertComponent: AlertComponent = AlertComponent()
 
-    override fun getComponentDefinitions() = customDefinitions
+    override fun getCustomComponentDefinitions() = customDefinitions
 
     override fun addComponent(context: ComponentContext) =
         produceComponent(context).also { components[context.id] = it }

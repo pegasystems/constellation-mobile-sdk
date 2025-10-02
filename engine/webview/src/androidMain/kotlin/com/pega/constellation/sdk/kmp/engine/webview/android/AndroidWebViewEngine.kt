@@ -77,7 +77,7 @@ class AndroidWebViewEngine(
                 put("caseClassName", caseClassName)
                 put("startingFields", JSONObject(startingFields))
             }.toString(),
-            scripts = componentManager.getComponentDefinitions()
+            scripts = componentManager.getCustomComponentDefinitions()
                 .filter { it.script != null }
                 .associate { it.type.type to it.script!!.assetPath(context) }
                 .let { JSONObject(it) }

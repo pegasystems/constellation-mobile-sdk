@@ -24,7 +24,6 @@ BOOL swizzledMethodImpl(id self, SEL _cmd, id arg) {
 
 
 void applyTweaks() {
-
     Class cls = [WKWebView class];
     Class metaCls = object_getClass(cls);
     SEL sel = sel_registerName("pms_handlesURLScheme:");

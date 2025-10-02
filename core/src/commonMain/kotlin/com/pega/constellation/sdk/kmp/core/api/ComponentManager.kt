@@ -2,19 +2,17 @@ package com.pega.constellation.sdk.kmp.core.api
 
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
 
 /**
  * Manages components within the system, providing methods to retrieve, add, update, and remove components.
  */
 interface ComponentManager {
     /**
-     * Retrieves all component definitions.
-     * @return A list of component definitions.
+     * Retrieves all custom components and component overrides definitions.
+     * @return A list of custom component definitions.
      */
-    fun getComponentDefinitions(): List<ComponentDefinition>
+    fun getCustomComponentDefinitions(): List<ComponentDefinition>
 
     /**
      * Retrieves a component by its unique identifier.

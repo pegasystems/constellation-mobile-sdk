@@ -15,7 +15,7 @@ class ComponentAssetsProvider(
     override fun provideData(url: NSURL): NSData {
         val fileName = url.lastPathComponent ?: throw LocalProviderError.FileNotFound
 
-        val componentFile = componentManager.getComponentDefinitions()
+        val componentFile = componentManager.getCustomComponentDefinitions()
             .mapNotNull { it.script?.file }
             .firstOrNull { it.endsWith(fileName) }
             ?: throw LocalProviderError.FileNotFound
