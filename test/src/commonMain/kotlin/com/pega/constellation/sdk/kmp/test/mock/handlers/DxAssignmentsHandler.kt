@@ -4,14 +4,14 @@ import com.pega.constellation.sdk.kmp.test.mock.MockHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import com.pega.constellation.sdk.kmp.test.mock.Request
+import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 
 class DxAssignmentsHandler : MockHandler {
     private val regex = Regex(".*/assignments/(.*)/actions/(.*)")
 
-    override fun canHandle(request: Request) = request.isDxApi("assignments")
+    override fun canHandle(request: MockRequest) = request.isDxApi("assignments")
 
-    override fun handle(request: Request): MockResponse {
+    override fun handle(request: MockRequest): MockResponse {
         // we should check path
         val match = regex.find(request.url) ?: return Error(400, "Invalid request")
         val assignmentId = match.groupValues[1]

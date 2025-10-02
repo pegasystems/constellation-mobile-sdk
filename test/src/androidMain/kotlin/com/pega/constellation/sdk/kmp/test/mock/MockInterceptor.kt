@@ -30,7 +30,7 @@ class MockInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain.request()
         .apply { Log.i(TAG, "request: [$method] $url") }
         .runCatching {
-            val mockedRequest = Request(method, url.toString(), body?.string())
+            val mockedRequest = MockRequest(method, url.toString(), body?.string())
             val handler = handlers.firstOrNull { it.canHandle(mockedRequest) }
             val response = handler?.handle(mockedRequest)
             requireNotNull(response) { "Missing handler" }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ ! "${PWD}" == *"shared/responses"* ]]; then
-    echo "Please run this script from shared/responses subdir of repository"
+if [[ ! "${PWD}" == *"files/responses"* ]]; then
+    echo "Please run this script from files/responses subdir of repository"
     exit 1
 fi
 
@@ -35,10 +35,4 @@ echo "Downloading ${CONSTELLATION_CORE_URL}"
 curl --compressed "${CONSTELLATION_CORE_URL}" -o "cdn/constellation-core.js"
 echo "First 256 chars from downloaded file (for verification)"
 head -c 256 "cdn/bootstrap-shell.js"
-echo
-echo
-echo "Android does not follow symlinks and instead will push broken symlink to the device"
-echo "instead of following symlink while copying resources"
-echo "Copying responses to androidTest directory instead"
-rm -rf android/sdk/src/androidTest/assets/responses/cdn || true
-cp -R cdn ../../android/sdk/src/androidTest/assets/responses
+

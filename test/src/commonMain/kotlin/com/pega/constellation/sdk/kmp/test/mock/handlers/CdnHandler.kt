@@ -3,7 +3,7 @@ package com.pega.constellation.sdk.kmp.test.mock.handlers
 import com.pega.constellation.sdk.kmp.test.mock.MockHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import com.pega.constellation.sdk.kmp.test.mock.Request
+import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 
 
 class CdnHandler : MockHandler {
@@ -13,14 +13,14 @@ class CdnHandler : MockHandler {
         "https://staging-cdn.constellation.pega.io/8.24.2-422/react/prod/prerequisite/constellation-core.HASH.js" to "responses/cdn/constellation-core.js",
     ).mapValues { MockResponse.Asset(it.value) }
 
-    override fun canHandle(request: Request) = assets.containsKey(request.rawUrlWithHashPlaceholder)
+    override fun canHandle(request: MockRequest) = assets.containsKey(request.rawUrlWithHashPlaceholder)
 
-    override fun handle(request: Request) = assets[request.rawUrlWithHashPlaceholder] ?: Error()
+    override fun handle(request: MockRequest) = assets[request.rawUrlWithHashPlaceholder] ?: Error()
 
-    private val Request.rawUrl: String
+    private val MockRequest.rawUrl: String
         get() = url.substringBefore("?")
 
-    private val Request.rawUrlWithHashPlaceholder: String
+    private val MockRequest.rawUrlWithHashPlaceholder: String
         get() {
             // replace hash in the JS file name to the literal string 'HASH'
             val hashRegex = "(/[A-Za-z_-]+\\.)([a-f0-9]+\\.js)".toRegex()

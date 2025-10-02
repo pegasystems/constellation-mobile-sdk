@@ -4,15 +4,15 @@ import com.pega.constellation.sdk.kmp.test.mock.MockHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import com.pega.constellation.sdk.kmp.test.mock.Request
+import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class DxCasesHandler : MockHandler {
-    override fun canHandle(request: Request) = request.isDxApi("cases")
+    override fun canHandle(request: MockRequest) = request.isDxApi("cases")
 
-    override fun handle(request: Request): MockResponse {
+    override fun handle(request: MockRequest): MockResponse {
         return when (request.method) {
             "POST" -> handlePost(request)
             "DELETE" -> handleDelete(request)
@@ -20,7 +20,7 @@ class DxCasesHandler : MockHandler {
         }
     }
 
-    private fun handlePost(request: Request): MockResponse {
+    private fun handlePost(request: MockRequest): MockResponse {
         val body = request.body ?: return Error(400, "Missing request body")
         val caseTypeId =
             Json.parseToJsonElement(body).jsonObject.getValue("caseTypeID").jsonPrimitive.content
@@ -32,7 +32,7 @@ class DxCasesHandler : MockHandler {
         }
     }
 
-    private fun handleDelete(request: Request) =
+    private fun handleDelete(request: MockRequest) =
         if (request.url.contains("S-17098")) {
             Asset("responses/dx/cases/SDKTesting-DELETE.json")
         } else {
