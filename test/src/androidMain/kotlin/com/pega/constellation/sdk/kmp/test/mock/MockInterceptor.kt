@@ -30,8 +30,9 @@ class MockInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain.request()
         .apply { Log.i(TAG, "request: [$method] $url") }
         .runCatching {
-            val handler = handlers.firstOrNull { it.canHandle(this) }
-            val response = handler?.handle(this)
+            val mockedRequest = Request(method, url.toString(), body?.string())
+            val handler = handlers.firstOrNull { it.canHandle(mockedRequest) }
+            val response = handler?.handle(mockedRequest)
             requireNotNull(response) { "Missing handler" }
         }
         .getOrElse { Error(message = it.message ?: "Unknown error") }
@@ -59,10 +60,7 @@ class MockInterceptor(private val context: Context) : Interceptor {
 
     companion object {
         private const val TAG = "MockInterceptor"
-        const val DX_API_PATH = "/prweb/api/application/v2/"
         private const val ANDROID_ASSETS_PREFIX = "file:///android_asset/"
-
-        fun Request.isDxApi(path: String) = url.encodedPath.startsWith(DX_API_PATH + path)
 
         fun RequestBody.string() = Buffer().apply { writeTo(this) }.readUtf8()
     }

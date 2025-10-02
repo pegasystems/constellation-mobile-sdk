@@ -3,7 +3,7 @@ package com.pega.constellation.sdk.kmp.test.mock.handlers
 import com.pega.constellation.sdk.kmp.test.mock.MockHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import okhttp3.Request
+import com.pega.constellation.sdk.kmp.test.mock.Request
 
 
 class CdnHandler : MockHandler {
@@ -18,7 +18,7 @@ class CdnHandler : MockHandler {
     override fun handle(request: Request) = assets[request.rawUrlWithHashPlaceholder] ?: Error()
 
     private val Request.rawUrl: String
-        get() = url.newBuilder().query(null).build().toString()
+        get() = url.substringBefore("?")
 
     private val Request.rawUrlWithHashPlaceholder: String
         get() {

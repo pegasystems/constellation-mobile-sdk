@@ -1,13 +1,13 @@
 package com.pega.constellation.sdk.kmp.test.mock.handlers
 
 import com.pega.constellation.sdk.kmp.test.mock.MockHandler
-import com.pega.constellation.sdk.kmp.test.mock.MockInterceptor.Companion.isDxApi
-import com.pega.constellation.sdk.kmp.test.mock.MockInterceptor.Companion.string
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import okhttp3.Request
-import org.json.JSONObject
+import com.pega.constellation.sdk.kmp.test.mock.Request
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class DxCasesHandler : MockHandler {
     override fun canHandle(request: Request) = request.isDxApi("cases")
@@ -21,8 +21,9 @@ class DxCasesHandler : MockHandler {
     }
 
     private fun handlePost(request: Request): MockResponse {
-        val body = request.body?.string() ?: return Error(400, "Missing request body")
-        val caseTypeId = JSONObject(body).getString("caseTypeID")
+        val body = request.body ?: return Error(400, "Missing request body")
+        val caseTypeId =
+            Json.parseToJsonElement(body).jsonObject.getValue("caseTypeID").jsonPrimitive.content
         return when (caseTypeId) {
             "DIXL-MediaCo-Work-SDKTesting" -> Asset("responses/dx/cases/SDKTesting-POST.json")
             "DIXL-MediaCo-Work-NewService" -> Asset("responses/dx/cases/NewService-POST.json")
@@ -32,7 +33,7 @@ class DxCasesHandler : MockHandler {
     }
 
     private fun handleDelete(request: Request) =
-        if (request.url.encodedPath.contains("S-17098")) {
+        if (request.url.contains("S-17098")) {
             Asset("responses/dx/cases/SDKTesting-DELETE.json")
         } else {
             Error(500, "Missing response for ${request.url}")
