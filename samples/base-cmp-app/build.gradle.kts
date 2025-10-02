@@ -8,8 +8,8 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.pega.constellation.sdk.kmp.samples.basecmpapp"
-        compileSdk = 36
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
         @Suppress("UnstableApiUsage")
         androidResources.enable = true

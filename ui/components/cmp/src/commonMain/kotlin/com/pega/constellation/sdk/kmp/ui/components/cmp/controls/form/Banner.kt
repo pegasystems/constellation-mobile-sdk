@@ -89,7 +89,7 @@ enum class BannerVariant(val title: String, val colorRes: Color, val iconRes: Dr
     SUCCESS("Success", BannerColors.Success, Res.drawable.baseline_done_48)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BannerUrgentPreview() {
     Banner(
@@ -102,7 +102,7 @@ fun BannerUrgentPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BannerWarningPreview() {
     Banner(
@@ -111,7 +111,7 @@ fun BannerWarningPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BannerInfoPreview() {
     Banner(
@@ -120,7 +120,7 @@ fun BannerInfoPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BannerSuccessPreview() {
     Banner(

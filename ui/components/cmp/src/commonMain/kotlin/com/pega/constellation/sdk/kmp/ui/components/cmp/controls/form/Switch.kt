@@ -66,7 +66,7 @@ fun Switch(
 
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreview() {
     var value by remember { mutableStateOf(false) }
@@ -78,7 +78,7 @@ fun SwitchPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreviewLabel() {
     var value by remember { mutableStateOf(false) }
@@ -92,7 +92,7 @@ fun SwitchPreviewLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreviewHiddenLabel() {
     var value by remember { mutableStateOf(false) }
@@ -106,7 +106,7 @@ fun SwitchPreviewHiddenLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreviewError() {
     var value by remember { mutableStateOf(false) }
@@ -119,7 +119,7 @@ fun SwitchPreviewError() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreviewRequired() {
     var value by remember { mutableStateOf(false) }
@@ -132,7 +132,7 @@ fun SwitchPreviewRequired() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreviewDisabled() {
     var value by remember { mutableStateOf(false) }
@@ -145,7 +145,7 @@ fun SwitchPreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreviewReadOnly() {
     var value by remember { mutableStateOf(false) }
@@ -158,7 +158,7 @@ fun SwitchPreviewReadOnly() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SwitchPreviewEmptyCaption() {
     var value by remember { mutableStateOf(false) }

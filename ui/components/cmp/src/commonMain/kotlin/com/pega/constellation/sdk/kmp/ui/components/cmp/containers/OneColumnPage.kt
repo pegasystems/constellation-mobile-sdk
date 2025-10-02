@@ -28,7 +28,7 @@ fun OneColumnPage(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun OneColumnPagePreview() {
     var textValue by remember { mutableStateOf("John Doe") }

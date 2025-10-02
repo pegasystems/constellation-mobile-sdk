@@ -40,7 +40,7 @@ fun Url(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UrlPreview() {
     var value by remember { mutableStateOf("") }
@@ -54,7 +54,7 @@ fun UrlPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UrlPreviewHiddenLabel() {
     var value by remember { mutableStateOf("https://pega.com") }
@@ -68,7 +68,7 @@ fun UrlPreviewHiddenLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UrlPreviewError() {
     var value by remember { mutableStateOf("foobar") }
@@ -82,7 +82,7 @@ fun UrlPreviewError() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UrlPreviewRequired() {
     var value by remember { mutableStateOf("https://portal.pega.com") }
@@ -97,7 +97,7 @@ fun UrlPreviewRequired() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UrlPreviewDisabled() {
     var value by remember { mutableStateOf("https://time.pega.com") }
@@ -111,7 +111,7 @@ fun UrlPreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UrlPreviewReadOnly() {
     var value by remember { mutableStateOf("https://tango.pega.com") }

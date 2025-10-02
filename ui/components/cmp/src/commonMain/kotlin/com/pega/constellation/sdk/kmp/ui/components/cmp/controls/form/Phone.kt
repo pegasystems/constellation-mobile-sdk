@@ -61,7 +61,7 @@ private fun LeadingIcon(value: String, showCountryFlag: Boolean) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PhonePreview() {
     var value by remember { mutableStateOf("+1-242999888777") }
@@ -89,7 +89,7 @@ fun PhonePreviewNoCountryFlag() {
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PhonePreviewEmpty() {
     var value by remember { mutableStateOf("") }

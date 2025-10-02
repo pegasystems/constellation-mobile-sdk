@@ -61,7 +61,7 @@ fun MediaCoTopAppBar(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview
+@Preview(widthDp = 500)
 @Composable
 fun MediaCoTopAppBarPreview() {
     MediaCoTheme {

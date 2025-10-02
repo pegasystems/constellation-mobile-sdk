@@ -8,8 +8,8 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.pega.constellation.sdk.kmp.ui.renderer.cmp"
-        compileSdk = 36
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {

@@ -25,7 +25,7 @@ fun Column(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ColumnPreview() {
     Column(Modifier.fillMaxSize().padding(16.dp)) {

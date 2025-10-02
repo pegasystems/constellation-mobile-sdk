@@ -94,7 +94,7 @@ fun RadioButton(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun RadioButtonsPreview() {
     var value by remember { mutableStateOf("2") }
@@ -114,7 +114,7 @@ fun RadioButtonsPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun RadioButtonsEmptyPreview() {
     var value by remember { mutableStateOf("2") }

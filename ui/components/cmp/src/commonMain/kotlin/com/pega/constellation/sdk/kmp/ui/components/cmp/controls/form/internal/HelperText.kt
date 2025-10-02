@@ -19,25 +19,25 @@ internal fun HelperText(text: String, validateMessage: String, disabled: Boolean
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HelperTextPreview() {
     HelperText(text = "Helper text", validateMessage = "", disabled = false, readOnly = false)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HelperTextPreviewValidation() {
     HelperText(text = "Helper text", validateMessage = "Error!", disabled = false, readOnly = false)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HelperTextPreviewValidationDisabled() {
     HelperText(text = "Helper text", validateMessage = "Error!", disabled = true, readOnly = false)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HelperTextPreviewValidationReadonly() {
     HelperText(text = "Helper text", validateMessage = "Error!", disabled = false, readOnly = true)

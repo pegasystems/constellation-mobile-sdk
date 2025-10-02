@@ -32,7 +32,7 @@ fun Confirm(message: String, onConfirm: () -> Unit, onCancel: () -> Unit) {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ConfirmPreview() {
     Confirm(

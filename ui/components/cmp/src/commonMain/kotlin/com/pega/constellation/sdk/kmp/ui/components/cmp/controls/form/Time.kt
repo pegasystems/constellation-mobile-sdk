@@ -73,7 +73,7 @@ fun Time(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TimePreview() {
     var value: LocalTime? by remember { mutableStateOf(null) }
@@ -83,50 +83,70 @@ fun TimePreview() {
         value = value,
         label = "TV news",
         helperText = "select time of news",
-        onValueChange = { value = it }
+        onValueChange = { value = it },
+        clockFormat = ClockFormat.H_24
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TimePreviewDisabled() {
     Time(
         value = LocalTime.parse("19:30"),
         label = "TV news",
         disabled = true,
-        onValueChange = { error("unexpected") }
+        onValueChange = { error("unexpected") },
+        clockFormat = ClockFormat.H_24
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TimePreviewReadOnly() {
     Time(
         value = LocalTime.parse("19:30"),
         label = "TV news",
         readOnly = true,
-        onValueChange = { error("unexpected") }
+        onValueChange = { error("unexpected") },
+        clockFormat = ClockFormat.H_24
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TimePreviewRequired() {
     Time(
         value = LocalTime.parse("19:30"),
         label = "TV news",
-        required = true
+        required = true,
+        clockFormat = ClockFormat.H_24
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TimePreviewValidateMessage() {
     Time(
         value = LocalTime.parse("19:30"),
         label = "TV news",
         validateMessage = "Some error!",
-        helperText = "select time of news"
+        helperText = "select time of news",
+        clockFormat = ClockFormat.H_24
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TimePreviewH12() {
+    var value: LocalTime? by remember { mutableStateOf(null) }
+
+    Time(
+        modifier = Modifier.padding(8.dp),
+        value = value,
+        label = "TV news",
+        helperText = "select time of news",
+        onValueChange = { value = it },
+        clockFormat = ClockFormat.H_12
     )
 }
 

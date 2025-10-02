@@ -36,7 +36,7 @@ fun Snackbar(
 /**
  * run interactive mode to see preview
  */
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SnackbarPreview() {
     val messages = listOf(

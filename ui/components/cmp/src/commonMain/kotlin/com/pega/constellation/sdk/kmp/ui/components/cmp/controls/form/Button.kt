@@ -31,19 +31,19 @@ fun Button(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ButtonPreview() {
     Button(title = "Submit")
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ButtonLongTextPreview() {
     Button(title = "Save for later")
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ButtonPreviewCancel() {
     Button(

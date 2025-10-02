@@ -69,7 +69,7 @@ fun Date(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DatePreview() {
     var value: LocalDate? by remember { mutableStateOf(null) }
@@ -83,7 +83,7 @@ fun DatePreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DatePreviewDisabled() {
     Date(
@@ -94,7 +94,7 @@ fun DatePreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DatePreviewReadOnly() {
     Date(
@@ -105,7 +105,7 @@ fun DatePreviewReadOnly() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DatePreviewRequired() {
     Date(
@@ -115,7 +115,7 @@ fun DatePreviewRequired() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DatePreviewValidateMessage() {
     Date(

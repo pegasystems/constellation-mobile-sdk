@@ -23,7 +23,7 @@ fun Row(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun RowPreview() {
     Row(

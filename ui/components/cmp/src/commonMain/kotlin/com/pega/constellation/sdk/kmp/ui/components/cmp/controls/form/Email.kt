@@ -43,7 +43,7 @@ fun Email(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun EmailPreview() {
     var value by remember { mutableStateOf("") }
@@ -57,7 +57,7 @@ fun EmailPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun EmailPreviewHiddenLabel() {
     var value by remember { mutableStateOf("John.Doe@pega.com") }
@@ -71,7 +71,7 @@ fun EmailPreviewHiddenLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun EmailPreviewError() {
     var value by remember { mutableStateOf("John.Doe@pega.com") }
@@ -85,7 +85,7 @@ fun EmailPreviewError() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun EmailPreviewRequired() {
     var value by remember { mutableStateOf("John.Doe@pega.com") }
@@ -100,7 +100,7 @@ fun EmailPreviewRequired() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun EmailPreviewDisabled() {
     var value by remember { mutableStateOf("John.Doe@pega.com") }
@@ -114,7 +114,7 @@ fun EmailPreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun EmailPreviewReadOnly() {
     var value by remember { mutableStateOf("John.Doe@pega.com") }

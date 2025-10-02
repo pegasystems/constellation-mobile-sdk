@@ -94,7 +94,7 @@ private const val MAX_VALUE = 1E8
 private fun DecimalFormat.formatOrDefault(value: String, default: String) =
     runCatching { format(value.toDouble()) }.getOrDefault(default)
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DecimalPreviewInteractive() {
     var value by remember { mutableStateOf("1003.732") }
@@ -111,7 +111,7 @@ fun DecimalPreviewInteractive() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DecimalPreviewWithNoGrouping() {
     var value by remember { mutableStateOf("1234567.89") }
@@ -123,7 +123,7 @@ fun DecimalPreviewWithNoGrouping() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DecimalPreviewWithGrouping() {
     var value by remember { mutableStateOf("1234567.89") }
@@ -135,7 +135,7 @@ fun DecimalPreviewWithGrouping() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DecimalPreviewWithPrecision() {
     var value by remember { mutableStateOf("1234567.89") }
@@ -147,7 +147,7 @@ fun DecimalPreviewWithPrecision() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DecimalPreviewWithoutPrecision() {
     var value by remember { mutableStateOf("1234567") }

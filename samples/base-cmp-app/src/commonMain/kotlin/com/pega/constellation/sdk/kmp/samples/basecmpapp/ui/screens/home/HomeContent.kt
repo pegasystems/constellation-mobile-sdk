@@ -65,7 +65,7 @@ private fun ContentHeader(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SampleContentPreview() {
     MediaCoTheme {
@@ -74,7 +74,7 @@ fun SampleContentPreview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SampleContentPreview2() {
     MediaCoTheme {
@@ -83,7 +83,7 @@ fun SampleContentPreview2() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SampleContentPreview3() {
     MediaCoTheme {
@@ -92,7 +92,7 @@ fun SampleContentPreview3() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ContentHeaderPreview() {
     MediaCoTheme {

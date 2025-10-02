@@ -41,7 +41,7 @@ fun TextArea(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextAreaPreview() {
     var value by remember { mutableStateOf("") }
@@ -55,7 +55,7 @@ fun TextAreaPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextAreaPreviewHiddenLabel() {
     var value by remember { mutableStateOf("John Doe") }
@@ -69,7 +69,7 @@ fun TextAreaPreviewHiddenLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextAreaPreviewError() {
     var value by remember { mutableStateOf("John Doe") }
@@ -83,7 +83,7 @@ fun TextAreaPreviewError() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextAreaPreviewRequired() {
     var value by remember { mutableStateOf("John Snow") }
@@ -98,7 +98,7 @@ fun TextAreaPreviewRequired() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextAreaPreviewDisabled() {
     var value by remember { mutableStateOf("John Snow") }
@@ -112,7 +112,7 @@ fun TextAreaPreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextAreaPreviewReadOnly() {
     var value by remember { mutableStateOf("John Snow") }

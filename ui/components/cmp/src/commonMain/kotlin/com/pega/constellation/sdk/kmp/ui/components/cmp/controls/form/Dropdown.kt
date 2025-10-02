@@ -84,7 +84,7 @@ fun Dropdown(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DropdownPreview() {
     var value by remember { mutableStateOf("") }
@@ -104,7 +104,7 @@ fun DropdownPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DropdownPreviewRequired() {
     var value by remember { mutableStateOf("value2") }
@@ -125,7 +125,7 @@ fun DropdownPreviewRequired() {
 
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DropdownPreviewDisabled() {
     var value by remember { mutableStateOf("value2") }
@@ -145,7 +145,7 @@ fun DropdownPreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DropdownPreviewReadOnly() {
     var value by remember { mutableStateOf("value2") }

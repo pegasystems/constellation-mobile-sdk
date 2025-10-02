@@ -42,31 +42,31 @@ private fun textColor(disabled: Boolean) =
         else -> Color.Black
     }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LabelPreview() {
     Label(label = "Label", required = false, fontSize = 16.sp)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LabelPreviewRequired() {
     Label(label = "Label", required = true)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LabelPreviewRequiredDisabled() {
     Label(label = "Label", required = true, disabled = true)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LabelPreviewHidden() {
     Label(label = "Label", required = true, hideLabel = true)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LabelPreviewFontSize() {
     Label(label = "Label", fontSize = 30.sp)

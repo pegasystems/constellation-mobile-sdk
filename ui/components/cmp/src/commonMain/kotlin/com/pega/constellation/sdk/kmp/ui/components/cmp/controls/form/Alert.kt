@@ -23,7 +23,7 @@ fun Alert(message: String, onConfirm: () -> Unit) {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun AlertPreview() {
     Alert(

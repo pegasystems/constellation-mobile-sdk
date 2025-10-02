@@ -43,7 +43,7 @@ fun Integer(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun IntegerPreview() {
     var value by remember { mutableStateOf("") }

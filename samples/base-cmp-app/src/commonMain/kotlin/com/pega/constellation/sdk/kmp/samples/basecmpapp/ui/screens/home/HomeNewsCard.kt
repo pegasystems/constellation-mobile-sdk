@@ -70,7 +70,7 @@ fun HomeNewsCard(
     }
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = 500, heightDp = 500)
 @Composable
 fun HomeNewsCardPreview() {
     MediaCoTheme {

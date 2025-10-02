@@ -17,7 +17,7 @@ fun Unsupported(label: String) {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UnsupportedPreview() {
     Box(Modifier.padding(8.dp)) {
@@ -25,7 +25,7 @@ fun UnsupportedPreview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UnsupportedLongLabelPreview() {
     Box(Modifier.padding(8.dp)) {

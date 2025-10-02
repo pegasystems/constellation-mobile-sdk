@@ -49,7 +49,7 @@ fun RowScope.NavItem(
     )
 }
 
-@Preview
+@Preview(widthDp = 500)
 @Composable
 fun SampleBottomBarPreview() {
     MediaCoTheme {

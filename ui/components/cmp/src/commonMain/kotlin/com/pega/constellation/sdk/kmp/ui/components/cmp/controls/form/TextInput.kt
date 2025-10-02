@@ -40,7 +40,7 @@ fun TextInput(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextInputPreview() {
     var value by remember { mutableStateOf("") }
@@ -54,7 +54,7 @@ fun TextInputPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextInputPreviewHiddenLabel() {
     var value by remember { mutableStateOf("John Doe") }
@@ -68,7 +68,7 @@ fun TextInputPreviewHiddenLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextInputPreviewError() {
     var value by remember { mutableStateOf("John Doe") }
@@ -82,7 +82,7 @@ fun TextInputPreviewError() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextInputPreviewRequired() {
     var value by remember { mutableStateOf("John Snow") }
@@ -97,7 +97,7 @@ fun TextInputPreviewRequired() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextInputPreviewDisabled() {
     var value by remember { mutableStateOf("John Snow") }
@@ -111,7 +111,7 @@ fun TextInputPreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TextInputPreviewReadOnly() {
     var value by remember { mutableStateOf("John Snow") }

@@ -8,8 +8,8 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.pega.constellation.sdk.kmp.ui.components.cmp"
-        compileSdk = 36
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
         @Suppress("UnstableApiUsage")
         androidResources.enable = true
@@ -37,6 +37,25 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.kotlinx.serialization.json)
+            }
+        }
+
+        androidMain {
+            dependencies {
+                androidMain {
+                    dependencies {
+                        // START: Dependencies required for @Preview to work in Android Studio
+                        // https://youtrack.jetbrains.com/projects/KMT/issues/KMT-1312/Preview-not-work-in-commonMain-with-multi-module
+                        implementation(compose.components.uiToolingPreview)
+                        implementation(compose.uiTooling)
+                        implementation(libs.androidx.activity.compose)
+                        implementation(libs.androidx.customview.poolingcontainer)
+                        implementation(libs.androidx.emoji2)
+                        implementation(libs.androidx.lifecycle.runtimeCompose)
+                        implementation(libs.androidx.core.runtime)
+                        // END: Dependencies required for @Preview to work in Android Studio
+                    }
+                }
             }
         }
     }

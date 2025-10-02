@@ -72,7 +72,7 @@ private fun formatValue(value: String, decimalPrecision: Int) =
     }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CurrencyPreview() {
     var value by remember { mutableStateOf("") }
@@ -88,7 +88,7 @@ fun CurrencyPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CurrencyPreviewNoDecimal() {
     var value by remember { mutableStateOf("") }

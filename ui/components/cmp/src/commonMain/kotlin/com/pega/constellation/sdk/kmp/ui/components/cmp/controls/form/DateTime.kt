@@ -96,7 +96,7 @@ fun DateTime(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DateTimePreview() {
     var value: LocalDateTime? by remember { mutableStateOf(null) }

@@ -66,7 +66,7 @@ fun Checkbox(
 
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreview() {
     var value by remember { mutableStateOf(false) }
@@ -78,7 +78,7 @@ fun CheckboxPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreviewLabel() {
     var value by remember { mutableStateOf(false) }
@@ -92,7 +92,7 @@ fun CheckboxPreviewLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreviewHiddenLabel() {
     var value by remember { mutableStateOf(false) }
@@ -106,7 +106,7 @@ fun CheckboxPreviewHiddenLabel() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreviewError() {
     var value by remember { mutableStateOf(false) }
@@ -119,7 +119,7 @@ fun CheckboxPreviewError() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreviewRequired() {
     var value by remember { mutableStateOf(false) }
@@ -132,7 +132,7 @@ fun CheckboxPreviewRequired() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreviewDisabled() {
     var value by remember { mutableStateOf(false) }
@@ -145,7 +145,7 @@ fun CheckboxPreviewDisabled() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreviewReadOnly() {
     var value by remember { mutableStateOf(false) }
@@ -158,7 +158,7 @@ fun CheckboxPreviewReadOnly() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckboxPreviewEmptyCaption() {
     var value by remember { mutableStateOf(false) }
