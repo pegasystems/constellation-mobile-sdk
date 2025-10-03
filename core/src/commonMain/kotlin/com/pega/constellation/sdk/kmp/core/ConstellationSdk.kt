@@ -28,8 +28,8 @@ interface ConstellationSdk {
         /**
          * Allows to create [ConstellationSdk] object.
          *
-         * @param context Android application context
          * @param config Constellation SDK configuration
+         * @param engine engine that orchestrates Pega application logic
          */
         @MainThread
         fun create(
