@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.basecmpapp
+package com.pega.constellation.sdk.kmp.engine.mock
 
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
@@ -20,9 +20,7 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlin.random.Random
 
-
-class MockSdkEngine(
-) : ConstellationSdkEngine {
+class MockSdkEngine : ConstellationSdkEngine {
     private lateinit var config: ConstellationSdkConfig
     private lateinit var handler: EngineEventHandler
 
