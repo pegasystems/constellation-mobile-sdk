@@ -1,4 +1,4 @@
-import SdkEngineWebViewKit
+import ConstellationSdk
 import Foundation
 import SwiftUI
 

@@ -1,5 +1,5 @@
 import Combine
-import SdkEngineWebViewKit
+import ConstellationSdk
 import SwiftUI
 
 struct PhoneNumberView: View {

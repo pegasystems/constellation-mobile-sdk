@@ -1,4 +1,4 @@
-import SdkEngineWebViewKit
+import ConstellationSdk
 import SwiftUI
 
 struct DateTimeComponentView: View {

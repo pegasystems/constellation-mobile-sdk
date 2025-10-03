@@ -1,6 +1,6 @@
 import Combine
 import UIKit
-import SdkEngineWebViewKit
+import ConstellationSdk
 import SwiftUI
 
 class ViewController: UIViewController {
