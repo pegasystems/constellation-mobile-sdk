@@ -7,34 +7,34 @@ import org.publicvalue.multiplatform.oidc.tokenstore.TokenStore
 @OptIn(ExperimentalOpenIdConnect::class)
 class TokenStoreMock : TokenStore() {
     override val accessTokenFlow: Flow<String?>
-        get() = TODO("Not yet implemented")
+        get() = TODO("Not implemented in mock")
     override val refreshTokenFlow: Flow<String?>
-        get() = TODO("Not yet implemented")
+        get() = TODO("Not implemented in mock")
     override val idTokenFlow: Flow<String?>
-        get() = TODO("Not yet implemented")
+        get() = TODO("Not implemented in mock")
 
     override suspend fun getAccessToken(): String? {
         return "TOKEN"
     }
 
     override suspend fun getRefreshToken(): String? {
-        TODO("Not yet implemented")
+        TODO("Not implemented in mock")
     }
 
     override suspend fun getIdToken(): String? {
-        TODO("Not yet implemented")
+        TODO("Not implemented in mock")
     }
 
     override suspend fun removeAccessToken() {
-        TODO("Not yet implemented")
+        TODO("Not implemented in mock")
     }
 
     override suspend fun removeRefreshToken() {
-        TODO("Not yet implemented")
+        TODO("Not implemented in mock")
     }
 
     override suspend fun removeIdToken() {
-        TODO("Not yet implemented")
+        TODO("Not implemented in mock")
     }
 
     override suspend fun saveTokens(
@@ -42,7 +42,6 @@ class TokenStoreMock : TokenStore() {
         refreshToken: String?,
         idToken: String?
     ) {
-        TODO("Not yet implemented")
+        TODO("Not implemented in mock")
     }
-
 }

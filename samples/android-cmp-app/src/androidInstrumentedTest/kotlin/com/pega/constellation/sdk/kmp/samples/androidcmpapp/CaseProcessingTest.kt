@@ -11,12 +11,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.runComposeUiTest
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.runner.RunWith
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-@RunWith(AndroidJUnit4::class)
 class CaseProcessingTest : ComposeTest() {
     @Test
     fun test_case_processing_sdk_testing() = runComposeUiTest {
