@@ -7,7 +7,7 @@ import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
 import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 
 class DxAssignmentsHandler : MockHandler {
-    private val regex = Regex(".*/assignments/(.*)/actions/([^?]+)") //([^?]+)
+    private val regex = Regex(".*/assignments/(.*)/actions/([^?]+)")
 
     override fun canHandle(request: MockRequest) = request.isDxApi("assignments")
 
