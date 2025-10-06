@@ -32,7 +32,7 @@ class MockSdkEngine : ConstellationSdkEngine {
         this.handler = handler
     }
 
-    override fun load(caseClassName: String, startingFields: Map<String, Any>) {
+    override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
         handler.handle(EngineEvent.Loading)
         config.componentManager.configureComponents()
         handler.handle(EngineEvent.Ready)

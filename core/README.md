@@ -19,18 +19,17 @@ To get started with the Constellation SDK, follow these steps:
 First, we need to create the *ConstellationSdk* object by calling the *create* static method
 
 ```kotlin
-val sdk = ConstellationSdk.create(context, config)
+val sdk = ConstellationSdk.create(config, engine)
 ```
 
 where:
 
-- **context** - Android application context
 - **config** - constellation sdk config object with parameters:
     - **pegaUrl** — URL to Pega server e.g.: *https://insert-url-here.example/prweb*
     - **pegaVersion** — Version of Pega server. For example, *24.1.0*. Determines the Constellation Core JS library version used by the SDK.
-    - **okHttpClient** (optional) — Instance of OkHttpClient that can be passed to the SDK for advanced networking control.
     - **componentManager** (optional) — Instance of ComponentManager that is responsible for providing component definitions and managing them in the runtime
     - **debuggable** (optional) — Flag that allows for debugging of the underlying WebView engine
+- **engine** - platform-specific implementation of *ConstellationSdkEngine* interface
 
 **2. Create Pega case using SDK**
 

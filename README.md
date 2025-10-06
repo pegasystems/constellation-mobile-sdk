@@ -4,10 +4,14 @@
 
 The **Pega Constellation Mobile SDK** is designated for Native Android and iOS applications.
 It allows to embed Pega form into existing application with the possibility of using customized UI.
-SDK allows to add new components for not supported or custom components.
 
-It utilizes Constellation Core JavaScript library and JavaScript components logic.
-JavaScript common code runs in hidden WebView which is used only as JS engine.
+The SDK allows developers to:
+- register their implementations for custom components
+- provide implementations for Pega components not yet available in the SDK
+- register overrides for existing components
+
+It utilizes Constellation JavaScript library and JavaScript components logic.
+By default the SDK uses hidden WebView as the JavaScript execution engine.
 
 ## Supported Pega use-case
 

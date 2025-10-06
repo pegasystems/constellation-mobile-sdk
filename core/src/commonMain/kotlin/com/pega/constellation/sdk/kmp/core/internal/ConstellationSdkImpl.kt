@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 internal class ConstellationSdkImpl(
-    private val config: ConstellationSdkConfig,
+    config: ConstellationSdkConfig,
     private val engine: ConstellationSdkEngine
 ) : ConstellationSdk {
     private val componentManager = config.componentManager
@@ -24,7 +24,7 @@ internal class ConstellationSdkImpl(
     }
 
     override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
-        engine.load(caseClassName, startingFields)
+        engine.createCase(caseClassName, startingFields)
     }
 
     private fun onEngineEvent(event: EngineEvent) {

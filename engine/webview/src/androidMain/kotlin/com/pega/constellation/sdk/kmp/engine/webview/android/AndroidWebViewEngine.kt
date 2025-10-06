@@ -63,7 +63,7 @@ class AndroidWebViewEngine(
         this.webView = createWebView(webViewClient)
     }
 
-    override fun load(caseClassName: String, startingFields: Map<String, Any>) {
+    override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
         handler.handle(EngineEvent.Loading)
         webViewClient.onPageLoad = { onPageLoad(caseClassName, startingFields) }
         webView.loadUrl(config.pegaUrl)

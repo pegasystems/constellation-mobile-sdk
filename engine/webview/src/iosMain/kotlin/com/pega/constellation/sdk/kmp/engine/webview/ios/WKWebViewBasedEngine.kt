@@ -91,7 +91,7 @@ class WKWebViewBasedEngine(
         this.resourceHandler.delegate = resourceProviderManager
     }
 
-    override fun load(
+    override fun createCase(
         caseClassName: String,
         startingFields: Map<String, Any>
     ) {
