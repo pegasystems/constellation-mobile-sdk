@@ -29,24 +29,29 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
-import org.publicvalue.multiplatform.oidc.tokenstore.TokenStore
+import org.publicvalue.multiplatform.oidc.tokenstore.AndroidSettingsTokenStore
 import kotlin.test.BeforeTest
 
 @OptIn(ExperimentalOpenIdConnect::class)
 abstract class ComposeTest {
     enum class Mode { MOCK_SERVER, REAL_SERVER }
 
+    private val scope = CoroutineScope(Dispatchers.Default)
     private val mode = MOCK_SERVER
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
-    private val context = instrumentation.context
+    private val context = instrumentation.targetContext
     private val authManager = AuthManager(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = scope,
         authFlowFactory = AndroidCodeAuthFlowFactory(),
-        tokenStore = TokenStoreMock()
+        tokenStore = AndroidSettingsTokenStore(context).apply {
+            scope.launch {
+                saveTokens("YOUR_TOKEN_HERE", null, null)
+            }
+        }
     )
     private val engine = AndroidWebViewEngine(
         context = context,

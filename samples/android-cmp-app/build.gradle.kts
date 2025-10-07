@@ -29,15 +29,14 @@ kotlin {
         }
 
         androidInstrumentedTest.dependencies {
+            implementation(compose.material3)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
-            implementation(compose.material3)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.kotlin.test)
             implementation(libs.androidx.ui.test.junit4)
             implementation(libs.androidx.ui.test.junit4.android)
             implementation(libs.androidx.uiautomator)
-            implementation(project(":test"))
+            implementation(libs.kotlin.test)
         }
     }
 }
@@ -54,7 +53,6 @@ android {
         versionName = "1.0"
         manifestPlaceholders["oidcRedirectScheme"] = "com.pega.mobile.constellation.sample"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
     }
     packaging {
         resources {
@@ -73,5 +71,6 @@ android {
 
     dependencies {
         debugImplementation(libs.androidx.ui.test.manifest)
+        debugImplementation(project(":test"))
     }
 }
