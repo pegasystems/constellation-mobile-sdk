@@ -29,15 +29,16 @@ struct FieldViewWrapper: View {
 
     @ViewBuilder
     private func valueView() -> some View {
-        HStack {
+        VStack(alignment: .leading, spacing: 5) {
             if !state.component.label.isEmpty {
-                Text(state.component.label)
+                Text(state.component.label).foregroundStyle(.gray)
             }
             if state.component.value.isEmpty {
                 Text("---")
             } else {
                 Text(state.component.value)
             }
-        }.font(.title3).foregroundStyle(.gray)
+        }
+        .font(.title3)
     }
 }

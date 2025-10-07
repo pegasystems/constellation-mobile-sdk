@@ -9,7 +9,7 @@ struct FieldGroupTemplateComponentView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 5) {
             ForEach(state.component.items, id: \.id) {
                 Text($0.heading).font(.title2)
                 $0.component.renderView()

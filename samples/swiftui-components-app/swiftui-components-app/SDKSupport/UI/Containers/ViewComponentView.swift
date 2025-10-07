@@ -9,7 +9,7 @@ struct ViewComponentView: View {
     }
 
     private var contentView: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 5) {
             if state.component.showLabel {
                 Text(state.component.label)
                     .font(.title2)
