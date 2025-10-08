@@ -1,9 +1,23 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
+group = "com.pega.constellation.sdk.kmp"
+version = "2.0.0"
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    id("maven-publish")
+}
+
+publishing {
+    publications {
+        withType<MavenPublication> {
+            artifactId = "engine-webview"
+        }
+    }
 }
 
 kotlin {
@@ -16,10 +30,13 @@ kotlin {
         androidResources.enable = true
     }
 
+    val xcf = XCFramework("ConstellationSdk")
+
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
         it.binaries.framework {
             baseName = "ConstellationSdk"
             export(projects.core)
+            xcf.add(this)
         }
 
         it.compilations.getByName("main") {

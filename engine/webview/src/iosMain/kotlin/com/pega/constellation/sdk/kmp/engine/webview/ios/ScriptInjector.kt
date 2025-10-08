@@ -1,7 +1,7 @@
 package com.pega.constellation.sdk.kmp.engine.webview.ios
 
 import com.pega.constellation.sdk.kmp.core.Log
-import constellation_mobile_sdk.engine.webview.generated.resources.Res
+import com.pega.constellation.sdk.kmp.webview.generated.resources.Res
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
