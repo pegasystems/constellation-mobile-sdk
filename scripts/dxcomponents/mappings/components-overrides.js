@@ -3,47 +3,29 @@ import {localSdkComponentMap} from './sdk-local-component-map.js';
 
 const TAG = "[ComponentsOverrides]";
 
-export function installComponentsOverrides(componentsOverridesStr, assetsPath) {
-  if (isIOS()) {
-    installComponentsOverridesiOS(componentsOverridesStr, assetsPath)
-  } else if (isAndroid()) {
-    installComponentsOverridesAndroid(componentsOverridesStr, assetsPath)
-  } else {
-    console.error(TAG, "Unexpected platform.")
-  }
-}
-
-function installComponentsOverridesAndroid(componentsOverridesStr, assetsPath) {
+export function installComponentsOverrides(componentsOverridesStr) {
   console.log(TAG, `Installing js components: ${componentsOverridesStr}`);
   const json = JSON.parse(componentsOverridesStr);
-  Object.entries(json).forEach(([key, value]) => {
-    console.log(TAG, `Component override: ${key}: ${value}`);
-    fetch(`${assetsPath}/${value}`)
-      .then(
-        (response) => {
-          response.text().then(textContent => {
-            import('data:text/javascript;charset=utf-8,' + textContent).then((component) => {
-              localSdkComponentMap[key] = Object.values(component)[0];
-            })
-          })
-        }
-      )
-      .catch((err) => {
-          console.error(TAG, `Failed to load ${key}: ${value} component, err: `, err);
-        }
-      )
-  })
+  Object.entries(json).forEach(([type, path]) => {
+    importComponent(type, path)
+      .then(component => {
+        localSdkComponentMap[type] = Object.values(component)[0];
+        console.log(TAG, `Installed component: ${type}`);
+      }).catch(error =>
+        console.error(TAG, `Error occurred when installing ${type}`, error)
+      );
+  });
 }
 
-function installComponentsOverridesiOS(componentsOverridesStr, assetsPath) {
-  console.log(TAG, `Installing js components...`);
-  const json = JSON.parse(componentsOverridesStr);
-  Object.entries(json).forEach(([key, value]) => {
-    console.log(TAG, `Component override: ${key}`);
-    import(`${assetsPath}/${value}`).then((component) => {
-      localSdkComponentMap[key] = Object.values(component)[0];
-    }).catch((error) => {
-      console.error(TAG, `Error occurred when installing ${key}`, error)
-    });
-  })
+function importComponent(type, path) {
+  console.log(TAG, `Importing component: ${type}: ${path}`);
+  if (isIOS()) {
+    return import(path);
+  } else if (isAndroid()) {
+    return fetch(path)
+      .then(response => response.text())
+      .then(textContent => import('data:text/javascript;charset=utf-8,' + textContent));
+  } else {
+    return Promise.reject("Unexpected platform.");
+  }
 }

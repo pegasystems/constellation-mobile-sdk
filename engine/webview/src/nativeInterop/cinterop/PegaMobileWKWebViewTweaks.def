@@ -1,0 +1,35 @@
+headers = PegaMobileWKWebViewTweaks.h
+language = Objective-C
+---
+#import "PegaMobileWKWebViewTweaks.h"
+#import <objc/runtime.h>
+#import <objc/message.h>
+#import <Foundation/Foundation.h>
+#import <WebKit/WKWebView.h>
+
+BOOL allowForHTTPSchemeHandlerRegistration = NO;
+
+BOOL swizzledMethodImpl(id self, SEL _cmd, id arg) {
+    NSString *scheme = (NSString *)arg;
+    SEL selector = sel_registerName("pms_handlesURLScheme:");
+
+    if (!allowForHTTPSchemeHandlerRegistration) {
+        return ((BOOL (*)(id, SEL, id))objc_msgSend)(self, selector, scheme);
+    }
+    if (![scheme hasPrefix:@"http"] && ![scheme hasPrefix:@"https"]) {
+        return ((BOOL (*)(id, SEL, id))objc_msgSend)(self, selector, scheme);
+    }
+    return NO;
+}
+
+
+void applyTweaks() {
+    Class cls = [WKWebView class];
+    Class metaCls = object_getClass(cls);
+    SEL sel = sel_registerName("pms_handlesURLScheme:");
+    class_addMethod(metaCls, sel, (IMP)swizzledMethodImpl, "c@:@");
+
+    Method originalMethod = class_getClassMethod(WKWebView.class, @selector(handlesURLScheme:));
+    Method swizzledMethod = class_getClassMethod(WKWebView.class, sel);
+    method_exchangeImplementations(originalMethod, swizzledMethod);
+}
