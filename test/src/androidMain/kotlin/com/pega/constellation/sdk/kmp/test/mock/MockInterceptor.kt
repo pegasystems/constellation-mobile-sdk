@@ -2,13 +2,13 @@ package com.pega.constellation.sdk.kmp.test.mock
 
 import android.content.Context
 import android.util.Log
+import com.pega.constellation.sdk.kmp.test.generated.resources.Res
 import com.pega.constellation.sdk.kmp.test.mock.handlers.CdnHandler
 import com.pega.constellation.sdk.kmp.test.mock.handlers.DxAssignmentsHandler
 import com.pega.constellation.sdk.kmp.test.mock.handlers.DxCasesHandler
 import com.pega.constellation.sdk.kmp.test.mock.handlers.DxDataViewsHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import constellation_mobile_sdk.test.generated.resources.Res
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request

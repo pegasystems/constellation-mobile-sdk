@@ -1,3 +1,8 @@
+subprojects {
+    group = "com.pega.constellation.sdk.kmp"
+    version = "2.0.0"
+}
+
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false

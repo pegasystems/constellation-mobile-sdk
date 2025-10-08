@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_plus
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.Res
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.icon_plus
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

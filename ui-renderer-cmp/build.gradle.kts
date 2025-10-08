@@ -8,14 +8,14 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.pega.constellation.sdk.kmp.core"
+        namespace = "com.pega.constellation.sdk.kmp.ui.renderer.cmp"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
         it.binaries.framework {
-            baseName = "SdkCoreKit"
+            baseName = "SdkUiRenderersCmp"
         }
     }
 
@@ -24,6 +24,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core"))
+                implementation(project(":ui-components-cmp"))
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.foundation)
@@ -31,9 +33,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
                 implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.kotlinx.serialization.json)
             }
         }
     }

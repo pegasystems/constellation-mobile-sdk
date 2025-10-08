@@ -17,10 +17,10 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(project(":core"))
-            implementation(project(":engine:webview"))
+            implementation(project(":engine-webview"))
             implementation(project(":samples:base-cmp-app"))
-            implementation(project(":ui:components:cmp"))
-            implementation(project(":ui:renderer:cmp"))
+            implementation(project(":ui-components-cmp"))
+            implementation(project(":ui-renderer-cmp"))
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.oidc.appsupport)

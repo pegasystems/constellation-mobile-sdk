@@ -54,7 +54,7 @@ kotlin {
                 implementation(libs.androidx.test.runner)
                 implementation(libs.androidx.test.core)
                 implementation(libs.androidx.test.junit)
-                implementation(project(":engine:webview"))
+                implementation(project(":engine-webview"))
                 implementation(project(":core"))
             }
         }

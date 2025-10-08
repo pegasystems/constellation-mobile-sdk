@@ -1,10 +1,10 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components
 
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
 import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.Res
 
 object CustomComponents {
     private val Slider = ComponentType("MyCompany_MyLib_Slider")
