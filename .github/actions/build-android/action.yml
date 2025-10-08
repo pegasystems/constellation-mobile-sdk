@@ -35,16 +35,15 @@ runs:
     - name: Assemble AARs
       env:
         GRADLE: ./gradlew -Dorg.gradle.console=plain --info --no-daemon
-        EMULATOR_IMAGE: 'system-images;android-${{ inputs.android-version }};google_apis;x86_64'
       shell: bash
       run: |
         rm -rf release || true
         mkdir release
-        cd android
-        $GRADLE clean assembleRelease sourcesJar
-        find . -iname "*-release.aar" | xargs -I {} cp {} ../release
-        find . -iname "sdk-sources.jar" | xargs -I {} cp {} ../release
-        rm ../release/mock*.*
+        $GRADLE :core:assemble :engine:webview:assemble :ui:components:cmp:assemble :ui:renderer:cmp:assemble
+        cp core/build/outputs/aar/core.aar release/core.aar
+        cp engine/webview/build/outputs/aar/webview.aar release/engine-webview.aar
+        cp ui/renderer/cmp/build/outputs/aar/cmp.aar release/ui-renderer-cmp.aar
+        cp ui/components/cmp/build/outputs/aar/cmp.aar release/ui-components-cmp.aar
 
     - uses: actions/upload-artifact@v4
       with:
