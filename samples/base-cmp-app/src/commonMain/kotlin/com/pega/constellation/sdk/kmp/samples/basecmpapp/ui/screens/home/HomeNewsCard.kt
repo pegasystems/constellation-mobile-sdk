@@ -17,10 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_plus_today
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.list_image_1
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.Res
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.icon_plus_today
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.list_image_1
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

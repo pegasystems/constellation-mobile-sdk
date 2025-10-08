@@ -28,8 +28,8 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":core"))
-                implementation(project(":ui:components:cmp"))
-                implementation(project(":ui:renderer:cmp"))
+                implementation(project(":ui-components-cmp"))
+                implementation(project(":ui-renderer-cmp"))
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.foundation)
@@ -45,7 +45,7 @@ kotlin {
         }
         iosMain {
             dependencies {
-                implementation(project(":engine:webview"))
+                implementation(project(":engine-webview"))
             }
         }
     }

@@ -35,11 +35,11 @@ plugins {
 }
 
 include(":core")
-include(":engine:mock")
-include(":engine:webview")
+include(":engine-mock")
+include(":engine-webview")
 include(":samples:android-cmp-app")
 include(":samples:base-cmp-app")
 include(":samples:desktop-cmp-app")
 include(":test")
-include(":ui:components:cmp")
-include(":ui:renderer:cmp")
+include(":ui-components-cmp")
+include(":ui-renderer-cmp")

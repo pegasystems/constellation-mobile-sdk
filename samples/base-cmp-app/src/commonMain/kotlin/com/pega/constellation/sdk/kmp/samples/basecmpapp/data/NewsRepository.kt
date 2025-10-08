@@ -1,10 +1,10 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.data
 
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.Res
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.list_image_1
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.list_image_2
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.list_image_3
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.list_image_4
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.list_image_1
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.list_image_2
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.list_image_3
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.list_image_4
 
 class NewsRepository {
     fun fetchNews() =

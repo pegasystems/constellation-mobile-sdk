@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_contact
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_home
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_offers
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_services
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.Res
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.icon_contact
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.icon_home
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.icon_offers
-import constellation_mobile_sdk.samples.base_cmp_app.generated.resources.icon_services
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
