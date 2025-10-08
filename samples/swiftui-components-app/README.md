@@ -16,9 +16,24 @@ during the multiplatform SDK initialization in `ConstellationSdkConfig`.
 The `Compile multiplatform framework` phase in the target definition triggers the
 compilation of a cross-platform umbrella framework that includes all required Kotlin
 projects. This phase should invoke the top-level Kotlin project required—in this case,
-`:engine:webview`, which contains the WebView-based engine and also exports the `:core`
+`:engine-webview`, which contains the WebView-based engine and also exports the `:core`
 project. If a different engine implementation is needed, this phase should be adjusted
 accordingly.
+
+### Building locally XCFramework
+
+In order to build the XCFramework with SDK locally (WebView based engine and Core modules) please run the following command in the root of the project:
+
+
+```bash
+# release build
+./gradlew :engine-webview:assembleConstellationSdkReleaseXCFramework
+
+# debug build
+./gradlew :engine-webview:assembleConstellationSdkDebugXCFramework
+```
+
+The XCFramework can be used in the sample app `swiftui-components-app`. To do so, first remove the existing `Compile multiplatform framework` run script build phase.
 
 ### Key Components
 
