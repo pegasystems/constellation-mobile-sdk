@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>PegaCaseClassName</key>
-	<string>DIXL-MediaCo-Work-NewService</string>
+	<string>O40M3A-MarekCo-Work-SDKTest2</string>
 	<key>PegaAuthConfiguration</key>
 	<dict>
 		<key>client_id</key>
-		<string>25795373220702300272</string>
+		<string>13225896606129931937</string>
 		<key>authorize_uri</key>
-		<string>https://insert-url-here.example/prweb/PRRestService/oauth2/v1/authorize</string>
+		<string>https://lab-10297-eu-central-1.internal.pegalabs.io/prweb/PRRestService/oauth2/v1/authorize</string>
 		<key>token_uri</key>
-		<string>https://insert-url-here.example/prweb/PRRestService/oauth2/v1/token</string>
+		<string>https://lab-10297-eu-central-1.internal.pegalabs.io/prweb/PRRestService/oauth2/v1/token</string>
 		<key>redirect_uris</key>
 		<array>
 			<string>com.pega.mobile.constellation.sample://redirect</string>
@@ -22,7 +22,7 @@
 		<true/>
 	</dict>
 	<key>PegaSystemURL</key>
-	<string>https://insert-url-here.example/prweb</string>
+	<string>https://lab-10297-eu-central-1.internal.pegalabs.io/prweb</string>
 	<key>PegaVersion</key>
 	<string>24.1.0</string>
 	<key>UIApplicationSceneManifest</key>
