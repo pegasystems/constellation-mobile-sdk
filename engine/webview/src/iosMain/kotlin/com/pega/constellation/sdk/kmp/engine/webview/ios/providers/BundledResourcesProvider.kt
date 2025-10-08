@@ -1,6 +1,6 @@
 package com.pega.constellation.sdk.kmp.engine.webview.ios.providers
 
-import com.pega.constellation.sdk.kmp.webview.generated.resources.Res
+import com.pega.constellation.sdk.kmp.engine.webview.webview.generated.resources.Res
 import platform.Foundation.NSData
 import platform.Foundation.NSURL
 import platform.Foundation.dataWithContentsOfURL

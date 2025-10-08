@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.Input
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.utils.CountryCodes
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.Res
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.icon_phone
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.Res
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.icon_phone
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

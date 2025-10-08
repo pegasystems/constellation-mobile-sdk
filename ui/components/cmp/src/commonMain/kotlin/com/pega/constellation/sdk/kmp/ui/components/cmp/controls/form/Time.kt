@@ -16,8 +16,8 @@ import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.I
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.TimePickerModal
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.parse
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.utils.interceptInteractionSource
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.Res
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.icon_calendar_range
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.Res
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.icon_calendar_range
 import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

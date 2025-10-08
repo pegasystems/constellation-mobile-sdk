@@ -11,7 +11,7 @@ import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewAssetLoader.PathHandler
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
-import com.pega.constellation.sdk.kmp.webview.generated.resources.Res
+import com.pega.constellation.sdk.kmp.engine.webview.webview.generated.resources.Res
 
 @SuppressLint("UseKtx")
 internal class WebViewAssetInterceptor(

@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.DatePickerModal
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.Input
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.utils.interceptInteractionSource
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.Res
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.icon_calendar_range
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.Res
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.icon_calendar_range
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

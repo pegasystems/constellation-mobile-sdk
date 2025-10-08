@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
-group = "com.pega.constellation.sdk.kmp"
+group = "com.pega.constellation.sdk.kmp.engine.webview"
 version = "2.0.0"
 
 plugins {
@@ -10,14 +10,6 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     id("maven-publish")
-}
-
-publishing {
-    publications {
-        withType<MavenPublication> {
-            artifactId = "engine-webview"
-        }
-    }
 }
 
 kotlin {

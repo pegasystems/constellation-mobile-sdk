@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.Res
-import constellation_mobile_sdk.ui.components.cmp.generated.resources.dismiss
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.Res
+import com.pega.constellation.sdk.kmp.ui.components.cmp.cmp.generated.resources.dismiss
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
