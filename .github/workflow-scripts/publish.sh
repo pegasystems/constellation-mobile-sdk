@@ -115,7 +115,7 @@ fi
 
 # We need to split below (as -F param is passed, hence below missing double quote lint for below command)
 # shellcheck disable=SC2086
-${PRE_COMMAND} gh release create "${VERSION}" ${PARAM_PRE} --fail-on-no-commits ${PARAM_NOTES} --title "${VERSION}" "ios-release/*.*" "android-release/*.*"
+${PRE_COMMAND} gh release create "${VERSION}" ${PARAM_PRE} --fail-on-no-commits ${PARAM_NOTES} --title "${VERSION}" "ios.zip" "android.zip"
 
 if [ "${DRY_RUN}" -eq 1 ]; then
     exit 1
