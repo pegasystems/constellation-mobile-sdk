@@ -16,6 +16,12 @@ runs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'corretto'
+
     - name: Select specific XCode version
       shell: bash
       run: sudo xcode-select -s "${{ steps.globals.outputs.XCODE_DIR }}"
