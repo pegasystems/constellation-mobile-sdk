@@ -7,6 +7,7 @@ runs:
     # Env is not available in composite actions directly
     # See https://github.com/orgs/community/discussions/51280
     - name: Set globals
+      id: globals
       shell: bash
       run: |
         echo "XCODE_DIR=/Applications/Xcode_16.4.app" >> "${GITHUB_OUTPUT}"
