@@ -22,7 +22,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
   heading;
   children;
   // menuIconOverride$;
-  prevRefLength;
   allowAddEdit;
   fieldHeader;
 
@@ -95,21 +94,18 @@ export class FieldGroupTemplateComponent extends BaseComponent {
           setTimeout(() => this.addFieldGroupItem());
         }
       }
-      const items = [];
-      const oldItemsComponents = this.items.map(item => item.component);
+      var updatedItems = [];
       this.referenceList?.forEach((item, index) => {
-        // all components in list are the same name and type so we can pick any component for re-use.
-        const oldComponent = oldItemsComponents.pop();
+        const oldComponent = this.items[index]?.component;
         const newPConn = this.buildItemPConnect(this.pConn, index, lookForChildInConfig).getPConnect();
         const newComponent = this.componentsManager.upsert(oldComponent, newPConn.meta.type, [newPConn]);
-        items.push({
+        updatedItems.push({
           id: index,
           name: this.fieldHeader === 'propertyRef' ? this.getDynamicHeader(item, index) : this.getStaticHeader(this.heading, index),
           component: newComponent
         });
       })
-      this.items = items;
-      this.prevRefLength = this.referenceList.length;
+      this.items = updatedItems;
     }
     this.sendPropsUpdate();
   }
