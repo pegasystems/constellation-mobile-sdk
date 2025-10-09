@@ -63,7 +63,7 @@ if [ -z "${MINOR_VERSION}" ] || [ -z "${MAJOR_VERSION}" ]; then
 fi
 TIMESTAMP=$(date -u +%Y-%m-%d-%H-%M)
 # Get last ONE non-draft non-prerelease version (sorted by data created desc)
-LAST_VERSION=$(gh release list --exclude-drafts --exclude-pre-releases --json name --jq '.[0].name' --limit 1 | tr -d '[:space:]')
+LAST_VERSION=$(gh release list --exclude-drafts --exclude-pre-releases --json name --jq '.[0].name' --limit 1 | grep "v${MAJOR_VERSION}.${MINOR_VERSION}" | tr -d '[:space:]')
 
 echo "Last non-snapshot version: ${LAST_VERSION}"
 if [[ $(echo -n "${LAST_VERSION}" | wc -c | tr -d '[:space:]') -eq 0 ]]; then
