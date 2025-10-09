@@ -16,19 +16,8 @@ env:
   VERSION_MINOR: 0
 
 jobs:
-  build-sdk:
-    runs-on: 'macos-15'
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Build
-        uses: ./.github/actions/build-sdk
-
   publish-release:
     runs-on: 'ubuntu-latest'
-    needs: [build-sdk]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
