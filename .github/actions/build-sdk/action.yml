@@ -26,7 +26,7 @@ runs:
 
     - name: Build and publish to maven local
       shell: bash
-      run: ./gradlew clean publishToMavenLocal
+      run: ./gradlew --info --no-daemon clean publishToMavenLocal
 
     - name: Prepare 'release' directory
       shell: bash
