@@ -27,9 +27,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core"))
-                implementation(project(":ui-components-cmp"))
-                implementation(project(":ui-renderer-cmp"))
+                api(project(":core"))
+                api(project(":ui-components-cmp"))
+                api(project(":ui-renderer-cmp"))
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.foundation)
@@ -45,9 +45,18 @@ kotlin {
         }
         iosMain {
             dependencies {
-                implementation(project(":engine-webview"))
+                api(project(":engine-webview"))
+            }
+        }
+        androidMain {
+            dependencies {
+                api(project(":engine-webview"))
+            }
+        }
+        jvmMain {
+            dependencies {
+                api(project(":engine-mock"))
             }
         }
     }
-
 }
