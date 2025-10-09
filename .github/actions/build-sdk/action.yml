@@ -1,0 +1,58 @@
+name: "Build SDK for iOS and android"
+description: "Build uses MacOs so both platforms can be built"
+
+runs:
+  using: "composite"
+  steps:
+    # Env is not available in composite actions directly
+    # See https://github.com/orgs/community/discussions/51280
+    - name: Set globals
+      id: globals
+      shell: bash
+      run: |
+        echo "XCODE_DIR=/Applications/Xcode_16.4.app" >> "${GITHUB_OUTPUT}"
+        echo "SDK_MAVEN_DIR=~/.m2/repository/com/pega/constellation/sdk" >> "${GITHUB_OUTPUT}"
+
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'corretto'
+
+    - name: Select specific XCode version
+      shell: bash
+      run: sudo xcode-select -s "${{ steps.globals.outputs.XCODE_DIR }}"
+
+    - name: Clean maven local (SDK location only)
+      shell: bash
+      run: rm -rfv ${{ steps.globals.outputs.SDK_MAVEN_DIR }} | true
+
+    - name: Build and publish to maven local
+      shell: bash
+      run: ./gradlew --info --no-daemon clean publishToMavenLocal
+
+    - name: Prepare 'release' directory
+      shell: bash
+      run: |
+        rm -rf release | true
+        mkdir release
+        cd release
+        find "${{ steps.globals.outputs.SDK_MAVEN_DIR }}" -iname "*.aar" -exec cp -v {} . \;
+        find "${{ steps.globals.outputs.SDK_MAVEN_DIR }}" -iname "*.aar" -exec cp -v {} .  \;
+        zip -r -j android.zip . -i '*.aar'
+        zip -r -j ios.zip . -i '*.klib'
+        rm -f "*.aar"
+        rm -f "*.zip"
+        cd ..
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: release-package
+        path: release
+        retention-days: 1
+        compression-level: 0
+        if-no-files-found: error
+

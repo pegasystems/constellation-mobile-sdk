@@ -63,7 +63,7 @@ if [ -z "${MINOR_VERSION}" ] || [ -z "${MAJOR_VERSION}" ]; then
 fi
 TIMESTAMP=$(date -u +%Y-%m-%d-%H-%M)
 # Get last ONE non-draft non-prerelease version (sorted by data created desc)
-LAST_VERSION=$(gh release list --exclude-drafts --exclude-pre-releases --json name --jq '.[0].name' --limit 1 | tr -d '[:space:]')
+LAST_VERSION=$(gh release list --exclude-drafts --exclude-pre-releases --json name --jq '.[0].name' --limit 1 | grep "v${MAJOR_VERSION}.${MINOR_VERSION}" | tr -d '[:space:]')
 
 echo "Last non-snapshot version: ${LAST_VERSION}"
 if [[ $(echo -n "${LAST_VERSION}" | wc -c | tr -d '[:space:]') -eq 0 ]]; then
@@ -115,7 +115,8 @@ fi
 
 # We need to split below (as -F param is passed, hence below missing double quote lint for below command)
 # shellcheck disable=SC2086
-${PRE_COMMAND} gh release create "${VERSION}" ${PARAM_PRE} --fail-on-no-commits ${PARAM_NOTES} --title "${VERSION}" "ios-release/*.*" "android-release/*.*"
+# Right now we are not publishing any custom artifacts, source code package is automatically published by GitHub
+${PRE_COMMAND} gh release create "${VERSION}" ${PARAM_PRE} --fail-on-no-commits ${PARAM_NOTES} --title "${VERSION}"
 
 if [ "${DRY_RUN}" -eq 1 ]; then
     exit 1
