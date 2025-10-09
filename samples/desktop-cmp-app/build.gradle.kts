@@ -13,8 +13,6 @@ kotlin {
     sourceSets {
         jvmMain {
             dependencies {
-                implementation(project(":core"))
-                implementation(project(":engine-mock"))
                 implementation(project(":samples:base-cmp-app"))
                 implementation(compose.desktop.currentOs)
                 implementation(libs.kotlinx.coroutinesSwing)
