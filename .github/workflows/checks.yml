@@ -77,12 +77,18 @@ jobs:
         id: cdn-cache-ios
         uses: actions/cache@v4
         with:
-          path: shared/responses/cdn
+          path: test/src/commonMain/composeResources/files/responses/cdn
           key: cdn-cache-ios
 
       - name: Download CDN files
         if: steps.cdn-cache-ios.outputs.cache-hit != 'true'
-        run: cd test/src/commonMain/composeResources/files/responses/cdn && ./download_js_files.sh
+        run: cd test/src/commonMain/composeResources/files/responses && ./download_js_files.sh
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
 
       - name: Select specific XCode version
         run: sudo xcode-select -s "/Applications/Xcode_16.4.app"
@@ -100,27 +106,17 @@ jobs:
       - name: iOS sample application UI tests
         run: |
           set -o pipefail
-          cd ios
-          echo $PWD
           rm -rf build || true
           mkdir build
-          xcodebuild -workspace SDK.xcworkspace -scheme SampleMockedApp -destination "platform=iOS Simulator,id=$(cat ../simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 2 clean test | xcbeautify --is-ci --renderer github-actions
-
+          xcodebuild -project samples/swiftui-components-app/UITest/UITest.xcodeproj -scheme UITest -destination "platform=iOS Simulator,id=$(cat simulator.id)" -resultBundlePath ./build/iOSTests.xcresult clean test 2>&1
       - name: Upload test artifacts for failures
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: validate-ios-artifacts
-          path: ios/build
+          path: build
           if-no-files-found: warn
           retention-days: 3
-
-      - name: iOS sample application build
-        run: |
-          set -o pipefail
-          cd ios
-          echo $PWD
-          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeSwiftApp clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcbeautify --is-ci --renderer github-actions
 
       - name: Delete test simulator
         if: always()
