@@ -55,7 +55,6 @@ extension MockedAppTestCase {
         sdkLabel.assertExists()
     }
     func tapCreateButton(_ caseTitle: String, timeout: TimeInterval = 30.0) {
-        sleep(5) // FOR TEST REPLACE WITH SOMETHING BETTER IF POSSIBLE!!!
         let createButton = app.buttons["Create \(caseTitle) Case"]
         createButton.firstMatch.assertExists()
         waitUntil ({ // Retry tapping if needed, this is really only required on CI
