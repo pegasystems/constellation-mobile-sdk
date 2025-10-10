@@ -1,5 +1,6 @@
 import ConstellationSdk
 import SwiftUI
+import WebKit
 
 struct ContentView: View {
     @State private var path = NavigationPath()
@@ -17,24 +18,29 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(for: String.self) { className in
-                let wrapper = createSDK()
-                StateView(wrapper: wrapper)
-                    .task {
-                        wrapper.create(className)
-                    }.onReceive(wrapper.state) { state in
-                        switch state {
-                        case .cancelled, .error, .finished:
-                            path.removeLast()
-                        default: break
+                let engine = WKWebViewBasedEngine(provider: MockedNetwork.create())
+                let wrapper = createSDK(with: engine)
+
+                VStack(spacing: 0) {
+                    EngineWebView(engine)
+                        .frame(height: 1)
+                        .opacity(0)
+                    StateView(wrapper: wrapper)
+                        .task {
+                            wrapper.create(className)
+                        }.onReceive(wrapper.state) { state in
+                            switch state {
+                            case .cancelled, .error, .finished:
+                                path.removeLast()
+                            default: break
+                            }
                         }
-                    }
+                }
             }
         }
     }
 
-    private func createSDK() -> SDKWrapper {
-        let engine = WKWebViewBasedEngine(provider: MockedNetwork.create())
-
+    private func createSDK(with engine: WKWebViewBasedEngine) -> SDKWrapper {
         let configuration = ConstellationSdkConfig(
             pegaUrl: "https://url.example",
             pegaVersion: "24.1.0",

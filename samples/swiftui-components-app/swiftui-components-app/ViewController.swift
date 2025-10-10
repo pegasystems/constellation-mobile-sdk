@@ -8,12 +8,20 @@ class ViewController: UIViewController {
 
     @IBAction
     private func showNewPegaCase(_ sender: UIButton) {
-        let wrapper = SDKWrapper(sdk: createSDK())
-        let stateView = StateView(wrapper: wrapper).onAppear {
-            wrapper.create(SDKConfiguration.caseClassName)
-        }
+        let engine = createEngine()
+        let wrapper = SDKWrapper(sdk: createSDK(with: engine))
 
-        let hostingController = UIHostingController(rootView: stateView)
+        let hostingController = UIHostingController(
+            rootView: VStack(spacing: 0) {
+                // put invisible webView to view hierarchy to prevent throttling
+                EngineWebView(engine)
+                    .frame(height: 1)
+                    .opacity(0)
+                StateView(wrapper: wrapper).onAppear {
+                    wrapper.create(SDKConfiguration.caseClassName)
+                }
+            }
+        )
 
         hostingController.modalPresentationStyle = .formSheet
         hostingController.modalTransitionStyle = .coverVertical
@@ -39,13 +47,15 @@ class ViewController: UIViewController {
         present(hostingController, animated: true)
     }
 
-    private func createSDK() -> ConstellationSdk {
+    private func createEngine() -> WKWebViewBasedEngine {
         // Create authenticated resource provider and appropriate engine implementation
         let authProvider = AuthenticatedResourceProvider(
             authorization: Authorization(settings: SDKConfiguration.oauth2Configuration)
         )
-        let engine = WKWebViewBasedEngine(provider: authProvider)
+        return WKWebViewBasedEngine(provider: authProvider)
+    }
 
+    private func createSDK(with engine: ConstellationSdkEngine) -> ConstellationSdk {
         // Create configuration which will be used in SDK
         let configuration = ConstellationSdkConfig(
             pegaUrl: SDKConfiguration.environmentURL.absoluteString,
