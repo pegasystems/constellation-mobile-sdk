@@ -82,7 +82,7 @@ extension MockedAppTestCase {
 
 extension XCUIElementQuery {
     @discardableResult
-    func assertExists(timeout: TimeInterval = 180.0) -> XCUIElement {
+    func assertExists(timeout: TimeInterval = 60.0) -> XCUIElement {
         self.firstMatch.assertExists(timeout: timeout)
     }
 
@@ -101,7 +101,7 @@ extension XCUIElementQuery {
 
 extension XCUIElement {
     @discardableResult
-    func assertExists(timeout: TimeInterval = 180.0) -> XCUIElement {
+    func assertExists(timeout: TimeInterval = 60.0) -> XCUIElement {
         XCTAssertTrue(waitForExistence(timeout: timeout), "Element \(self) still does not exists after \(timeout)s")
         // for method chaining
         return self
