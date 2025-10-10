@@ -1,6 +1,8 @@
 import ConstellationSdk
 import SwiftUI
 
+import WebKit
+
 struct ContentView: View {
     @State private var path = NavigationPath()
     @State private var selectedItem: String?
@@ -17,26 +19,31 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(for: String.self) { className in
-                let wrapper = createSDK()
-                StateView(wrapper: wrapper)
-                    .task {
-                        wrapper.create(className)
-                    }.onReceive(wrapper.state) { state in
-                        switch state {
-                        case .cancelled, .error, .finished:
-                            path.removeLast()
-                        default: break
+                let engine = WKWebViewBasedEngine(provider: MockedNetwork.create())
+                let wrapper = createSDK(with: engine)
+
+                VStack(spacing: 0) {
+                    EngineWebView(engine)
+                        .frame(height: 1)
+                        .opacity(0)
+                    StateView(wrapper: wrapper)
+                        .task {
+                            wrapper.create(className)
+                        }.onReceive(wrapper.state) { state in
+                            switch state {
+                            case .cancelled, .error, .finished:
+                                path.removeLast()
+                            default: break
+                            }
                         }
-                    }
+                }
             }
         }
     }
 
-    private func createSDK() -> SDKWrapper {
-        let engine = WKWebViewBasedEngine(provider: MockedNetwork.create())
-
+    private func createSDK(with engine: WKWebViewBasedEngine) -> SDKWrapper {
         let configuration = ConstellationSdkConfig(
-            pegaUrl: "https://url.example",
+            pegaUrl: "https://release.constellation.pega.io",
             pegaVersion: "24.1.0",
             componentManager: ComponentManagerCompanion().create(customDefinitions: []),
             debuggable: true
@@ -44,5 +51,21 @@ struct ContentView: View {
 
         let sdk = ConstellationSdkCompanion().create(config: configuration, engine: engine)
         return SDKWrapper(sdk: sdk)
+    }
+}
+
+struct EngineWebView: UIViewRepresentable {
+    private let webView: UIView
+
+    init(_ engine: WKWebViewBasedEngine) {
+        self.webView = engine.webView
+    }
+
+    func makeUIView(context: Context) -> UIView {
+        webView
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        // no-op
     }
 }
