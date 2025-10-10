@@ -44,7 +44,7 @@ struct ContentView: View {
 
     private func createSDK(with engine: WKWebViewBasedEngine) -> SDKWrapper {
         let configuration = ConstellationSdkConfig(
-            pegaUrl: "https://url.example",
+            pegaUrl: "https://release.constellation.pega.io",
             pegaVersion: "24.1.0",
             componentManager: ComponentManagerCompanion().create(customDefinitions: []),
             debuggable: true
