@@ -7,6 +7,7 @@ import android.webkit.ConsoleMessage.MessageLevel.ERROR
 import android.webkit.ConsoleMessage.MessageLevel.LOG
 import android.webkit.ConsoleMessage.MessageLevel.TIP
 import android.webkit.ConsoleMessage.MessageLevel.WARNING
+import android.webkit.JsPromptResult
 import android.webkit.JsResult
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -14,7 +15,8 @@ import android.webkit.WebView
 internal class SdkWebChromeClient(
     private val debuggable: Boolean,
     private val onAlert: (message: String, onConfirm: () -> Unit) -> Unit,
-    private val onConfirm: (message: String, onConfirm: () -> Unit, onCancel: () -> Unit) -> Unit
+    private val onConfirm: (message: String, onConfirm: () -> Unit, onCancel: () -> Unit) -> Unit,
+    private val onPrompt: (message: String, defaultValue: String?, onConfirm: (String?) -> Unit, onCancel: () -> Unit) -> Unit
 ) : WebChromeClient() {
     override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
         val priority = consoleMessage.messageLevel().toPriority()
@@ -42,6 +44,17 @@ internal class SdkWebChromeClient(
         result: JsResult
     ): Boolean {
         onConfirm(message, { result.confirm() }, { result.cancel() })
+        return true
+    }
+
+    override fun onJsPrompt(
+        view: WebView,
+        url: String,
+        message: String,
+        defaultValue: String,
+        result: JsPromptResult
+    ): Boolean {
+        onPrompt(message, defaultValue, { value -> result.confirm(value) }, { result.cancel() })
         return true
     }
 

@@ -148,9 +148,22 @@ class AndroidWebViewEngine(
                             Dialog.Type.CONFIRM,
                             message,
                             onConfirm,
-                            onCancel)
+                            onCancel
+                        )
+                    )
+                },
+                onPrompt = { message, defaultValue, onConfirm, onCancel ->
+                    componentManager.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.PROMPT,
+                            message,
+                            promptDefault = defaultValue,
+                            onPromptConfirm = onConfirm,
+                            onCancel = onCancel
+                        )
                     )
                 })
+
         val bridge = SdkBridge(::onBridgeEvent)
         addJavascriptInterface(bridge, "sdkbridge")
     }

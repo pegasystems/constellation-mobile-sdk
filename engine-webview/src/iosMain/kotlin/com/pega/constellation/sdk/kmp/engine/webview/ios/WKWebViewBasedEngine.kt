@@ -166,21 +166,23 @@ class WKWebViewBasedEngine(
                 )
             }
 
-//            override fun webView(
-//                webView: WKWebView,
-//                runJavaScriptTextInputPanelWithPrompt: String,
-//                defaultText: String?,
-//                initiatedByFrame: WKFrameInfo,
-//                completionHandler: (String?) -> Unit
-//            ) {
-//                super.webView(
-//                    webView,
-//                    runJavaScriptTextInputPanelWithPrompt,
-//                    defaultText,
-//                    initiatedByFrame,
-//                    completionHandler
-//                )
-//            }
+            override fun webView(
+                webView: WKWebView,
+                runJavaScriptTextInputPanelWithPrompt: String,
+                defaultText: String?,
+                initiatedByFrame: WKFrameInfo,
+                completionHandler: (String?) -> Unit
+            ) {
+                config.componentManager.presentDialog(
+                    Dialog.Config(
+                        Dialog.Type.PROMPT,
+                        runJavaScriptTextInputPanelWithPrompt,
+                        promptDefault = defaultText,
+                        onPromptConfirm = { result -> completionHandler(result) },
+                        onCancel = { completionHandler(null) }
+                    )
+                )
+            }
 
             override fun webView(
                 webView: WKWebView,

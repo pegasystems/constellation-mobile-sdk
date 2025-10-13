@@ -10,6 +10,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerCo
 import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Alert
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Confirm
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Prompt
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Snackbar
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
@@ -44,6 +45,19 @@ class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
                         message = it.message,
                         onConfirm = {
                             it.onConfirm()
+                            dismissDialog()
+                        }
+                    )
+
+                    Dialog.Type.PROMPT -> Prompt(
+                        message = it.message,
+                        defaultValue = it.promptDefault ?: "",
+                        onConfirm = { value ->
+                            it.onPromptConfirm(value)
+                            dismissDialog()
+                        },
+                        onCancel = {
+                            it.onCancel()
                             dismissDialog()
                         }
                     )

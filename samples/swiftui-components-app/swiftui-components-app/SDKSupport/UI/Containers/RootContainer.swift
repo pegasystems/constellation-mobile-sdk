@@ -3,6 +3,7 @@ import SwiftUI
 
 struct RootContainer: View {
     @ObservedObject var state: ObservableComponent<RootContainerComponent>
+    @State private var promptValue: String = ""
 
     init(_ component: RootContainerComponent) {
         state = ObservableComponent(component: component)
@@ -12,6 +13,9 @@ struct RootContainer: View {
         if let container = state.component.viewContainer {
             container.renderView()
                 .alert("", isPresented: presentDialog) {
+                    if (state.component.dialogConfig?.type == .prompt) {
+                        TextField("", text: displayedPromptBinding)
+                    }
                     dialogButtons
                 } message: {
                     Text(state.component.dialogConfig?.message ?? "Unknown error")
@@ -28,10 +32,30 @@ struct RootContainer: View {
             case .confirm:
                 Button("OK", role: .destructive, action: confirmAndDismiss)
                 Button("Cancel", role: .cancel, action: cancelAndDismiss)
+            case .prompt:
+                Button("OK", role: .destructive, action: promptConfirmAndDismiss)
+                Button("Cancel", role: .cancel, action: cancelAndDismiss)
             default:
                 EmptyView()
             }
         }
+    }
+    
+    private var displayedPromptBinding: Binding<String> {
+        Binding(
+            get: {
+                promptValue.isEmpty ? (state.component.dialogConfig?.promptDefault ?? "") : promptValue
+            },
+            set: {
+                promptValue = $0
+            }
+        )
+    }
+    
+    private func promptConfirmAndDismiss() {
+        state.component.dialogConfig?.onPromptConfirm(promptValue)
+        promptValue = ""
+        state.component.dismissDialog()
     }
     
     private func confirmAndDismiss() {
@@ -41,6 +65,7 @@ struct RootContainer: View {
 
     private func cancelAndDismiss() {
         state.component.dialogConfig?.onCancel()
+        promptValue = ""
         state.component.dismissDialog()
     }
     
