@@ -1,7 +1,6 @@
 import XCTest
 
 final class TestCaseProcessing: MockedAppTestCase {
-    @MainActor
     func testFormDisplayAndInteraction() throws {
         // Button's label contains some extra spaces (padding?)
         let nextButton = app.buttons.firstContainingLabel(text: "Next")
@@ -35,7 +34,6 @@ final class TestCaseProcessing: MockedAppTestCase {
         XCTAssertEqual(caseID, "S-24001")
     }
 
-    @MainActor
     func testFormValidation() throws {
         verifyMainScreen()
         // Button's label contains some extra spaces (padding?)
