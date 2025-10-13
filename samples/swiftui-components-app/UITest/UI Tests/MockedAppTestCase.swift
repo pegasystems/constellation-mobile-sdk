@@ -110,13 +110,13 @@ extension XCUIElement {
         coordinate(withNormalizedOffset: CGVector(dx: offsetX, dy: offsetY)).tap()
     }
 
-    func tapIfHittable(timeout: TimeInterval = 2.5) {
+    func tapIfHittable(timeout: TimeInterval = 5.0) {
         if (waitForExistence(timeout: timeout) && isHittable) {
             tap()
         }
     }
 
-    func forceTapIfExists(timeout: TimeInterval = 2.5) {
+    func forceTapIfExists(timeout: TimeInterval = 5.0) {
         if (waitForExistence(timeout: timeout)) {
             forceTap()
         }
