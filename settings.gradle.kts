@@ -27,6 +27,7 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        mavenLocal()
     }
 }
 
@@ -43,3 +44,4 @@ include(":samples:desktop-cmp-app")
 include(":test")
 include(":ui-components-cmp")
 include(":ui-renderer-cmp")
+include(":samples:android-compose")
