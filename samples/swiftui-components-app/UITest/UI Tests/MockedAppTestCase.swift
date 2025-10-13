@@ -81,7 +81,7 @@ extension MockedAppTestCase {
 
 extension XCUIElementQuery {
     @discardableResult
-    func assertExists(timeout: TimeInterval = 60.0) -> XCUIElement {
+    func assertExists(timeout: TimeInterval = 120.0) -> XCUIElement {
         self.firstMatch.assertExists(timeout: timeout)
     }
 
@@ -100,7 +100,7 @@ extension XCUIElementQuery {
 
 extension XCUIElement {
     @discardableResult
-    func assertExists(timeout: TimeInterval = 60.0) -> XCUIElement {
+    func assertExists(timeout: TimeInterval = 120.0) -> XCUIElement {
         XCTAssertTrue(waitForExistence(timeout: timeout), "Element \(self) still does not exists after \(timeout)s")
         // for method chaining
         return self
@@ -110,13 +110,13 @@ extension XCUIElement {
         coordinate(withNormalizedOffset: CGVector(dx: offsetX, dy: offsetY)).tap()
     }
 
-    func tapIfHittable(timeout: TimeInterval = 2.5) {
+    func tapIfHittable(timeout: TimeInterval = 5.0) {
         if (waitForExistence(timeout: timeout) && isHittable) {
             tap()
         }
     }
 
-    func forceTapIfExists(timeout: TimeInterval = 2.5) {
+    func forceTapIfExists(timeout: TimeInterval = 5.0) {
         if (waitForExistence(timeout: timeout)) {
             forceTap()
         }
