@@ -1,6 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.api
 
-import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl
 import kotlinx.serialization.json.JsonObject
 
@@ -53,11 +53,10 @@ interface ComponentManager {
     fun removeComponent(id: ComponentId)
 
     /**
-     * Retrieves the alert component responsible for natively showing JS alerts and dialogs.
-     *
-     * @return The alert component instance.
+     * Presents a dialog using the provided configuration.
+     * @param config The configuration for the dialog to be presented.
      */
-    fun getAlertComponent(): AlertComponent
+    fun presentDialog(config: Dialog.Config)
 
     companion object {
         /**

@@ -7,7 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
-import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Alert
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Confirm
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Snackbar
@@ -27,25 +27,24 @@ class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 8.dp)
             )
-            val alert = context.componentManager.getAlertComponent()
-            alert.info?.let {
+            dialogConfig?.let {
                 when (it.type) {
-                    AlertComponent.Type.CONFIRM -> Confirm(
+                    Dialog.Type.CONFIRM -> Confirm(
                         message = it.message,
                         onConfirm = {
                             it.onConfirm()
-                            alert.setAlertInfo(null)
+                            dismissDialog()
                         },
                         onCancel = {
                             it.onCancel()
-                            alert.setAlertInfo(null)
+                            dismissDialog()
                         })
 
-                    AlertComponent.Type.ALERT -> Alert(
+                    Dialog.Type.ALERT -> Alert(
                         message = it.message,
                         onConfirm = {
                             it.onConfirm()
-                            alert.setAlertInfo(null)
+                            dismissDialog()
                         }
                     )
                 }

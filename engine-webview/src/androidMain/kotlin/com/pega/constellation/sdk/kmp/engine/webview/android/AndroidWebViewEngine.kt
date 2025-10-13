@@ -15,7 +15,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
-import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewAssetInterceptor
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewAssetInterceptor.Companion.assetPath
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewNetworkInterceptor
@@ -135,15 +135,20 @@ class AndroidWebViewEngine(
             SdkWebChromeClient(
                 debuggable = config.debuggable,
                 onAlert = { message, onConfirm ->
-                    componentManager.getAlertComponent().setAlertInfo(
-                        AlertComponent.Info(AlertComponent.Type.ALERT, message, onConfirm)
+                    componentManager.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.ALERT,
+                            message,
+                            onConfirm)
                     )
                 },
                 onConfirm = { message, onConfirm, onCancel ->
-                    componentManager.getAlertComponent().setAlertInfo(
-                        AlertComponent.Info(
-                            AlertComponent.Type.CONFIRM, message, onConfirm, onCancel
-                        )
+                    componentManager.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.CONFIRM,
+                            message,
+                            onConfirm,
+                            onCancel)
                     )
                 })
         val bridge = SdkBridge(::onBridgeEvent)

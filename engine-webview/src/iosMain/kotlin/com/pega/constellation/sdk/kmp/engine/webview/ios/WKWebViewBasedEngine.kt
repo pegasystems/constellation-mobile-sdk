@@ -6,7 +6,7 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
-import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Companion.COMPONENT_ASSETS_PREFIX
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
@@ -157,11 +157,10 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: () -> Unit
             ) {
-                val message = runJavaScriptAlertPanelWithMessage
-                config.componentManager.getAlertComponent().setAlertInfo(
-                    AlertComponent.Info(
-                        AlertComponent.Type.ALERT,
-                        message,
+                config.componentManager.presentDialog(
+                    Dialog.Config(
+                        Dialog.Type.ALERT,
+                        runJavaScriptAlertPanelWithMessage,
                         completionHandler
                     )
                 )
@@ -189,11 +188,10 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: (Boolean) -> Unit
             ) {
-                val message = runJavaScriptConfirmPanelWithMessage
-                config.componentManager.getAlertComponent().setAlertInfo(
-                    AlertComponent.Info(
-                        AlertComponent.Type.CONFIRM,
-                        message,
+                config.componentManager.presentDialog(
+                    Dialog.Config(
+                        Dialog.Type.CONFIRM,
+                        runJavaScriptConfirmPanelWithMessage,
                         onConfirm = {
                             completionHandler(true)
                         },

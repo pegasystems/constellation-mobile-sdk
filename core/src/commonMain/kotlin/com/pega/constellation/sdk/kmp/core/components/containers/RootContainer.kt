@@ -9,6 +9,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
 import com.pega.constellation.sdk.kmp.core.components.getString
+import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Companion.getComponentTyped
 import kotlinx.serialization.json.JsonObject
 
@@ -17,6 +18,18 @@ class RootContainerComponent(context: ComponentContext) : BaseComponent(context)
         private set
     var httpMessages: List<String> by mutableStateOf(emptyList())
         private set
+    var dialogConfig: Dialog.Config? by mutableStateOf(null)
+        private set
+
+    fun presentDialog(config: Dialog.Config) {
+        dialogConfig = config
+        notifyObservers()
+    }
+
+    fun dismissDialog() {
+        dialogConfig = null
+        notifyObservers()
+    }
 
     override fun applyProps(props: JsonObject) {
         val viewContainerId = ComponentId(props.getString("viewContainer").toInt())
