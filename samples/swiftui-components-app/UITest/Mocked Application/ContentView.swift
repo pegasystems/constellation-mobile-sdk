@@ -2,8 +2,6 @@ import ConstellationSdk
 import SwiftUI
 import WebKit
 
-import WebKit
-
 struct ContentView: View {
     @State private var path = NavigationPath()
     @State private var selectedItem: String?
