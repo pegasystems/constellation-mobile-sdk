@@ -2,70 +2,71 @@ name: "Perform build and checks"
 on:
   push
 jobs:
-  # validate-android:
-  #   runs-on: 'ubuntu-latest'
-  #   env:
-  #     GRADLE: ./gradlew -Dorg.gradle.console=plain --no-daemon
-  #     EMULATOR_IMAGE: 'system-images;android-35;google_apis;x86_64'
+  validate-android:
+    runs-on: 'ubuntu-latest'
+    env:
+      GRADLE: ./gradlew -Dorg.gradle.console=plain --no-daemon
+      EMULATOR_IMAGE: 'system-images;android-35;google_apis;x86_64'
 
-  #   steps:
-  #     - name: Enable KVM
-  #       run: |
-  #         echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-  #         sudo udevadm control --reload-rules
-  #         sudo udevadm trigger --name-match=kvm
+    steps:
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
-  #     - name: Set up JDK 17
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         java-version: '17'
-  #         distribution: 'corretto'
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
 
-  #     - name: Git clean
-  #       run: git clean -fdx
+      - name: Set up cache for CDN files
+        id: cdn-cache-android
+        uses: actions/cache@v4
+        with:
+          path: test/src/commonMain/composeResources/files/responses/cdn
+          key: cdn-cache-android
 
-  #     - name: Set up cache for Gradle
-  #       id: cache-gradle
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: ~/.gradle
-  #         key: gradle-cache
+      - name: Download CDN files
+        if: steps.cdn-cache-android.outputs.cache-hit != 'true'
+        run: cd test/src/commonMain/composeResources/files/responses && ./download_js_files.sh
 
-  #     - name: Download CDN files
-  #       run: cd shared/responses && ./download_js_files.sh
+      - name: Set up cache for Gradle
+        id: cache-gradle
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle
+          key: gradle-cache-android-check
 
-  #     - name: Setup Android SDK
-  #       uses: android-actions/setup-android@v3
-  #       with:
-  #         cmdline-tools-version: 12266719
-  #         packages: '${{ env.EMULATOR_IMAGE }} platforms;android-35 platform-tools emulator'
-  #         log-accepted-android-sdk-licenses: false
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: 12266719
+          packages: '${{ env.EMULATOR_IMAGE }} platforms;android-35 platform-tools emulator'
+          log-accepted-android-sdk-licenses: false
 
-  #     - name: Assemble SDK
-  #       run: $GRADLE clean assemble
+      - name: Run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: Nexus 6
+          enable-hw-keyboard: true
+          disable-spellchecker: true
+          script: $GRADLE clean test:check test:connectedAndroidDeviceTest
 
-  #     - name: Run tests
-  #       uses: reactivecircus/android-emulator-runner@v2
-  #       with:
-  #         api-level: 35
-  #         arch: x86_64
-  #         profile: Nexus 6
-  #         enable-hw-keyboard: true
-  #         disable-spellchecker: true
-  #         # Run tests for second time if first time we have failed
-  #         script: cd android && ( $GRADLE clean connectedCheck || $GRADLE clean connectedCheck )
-
-  #     - name: Upload test artifacts for failures
-  #       if: failure()
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: validate-android-artifacts
-  #         path: android/app/build/reports/androidTests/connected/debug
-  #         if-no-files-found: warn
-  #         retention-days: 3
+      - name: Upload test artifacts for failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validate-android-artifacts
+          path: build/reports/
+          if-no-files-found: warn
+          retention-days: 3
 
   validate-ios:
     runs-on: 'macos-15'
@@ -73,16 +74,29 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
       - name: Set up cache for CDN files
         id: cdn-cache-ios
         uses: actions/cache@v4
         with:
-          path: shared/responses/cdn
+          path: test/src/commonMain/composeResources/files/responses/cdn
           key: cdn-cache-ios
 
       - name: Download CDN files
         if: steps.cdn-cache-ios.outputs.cache-hit != 'true'
-        run: cd test/src/commonMain/composeResources/files/responses/cdn && ./download_js_files.sh
+        run: cd test/src/commonMain/composeResources/files/responses && ./download_js_files.sh
+
+      - name: Set up cache for Gradle
+        id: cache-gradle
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle
+          key: gradle-cache-ios-check
 
       - name: Select specific XCode version
         run: sudo xcode-select -s "/Applications/Xcode_16.4.app"
@@ -100,27 +114,17 @@ jobs:
       - name: iOS sample application UI tests
         run: |
           set -o pipefail
-          cd ios
-          echo $PWD
           rm -rf build || true
           mkdir build
-          xcodebuild -workspace SDK.xcworkspace -scheme SampleMockedApp -destination "platform=iOS Simulator,id=$(cat ../simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 2 clean test | xcbeautify --is-ci --renderer github-actions
-
+          xcodebuild -verbose -project samples/swiftui-components-app/UITest/UITest.xcodeproj -scheme UITest -destination "platform=iOS Simulator,id=$(cat simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 2 -parallel-testing-enabled NO test 2>&1
       - name: Upload test artifacts for failures
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: validate-ios-artifacts
-          path: ios/build
+          path: build
           if-no-files-found: warn
           retention-days: 3
-
-      - name: iOS sample application build
-        run: |
-          set -o pipefail
-          cd ios
-          echo $PWD
-          xcodebuild -workspace SDK.xcworkspace -scheme SampleNativeSwiftApp clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcbeautify --is-ci --renderer github-actions
 
       - name: Delete test simulator
         if: always()

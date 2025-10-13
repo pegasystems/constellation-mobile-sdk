@@ -42,7 +42,12 @@ struct ContentView: View {
 
     private func createSDK(with engine: WKWebViewBasedEngine) -> SDKWrapper {
         let configuration = ConstellationSdkConfig(
-            pegaUrl: "https://url.example",
+            // Note: CDN URL is used instead of the typical Pega instance URL (e.g. ending with /prweb)
+            // to ensure that requests to static resources are intercepted by the mock resource handler during testing.
+            // In WKWebView-based Engine, multiple resource handlers are queried in order, and the network handler takes precedence
+            // over custom handler unless the base URL matches. By setting the base URL to the CDN,
+            // we guarantee that CDN requests are routed through the mock instead of the network.
+            pegaUrl: "https://release.constellation.pega.io",
             pegaVersion: "24.1.0",
             componentManager: ComponentManagerCompanion().create(customDefinitions: []),
             debuggable: true
