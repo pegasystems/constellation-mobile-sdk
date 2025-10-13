@@ -1,6 +1,7 @@
 import XCTest
 
 final class TestEmbeddedData: MockedAppTestCase {
+    @MainActor
     func testEmbeddedData() {
         tapCreateButton("EmbeddedData")
         app.staticTexts["EmbeddedData cars editable"].assertExists()
