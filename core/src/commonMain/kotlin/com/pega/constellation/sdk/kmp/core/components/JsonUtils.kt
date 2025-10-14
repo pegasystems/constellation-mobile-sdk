@@ -14,7 +14,8 @@ fun JsonArray.getString(index: Int) = get(index).jsonPrimitive.content
 
 fun JsonObject.getJSONArray(key: String) = getValue(key).jsonArray
 fun JsonObject.getString(key: String) = getValue(key).jsonPrimitive.content
-fun JsonObject.optString(key: String) = get(key)?.jsonPrimitive?.content.orEmpty()
+fun JsonObject.optString(key: String) = optString(key, default = "")
+fun JsonObject.optString(key: String, default: String) = get(key)?.jsonPrimitive?.content ?: default
 fun JsonObject.getBoolean(key: String) = getValue(key).jsonPrimitive.boolean
 fun JsonObject.optBoolean(key: String, default: Boolean) =
     get(key)?.jsonPrimitive?.booleanOrNull ?: default
