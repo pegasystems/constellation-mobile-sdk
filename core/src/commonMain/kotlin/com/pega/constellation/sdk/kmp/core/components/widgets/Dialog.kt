@@ -1,4 +1,5 @@
 package com.pega.constellation.sdk.kmp.core.components.widgets
+
 class Dialog {
     data class Config(
         val type: Type,
@@ -9,6 +10,7 @@ class Dialog {
         val promptDefault: String? = null,
         val onPromptConfirm: (String?) -> Unit = {}
     )
+
     enum class Type {
         ALERT, CONFIRM, PROMPT
     }

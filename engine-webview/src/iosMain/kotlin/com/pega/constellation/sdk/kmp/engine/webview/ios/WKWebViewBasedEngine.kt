@@ -44,7 +44,7 @@ data class EngineConfiguration(
     val caseClassName: String? = null,
     val debuggable: Boolean
 ) {
-    constructor(other: EngineConfiguration, caseClassName: String): this(
+    constructor(other: EngineConfiguration, caseClassName: String) : this(
         url = other.url,
         version = other.version,
         caseClassName = caseClassName,
@@ -78,7 +78,8 @@ class WKWebViewBasedEngine(
 
         wkConfig.userContentController.addScriptMessageHandler(
             ConsoleScriptMessageHandler(ConsoleHandler(showDebugLogs = true)),
-            name = "consoleHandler")
+            name = "consoleHandler"
+        )
         wkConfig.userContentController.addScriptMessageHandler(formHandler, name = "formHandler")
         webView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
     }
@@ -91,7 +92,8 @@ class WKWebViewBasedEngine(
         this.handler = handler
         this.formHandler.eventHandler = handler
         this.formHandler.componentManager = config.componentManager
-        val resourceProviderManager = ResourceProviderManager(config.pegaUrl, config.componentManager, provider)
+        val resourceProviderManager =
+            ResourceProviderManager(config.pegaUrl, config.componentManager, provider)
         this.resourceHandler.delegate = resourceProviderManager
     }
 
@@ -105,17 +107,23 @@ class WKWebViewBasedEngine(
             url = config.pegaUrl,
             version = config.pegaVersion,
             caseClassName = caseClassName,
-            debuggable =  config.debuggable
+            debuggable = config.debuggable
         )
 
-        val customAndOverriddenComponents = formHandler.componentManager.getCustomComponentDefinitions()
-            .mapNotNull { definition ->
-                definition.script?.assetPath()?.let { path ->
-                    definition.type.type to path
+        val customAndOverriddenComponents =
+            formHandler.componentManager.getCustomComponentDefinitions()
+                .mapNotNull { definition ->
+                    definition.script?.assetPath()?.let { path ->
+                        definition.type.type to path
+                    }
                 }
-            }
-            .toMap()
-            .let { Json.encodeToString(MapSerializer(String.serializer(), String.serializer()), it) }
+                .toMap()
+                .let {
+                    Json.encodeToString(
+                        MapSerializer(String.serializer(), String.serializer()),
+                        it
+                    )
+                }
 
         initScript = buildInitScript(customAndOverriddenComponents, engineConfig)
 
@@ -124,7 +132,8 @@ class WKWebViewBasedEngine(
 
         webView.setInspectable(config.debuggable)
 
-        val indexURL = NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
+        val indexURL =
+            NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
         initialNavigation = webView.loadRequest(NSURLRequest(uRL = indexURL!!))
     }
 
@@ -140,7 +149,10 @@ class WKWebViewBasedEngine(
         allowForHTTPSchemeHandlerRegistration = false
     }
 
-    private fun buildInitScript(customAndOverriddenComponents: String, configuration: EngineConfiguration): String {
+    private fun buildInitScript(
+        customAndOverriddenComponents: String,
+        configuration: EngineConfiguration
+    ): String {
         val configString = configuration.toJsonString()
         return """
         window.onload = function() {
@@ -235,6 +247,7 @@ class WKWebViewBasedEngine(
             }
         }
     }
+
     companion object {
         private const val TAG = "WKWebViewBasedEngine"
         const val COMPONENT_ASSETS_PREFIX = "/constellation-mobile-sdk-assets/components/"

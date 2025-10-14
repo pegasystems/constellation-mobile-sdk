@@ -140,7 +140,8 @@ class AndroidWebViewEngine(
                         Dialog.Config(
                             Dialog.Type.ALERT,
                             message,
-                            onConfirm)
+                            onConfirm
+                        )
                     ) ?: Log.w(TAG, "No root container to present alert dialog")
                 },
                 onConfirm = { message, onConfirm, onCancel ->

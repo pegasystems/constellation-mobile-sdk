@@ -39,6 +39,7 @@ internal class ComponentManagerImpl(
     override fun removeComponent(id: ComponentId) {
         components.remove(id)
     }
+
     private fun produceComponent(context: ComponentContext): Component =
         definitions[context.type]?.producer?.produce(context)
             ?: UnsupportedComponent.create(context, cause = MISSING_COMPONENT_DEFINITION)
