@@ -1,11 +1,14 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Alert
@@ -19,7 +22,7 @@ class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
 
     @Composable
     override fun RootContainerComponent.Render() {
-        Box {
+        Box(Modifier.clearFocusOnTap()) {
             viewContainer?.Render()
             Snackbar(
                 messages = httpMessages,
@@ -63,6 +66,13 @@ class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
                     )
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun Modifier.clearFocusOnTap() = with(LocalFocusManager.current) {
+        pointerInput(Unit) {
+            detectTapGestures(onTap = { clearFocus() })
         }
     }
 }
