@@ -8,6 +8,13 @@ import kotlinx.serialization.json.JsonObject
  * Manages components within the system, providing methods to retrieve, add, update, and remove components.
  */
 interface ComponentManager {
+
+    /**
+     * Finds and returns the root container component.
+     */
+    val rootContainerComponent: RootContainerComponent?
+        get() = getComponent(ComponentId(1)) as? RootContainerComponent
+
     /**
      * Retrieves all custom components and component overrides definitions.
      * @return A list of custom component definitions.
@@ -51,12 +58,6 @@ interface ComponentManager {
      * @param id The unique identifier of the component to be removed.
      */
     fun removeComponent(id: ComponentId)
-
-    /**
-     * Finds and returns the root container component.
-     */
-    val rootContainerComponent: RootContainerComponent?
-        get() = this.getComponent(ComponentId(1)) as? RootContainerComponent
 
     companion object {
         /**

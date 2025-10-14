@@ -1,4 +1,3 @@
-
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form
 
 import androidx.compose.foundation.layout.Column
@@ -15,12 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@Composable fun Prompt(
+@Composable
+fun Prompt(
     message: String,
     defaultValue: String = "",
     onConfirm: (String) -> Unit,
-    onCancel: () -> Unit = {} ) {
-
+    onCancel: () -> Unit = {}
+) {
     val (input, setInput) = remember { mutableStateOf(defaultValue) }
 
     AlertDialog(
@@ -56,5 +56,5 @@ fun PromptPreview() {
         message = "Enter a value:",
         defaultValue = "Default text",
         onConfirm = {},
-        onCancel = {} )
+        onCancel = {})
 }
