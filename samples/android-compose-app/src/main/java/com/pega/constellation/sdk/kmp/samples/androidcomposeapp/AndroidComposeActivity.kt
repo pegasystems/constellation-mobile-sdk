@@ -1,4 +1,4 @@
-package com.pega.mobile.androidcompose
+package com.pega.constellation.sdk.kmp.samples.androidcomposeapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.engine.webview.android.AndroidWebViewEngine
+import com.pega.constellation.sdk.kmp.samples.androidcomposeapp.theme.ConstellationmobilesdkTheme
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Alert
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
-import com.pega.mobile.androidcompose.ui.theme.ConstellationmobilesdkTheme
 import okhttp3.Interceptor
 import okhttp3.Response
 

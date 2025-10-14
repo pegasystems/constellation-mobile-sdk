@@ -5,17 +5,15 @@ plugins {
 }
 
 android {
-    namespace = "com.pega.mobile.androidcompose"
+    namespace = "com.pega.constellation.sdk.kmp.samples.androidcomposeapp"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.pega.mobile.androidcompose"
-        minSdk = 26
-        targetSdk = 36
+        applicationId = "com.pega.constellation.sdk.kmp.samples.androidcomposeapp"
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {

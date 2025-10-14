@@ -1,4 +1,4 @@
-package com.pega.mobile.androidcompose
+package com.pega.constellation.sdk.kmp.samples.androidcomposeapp
 
 /**
  * Configuration object for the Constellation Mobile SDK.

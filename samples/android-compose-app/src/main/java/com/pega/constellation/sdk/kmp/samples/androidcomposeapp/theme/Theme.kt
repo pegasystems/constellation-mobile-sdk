@@ -1,6 +1,5 @@
-package com.pega.mobile.androidcompose.ui.theme
+package com.pega.constellation.sdk.kmp.samples.androidcomposeapp.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

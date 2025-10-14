@@ -1,4 +1,4 @@
-package com.pega.mobile.androidcompose.ui.theme
+package com.pega.constellation.sdk.kmp.samples.androidcomposeapp.theme
 
 import androidx.compose.ui.graphics.Color
 
