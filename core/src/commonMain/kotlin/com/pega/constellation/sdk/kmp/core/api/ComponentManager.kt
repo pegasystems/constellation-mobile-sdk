@@ -13,7 +13,7 @@ interface ComponentManager {
      * Finds and returns the root container component.
      */
     val rootContainerComponent: RootContainerComponent?
-        get() = getComponent(ComponentId(1)) as? RootContainerComponent
+        get() = getComponent(ROOT_CONTAINER_ID) as? RootContainerComponent
 
     /**
      * Retrieves all custom components and component overrides definitions.
@@ -60,6 +60,11 @@ interface ComponentManager {
     fun removeComponent(id: ComponentId)
 
     companion object {
+        /**
+         * Root container component ID.
+         */
+        val ROOT_CONTAINER_ID = ComponentId(1)
+        
         /**
          * Creates a new instance of `ComponentManager` with optional custom component definitions.
          *
