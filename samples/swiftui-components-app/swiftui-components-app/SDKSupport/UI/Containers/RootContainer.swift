@@ -18,7 +18,7 @@ struct RootContainer: View {
                     }
                     dialogButtons
                 } message: {
-                    Text(state.component.dialogConfig?.message ?? "Unknown error")
+                    Text(state.component.dialogConfig?.message ?? "")
                 }
         }
     }
