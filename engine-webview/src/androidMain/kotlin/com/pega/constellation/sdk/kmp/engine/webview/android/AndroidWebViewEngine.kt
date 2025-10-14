@@ -128,6 +128,7 @@ class AndroidWebViewEngine(
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun createWebView(client: WebViewClient) = WebView(context).apply {
+
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
         webViewClient = client
@@ -135,25 +136,25 @@ class AndroidWebViewEngine(
             SdkWebChromeClient(
                 debuggable = config.debuggable,
                 onAlert = { message, onConfirm ->
-                    componentManager.presentDialog(
+                    componentManager.rootContainerComponent?.presentDialog(
                         Dialog.Config(
                             Dialog.Type.ALERT,
                             message,
                             onConfirm)
-                    )
+                    ) ?: Log.w(TAG, "No root container to present alert dialog")
                 },
                 onConfirm = { message, onConfirm, onCancel ->
-                    componentManager.presentDialog(
+                    componentManager.rootContainerComponent?.presentDialog(
                         Dialog.Config(
                             Dialog.Type.CONFIRM,
                             message,
                             onConfirm,
                             onCancel
                         )
-                    )
+                    ) ?: Log.w(TAG, "No root container to present confirm dialog")
                 },
                 onPrompt = { message, defaultValue, onConfirm, onCancel ->
-                    componentManager.presentDialog(
+                    componentManager.rootContainerComponent?.presentDialog(
                         Dialog.Config(
                             Dialog.Type.PROMPT,
                             message,
@@ -161,7 +162,7 @@ class AndroidWebViewEngine(
                             onPromptConfirm = onConfirm,
                             onCancel = onCancel
                         )
-                    )
+                    ) ?: Log.w(TAG, "No root container to present prompt dialog")
                 })
 
         val bridge = SdkBridge(::onBridgeEvent)

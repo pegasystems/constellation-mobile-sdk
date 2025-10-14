@@ -1,6 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.api
 
-import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
+import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl
 import kotlinx.serialization.json.JsonObject
 
@@ -53,10 +53,10 @@ interface ComponentManager {
     fun removeComponent(id: ComponentId)
 
     /**
-     * Presents a dialog using the provided configuration.
-     * @param config The configuration for the dialog to be presented.
+     * Finds and returns the root container component.
      */
-    fun presentDialog(config: Dialog.Config)
+    val rootContainerComponent: RootContainerComponent?
+        get() = this.getComponent(ComponentId(1)) as? RootContainerComponent
 
     companion object {
         /**

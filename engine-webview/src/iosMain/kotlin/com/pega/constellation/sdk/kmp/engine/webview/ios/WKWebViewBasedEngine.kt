@@ -157,13 +157,13 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: () -> Unit
             ) {
-                config.componentManager.presentDialog(
+                config.componentManager.rootContainerComponent?.presentDialog(
                     Dialog.Config(
                         Dialog.Type.ALERT,
                         runJavaScriptAlertPanelWithMessage,
                         completionHandler
                     )
-                )
+                ) ?: Log.w(TAG, "No root container to present alert dialog.")
             }
 
             override fun webView(
@@ -173,7 +173,7 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: (String?) -> Unit
             ) {
-                config.componentManager.presentDialog(
+                config.componentManager.rootContainerComponent?.presentDialog(
                     Dialog.Config(
                         Dialog.Type.PROMPT,
                         runJavaScriptTextInputPanelWithPrompt,
@@ -181,7 +181,7 @@ class WKWebViewBasedEngine(
                         onPromptConfirm = { result -> completionHandler(result) },
                         onCancel = { completionHandler(null) }
                     )
-                )
+                ) ?: Log.w(TAG, "No root container to present prompt dialog.")
             }
 
             override fun webView(
@@ -190,7 +190,7 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: (Boolean) -> Unit
             ) {
-                config.componentManager.presentDialog(
+                config.componentManager.rootContainerComponent?.presentDialog(
                     Dialog.Config(
                         Dialog.Type.CONFIRM,
                         runJavaScriptConfirmPanelWithMessage,
@@ -201,7 +201,7 @@ class WKWebViewBasedEngine(
                             completionHandler(false)
                         }
                     )
-                )
+                ) ?: Log.w(TAG, "No root container to present confirm dialog.")
             }
         }
         webView.UIDelegate = uiDelegate
