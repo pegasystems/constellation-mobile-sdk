@@ -10,9 +10,9 @@ import kotlinx.serialization.json.JsonObject
 class CheckboxComponent(context: ComponentContext) : FieldComponent(context) {
     var caption: String by mutableStateOf("")
         private set
-    var trueLabel: String by mutableStateOf("true")
+    var trueLabel: String by mutableStateOf("True")
         private set
-    var falseLabel: String by mutableStateOf("false")
+    var falseLabel: String by mutableStateOf("False")
         private set
 
     override fun applyProps(props: JsonObject) {
