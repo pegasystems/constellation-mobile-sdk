@@ -1,6 +1,6 @@
 subprojects {
     group = "com.pega.constellation.sdk.kmp"
-    version = "2.0.0"
+    version = project.property("version") as String
 }
 
 plugins {
@@ -11,4 +11,5 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.androidKotlinMultiplatformLibrary) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
 }

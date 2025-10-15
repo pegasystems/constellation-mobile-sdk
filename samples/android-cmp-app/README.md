@@ -1,9 +1,8 @@
-## Constellation SDK - Android Sample Application
+## Constellation SDK - Android Sample Application using base CMP module
 
 - [Configuration](#configuration)
 - [Running the application](#running-the-application)
-- [Gradle integration](#gradle-integration)
-- [Setting up kotlin sources](#adding-kotlin-sources-for-browsing-sdk-code-in-android-studio)
+- [ Integration of CMP module with Native Compose application](#integration-of-cmp-module-with-native-compose-application)
 
 Project contains Android sample application that demonstrates the usage of the SDK.
 
@@ -15,7 +14,10 @@ To run the sample application, you need to provide necessary configuration: [SDK
 object SDKConfig {
     ...
     const val PEGA_URL = "https://insert-url-here.example/prweb"
-    ...
+    const val PEGA_VERSION = "24.1.0" // replace with correct Pega version if necessary
+    const val PEGA_CASE_CLASS_NAME = "DIXL-MediaCo-Work-NewService" // replace with correct case type name if necessary
+    const val AUTH_CLIENT_ID = "13225896606129931937" // replace with correct client id if necessary
+    const val AUTH_REDIRECT_URI = "com.pega.mobile.constellation.sample://redirect" // replace with correct redirect uri if necessary
 }
 ```
 
@@ -25,36 +27,11 @@ For more information about the configuration, please refer to the [Configuring s
 
 Now, run the application on your Android device or emulator using Android Studio.
 
-### Integration with existing application
+### Integration of CMP module with Native Compose application
 
-Currently, the SDK is distributed using library AAR files.
-They need to be downloaded into app/libs directory (or any other accessible by Gradle).
-To use the AAR files, add in the Gradle app:
+The application depends on the module [base-cmp-app](../base-cmp-app) that contains shared code in Kotlin Multiplatform.
 
-```kotlin
-implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
-```
-
-Additional SDK dependencies to *okhttp* and *webkit* need to be added because the AAR files do not
-include them:
-
-```kotlin
-implementation(libs.okhttp)
-implementation(libs.androidx.webkit)
-```
-
-> After the SDK is distributed through Maven in the future, these two dependencies can be removed from Gradle.
-
-### Adding Kotlin sources for browsing SDK code in Android Studio
-
-To be able to browse the SDK code in Android Studio, you need to download sdk-sources.jar file and place it 'android/libs' folder.
-Then after opening any SDK class definition, you can click on the "Choose Sources..." link in the top right corner of the editor.
-Find the sdk-sources.jar file and click "open". After that, you will be able to browse the SDK code in Android Studio.
-
-sdk-sources.jar file can be downloaded from github releases page:<br>
-https://github.com/pegasystems/constellation-mobile-sdk/releases
-
-It can also be built from the source code by running the following command in the 'android' directory of the SDK:
-
-```bash 
-./gradlew :sdk:sourcesJar
+It exposes:
+- MediaCoApp composable function that can be used directly in Compose to display MediaCo application.
+- Injector for dependency injection 
+- AuthManager for managing authentication.

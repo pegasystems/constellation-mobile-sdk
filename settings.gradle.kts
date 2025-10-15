@@ -27,6 +27,7 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        mavenLocal()
     }
 }
 
@@ -38,6 +39,7 @@ include(":core")
 include(":engine-mock")
 include(":engine-webview")
 include(":samples:android-cmp-app")
+include(":samples:android-compose-app")
 include(":samples:base-cmp-app")
 include(":samples:desktop-cmp-app")
 include(":test")

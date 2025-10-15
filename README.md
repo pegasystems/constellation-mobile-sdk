@@ -46,18 +46,14 @@ The SDK supports following UI technologies:
 
 ## Get started ##
 - [Getting started with the SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html)
-- [Quick start with Constellation SDK](docs/quick-start.md)
-
-## Integration with existing applications
-- [Integration with Android applications](samples/android-cmp-app/README.md#integration-with-existing-application)
-- [Integration with iOS applications using Compose Multiplatform](samples/ios-cmp-app/README.md#integration-with-existing-application)
-- [Integration with iOS applications using SwiftUI](samples/swiftui-components-app/README.md#multiplatform-framework)
+- [How to integrate with Constellation SDK](docs/how-to-integrate.md)
 
 ## Running sample applications
 - [Setting up sample Pega application](docs/setup-sample-pega-app.md)
 - [Configuring sample mobile applications](docs/configure-sample-mobile-apps.md)
-- [Running Android sample application](samples/android-cmp-app/README.md)
+- [Running Android sample application using Compose Multiplatform](samples/android-cmp-app/README.md)
 - [Running iOS sample application using Compose Multiplatform](samples/ios-cmp-app/README.md)
+- [Running Android sample application using Jetpack Compose](samples/android-compose-app/README.md)
 - [Running iOS sample application using SwiftUI](samples/swiftui-components-app/README.md)
 
 ## Screenshots
