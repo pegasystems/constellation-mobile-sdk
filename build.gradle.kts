@@ -1,6 +1,6 @@
 subprojects {
     group = "com.pega.constellation.sdk.kmp"
-    version = "2.0.0"
+    version = project.property("version") as String
 }
 
 plugins {

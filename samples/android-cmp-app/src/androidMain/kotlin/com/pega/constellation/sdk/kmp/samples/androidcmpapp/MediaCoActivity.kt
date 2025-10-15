@@ -41,16 +41,16 @@ class MediaCoActivity : ComponentActivity() {
         AndroidWebViewEngine.defaultHttpClient()
             .newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
-            .addNetworkInterceptor(LoggingInterceptor())
+            .addNetworkInterceptor(NetworkInterceptor())
             .build()
 
-    private inner class LoggingInterceptor : Interceptor {
+    private class NetworkInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request().also {
-                Log.d("MediaCo", "request: [${it.method}] ${it.url}")
+                Log.d("NetworkInterceptor", "request: [${it.method}] ${it.url}")
             }
             return chain.proceed(request).also {
-                Log.d("MediaCo", "response: [${it.code}] ${it.request.url}")
+                Log.d("NetworkInterceptor", "response: [${it.code}] ${it.request.url}")
             }
         }
     }

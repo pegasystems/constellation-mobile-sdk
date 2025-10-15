@@ -1,6 +1,7 @@
 package com.pega.constellation.sdk.kmp.samples.androidcomposeapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,10 +18,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Cancelled
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Error
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Finished
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Initial
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Loading
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Ready
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.engine.webview.android.AndroidWebViewEngine
-import com.pega.constellation.sdk.kmp.samples.androidcomposeapp.theme.ConstellationmobilesdkTheme
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Alert
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
@@ -29,6 +37,7 @@ import okhttp3.Response
 
 class AndroidComposeActivity : ComponentActivity() {
     private lateinit var sdk: ConstellationSdk
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,12 +45,10 @@ class AndroidComposeActivity : ComponentActivity() {
 
         initConstellation()
         setContent {
-            ConstellationmobilesdkTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val sdkState by sdk.state.collectAsState()
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        PegaForm(sdkState)
-                    }
+            Scaffold(Modifier.fillMaxSize()) { innerPadding ->
+                val sdkState by sdk.state.collectAsState()
+                Box(Modifier.padding(innerPadding)) {
+                    PegaForm(sdkState)
                 }
             }
         }
@@ -62,18 +69,40 @@ class AndroidComposeActivity : ComponentActivity() {
         AndroidWebViewEngine.defaultHttpClient()
             .newBuilder()
             .addInterceptor(AuthInterceptor())
+            .addNetworkInterceptor(NetworkInterceptor())
             .build()
+
+    private class AuthInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val token = AndroidSDKConfig.AUTH_TOKEN
+            val newRequest = chain.request().newBuilder()
+                .header("Authorization", token)
+                .build()
+            return chain.proceed(newRequest)
+        }
+    }
+
+    private class NetworkInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request().also {
+                Log.d("NetworkInterceptor", "request: [${it.method}] ${it.url}")
+            }
+            return chain.proceed(request).also {
+                Log.d("NetworkInterceptor", "response: [${it.code}] ${it.request.url}")
+            }
+        }
+    }
 }
 
 @Composable
-fun PegaForm(state: ConstellationSdk.State) {
+fun PegaForm(state: State) {
     when (state) {
-        ConstellationSdk.State.Cancelled -> ShowAlert("Cancelled")
-        is ConstellationSdk.State.Error -> ShowAlert(state.error ?: "Error")
-        is ConstellationSdk.State.Finished -> ShowAlert("Thanks for registration")
-        ConstellationSdk.State.Initial -> {}
-        ConstellationSdk.State.Loading -> ShowLoader()
-        is ConstellationSdk.State.Ready -> ShowForm(state)
+        is Initial -> {}
+        is Loading -> ShowLoader()
+        is Ready -> ShowForm(state)
+        is Finished -> ShowAlert("Thanks for registration")
+        is Cancelled -> ShowAlert("Cancelled")
+        is Error -> ShowAlert(state.error ?: "Error")
     }
 }
 
@@ -85,8 +114,10 @@ fun ShowLoader() {
 }
 
 @Composable
-fun ShowForm(state: ConstellationSdk.State.Ready) {
-    state.root.Render()
+fun ShowForm(state: Ready) {
+    Box(Modifier.padding(8.dp)) {
+        state.root.Render()
+    }
 }
 
 @Composable
@@ -94,15 +125,5 @@ fun ShowAlert(message: String) {
     var showAlert by remember { mutableStateOf(true) }
     if (showAlert) {
         Alert(message) { showAlert = false }
-    }
-}
-
-class AuthInterceptor : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val token = AndroidSDKConfig.AUTH_TOKEN
-        val newRequest = chain.request().newBuilder()
-            .header("Authorization", token)
-            .build()
-        return chain.proceed(newRequest)
     }
 }

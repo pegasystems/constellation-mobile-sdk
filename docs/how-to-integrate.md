@@ -1,13 +1,15 @@
 # How to integrate with Constellation SDK 
 
+- [Compose Multiplatform (CMP) and Android Jetpack Compose applications](#compose-multiplatform-cmp-and-android-jetpack-compose-applications)
+  1. [Setup Gradle dependencies](#1-setup-gradle-dependencies)
+  2. [Initialize the SDK](#2-initialize-the-sdk)
+  3. [Create a new case](#3-create-a-new-case)
+  4. [Render the form](#4-render-the-form)
+- [iOS Swift UI applications](#ios-swift-ui-applications)
+
 ## Compose Multiplatform (CMP) and Android Jetpack Compose applications
 
-- [1. Gradle dependencies](#1-gradle-dependencies)
-- [2. Initialize the SDK](#2-initialize-the-sdk)
-- [3. Create a new case](#3-create-a-new-case)
-- [4. Render the form](#4-render-the-form)
-
-### 1. Gradle dependencies
+### 1. Setup Gradle dependencies
 
 1. Build and publish SDK dependencies in Maven Local repository
 
@@ -23,27 +25,28 @@
 - For Compose Multiplatform application:
     ```kotlin
     kotlin {
-    
         sourceSets {
+            val sdkVersion = "X.Y.Z" // use the desired version
+            val okHttpVersion = "X.Y.Z" // use the desired version
             commonMain {
                 dependencies {
                     // add the following dependencies
-                    implementation("com.pega.constellation.sdk.kmp:core:sdkVersion")
-                    implementation("com.pega.constellation.sdk.kmp:ui-renderer-cmp:sdkVersion"
-                    implementation("com.pega.constellation.sdk.kmp:ui-components-cmp:sdkVersion")
+                    implementation("com.pega.constellation.sdk.kmp:core:$sdkVersion")
+                    implementation("com.pega.constellation.sdk.kmp:ui-renderer-cmp:$sdkVersion")
+                    implementation("com.pega.constellation.sdk.kmp:ui-components-cmp:$sdkVersion")
                 }
             }
             androidMain {
                 dependencies {
                     // add the following dependencies
-                    implementation("com.pega.constellation.sdk.kmp:engine-webview:sdkVersion")
-                    implementation("com.squareup.okhttp3:okhttp:okHttpVersion")
+                    implementation("com.pega.constellation.sdk.kmp:engine-webview:$sdkVersion")
+                    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
                 }
             }
             iosMain {
                 dependencies {
                     // add the following dependencies
-                    implementation("com.pega.constellation.sdk.kmp:engine-webview:sdkVersion")
+                    implementation("com.pega.constellation.sdk.kmp:engine-webview:$sdkVersion")
                 }
             }
         }
@@ -52,18 +55,20 @@
 
 - For Android Jetpack Compose application:
     ```kotlin
+    val sdkVersion = "X.Y.Z" // use the desired version
+    val okHttpVersion = "X.Y.Z" // use the desired version
     dependencies {
-        implementation("com.pega.constellation.sdk.kmp:ui-components-cmp:sdkVersion")
-        implementation("com.pega.constellation.sdk.kmp:ui-renderer-cmp:sdkVersion")
-        implementation("com.pega.constellation.sdk.kmp:core:sdkVersion")
-        implementation("com.pega.constellation.sdk.kmp:engine-webview:sdkVersion")
-        implementation("com.squareup.okhttp3:okhttp:okHttpVersion")
+        implementation("com.pega.constellation.sdk.kmp:ui-components-cmp:$sdkVersion")
+        implementation("com.pega.constellation.sdk.kmp:ui-renderer-cmp:$sdkVersion")
+        implementation("com.pega.constellation.sdk.kmp:core:$sdkVersion")
+        implementation("com.pega.constellation.sdk.kmp:engine-webview:$sdkVersion")
+        implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
     }
     ```
 
 ### 2. Initialize the SDK
 
-1. Inject application context
+1. Inject application context in `Activity.onCreate` or `Application.onCreate` method:
     ```kotlin
     AppContext.init(this)
     ```
@@ -152,7 +157,7 @@ See [How to run iOS Sample Application (based on Sample CMP Shared Module)](../s
 
 See [Sample CMP Shared Module](../samples/base-cmp-app/README.md)
 
-See [Compose Android Sample Application](../samples/android-compose/README.md)
+See [Compose Android Sample Application](../samples/android-compose-app/README.md)
 
 ## IOS Swift UI applications
 

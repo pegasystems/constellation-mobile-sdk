@@ -53,7 +53,7 @@ The SDK supports following UI technologies:
 - [Configuring sample mobile applications](docs/configure-sample-mobile-apps.md)
 - [Running Android sample application using Compose Multiplatform](samples/android-cmp-app/README.md)
 - [Running iOS sample application using Compose Multiplatform](samples/ios-cmp-app/README.md)
-- [Running Android sample application using Jetpack Compose](samples/android-compose/README.md)
+- [Running Android sample application using Jetpack Compose](samples/android-compose-app/README.md)
 - [Running iOS sample application using SwiftUI](samples/swiftui-components-app/README.md)
 
 ## Screenshots
