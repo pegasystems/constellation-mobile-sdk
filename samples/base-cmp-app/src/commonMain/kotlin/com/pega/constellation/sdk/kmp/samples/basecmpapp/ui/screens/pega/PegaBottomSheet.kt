@@ -25,6 +25,7 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PegaBottomSheet(
+    engineWebView:@Composable (() -> Unit)? = null,
     viewModel: PegaViewModel = viewModel(factory = PegaViewModel.Factory),
     onMessage: (String) -> Unit,
 ) {
@@ -52,13 +53,13 @@ fun PegaBottomSheet(
             shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             containerColor = MaterialTheme.colorScheme.surface,
             tonalElevation = 16.dp,
-            content = { PegaBottomSheetContent(sdkState) }
+            content = { PegaBottomSheetContent(engineWebView = engineWebView, sdkState) }
         )
     }
 }
 
 @Composable
-fun PegaBottomSheetContent(state: State) {
+fun PegaBottomSheetContent(engineWebView:@Composable (() -> Unit)? = null, state: State) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,6 +67,9 @@ fun PegaBottomSheetContent(state: State) {
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-        content = { PegaForm(state) }
+        content = {
+            engineWebView?.invoke()
+            PegaForm(state)
+        }
     )
 }

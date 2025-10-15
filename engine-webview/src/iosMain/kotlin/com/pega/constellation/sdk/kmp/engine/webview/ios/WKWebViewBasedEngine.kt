@@ -18,6 +18,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
@@ -71,7 +72,15 @@ class WKWebViewBasedEngine(
     private var initialNavigation: WKNavigation? = null
     private var uiDelegate: WKUIDelegateProtocol? = null
 
+    override fun discard() {
+        Log.w(TAG, "MLOCTT Discarding engine and its resources.")
+        uiDelegate = null
+        webView.UIDelegate = null
+        webView.navigationDelegate = null
+    }
+
     init {
+        Log.w(TAG, "MLOCTT Initializing WKWebViewBasedEngine")
         val wkConfig = WKWebViewConfiguration()
         registerCustomHTTPSchemeHandler(wkConfig)
         wkConfig.setValue(true, forKey = "allowUniversalAccessFromFileURLs")
@@ -81,7 +90,8 @@ class WKWebViewBasedEngine(
             name = "consoleHandler"
         )
         wkConfig.userContentController.addScriptMessageHandler(formHandler, name = "formHandler")
-        webView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
+        // webView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
+        webView = WKWebView(frame = CGRectMake(0.0, 0.0, 100.0, 100.0), wkConfig)
     }
 
     override fun configure(
@@ -130,7 +140,7 @@ class WKWebViewBasedEngine(
         configureUIDelegate()
         configureNavigationDelegate()
 
-        webView.setInspectable(config.debuggable)
+        webView.setInspectable(true)
 
         val indexURL =
             NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
@@ -169,13 +179,18 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: () -> Unit
             ) {
-                config.componentManager.rootContainerComponent?.presentDialog(
-                    Dialog.Config(
-                        Dialog.Type.ALERT,
-                        runJavaScriptAlertPanelWithMessage,
-                        completionHandler
+                config.componentManager.rootContainerComponent?.let { root ->
+                    root.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.ALERT,
+                            runJavaScriptAlertPanelWithMessage,
+                            completionHandler
+                        )
                     )
-                ) ?: Log.w(TAG, "No root container to present alert dialog.")
+                } ?: run {
+                    completionHandler()
+                    Log.w(TAG, "No root container to present alert dialog.")
+                }
             }
 
             override fun webView(
@@ -185,15 +200,20 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: (String?) -> Unit
             ) {
-                config.componentManager.rootContainerComponent?.presentDialog(
-                    Dialog.Config(
-                        Dialog.Type.PROMPT,
-                        runJavaScriptTextInputPanelWithPrompt,
-                        promptDefault = defaultText,
-                        onPromptConfirm = { result -> completionHandler(result) },
-                        onCancel = { completionHandler(null) }
+                config.componentManager.rootContainerComponent?.let { root ->
+                    root.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.PROMPT,
+                            runJavaScriptTextInputPanelWithPrompt,
+                            promptDefault = defaultText,
+                            onPromptConfirm = { result -> completionHandler(result) },
+                            onCancel = { completionHandler(null) }
+                        )
                     )
-                ) ?: Log.w(TAG, "No root container to present prompt dialog.")
+                } ?: run {
+                    Log.w(TAG, "No root container to present prompt dialog.")
+                    completionHandler(null)
+                }
             }
 
             override fun webView(
@@ -202,18 +222,23 @@ class WKWebViewBasedEngine(
                 initiatedByFrame: WKFrameInfo,
                 completionHandler: (Boolean) -> Unit
             ) {
-                config.componentManager.rootContainerComponent?.presentDialog(
-                    Dialog.Config(
-                        Dialog.Type.CONFIRM,
-                        runJavaScriptConfirmPanelWithMessage,
-                        onConfirm = {
-                            completionHandler(true)
-                        },
-                        onCancel = {
-                            completionHandler(false)
-                        }
+                config.componentManager.rootContainerComponent?.let { root ->
+                    root.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.CONFIRM,
+                            runJavaScriptConfirmPanelWithMessage,
+                            onConfirm = {
+                                completionHandler(true)
+                            },
+                            onCancel = {
+                                completionHandler(false)
+                            }
+                        )
                     )
-                ) ?: Log.w(TAG, "No root container to present confirm dialog.")
+                } ?: run {
+                    completionHandler(false)
+                    Log.w(TAG, "No root container to present confirm dialog.")
+                }
             }
         }
         webView.UIDelegate = uiDelegate

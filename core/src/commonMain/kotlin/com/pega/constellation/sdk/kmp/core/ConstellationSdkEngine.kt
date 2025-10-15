@@ -15,6 +15,8 @@ interface ConstellationSdkEngine {
      * Creates a case of the specified class name with the provided starting fields.
      */
     fun createCase(caseClassName: String, startingFields: Map<String, Any>)
+
+    fun discard()
 }
 
 /**

@@ -31,9 +31,9 @@ internal class ConstellationSdkImpl(
         _state.value = when (event) {
             is EngineEvent.Loading -> State.Loading
             is EngineEvent.Ready -> State.Ready(componentManager.rootContainerComponent as RootContainerComponent)
-            is EngineEvent.Finished -> State.Finished(event.successMessage)
-            is EngineEvent.Cancelled -> State.Cancelled
-            is EngineEvent.Error -> State.Error(event.error)
+            is EngineEvent.Finished -> State.Finished(event.successMessage).also { engine.discard()}
+            is EngineEvent.Cancelled -> State.Cancelled.also { engine.discard() }
+            is EngineEvent.Error -> State.Error(event.error).also { engine.discard() }
         }
     }
 }

@@ -24,7 +24,9 @@ fun main() {
             state = rememberWindowState(size = DpSize(1024.dp, 768.dp)),
             title = "MediaCo Desktop CMP App",
         ) {
-            MediaCoApp()
+            MediaCoApp {
+                EngineWebView(webView = webView)
+            }
         }
     }
 }

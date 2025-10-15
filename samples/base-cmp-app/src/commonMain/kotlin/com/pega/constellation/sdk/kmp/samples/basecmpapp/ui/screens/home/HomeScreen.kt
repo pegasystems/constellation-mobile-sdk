@@ -24,6 +24,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HomeScreen(
+    engineWebView:@Composable (() -> Unit)? = null,
     homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
     pegaViewModel: PegaViewModel = viewModel(factory = PegaViewModel.Factory),
 ) {
@@ -35,6 +36,7 @@ fun HomeScreen(
     }
 
     HomeScreen(
+        engineWebView = engineWebView,
         authState = authState,
         news = news,
         snackbarMessages = homeViewModel.snackbarMessages,
@@ -46,6 +48,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreen(
+    engineWebView:@Composable (() -> Unit)? = null,
     authState: AuthState,
     news: List<News>,
     snackbarMessages: List<String>,
@@ -70,9 +73,13 @@ private fun HomeScreen(
         snackbarHost = { Snackbar(snackbarMessages, onSnackbarClose) },
         floatingActionButton = { HomeFab(showFabLoader, onFabClick) }
     ) { innerPadding ->
+        // engineWebView?.invoke()
         HomeContent(innerPadding, news)
         if (authenticated) {
-            PegaBottomSheet(onMessage = onSnackbarMessage)
+            PegaBottomSheet(
+                engineWebView = engineWebView,
+                onMessage = onSnackbarMessage
+            )
         }
     }
 }

@@ -33,7 +33,9 @@ class MediaCoActivity : ComponentActivity() {
         AppContext.init(this)
 
         setContent {
-            MediaCoApp()
+            MediaCoApp {
+                EngineWebView(webView = webView)
+            }
         }
     }
 

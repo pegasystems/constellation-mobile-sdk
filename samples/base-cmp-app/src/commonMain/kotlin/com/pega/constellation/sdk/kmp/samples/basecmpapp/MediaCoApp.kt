@@ -5,8 +5,8 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.home.HomeScr
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 
 @Composable
-fun MediaCoApp() {
+fun MediaCoApp(engineWebView:@Composable (() -> Unit)? = null) {
     MediaCoTheme {
-        HomeScreen()
+        HomeScreen(engineWebView = engineWebView)
     }
 }
