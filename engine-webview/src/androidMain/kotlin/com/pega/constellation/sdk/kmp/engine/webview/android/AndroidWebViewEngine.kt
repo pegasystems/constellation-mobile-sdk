@@ -15,7 +15,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
-import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewAssetInterceptor
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewAssetInterceptor.Companion.assetPath
 import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebViewNetworkInterceptor
@@ -128,6 +128,7 @@ class AndroidWebViewEngine(
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun createWebView(client: WebViewClient) = WebView(context).apply {
+
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
         webViewClient = client
@@ -135,17 +136,36 @@ class AndroidWebViewEngine(
             SdkWebChromeClient(
                 debuggable = config.debuggable,
                 onAlert = { message, onConfirm ->
-                    componentManager.getAlertComponent().setAlertInfo(
-                        AlertComponent.Info(AlertComponent.Type.ALERT, message, onConfirm)
-                    )
+                    componentManager.rootContainerComponent?.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.ALERT,
+                            message,
+                            onConfirm
+                        )
+                    ) ?: Log.w(TAG, "No root container to present alert dialog")
                 },
                 onConfirm = { message, onConfirm, onCancel ->
-                    componentManager.getAlertComponent().setAlertInfo(
-                        AlertComponent.Info(
-                            AlertComponent.Type.CONFIRM, message, onConfirm, onCancel
+                    componentManager.rootContainerComponent?.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.CONFIRM,
+                            message,
+                            onConfirm,
+                            onCancel
                         )
-                    )
+                    ) ?: Log.w(TAG, "No root container to present confirm dialog")
+                },
+                onPrompt = { message, defaultValue, onConfirm, onCancel ->
+                    componentManager.rootContainerComponent?.presentDialog(
+                        Dialog.Config(
+                            Dialog.Type.PROMPT,
+                            message,
+                            promptDefault = defaultValue,
+                            onPromptConfirm = onConfirm,
+                            onCancel = onCancel
+                        )
+                    ) ?: Log.w(TAG, "No root container to present prompt dialog")
                 })
+
         val bridge = SdkBridge(::onBridgeEvent)
         addJavascriptInterface(bridge, "sdkbridge")
     }

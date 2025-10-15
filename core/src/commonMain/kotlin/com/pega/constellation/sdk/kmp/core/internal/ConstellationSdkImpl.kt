@@ -30,13 +30,10 @@ internal class ConstellationSdkImpl(
     private fun onEngineEvent(event: EngineEvent) {
         _state.value = when (event) {
             is EngineEvent.Loading -> State.Loading
-            is EngineEvent.Ready -> State.Ready(findRootComponent())
+            is EngineEvent.Ready -> State.Ready(componentManager.rootContainerComponent as RootContainerComponent)
             is EngineEvent.Finished -> State.Finished(event.successMessage)
             is EngineEvent.Cancelled -> State.Cancelled
             is EngineEvent.Error -> State.Error(event.error)
         }
     }
-
-    private fun findRootComponent() =
-        componentManager.getComponent(ComponentId(1)) as RootContainerComponent
 }

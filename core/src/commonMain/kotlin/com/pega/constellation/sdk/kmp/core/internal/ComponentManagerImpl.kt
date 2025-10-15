@@ -7,7 +7,6 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.components.ComponentRegistry.DefaultDefinitions
-import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_COMPONENT_DEFINITION
 import kotlinx.serialization.json.JsonObject
@@ -17,7 +16,6 @@ internal class ComponentManagerImpl(
 ) : ComponentManager {
     private val components = mutableMapOf<ComponentId, Component>()
     private val definitions = (DefaultDefinitions + customDefinitions).associateBy { it.type }
-    private var alertComponent: AlertComponent = AlertComponent()
 
     override fun getCustomComponentDefinitions() = customDefinitions
 
@@ -41,8 +39,6 @@ internal class ComponentManagerImpl(
     override fun removeComponent(id: ComponentId) {
         components.remove(id)
     }
-
-    override fun getAlertComponent(): AlertComponent = alertComponent
 
     private fun produceComponent(context: ComponentContext): Component =
         definitions[context.type]?.producer?.produce(context)

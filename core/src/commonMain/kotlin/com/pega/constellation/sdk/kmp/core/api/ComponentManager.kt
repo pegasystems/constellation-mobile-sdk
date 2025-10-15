@@ -1,6 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.api
 
-import com.pega.constellation.sdk.kmp.core.components.widgets.AlertComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl
 import kotlinx.serialization.json.JsonObject
 
@@ -8,6 +8,13 @@ import kotlinx.serialization.json.JsonObject
  * Manages components within the system, providing methods to retrieve, add, update, and remove components.
  */
 interface ComponentManager {
+
+    /**
+     * Finds and returns the root container component.
+     */
+    val rootContainerComponent: RootContainerComponent?
+        get() = getComponent(ROOT_CONTAINER_ID) as? RootContainerComponent
+
     /**
      * Retrieves all custom components and component overrides definitions.
      * @return A list of custom component definitions.
@@ -52,14 +59,12 @@ interface ComponentManager {
      */
     fun removeComponent(id: ComponentId)
 
-    /**
-     * Retrieves the alert component responsible for natively showing JS alerts and dialogs.
-     *
-     * @return The alert component instance.
-     */
-    fun getAlertComponent(): AlertComponent
-
     companion object {
+        /**
+         * Root container component ID.
+         */
+        val ROOT_CONTAINER_ID = ComponentId(1)
+
         /**
          * Creates a new instance of `ComponentManager` with optional custom component definitions.
          *

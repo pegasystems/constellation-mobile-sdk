@@ -6,6 +6,7 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
+import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Companion.COMPONENT_ASSETS_PREFIX
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
@@ -21,8 +22,10 @@ import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
 import platform.Foundation.setValue
+import platform.WebKit.WKFrameInfo
 import platform.WebKit.WKNavigation
 import platform.WebKit.WKNavigationDelegateProtocol
+import platform.WebKit.WKUIDelegateProtocol
 import platform.WebKit.WKWebView
 import platform.WebKit.WKWebViewConfiguration
 import platform.darwin.NSObject
@@ -41,7 +44,7 @@ data class EngineConfiguration(
     val caseClassName: String? = null,
     val debuggable: Boolean
 ) {
-    constructor(other: EngineConfiguration, caseClassName: String): this(
+    constructor(other: EngineConfiguration, caseClassName: String) : this(
         url = other.url,
         version = other.version,
         caseClassName = caseClassName,
@@ -66,6 +69,7 @@ class WKWebViewBasedEngine(
     private var initScript: String? = null
     private var eventStreamJob: Job? = null
     private var initialNavigation: WKNavigation? = null
+    private var uiDelegate: WKUIDelegateProtocol? = null
 
     init {
         val wkConfig = WKWebViewConfiguration()
@@ -74,7 +78,8 @@ class WKWebViewBasedEngine(
 
         wkConfig.userContentController.addScriptMessageHandler(
             ConsoleScriptMessageHandler(ConsoleHandler(showDebugLogs = true)),
-            name = "consoleHandler")
+            name = "consoleHandler"
+        )
         wkConfig.userContentController.addScriptMessageHandler(formHandler, name = "formHandler")
         webView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
     }
@@ -87,7 +92,8 @@ class WKWebViewBasedEngine(
         this.handler = handler
         this.formHandler.eventHandler = handler
         this.formHandler.componentManager = config.componentManager
-        val resourceProviderManager = ResourceProviderManager(config.pegaUrl, config.componentManager, provider)
+        val resourceProviderManager =
+            ResourceProviderManager(config.pegaUrl, config.componentManager, provider)
         this.resourceHandler.delegate = resourceProviderManager
     }
 
@@ -101,20 +107,119 @@ class WKWebViewBasedEngine(
             url = config.pegaUrl,
             version = config.pegaVersion,
             caseClassName = caseClassName,
-            debuggable =  config.debuggable
+            debuggable = config.debuggable
         )
 
-        val customAndOverriddenComponents = formHandler.componentManager.getCustomComponentDefinitions()
-            .mapNotNull { definition ->
-                definition.script?.assetPath()?.let { path ->
-                    definition.type.type to path
+        val customAndOverriddenComponents =
+            formHandler.componentManager.getCustomComponentDefinitions()
+                .mapNotNull { definition ->
+                    definition.script?.assetPath()?.let { path ->
+                        definition.type.type to path
+                    }
                 }
-            }
-            .toMap()
-            .let { Json.encodeToString(MapSerializer(String.serializer(), String.serializer()), it) }
+                .toMap()
+                .let {
+                    Json.encodeToString(
+                        MapSerializer(String.serializer(), String.serializer()),
+                        it
+                    )
+                }
 
         initScript = buildInitScript(customAndOverriddenComponents, engineConfig)
 
+        configureUIDelegate()
+        configureNavigationDelegate()
+
+        webView.setInspectable(config.debuggable)
+
+        val indexURL =
+            NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
+        initialNavigation = webView.loadRequest(NSURLRequest(uRL = indexURL!!))
+    }
+
+    @OptIn(ExperimentalForeignApi::class)
+    private fun registerCustomHTTPSchemeHandler(config: WKWebViewConfiguration) {
+        if (!tweaksApplied) {
+            applyTweaks()
+            tweaksApplied = true
+        }
+        allowForHTTPSchemeHandlerRegistration = true
+        config.setURLSchemeHandler(resourceHandler, forURLScheme = "http")
+        config.setURLSchemeHandler(resourceHandler, forURLScheme = "https")
+        allowForHTTPSchemeHandlerRegistration = false
+    }
+
+    private fun buildInitScript(
+        customAndOverriddenComponents: String,
+        configuration: EngineConfiguration
+    ): String {
+        val configString = configuration.toJsonString()
+        return """
+        window.onload = function() {
+           window.init('$configString', '$customAndOverriddenComponents');
+        }
+        """.trimIndent()
+    }
+
+    private fun configureUIDelegate() {
+        uiDelegate = object : NSObject(), WKUIDelegateProtocol {
+            override fun webView(
+                webView: WKWebView,
+                runJavaScriptAlertPanelWithMessage: String,
+                initiatedByFrame: WKFrameInfo,
+                completionHandler: () -> Unit
+            ) {
+                config.componentManager.rootContainerComponent?.presentDialog(
+                    Dialog.Config(
+                        Dialog.Type.ALERT,
+                        runJavaScriptAlertPanelWithMessage,
+                        completionHandler
+                    )
+                ) ?: Log.w(TAG, "No root container to present alert dialog.")
+            }
+
+            override fun webView(
+                webView: WKWebView,
+                runJavaScriptTextInputPanelWithPrompt: String,
+                defaultText: String?,
+                initiatedByFrame: WKFrameInfo,
+                completionHandler: (String?) -> Unit
+            ) {
+                config.componentManager.rootContainerComponent?.presentDialog(
+                    Dialog.Config(
+                        Dialog.Type.PROMPT,
+                        runJavaScriptTextInputPanelWithPrompt,
+                        promptDefault = defaultText,
+                        onPromptConfirm = { result -> completionHandler(result) },
+                        onCancel = { completionHandler(null) }
+                    )
+                ) ?: Log.w(TAG, "No root container to present prompt dialog.")
+            }
+
+            override fun webView(
+                webView: WKWebView,
+                runJavaScriptConfirmPanelWithMessage: String,
+                initiatedByFrame: WKFrameInfo,
+                completionHandler: (Boolean) -> Unit
+            ) {
+                config.componentManager.rootContainerComponent?.presentDialog(
+                    Dialog.Config(
+                        Dialog.Type.CONFIRM,
+                        runJavaScriptConfirmPanelWithMessage,
+                        onConfirm = {
+                            completionHandler(true)
+                        },
+                        onCancel = {
+                            completionHandler(false)
+                        }
+                    )
+                ) ?: Log.w(TAG, "No root container to present confirm dialog.")
+            }
+        }
+        webView.UIDelegate = uiDelegate
+    }
+
+    private fun configureNavigationDelegate() {
         webView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
                 if (didFinishNavigation == initialNavigation) {
@@ -141,32 +246,8 @@ class WKWebViewBasedEngine(
                 }
             }
         }
-        webView.setInspectable(config.debuggable)
-
-        val indexURL = NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
-        initialNavigation = webView.loadRequest(NSURLRequest(uRL = indexURL!!))
     }
 
-    @OptIn(ExperimentalForeignApi::class)
-    private fun registerCustomHTTPSchemeHandler(config: WKWebViewConfiguration) {
-        if (!tweaksApplied) {
-            applyTweaks()
-            tweaksApplied = true
-        }
-        allowForHTTPSchemeHandlerRegistration = true
-        config.setURLSchemeHandler(resourceHandler, forURLScheme = "http")
-        config.setURLSchemeHandler(resourceHandler, forURLScheme = "https")
-        allowForHTTPSchemeHandlerRegistration = false
-    }
-
-    private fun buildInitScript(customAndOverriddenComponents: String, configuration: EngineConfiguration): String {
-        val configString = configuration.toJsonString()
-        return """
-        window.onload = function() {
-           window.init('$configString', '$customAndOverriddenComponents');
-        }
-        """.trimIndent()
-    }
     companion object {
         private const val TAG = "WKWebViewBasedEngine"
         const val COMPONENT_ASSETS_PREFIX = "/constellation-mobile-sdk-assets/components/"
