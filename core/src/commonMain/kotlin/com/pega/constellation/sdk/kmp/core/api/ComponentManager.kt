@@ -64,7 +64,7 @@ interface ComponentManager {
          * Root container component ID.
          */
         val ROOT_CONTAINER_ID = ComponentId(1)
-        
+
         /**
          * Creates a new instance of `ComponentManager` with optional custom component definitions.
          *
