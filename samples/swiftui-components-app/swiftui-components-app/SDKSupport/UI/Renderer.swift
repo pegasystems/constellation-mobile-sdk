@@ -38,11 +38,11 @@ extension Component {
         default: createUnsupported()
         }
     }
-    
+
     func renderView() -> AnyView {
         AnyView(render())
     }
-    
+
     fileprivate func createUnsupported() -> AnyView {
         UnsupportedComponent.Companion().create(
             context: context,

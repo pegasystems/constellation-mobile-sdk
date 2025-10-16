@@ -10,8 +10,10 @@ struct AssignmentView: View {
     
     var body: some View {
         ZStack {
-            ForEach(state.component.children, id: \.context.id) { child in
-                child.renderView()
+            VStack {
+                ForEach(state.component.children, id: \.context.id) { child in
+                    child.renderView()
+                }
             }
             if state.component.loading {
                 ProgressView()
