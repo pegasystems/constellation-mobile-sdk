@@ -23,10 +23,9 @@ interface ResourceHandlerDelegate {
 }
 
 class ResourceHandler(
-    val mainScope: (() -> CoroutineScope)
+    val mainScope: () -> CoroutineScope
 ) : NSObject(), WKURLSchemeHandlerProtocol {
     lateinit var delegate: ResourceHandlerDelegate
-
     private val tasks = mutableMapOf<NSURLRequest, Job>()
 
     private suspend fun send(request: NSURLRequest): Pair<NSData, NSURLResponse> {
