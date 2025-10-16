@@ -69,6 +69,7 @@ class WKWebViewBasedEngine(
     private var initScript: String? = null
     private var initialNavigation: WKNavigation? = null
     private var uiDelegate: WKUIDelegateProtocol? = null
+    private var navigationDelegate: WKNavigationDelegateProtocol? = null
 
     init {
         val wkConfig = WKWebViewConfiguration()
@@ -232,7 +233,7 @@ class WKWebViewBasedEngine(
     }
 
     private fun configureNavigationDelegate() {
-        webView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
+        navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
                 if (didFinishNavigation == initialNavigation) {
                     Log.i(TAG, "Initial navigation completed, injecting scripts.")
@@ -259,6 +260,7 @@ class WKWebViewBasedEngine(
                 }
             }
         }
+        webView.navigationDelegate = navigationDelegate
     }
 
     companion object {
