@@ -14,8 +14,7 @@ import platform.WebKit.*
 import platform.darwin.NSObject
 
 private const val TAG = "FormHandler"
-class FormHandler(
-) : NSObject(), WKScriptMessageHandlerProtocol {
+class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
     lateinit var eventHandler: EngineEventHandler
     lateinit var componentManager: ComponentManager
     private val passthroughSubject = MutableSharedFlow<ComponentEvent>(extraBufferCapacity = 64)
@@ -50,7 +49,6 @@ class FormHandler(
     }
 
     private fun handleUpdateComponent(input: List<Any?>) {
-
         val cId = input.componentId
         val props = input.getOrNull(2) as? String
         if (cId != null && props != null) {

@@ -1,8 +1,10 @@
 package com.pega.constellation.sdk.kmp.engine.webview.ios
 
-import PegaMobileWKWebViewTweaks.*
+import PegaMobileWKWebViewTweaks.allowForHTTPSchemeHandlerRegistration
+import PegaMobileWKWebViewTweaks.applyTweaks
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
+import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
@@ -12,7 +14,8 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
@@ -44,12 +47,6 @@ data class EngineConfiguration(
     val caseClassName: String? = null,
     val debuggable: Boolean
 ) {
-    constructor(other: EngineConfiguration, caseClassName: String) : this(
-        url = other.url,
-        version = other.version,
-        caseClassName = caseClassName,
-        debuggable = other.debuggable
-    )
 
     fun toJsonString(): String =
         Json.encodeToString(this)
@@ -64,12 +61,15 @@ class WKWebViewBasedEngine(
     val webView: WKWebView
     private lateinit var config: ConstellationSdkConfig
     private lateinit var handler: EngineEventHandler
+    private var mainScope: CoroutineScope? = null
     private val formHandler = FormHandler()
-    private val resourceHandler = ResourceHandler()
+    private val resourceHandler = ResourceHandler(
+        mainScope = { mainScope as CoroutineScope }
+    )
     private var initScript: String? = null
-    private var eventStreamJob: Job? = null
     private var initialNavigation: WKNavigation? = null
     private var uiDelegate: WKUIDelegateProtocol? = null
+    private var navigationDelegate: WKNavigationDelegateProtocol? = null
 
     init {
         val wkConfig = WKWebViewConfiguration()
@@ -101,6 +101,9 @@ class WKWebViewBasedEngine(
         caseClassName: String,
         startingFields: Map<String, Any>
     ) {
+        mainScope?.cancel()
+        mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
         formHandler.handleLoading()
 
         val engineConfig = EngineConfiguration(
@@ -132,6 +135,7 @@ class WKWebViewBasedEngine(
 
         webView.setInspectable(config.debuggable)
 
+        Log.i(TAG, "Bootstrapping Constellation engine.")
         val indexURL =
             NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
         initialNavigation = webView.loadRequest(NSURLRequest(uRL = indexURL!!))
@@ -175,7 +179,10 @@ class WKWebViewBasedEngine(
                         runJavaScriptAlertPanelWithMessage,
                         completionHandler
                     )
-                ) ?: Log.w(TAG, "No root container to present alert dialog.")
+                ) ?: run {
+                    completionHandler()
+                    Log.w(TAG, "No root container to present alert dialog.")
+                }
             }
 
             override fun webView(
@@ -193,7 +200,10 @@ class WKWebViewBasedEngine(
                         onPromptConfirm = { result -> completionHandler(result) },
                         onCancel = { completionHandler(null) }
                     )
-                ) ?: Log.w(TAG, "No root container to present prompt dialog.")
+                ) ?: run {
+                    completionHandler(null)
+                    Log.w(TAG, "No root container to present prompt dialog.")
+                }
             }
 
             override fun webView(
@@ -213,19 +223,22 @@ class WKWebViewBasedEngine(
                             completionHandler(false)
                         }
                     )
-                ) ?: Log.w(TAG, "No root container to present confirm dialog.")
+                ) ?: run {
+                    completionHandler(false)
+                    Log.w(TAG, "No root container to present confirm dialog.")
+                }
             }
         }
         webView.UIDelegate = uiDelegate
     }
 
     private fun configureNavigationDelegate() {
-        webView.navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
+        navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
                 if (didFinishNavigation == initialNavigation) {
                     Log.i(TAG, "Initial navigation completed, injecting scripts.")
                     val injector = ScriptInjector()
-                    CoroutineScope(Dispatchers.Main).launch {
+                    mainScope?.launch {
                         try {
                             injector.load("Console")
                             injector.load("FormHandler")
@@ -233,9 +246,10 @@ class WKWebViewBasedEngine(
                             injector.inject(webView)
                         } catch (e: Throwable) {
                             Log.e(TAG, "Error during engine initialization.", e)
+                            handler.handle(EngineEvent.Error("Error during engine initialization: ${e.message}"))
                         }
                     }
-                    eventStreamJob = CoroutineScope(Dispatchers.Main).launch {
+                    mainScope?.launch {
                         formHandler.eventStream.collect { event ->
                             webView.evaluateJavaScript(
                                 "window.sendEventToComponent(${event.id}, '${event.eventContent}')",
@@ -246,6 +260,7 @@ class WKWebViewBasedEngine(
                 }
             }
         }
+        webView.navigationDelegate = navigationDelegate
     }
 
     companion object {
