@@ -1,6 +1,7 @@
 package com.pega.constellation.sdk.kmp.engine.webview.ios
 
-import PegaMobileWKWebViewTweaks.*
+import PegaMobileWKWebViewTweaks.allowForHTTPSchemeHandlerRegistration
+import PegaMobileWKWebViewTweaks.applyTweaks
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
@@ -12,7 +13,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
@@ -64,10 +65,12 @@ class WKWebViewBasedEngine(
     val webView: WKWebView
     private lateinit var config: ConstellationSdkConfig
     private lateinit var handler: EngineEventHandler
+    private var mainScope: CoroutineScope? = null
     private val formHandler = FormHandler()
-    private val resourceHandler = ResourceHandler()
+    private val resourceHandler = ResourceHandler(
+        mainScope = { mainScope as CoroutineScope }
+    )
     private var initScript: String? = null
-    private var eventStreamJob: Job? = null
     private var initialNavigation: WKNavigation? = null
     private var uiDelegate: WKUIDelegateProtocol? = null
 
@@ -101,6 +104,9 @@ class WKWebViewBasedEngine(
         caseClassName: String,
         startingFields: Map<String, Any>
     ) {
+        mainScope?.cancel()
+        mainScope = CoroutineScope(Dispatchers.Main)
+
         formHandler.handleLoading()
 
         val engineConfig = EngineConfiguration(
@@ -132,6 +138,7 @@ class WKWebViewBasedEngine(
 
         webView.setInspectable(config.debuggable)
 
+        Log.i(TAG, "Bootstrapping Constellation engine.")
         val indexURL =
             NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
         initialNavigation = webView.loadRequest(NSURLRequest(uRL = indexURL!!))
@@ -225,7 +232,7 @@ class WKWebViewBasedEngine(
                 if (didFinishNavigation == initialNavigation) {
                     Log.i(TAG, "Initial navigation completed, injecting scripts.")
                     val injector = ScriptInjector()
-                    CoroutineScope(Dispatchers.Main).launch {
+                    mainScope?.launch {
                         try {
                             injector.load("Console")
                             injector.load("FormHandler")
@@ -235,7 +242,7 @@ class WKWebViewBasedEngine(
                             Log.e(TAG, "Error during engine initialization.", e)
                         }
                     }
-                    eventStreamJob = CoroutineScope(Dispatchers.Main).launch {
+                    mainScope?.launch {
                         formHandler.eventStream.collect { event ->
                             webView.evaluateJavaScript(
                                 "window.sendEventToComponent(${event.id}, '${event.eventContent}')",

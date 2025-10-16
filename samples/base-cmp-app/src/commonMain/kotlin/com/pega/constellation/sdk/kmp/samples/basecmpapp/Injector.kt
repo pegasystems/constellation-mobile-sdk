@@ -11,7 +11,7 @@ object Injector {
 
     fun init(
         authManager: AuthManager,
-        engine: ConstellationSdkEngine,
+        engine: ConstellationSdkEngine
     ) {
         this.authManager = authManager
         this.engine = engine

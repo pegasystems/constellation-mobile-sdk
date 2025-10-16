@@ -3,7 +3,6 @@ package com.pega.constellation.sdk.kmp.engine.webview.ios
 import com.pega.constellation.sdk.kmp.core.Log
 import kotlinx.cinterop.ObjCSignatureOverride
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -24,6 +23,7 @@ interface ResourceHandlerDelegate {
 }
 
 class ResourceHandler(
+    val mainScope: (() -> CoroutineScope)
 ) : NSObject(), WKURLSchemeHandlerProtocol {
     lateinit var delegate: ResourceHandlerDelegate
 
@@ -38,21 +38,30 @@ class ResourceHandler(
         webView: WKWebView,
         startURLSchemeTask: WKURLSchemeTaskProtocol
     ) {
-        val job = CoroutineScope(Dispatchers.Main).launch {
+        mainScope().launch {
             try {
+                Log.i(TAG, "Starting WKURLScheme task. <${startURLSchemeTask.request.URL}>")
                 val (data, response) = send(startURLSchemeTask.request)
-                if (!isActive) return@launch
+                if (!isActive) {
+                    Log.i(TAG, "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}>")
+                    return@launch
+                }
+                Log.i(TAG, "WKURLScheme task is finished. <${startURLSchemeTask.request.URL}>")
                 tasks.remove(startURLSchemeTask.request)
                 startURLSchemeTask.didReceiveResponse(response)
                 startURLSchemeTask.didReceiveData(data)
                 startURLSchemeTask.didFinish()
             } catch (e: Throwable) {
-                if (!isActive) return@launch
-                Log.e(TAG, "Cannot execute WKWebView scheme task.", e)
+                if (!isActive) {
+                    Log.i(TAG, "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}> error=${e.message}")
+                    return@launch
+                }
+                Log.w(TAG, "WKURLScheme task failed. <${startURLSchemeTask.request.URL}> error=${e.message}")
                 startURLSchemeTask.didFailWithError(e.toNSError())
             }
+        }.let { job ->
+            tasks[startURLSchemeTask.request] = job
         }
-        tasks[startURLSchemeTask.request] = job
     }
 
     @ObjCSignatureOverride
@@ -60,6 +69,7 @@ class ResourceHandler(
         webView: WKWebView,
         stopURLSchemeTask: WKURLSchemeTaskProtocol
     ) {
+        Log.i(TAG, "Stopping WKURLScheme task. <${stopURLSchemeTask.request.URL}>")
         tasks[stopURLSchemeTask.request]?.cancel()
         tasks.remove(stopURLSchemeTask.request)
     }
