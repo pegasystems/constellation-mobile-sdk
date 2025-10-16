@@ -13,12 +13,8 @@ struct AssignmentCardComponentView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     VStack {
-                        if state.component.loading {
-                            ProgressView()
-                        } else {
-                            ForEach(state.component.children, id: \.context.id) { child in
-                                child.renderView()
-                            }
+                        ForEach(state.component.children, id: \.context.id) { child in
+                            child.renderView()
                         }
                     }
                 }
