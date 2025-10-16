@@ -7,6 +7,8 @@ extension Component {
         switch self {
         case let alert as AlertBannerComponent:
             AlertBannerView(alert)
+        case let assignment as AssignmentComponent:
+            AssignmentView(assignment)
         case let buttons as ActionButtonsComponent:
             ActionButtonsComponentView(buttons)
         case let card as AssignmentCardComponent:
@@ -25,9 +27,12 @@ extension Component {
             SimpleTableComponentView(simpleTable)
         case let flowContainer as FlowContainerComponent:
             FlowContainerComponentView(flowContainer)
-        case let view as ViewComponent: ViewComponentView(view)
-        case let region as RegionComponent: Container(region)
-        case let container as ContainerComponent: Container(container)
+        case let view as ViewComponent:
+            ViewComponentView(view)
+        case let region as RegionComponent:
+            Container(region)
+        case let container as ContainerComponent:
+            Container(container)
         case let unsupported as UnsupportedComponent:
             UnsupportedComponentView(unsupported)
         default: createUnsupported()
