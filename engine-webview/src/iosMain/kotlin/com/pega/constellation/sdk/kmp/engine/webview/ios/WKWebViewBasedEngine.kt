@@ -45,12 +45,6 @@ data class EngineConfiguration(
     val caseClassName: String? = null,
     val debuggable: Boolean
 ) {
-    constructor(other: EngineConfiguration, caseClassName: String) : this(
-        url = other.url,
-        version = other.version,
-        caseClassName = caseClassName,
-        debuggable = other.debuggable
-    )
 
     fun toJsonString(): String =
         Json.encodeToString(this)
@@ -182,7 +176,10 @@ class WKWebViewBasedEngine(
                         runJavaScriptAlertPanelWithMessage,
                         completionHandler
                     )
-                ) ?: Log.w(TAG, "No root container to present alert dialog.")
+                ) ?: run {
+                    completionHandler()
+                    Log.w(TAG, "No root container to present alert dialog.")
+                }
             }
 
             override fun webView(
@@ -200,7 +197,10 @@ class WKWebViewBasedEngine(
                         onPromptConfirm = { result -> completionHandler(result) },
                         onCancel = { completionHandler(null) }
                     )
-                ) ?: Log.w(TAG, "No root container to present prompt dialog.")
+                ) ?: run {
+                    completionHandler(null)
+                    Log.w(TAG, "No root container to present prompt dialog.")
+                }
             }
 
             override fun webView(
@@ -220,7 +220,10 @@ class WKWebViewBasedEngine(
                             completionHandler(false)
                         }
                     )
-                ) ?: Log.w(TAG, "No root container to present confirm dialog.")
+                ) ?: run {
+                    completionHandler(false)
+                    Log.w(TAG, "No root container to present confirm dialog.")
+                }
             }
         }
         webView.UIDelegate = uiDelegate
