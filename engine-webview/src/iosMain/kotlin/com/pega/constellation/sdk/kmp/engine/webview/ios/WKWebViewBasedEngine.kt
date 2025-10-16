@@ -4,6 +4,7 @@ import PegaMobileWKWebViewTweaks.allowForHTTPSchemeHandlerRegistration
 import PegaMobileWKWebViewTweaks.applyTweaks
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
+import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
@@ -13,6 +14,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -99,7 +101,7 @@ class WKWebViewBasedEngine(
         startingFields: Map<String, Any>
     ) {
         mainScope?.cancel()
-        mainScope = CoroutineScope(Dispatchers.Main)
+        mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
         formHandler.handleLoading()
 
@@ -243,6 +245,7 @@ class WKWebViewBasedEngine(
                             injector.inject(webView)
                         } catch (e: Throwable) {
                             Log.e(TAG, "Error during engine initialization.", e)
+                            handler.handle(EngineEvent.Error("Error during engine initialization: ${e.message}"))
                         }
                     }
                     mainScope?.launch {
