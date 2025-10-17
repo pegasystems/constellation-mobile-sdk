@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.engine.webview.ios
 
+import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
@@ -39,7 +40,11 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             "ready" -> eventHandler.handle(EngineEvent.Ready)
             "finished" -> eventHandler.handle(EngineEvent.Finished(array.getOrNull(1) as? String))
             "cancelled" -> eventHandler.handle(EngineEvent.Cancelled)
-            "error" -> eventHandler.handle(EngineEvent.Error(array.getOrNull(1) as? String))
+            "error" -> {
+                val type = array.getOrNull(1) as? String ?: "UnspecifiedJsError"
+                val message = array.getOrNull(2) as? String
+                eventHandler.handle(EngineEvent.Error(EngineError.JsError(type, message)))
+            }
             else -> Log.w(TAG, "Unexpected message type: $type")
         }
     }

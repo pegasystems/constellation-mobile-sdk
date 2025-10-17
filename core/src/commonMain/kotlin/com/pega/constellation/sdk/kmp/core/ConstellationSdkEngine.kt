@@ -37,8 +37,12 @@ sealed class EngineEvent {
     data object Loading : EngineEvent()
     data object Ready : EngineEvent()
     data class Finished(val successMessage: String?) : EngineEvent()
-    data class Error(val error: String?) : EngineEvent()
+    data class Error(val error: EngineError) : EngineEvent()
     data object Cancelled : EngineEvent()
 }
 
 
+sealed class EngineError(open val message: String?) {
+    class JsError(val type: String, message: String?) : EngineError(message)
+    class InternalError(message: String?) : EngineError(message)
+}

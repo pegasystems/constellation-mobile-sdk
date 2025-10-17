@@ -4,6 +4,7 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
+import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +33,16 @@ internal class ConstellationSdkImpl(
             is EngineEvent.Ready -> State.Ready(componentManager.rootContainerComponent as RootContainerComponent)
             is EngineEvent.Finished -> State.Finished(event.successMessage)
             is EngineEvent.Cancelled -> State.Cancelled
-            is EngineEvent.Error -> State.Error(event.error)
+            is EngineEvent.Error -> event.error.toSdkError()
         }
     }
+
+    private fun EngineError.toSdkError() =
+        when (this) {
+            is EngineError.JsError ->
+                State.Error(ConstellationSdk.SdkError.JsError(type, message))
+
+            is EngineError.InternalError ->
+                State.Error(ConstellationSdk.SdkError.InternalError(message))
+        }
 }

@@ -8,6 +8,7 @@ import android.webkit.WebView.setWebContentsDebuggingEnabled
 import android.webkit.WebViewClient
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
+import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
@@ -90,7 +91,7 @@ class AndroidWebViewEngine(
             if (result == "\"function\"") {
                 webView.evaluateJavascript("window.init('$sdkConfig', '$scripts')", null)
             } else {
-                handler.handle(EngineEvent.Error("Engine failed to load init scripts"))
+                handler.handle(EngineEvent.Error(EngineError.InternalError("Engine failed to load init scripts")))
             }
         }
     }
@@ -104,7 +105,10 @@ class AndroidWebViewEngine(
             is SetRequestBody -> networkInterceptor.setRequestBody(event.body)
             is OnReady -> handler.handle(EngineEvent.Ready)
             is OnFinished -> handler.handle(EngineEvent.Finished(event.successMessage))
-            is OnError -> handler.handle(EngineEvent.Error(event.error))
+            is OnError -> handler.handle(
+                EngineEvent.Error(EngineError.JsError(event.type, event.message))
+            )
+
             is OnCancelled -> handler.handle(EngineEvent.Cancelled)
         }
     }

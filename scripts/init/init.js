@@ -21,7 +21,7 @@ async function init(sdkConfig, componentsOverridesStr) {
   } catch (error) {
     const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "")
     console.error(errorMessage);
-    bridge.onError(errorMessage);
+    bridge.onError("SdkInitError", errorMessage);
   }
 }
 
@@ -39,3 +39,10 @@ function sendEventToComponent(id, event) {
 
 window.sendEventToComponent = sendEventToComponent;
 window.init = init;
+window.addEventListener('error', errorEvent => {
+  bridge.onError("UncaughtError", `${errorEvent.message} in ${errorEvent.filename} at line ${errorEvent.lineno}`);
+})
+window.addEventListener('unhandledrejection', rejectionEvent => {
+  bridge.onError("UnhandledRejectionError", `Unhandled promise rejection: ${rejectionEvent.reason.type}`);
+});
+

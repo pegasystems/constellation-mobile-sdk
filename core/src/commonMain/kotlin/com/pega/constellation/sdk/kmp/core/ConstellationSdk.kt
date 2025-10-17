@@ -51,8 +51,13 @@ interface ConstellationSdk {
         data object Initial : State()
         data object Loading : State()
         data class Ready(val root: RootContainerComponent) : State()
-        data class Error(val error: String?) : State()
+        data class Error(val error: SdkError) : State()
         data class Finished(val successMessage: String?) : State()
         data object Cancelled : State()
+    }
+
+    sealed class SdkError(open val message: String?) {
+        class JsError(val type: String, message: String?) : SdkError(message)
+        class InternalError(message: String?) : SdkError(message)
     }
 }

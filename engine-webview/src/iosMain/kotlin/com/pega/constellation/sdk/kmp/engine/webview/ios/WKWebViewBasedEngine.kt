@@ -4,6 +4,7 @@ import PegaMobileWKWebViewTweaks.allowForHTTPSchemeHandlerRegistration
 import PegaMobileWKWebViewTweaks.applyTweaks
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
+import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
@@ -246,7 +247,11 @@ class WKWebViewBasedEngine(
                             injector.inject(webView)
                         } catch (e: Throwable) {
                             Log.e(TAG, "Error during engine initialization.", e)
-                            handler.handle(EngineEvent.Error("Error during engine initialization: ${e.message}"))
+                            handler.handle(
+                                EngineEvent.Error(
+                                    EngineError.InternalError("Error during engine initialization: ${e.message}")
+                                )
+                            )
                         }
                     }
                     mainScope?.launch {

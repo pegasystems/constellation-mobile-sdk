@@ -32,8 +32,8 @@ class NativeBridge {
     sdkbridge.onCancelled();
   }
 
-  onError(error) {
-    sdkbridge.onError(error);
+  onError(type, message) {
+    sdkbridge.onError(type, message);
   }
 
   onEvent(id, event) {

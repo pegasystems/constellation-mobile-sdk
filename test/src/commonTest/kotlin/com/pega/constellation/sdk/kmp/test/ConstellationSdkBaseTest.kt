@@ -110,8 +110,8 @@ abstract class ConstellationSdkBaseTest {
         private fun runTest(block: suspend () -> Unit) = runBlocking(Dispatchers.Main) { block() }
 
         private suspend fun ConstellationSdk.assertError(condition: (String) -> Boolean) {
-            val error = assertState<State.Error>().error
-            assertTrue(condition(error.orEmpty()))
+            val errorMessage = assertState<State.Error>().error.message
+            assertTrue(condition(errorMessage.orEmpty()))
         }
 
         private suspend inline fun <reified S : State> ConstellationSdk.assertState() =

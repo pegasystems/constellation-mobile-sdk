@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,12 +35,24 @@ fun PegaBottomSheet(
             !viewModel.dismissed && (sdkState is State.Loading || sdkState is State.Ready)
         }
     }
-
+    val state = sdkState
     LaunchedEffect(sdkState) {
-        val message = when (sdkState) {
+        val message = when (state) {
             is State.Cancelled -> "Registration cancelled"
             is State.Finished -> "Thanks for registration"
-            is State.Error -> "Failed to load the registration form"
+            is State.Error -> {
+                val error = state.error
+                when (error) {
+                    is ConstellationSdk.SdkError.JsError -> {
+                        "JavaScript error: ${error.type} - ${error.message}"
+                    }
+
+                    is ConstellationSdk.SdkError.InternalError -> {
+                        "Internal error: ${state.error.message}"
+                    }
+                }
+            }
+
             else -> null
         }
         message?.let(onMessage)
