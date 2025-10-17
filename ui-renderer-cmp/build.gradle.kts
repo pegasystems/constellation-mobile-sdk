@@ -11,6 +11,9 @@ kotlin {
         namespace = "com.pega.constellation.sdk.kmp.ui.renderer.cmp"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+
+        @Suppress("UnstableApiUsage")
+        androidResources.enable = true
     }
 
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
