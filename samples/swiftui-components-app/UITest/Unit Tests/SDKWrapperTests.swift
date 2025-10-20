@@ -15,7 +15,7 @@ final class SDKWrapperTests: XCTestCase {
 
         try await sdk.emitState(ConstellationSdkState.Loading())
         try await sdk.emitState(ConstellationSdkState.Initial())
-        try await sdk.emitState(ConstellationSdkState.Error(error: "errorString"))
+        try await sdk.emitState(ConstellationSdkState.Error(error: ConstellationSdkSdkError.InternalError(message: "errorString")))
         try await sdk.emitState(ConstellationSdkState.Finished(successMessage: "successMessage"))
         try await sdk.emitState("not a state")
         try await sdk.emitState(ConstellationSdkState.Cancelled())
