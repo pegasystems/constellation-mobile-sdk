@@ -56,8 +56,8 @@ interface ConstellationSdk {
         data object Cancelled : State()
     }
 
-    sealed class SdkError(open val message: String?) {
-        class JsError(val type: String, message: String?) : SdkError(message)
-        class InternalError(message: String?) : SdkError(message)
+    sealed class SdkError(val message: String) {
+        class JsError(val type: String, message: String) : SdkError(message)
+        class InternalError(message: String) : SdkError(message)
     }
 }

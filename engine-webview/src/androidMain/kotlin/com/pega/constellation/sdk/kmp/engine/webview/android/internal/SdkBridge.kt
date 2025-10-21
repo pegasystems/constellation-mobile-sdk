@@ -49,7 +49,7 @@ internal class SdkBridge(private val handler: BridgeEventHandler) {
     fun onCancelled() = handle(OnCancelled)
 
     @JavascriptInterface
-    fun onError(type: String, message: String?) = handle(OnError(type, message))
+    fun onError(type: String, message: String) = handle(OnError(type, message))
 
     private fun handle(event: BridgeEvent) = handler.handle(event)
 
@@ -65,6 +65,6 @@ internal class SdkBridge(private val handler: BridgeEventHandler) {
         data object OnReady : BridgeEvent()
         data class OnFinished(val successMessage: String?) : BridgeEvent()
         data object OnCancelled : BridgeEvent()
-        data class OnError(val type: String, val message: String?) : BridgeEvent()
+        data class OnError(val type: String, val message: String) : BridgeEvent()
     }
 }

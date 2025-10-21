@@ -42,7 +42,7 @@ sealed class EngineEvent {
 }
 
 
-sealed class EngineError(open val message: String?) {
-    class JsError(val type: String, message: String?) : EngineError(message)
-    class InternalError(message: String?) : EngineError(message)
+sealed class EngineError(val message: String) {
+    class JsError(val type: String, message: String) : EngineError(message)
+    class InternalError(message: String) : EngineError(message)
 }

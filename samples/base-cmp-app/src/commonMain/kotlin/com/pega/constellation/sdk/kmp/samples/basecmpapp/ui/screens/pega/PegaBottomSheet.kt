@@ -35,27 +35,8 @@ fun PegaBottomSheet(
             !viewModel.dismissed && (sdkState is State.Loading || sdkState is State.Ready)
         }
     }
-    val state = sdkState
     LaunchedEffect(sdkState) {
-        val message = when (state) {
-            is State.Cancelled -> "Registration cancelled"
-            is State.Finished -> "Thanks for registration"
-            is State.Error -> {
-                val error = state.error
-                when (error) {
-                    is ConstellationSdk.SdkError.JsError -> {
-                        "JavaScript error: ${error.type} - ${error.message}"
-                    }
-
-                    is ConstellationSdk.SdkError.InternalError -> {
-                        "Internal error: ${state.error.message}"
-                    }
-                }
-            }
-
-            else -> null
-        }
-        message?.let(onMessage)
+        sdkState.getMessage()?.let(onMessage)
     }
 
     if (showForm) {
@@ -68,6 +49,25 @@ fun PegaBottomSheet(
             content = { PegaBottomSheetContent(sdkState) }
         )
     }
+}
+
+private fun State.getMessage() = when (this) {
+    is State.Cancelled -> "Registration cancelled"
+    is State.Finished -> "Thanks for registration"
+    is State.Error -> {
+        val error = error
+        when (error) {
+            is ConstellationSdk.SdkError.JsError -> {
+                "JavaScript error: ${error.type} - ${error.message}"
+            }
+
+            is ConstellationSdk.SdkError.InternalError -> {
+                "Internal error: ${error.message}"
+            }
+        }
+    }
+
+    else -> null
 }
 
 @Composable
