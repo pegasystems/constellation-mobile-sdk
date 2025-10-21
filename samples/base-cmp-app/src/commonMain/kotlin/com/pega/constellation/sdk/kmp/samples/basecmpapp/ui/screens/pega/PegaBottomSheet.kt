@@ -58,7 +58,7 @@ private fun State.getMessage() = when (this) {
     is State.Error -> {
         val error = error
         when (error) {
-            is JsError -> "JavaScript error: ${error.type.displayName} - ${error.message}"
+            is JsError -> "JavaScript error: ${error.type} - ${error.message}"
             is InternalError -> "Internal error: ${error.message}"
             else -> "Unknown error: ${error.message}"
         }

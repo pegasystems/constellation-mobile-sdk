@@ -42,8 +42,8 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             "finished" -> eventHandler.handle(EngineEvent.Finished(array.getOrNull(1) as? String))
             "cancelled" -> eventHandler.handle(EngineEvent.Cancelled)
             "error" -> {
-                val type = array.getOrNull(1) as? String
-                val message = array.getOrNull(2) as? String ?: ""
+                val type = array.getOrNull(1) as String
+                val message = array.getOrNull(2) as String
                 eventHandler.handle(EngineEvent.Error(JsError(type.toJsErrorType(), message)))
             }
             else -> Log.w(TAG, "Unexpected message type: $type")

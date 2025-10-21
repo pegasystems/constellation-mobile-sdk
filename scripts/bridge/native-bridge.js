@@ -33,6 +33,10 @@ class NativeBridge {
   }
 
   onError(type, message) {
+    if (type == null || message == null) {
+      console.error(TAG, "onError called with null or undefined type or message");
+      return;
+    }
     sdkbridge.onError(type, message);
   }
 
