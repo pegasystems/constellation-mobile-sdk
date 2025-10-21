@@ -9,7 +9,13 @@
 
 ## Compose Multiplatform (CMP) and Android Jetpack Compose applications
 
-### 1. Setup Gradle dependencies
+### 1. Prerequisites
+
+- Xcode 16.4
+   - There is still no stable Kotlin release with support for Xcode 26)
+   - In order to work with Xcode 26 you need to upgrade (gradle/libs.versions.toml) Kotlin to pre-release `2.2.21-RC2` version.
+  
+### 2. Setup Gradle dependencies
 
 1. Build and publish SDK dependencies in Maven Local repository
 
@@ -66,7 +72,7 @@
     }
     ```
 
-### 2. Initialize the SDK
+### 3. Initialize the SDK
 
 1. Inject application context in `Activity.onCreate` or `Application.onCreate` method:
     ```kotlin
@@ -121,7 +127,7 @@
     val sdk = ConstellationSdk.create(config, engine)
     ```
 
-### 3. Create a new case
+### 4. Create a new case
 
 To create a new case, call the *createCase* method on the *ConstellationSdk* instance:
 
@@ -132,7 +138,7 @@ sdk.createCase(caseClassName)
 where:
 - **caseClassName** — Name of the Case Type class to be created, e.g. "DIXL-MediaCo-Work-NewService"
 
-### 4. Render the form
+### 5. Render the form
 
 The SDK provides several states that can be observed for seamless UI integration.
 
