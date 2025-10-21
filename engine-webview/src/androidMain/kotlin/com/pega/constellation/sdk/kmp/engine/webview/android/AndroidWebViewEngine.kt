@@ -32,6 +32,9 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.BridgeEvent.UpdateComponent
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebChromeClient
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebViewClient
+import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
+
 import okhttp3.OkHttpClient
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
@@ -91,7 +94,7 @@ class AndroidWebViewEngine(
             if (result == "\"function\"") {
                 webView.evaluateJavascript("window.init('$sdkConfig', '$scripts')", null)
             } else {
-                handler.handle(EngineEvent.Error(EngineError.InternalError("Engine failed to load init scripts")))
+                handler.handle(EngineEvent.Error(InternalError("Engine failed to load init scripts")))
             }
         }
     }
@@ -106,7 +109,7 @@ class AndroidWebViewEngine(
             is OnReady -> handler.handle(EngineEvent.Ready)
             is OnFinished -> handler.handle(EngineEvent.Finished(event.successMessage))
             is OnError -> handler.handle(
-                EngineEvent.Error(EngineError.JsError(event.type, event.message))
+                EngineEvent.Error(JsError(event.type, event.message))
             )
 
             is OnCancelled -> handler.handle(EngineEvent.Cancelled)

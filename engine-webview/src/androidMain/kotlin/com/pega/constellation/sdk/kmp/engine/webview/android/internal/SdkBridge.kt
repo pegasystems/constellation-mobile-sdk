@@ -11,6 +11,8 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.BridgeEvent.RemoveComponent
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.BridgeEvent.SetRequestBody
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.BridgeEvent.UpdateComponent
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsErrorType
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsErrorType.Companion.toJsErrorType
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
@@ -49,7 +51,8 @@ internal class SdkBridge(private val handler: BridgeEventHandler) {
     fun onCancelled() = handle(OnCancelled)
 
     @JavascriptInterface
-    fun onError(type: String, message: String) = handle(OnError(type, message))
+    fun onError(type: String?, message: String?) =
+        handle(OnError(type.toJsErrorType(), message ?: ""))
 
     private fun handle(event: BridgeEvent) = handler.handle(event)
 
@@ -65,6 +68,6 @@ internal class SdkBridge(private val handler: BridgeEventHandler) {
         data object OnReady : BridgeEvent()
         data class OnFinished(val successMessage: String?) : BridgeEvent()
         data object OnCancelled : BridgeEvent()
-        data class OnError(val type: String, val message: String) : BridgeEvent()
+        data class OnError(val type: JsErrorType, val message: String) : BridgeEvent()
     }
 }

@@ -1,12 +1,13 @@
 package com.pega.constellation.sdk.kmp.engine.webview.ios
 
-import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsErrorType.Companion.toJsErrorType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.serialization.json.Json
@@ -41,9 +42,9 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             "finished" -> eventHandler.handle(EngineEvent.Finished(array.getOrNull(1) as? String))
             "cancelled" -> eventHandler.handle(EngineEvent.Cancelled)
             "error" -> {
-                val type = array.getOrNull(1) as? String ?: "UnspecifiedJsError"
-                val message = array.getOrNull(2) as? String
-                eventHandler.handle(EngineEvent.Error(EngineError.JsError(type, message)))
+                val type = array.getOrNull(1) as? String
+                val message = array.getOrNull(2) as? String ?: ""
+                eventHandler.handle(EngineEvent.Error(JsError(type.toJsErrorType(), message)))
             }
             else -> Log.w(TAG, "Unexpected message type: $type")
         }

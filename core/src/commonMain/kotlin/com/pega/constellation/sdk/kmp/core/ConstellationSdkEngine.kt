@@ -42,7 +42,6 @@ sealed class EngineEvent {
 }
 
 
-sealed class EngineError(val message: String) {
-    class JsError(val type: String, message: String) : EngineError(message)
-    class InternalError(message: String) : EngineError(message)
+interface EngineError {
+    val message: String
 }

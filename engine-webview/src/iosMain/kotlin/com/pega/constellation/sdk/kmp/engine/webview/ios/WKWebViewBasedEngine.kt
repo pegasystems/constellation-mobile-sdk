@@ -4,12 +4,12 @@ import PegaMobileWKWebViewTweaks.allowForHTTPSchemeHandlerRegistration
 import PegaMobileWKWebViewTweaks.applyTweaks
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
 import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
+import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Companion.COMPONENT_ASSETS_PREFIX
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
@@ -249,7 +249,7 @@ class WKWebViewBasedEngine(
                             Log.e(TAG, "Error during engine initialization.", e)
                             handler.handle(
                                 EngineEvent.Error(
-                                    EngineError.InternalError("Error during engine initialization: ${e.message}")
+                                    InternalError("Error during engine initialization: ${e.message}")
                                 )
                             )
                         }

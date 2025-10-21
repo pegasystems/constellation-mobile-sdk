@@ -20,8 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
+import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,13 +58,9 @@ private fun State.getMessage() = when (this) {
     is State.Error -> {
         val error = error
         when (error) {
-            is ConstellationSdk.SdkError.JsError -> {
-                "JavaScript error: ${error.type} - ${error.message}"
-            }
-
-            is ConstellationSdk.SdkError.InternalError -> {
-                "Internal error: ${error.message}"
-            }
+            is JsError -> "JavaScript error: ${error.type.displayName} - ${error.message}"
+            is InternalError -> "Internal error: ${error.message}"
+            else -> "Unknown error: ${error.message}"
         }
     }
 

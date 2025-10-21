@@ -21,7 +21,7 @@ async function init(sdkConfig, componentsOverridesStr) {
   } catch (error) {
     const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "")
     console.error(errorMessage);
-    bridge.onError("SdkInitError", errorMessage);
+    bridge.onError("InitError", errorMessage);
   }
 }
 
