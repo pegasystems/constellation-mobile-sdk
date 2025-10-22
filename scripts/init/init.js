@@ -18,14 +18,16 @@ async function init(sdkConfig, componentsOverridesStr) {
     initPlatforms(componentsOverridesStr);
     const config = JSON.parse(sdkConfig);
     await bootstrap(config.url, config.version, onPCoreReady);
-    if (config.action.actionType === "CreateCase") {
+
+    if (config.action.type === "CreateCase") {
       await createCase(config.action.caseClassName, config.action.startingFields);
-    } else if (config.action.actionType === "OpenAssignment") {
+    } else if (config.action.type === "OpenAssignment") {
       await openAssignment(config.action.assignmentId);
     } else {
-      const errorMessage = "Unknown action type: " + config.action.actionType;
+      const errorMessage = "Unknown action type: " + config.action.type;
       throw new Error(errorMessage);
     }
+
     console.log(TAG, "Constellation SDK initialization completed");
     bridge.onReady();
   } catch (error) {
