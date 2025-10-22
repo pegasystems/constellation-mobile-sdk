@@ -11,6 +11,7 @@ import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
 import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
+import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Companion.COMPONENT_ASSETS_PREFIX
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
@@ -230,7 +231,11 @@ class WKWebViewBasedEngine(
                             injector.inject(webView)
                         } catch (e: Throwable) {
                             Log.e(TAG, "Error during engine initialization.", e)
-                            handler.handle(EngineEvent.Error("Error during engine initialization: ${e.message}"))
+                            handler.handle(
+                                EngineEvent.Error(
+                                    InternalError("Error during engine initialization: ${e.message}")
+                                )
+                            )
                         }
                     }
                     mainScope?.launch {

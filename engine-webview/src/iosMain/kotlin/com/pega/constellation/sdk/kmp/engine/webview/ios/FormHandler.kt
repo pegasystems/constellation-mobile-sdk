@@ -6,6 +6,8 @@ import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsErrorType.Companion.toJsErrorType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.serialization.json.Json
@@ -39,7 +41,11 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             "ready" -> eventHandler.handle(EngineEvent.Ready)
             "finished" -> eventHandler.handle(EngineEvent.Finished(array.getOrNull(1) as? String))
             "cancelled" -> eventHandler.handle(EngineEvent.Cancelled)
-            "error" -> eventHandler.handle(EngineEvent.Error(array.getOrNull(1) as? String))
+            "error" -> {
+                val type = array.getOrNull(1) as String
+                val message = array.getOrNull(2) as String
+                eventHandler.handle(EngineEvent.Error(JsError(type.toJsErrorType(), message)))
+            }
             else -> Log.w(TAG, "Unexpected message type: $type")
         }
     }

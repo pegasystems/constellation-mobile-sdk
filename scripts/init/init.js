@@ -7,12 +7,14 @@ import { getSdkComponentMap } from '../dxcomponents/mappings/sdk-component-map.j
 import { bridge } from '../bridge/native-bridge.js';
 import { subscribeForEvents } from './init-events.js';
 import { localSdkComponentMap } from '../dxcomponents/mappings/sdk-local-component-map.js';
+import { initErrorHandling } from './init-error-handling.js';
 
 const TAG = "[Init]";
 
 async function init(sdkConfig, componentsOverridesStr) {
   try {
     console.log(TAG, "Constellation SDK initialization started");
+    initErrorHandling();
     initPlatforms(componentsOverridesStr);
     const config = JSON.parse(sdkConfig);
     await bootstrap(config.url, config.version, onPCoreReady);
@@ -31,7 +33,7 @@ async function init(sdkConfig, componentsOverridesStr) {
   } catch (error) {
     const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "");
     console.error(errorMessage);
-    bridge.onError(errorMessage);
+    bridge.onError("InitError", errorMessage);
   }
 }
 

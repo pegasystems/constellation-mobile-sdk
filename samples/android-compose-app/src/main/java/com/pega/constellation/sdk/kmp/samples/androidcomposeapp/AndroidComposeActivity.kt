@@ -102,7 +102,7 @@ fun PegaForm(state: State) {
         is Ready -> ShowForm(state)
         is Finished -> ShowAlert("Thanks for registration")
         is Cancelled -> ShowAlert("Cancelled")
-        is Error -> ShowAlert(state.error ?: "Error")
+        is Error -> ShowAlert(state.error.message ?: "Error")
     }
 }
 

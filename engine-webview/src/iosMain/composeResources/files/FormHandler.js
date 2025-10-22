@@ -26,8 +26,8 @@
             window.webkit.messageHandlers.formHandler.postMessage(["cancelled"]);
         },
 
-        onError: function(errorMessage) {
-            window.webkit.messageHandlers.formHandler.postMessage(["error", errorMessage]);
+        onError: function(type, message) {
+            window.webkit.messageHandlers.formHandler.postMessage(["error", type, message]);
         }
     };
 })();
