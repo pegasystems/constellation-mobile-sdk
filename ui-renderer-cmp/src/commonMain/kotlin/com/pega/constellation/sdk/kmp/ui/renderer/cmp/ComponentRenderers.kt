@@ -7,6 +7,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Assignment
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AssignmentCard
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Checkbox
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Currency
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DataReference
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Date
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DateTime
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Decimal
@@ -22,6 +23,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButton
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RootContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTable
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableSelect
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextArea
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextInput
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Time
@@ -32,6 +34,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ViewContain
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AlertBannerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AssignmentCardRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AssignmentRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DataReferenceRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DefaultFormRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FieldGroupTemplateRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FlowContainerRenderer
@@ -39,6 +42,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.OneColumnRender
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RegionRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RootContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.SimpleTableRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.SimpleTableSelectRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ViewContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ViewRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.CheckboxRenderer
@@ -74,6 +78,7 @@ object ComponentRenderers {
         AssignmentCard to AssignmentCardRenderer(),
         Checkbox to CheckboxRenderer(),
         Currency to CurrencyRenderer(),
+        DataReference to DataReferenceRenderer(),
         Date to DateRenderer(),
         DateTime to DateTimeRenderer(),
         Decimal to DecimalRenderer(),
@@ -89,6 +94,7 @@ object ComponentRenderers {
         Region to RegionRenderer(),
         RootContainer to RootContainerRenderer(),
         SimpleTable to SimpleTableRenderer(),
+        SimpleTableSelect to SimpleTableSelectRenderer(),
         TextArea to TextAreaRenderer(),
         TextInput to TextInputRenderer(),
         Time to TimeRenderer(),
