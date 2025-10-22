@@ -30,6 +30,7 @@ kotlin {
                 api(project(":core"))
                 api(project(":ui-components-cmp"))
                 api(project(":ui-renderer-cmp"))
+                api(project(":engine-webview"))
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.foundation)
@@ -41,16 +42,6 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.oidc.appsupport)
                 implementation(libs.oidc.tokenstore)
-            }
-        }
-        iosMain {
-            dependencies {
-                api(project(":engine-webview"))
-            }
-        }
-        androidMain {
-            dependencies {
-                api(project(":engine-webview"))
             }
         }
         jvmMain {

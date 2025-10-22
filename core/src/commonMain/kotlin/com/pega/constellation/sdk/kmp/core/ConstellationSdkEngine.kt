@@ -37,8 +37,11 @@ sealed class EngineEvent {
     data object Loading : EngineEvent()
     data object Ready : EngineEvent()
     data class Finished(val successMessage: String?) : EngineEvent()
-    data class Error(val error: String?) : EngineEvent()
+    data class Error(val error: EngineError) : EngineEvent()
     data object Cancelled : EngineEvent()
 }
 
 
+interface EngineError {
+    val message: String
+}

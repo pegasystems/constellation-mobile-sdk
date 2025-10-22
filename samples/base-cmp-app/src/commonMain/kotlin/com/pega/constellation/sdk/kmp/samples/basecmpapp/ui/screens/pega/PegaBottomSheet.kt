@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
+import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
+import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,15 +36,8 @@ fun PegaBottomSheet(
             !viewModel.dismissed && (sdkState is State.Loading || sdkState is State.Ready)
         }
     }
-
     LaunchedEffect(sdkState) {
-        val message = when (sdkState) {
-            is State.Cancelled -> "Registration cancelled"
-            is State.Finished -> "Thanks for registration"
-            is State.Error -> "Failed to load the registration form"
-            else -> null
-        }
-        message?.let(onMessage)
+        sdkState.getMessage()?.let(onMessage)
     }
 
     if (showForm) {
@@ -55,6 +50,21 @@ fun PegaBottomSheet(
             content = { PegaBottomSheetContent(sdkState) }
         )
     }
+}
+
+private fun State.getMessage() = when (this) {
+    is State.Cancelled -> "Registration cancelled"
+    is State.Finished -> "Thanks for registration"
+    is State.Error -> {
+        val error = error
+        when (error) {
+            is JsError -> "JavaScript error: ${error.type} - ${error.message}"
+            is InternalError -> "Internal error: ${error.message}"
+            else -> "Unknown error: ${error.message}"
+        }
+    }
+
+    else -> null
 }
 
 @Composable

@@ -26,7 +26,7 @@ class SDKWrapper {
             case is ConstellationSdkState.Loading: .loading
             case is ConstellationSdkState.Initial: .initial
             case let readyState as ConstellationSdkState.Ready: .ready(readyState.root)
-            case let errorState as ConstellationSdkState.Error: .error(errorState.error)
+            case let errorState as ConstellationSdkState.Error: .error(errorState.error.message)
             case let finishedState as ConstellationSdkState.Finished: .finished(finishedState.successMessage)
             case is ConstellationSdkState.Cancelled: .cancelled
             default: nil
