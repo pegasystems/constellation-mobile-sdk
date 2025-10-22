@@ -2,6 +2,7 @@ import { initPlatforms } from './init-platforms.js';
 import { initialRender } from './initial-render.js';
 import { bootstrap } from './bootstrap.js'
 import { createCase } from './create-case.js';
+import { openAssignment } from './open-assignment.js';
 import { getSdkComponentMap } from '../dxcomponents/mappings/sdk-component-map.js';
 import { bridge } from '../bridge/native-bridge.js';
 import { subscribeForEvents } from './init-events.js';
@@ -17,11 +18,20 @@ async function init(sdkConfig, componentsOverridesStr) {
     initPlatforms(componentsOverridesStr);
     const config = JSON.parse(sdkConfig);
     await bootstrap(config.url, config.version, onPCoreReady);
-    await createCase(config.caseClassName, config.startingFields);
+
+    if (config.action.type === "CreateCase") {
+      await createCase(config.action.caseClassName, config.action.startingFields);
+    } else if (config.action.type === "OpenAssignment") {
+      await openAssignment(config.action.assignmentId);
+    } else {
+      const errorMessage = "Unknown action type: " + config.action.type;
+      throw new Error(errorMessage);
+    }
+
     console.log(TAG, "Constellation SDK initialization completed");
     bridge.onReady();
   } catch (error) {
-    const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "")
+    const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "");
     console.error(errorMessage);
     bridge.onError("InitError", errorMessage);
   }

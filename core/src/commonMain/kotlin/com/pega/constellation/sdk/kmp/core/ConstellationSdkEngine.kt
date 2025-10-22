@@ -12,9 +12,9 @@ interface ConstellationSdkEngine {
     fun configure(config: ConstellationSdkConfig, handler: EngineEventHandler)
 
     /**
-     * Creates a case of the specified class name with the provided starting fields.
+     * Performs the specified action using the Constellation SDK.
      */
-    fun createCase(caseClassName: String, startingFields: Map<String, Any>)
+    fun performAction(action: ConstellationSdkAction)
 }
 
 /**

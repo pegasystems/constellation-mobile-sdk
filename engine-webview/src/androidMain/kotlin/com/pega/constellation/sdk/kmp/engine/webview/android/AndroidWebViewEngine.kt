@@ -6,9 +6,9 @@ import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebView.setWebContentsDebuggingEnabled
 import android.webkit.WebViewClient
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
@@ -32,6 +32,7 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.BridgeEvent.UpdateComponent
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebChromeClient
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebViewClient
+import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
 
@@ -67,20 +68,21 @@ class AndroidWebViewEngine(
         this.webView = createWebView(webViewClient)
     }
 
-    override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
+    override fun performAction(action: ConstellationSdkAction) {
         handler.handle(EngineEvent.Loading)
-        webViewClient.onPageLoad = { onPageLoad(caseClassName, startingFields) }
+        webViewClient.onPageLoad = { onPageLoad(action) }
         webView.loadUrl(config.pegaUrl)
     }
 
-    private fun onPageLoad(caseClassName: String, startingFields: Map<String, Any>) {
+    private fun onPageLoad(action: ConstellationSdkAction) {
+        val configuration = EngineConfiguration(
+            url = config.pegaUrl,
+            version = config.pegaVersion,
+            action = action,
+            debuggable = config.debuggable
+        )
         evaluateInit(
-            sdkConfig = JSONObject().apply {
-                put("url", config.pegaUrl)
-                put("version", config.pegaVersion)
-                put("caseClassName", caseClassName)
-                put("startingFields", JSONObject(startingFields))
-            }.toString(),
+            sdkConfig = configuration.toJsonString(),
             scripts = componentManager.getCustomComponentDefinitions()
                 .filter { it.script != null }
                 .associate { it.type.type to it.script!!.assetPath(context) }

@@ -24,6 +24,13 @@ interface ConstellationSdk {
      */
     fun createCase(caseClassName: String, startingFields: Map<String, Any> = emptyMap())
 
+    /**
+     * Opens an assignment with the given ID.
+     *
+     * @param assignmentId id of the assignment to be opened
+     */
+    fun openAssignment(assignmentId: String)
+
     companion object {
         /**
          * Allows to create [ConstellationSdk] object.

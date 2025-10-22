@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.engine.mock
 
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEvent
@@ -32,7 +33,7 @@ class MockSdkEngine : ConstellationSdkEngine {
         this.handler = handler
     }
 
-    override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
+    override fun performAction(action: ConstellationSdkAction) {
         handler.handle(EngineEvent.Loading)
         config.componentManager.configureComponents()
         handler.handle(EngineEvent.Ready)

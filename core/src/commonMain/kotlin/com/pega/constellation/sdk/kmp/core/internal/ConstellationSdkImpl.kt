@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.internal
 
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
@@ -8,6 +9,7 @@ import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.json.JsonObject
 
 internal class ConstellationSdkImpl(
     config: ConstellationSdkConfig,
@@ -23,7 +25,14 @@ internal class ConstellationSdkImpl(
     }
 
     override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
-        engine.createCase(caseClassName, startingFields)
+        engine.performAction(ConstellationSdkAction.CreateCase(
+            caseClassName,
+            startingFields.toJsonElement() as? JsonObject)
+        )
+    }
+
+    override fun openAssignment(assignmentId: String) {
+        engine.performAction(ConstellationSdkAction.OpenAssignment(assignmentId))
     }
 
     private fun onEngineEvent(event: EngineEvent) {
