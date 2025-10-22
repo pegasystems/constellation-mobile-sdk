@@ -37,6 +37,9 @@ final class SDKWrapperTests: XCTestCase {
 }
 
 private class MockedSDK: ConstellationSdk {
+    func openAssignment(assignmentId: String) {
+        XCTFail("not implemented")
+    }
 
     func createCase(caseClassName: String, startingFields: [String : Any]) {
         XCTFail("not implemented")
