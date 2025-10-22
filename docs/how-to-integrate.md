@@ -12,7 +12,7 @@
 ### 1. Prerequisites
 
 - Xcode 16.4
-   - In order to work with Xcode 26 you need to upgrade (gradle/libs.versions.toml) Kotlin to pre-release `2.2.21-RC2` version.
+   - In order to work with Xcode 26 you need to upgrade (gradle/libs.versions.toml) Kotlin to pre-release `2.2.21-RC2` version. Please bear in mind that this is an RC version — some features may not work as expected.
   
 ### 2. Setup Gradle dependencies
 
