@@ -24,9 +24,7 @@ async function init(sdkConfig, componentsOverridesStr) {
       await openAssignment(config.action.assignmentId);
     } else {
       const errorMessage = "Unknown action type: " + config.action.actionType;
-      console.error(errorMessage);
-      bridge.onError(errorMessage);
-      return;
+      throw new Error(errorMessage);
     }
     console.log(TAG, "Constellation SDK initialization completed");
     bridge.onReady();
