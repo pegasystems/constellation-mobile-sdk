@@ -2,8 +2,10 @@ package com.pega.constellation.sdk.kmp.engine.webview.ios
 
 import PegaMobileWKWebViewTweaks.allowForHTTPSchemeHandlerRegistration
 import PegaMobileWKWebViewTweaks.applyTweaks
+import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
+import com.pega.constellation.sdk.kmp.core.EngineConfiguration
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
@@ -17,7 +19,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
@@ -39,20 +40,6 @@ data class ComponentEvent(
     val id: Int,
     val eventContent: String
 )
-
-@Serializable
-data class EngineConfiguration(
-    val url: String,
-    val version: String,
-    val caseClassName: String? = null,
-    val debuggable: Boolean
-) {
-
-    fun toJsonString(): String =
-        Json.encodeToString(this)
-            .replace("\n", " ")
-
-}
 
 @OptIn(ExperimentalForeignApi::class)
 class WKWebViewBasedEngine(
@@ -97,10 +84,7 @@ class WKWebViewBasedEngine(
         this.resourceHandler.delegate = resourceProviderManager
     }
 
-    override fun createCase(
-        caseClassName: String,
-        startingFields: Map<String, Any>
-    ) {
+    override fun performAction(action: ConstellationSdkAction) {
         mainScope?.cancel()
         mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -109,7 +93,7 @@ class WKWebViewBasedEngine(
         val engineConfig = EngineConfiguration(
             url = config.pegaUrl,
             version = config.pegaVersion,
-            caseClassName = caseClassName,
+            action = action,
             debuggable = config.debuggable
         )
 
