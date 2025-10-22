@@ -1,10 +1,11 @@
 # How to integrate with Constellation SDK 
 
 - [Compose Multiplatform (CMP) and Android Jetpack Compose applications](#compose-multiplatform-cmp-and-android-jetpack-compose-applications)
-  1. [Setup Gradle dependencies](#1-setup-gradle-dependencies)
-  2. [Initialize the SDK](#2-initialize-the-sdk)
-  3. [Create a new case](#3-create-a-new-case)
-  4. [Render the form](#4-render-the-form)
+  1. [Prerequisites](#1-prerequisites)
+  2. [Setup Gradle dependencies](#2-setup-gradle-dependencies)
+  3. [Initialize the SDK](#3-initialize-the-sdk)
+  4. [Create a new case](#4-create-a-new-case)
+  5. [Render the form](#5-render-the-form)
 - [iOS Swift UI applications](#ios-swift-ui-applications)
 
 ## Compose Multiplatform (CMP) and Android Jetpack Compose applications
