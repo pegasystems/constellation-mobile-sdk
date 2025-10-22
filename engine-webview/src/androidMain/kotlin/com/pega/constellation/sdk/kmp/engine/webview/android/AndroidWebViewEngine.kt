@@ -9,8 +9,6 @@ import android.webkit.WebViewClient
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.core.EngineConfiguration
-import com.pega.constellation.sdk.kmp.core.EngineError
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
@@ -34,6 +32,7 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkBridge.BridgeEvent.UpdateComponent
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebChromeClient
 import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebViewClient
+import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
 

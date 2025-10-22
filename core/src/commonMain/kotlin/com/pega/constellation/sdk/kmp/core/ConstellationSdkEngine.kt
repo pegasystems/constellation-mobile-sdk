@@ -1,17 +1,5 @@
 package com.pega.constellation.sdk.kmp.core
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-
-@Serializable
-data class EngineConfiguration(
-    val url: String,
-    val version: String,
-    val action: ConstellationSdkAction,
-    val debuggable: Boolean
-) {
-    fun toJsonString(): String = Json.encodeToString(this)
-}
 
 /**
  * Constellation SDK Engine that orchestrates Pega application logic.

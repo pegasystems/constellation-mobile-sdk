@@ -5,12 +5,12 @@ import PegaMobileWKWebViewTweaks.applyTweaks
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.core.EngineConfiguration
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
 import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
+import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Companion.COMPONENT_ASSETS_PREFIX
 import kotlinx.cinterop.ExperimentalForeignApi

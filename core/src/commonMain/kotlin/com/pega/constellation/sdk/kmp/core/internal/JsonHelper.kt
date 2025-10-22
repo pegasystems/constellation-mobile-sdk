@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonPrimitive
 
 private const val TAG = "JsonHelper"
 
-fun Any.toJsonElement(): JsonElement? = when (this) {
+internal fun Any.toJsonElement(): JsonElement? = when (this) {
     is String -> JsonPrimitive(this)
     is Int -> JsonPrimitive(this)
     is Double -> JsonPrimitive(this)
@@ -16,23 +16,17 @@ fun Any.toJsonElement(): JsonElement? = when (this) {
     is Boolean -> JsonPrimitive(this)
     is List<*> -> {
         val jsonElements = this.mapNotNull {
-            it?.toJsonElement() ?: run {
-                val type = it?.let { it::class } ?: "null"
-                Log.w(TAG, "Unsupported type $type, cannot convert to JsonElement.")
-                null
-            }
+            it?.toJsonElement()
         }
         JsonArray(jsonElements)
     }
     is Map<*, *> -> {
         val map = this.entries.mapNotNull { (key, value) ->
-            (key as? String)?.let { k ->
-                value?.toJsonElement()?.let { v -> k to v }
-            } ?: run {
-                val keyType = key?.let { it::class } ?: "null"
-                val valueType = value?.let { it::class } ?: "null"
-                Log.w(TAG, "Unsupported key type <$keyType> or value type <$valueType>, cannot convert to JsonElement.")
-                null
+            if (key is String) {
+                return@mapNotNull value?.toJsonElement()?.let { v -> key to v }
+            } else {
+                Log.w(TAG, "Map key <$key> is not a String, cannot convert to JsonObject.")
+                return@mapNotNull null
             }
         }.toMap()
         JsonObject(map)
@@ -41,5 +35,4 @@ fun Any.toJsonElement(): JsonElement? = when (this) {
         Log.w(TAG, "Unsupported type ${this::class}, cannot convert to JsonElement.")
         null
     }
-
 }
