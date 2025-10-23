@@ -95,9 +95,12 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("Client name").performTextInput("Lukasz")
         onNode(hasText("Brand") and hasSetTextAction()).performTextInput("Audi")
         onNode(hasText("Model") and hasSetTextAction()).performTextInput("A5")
+        onNodeWithText("Row 1").performClick() // remove focus to propagate data
 
         // verify data propagation
-        // TODO TASK-1786094
+        waitForNodes("Lukasz", 2)
+        waitForNodes("Audi", 2)
+        waitForNodes("A5", 2)
 
         // go to next step
         onNodeWithText("Next").performClick()
