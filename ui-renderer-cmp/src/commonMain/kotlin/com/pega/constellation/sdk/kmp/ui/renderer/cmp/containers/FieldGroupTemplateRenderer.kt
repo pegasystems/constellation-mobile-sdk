@@ -32,28 +32,28 @@ class FieldGroupTemplateRenderer : ComponentRenderer<FieldGroupTemplateComponent
     override fun FieldGroupTemplateComponent.Render() {
         val focusManager = LocalFocusManager.current
         Column(modifier = Modifier.fillMaxWidth()) {
-            items.forEach {
+            items.forEachIndexed { index, item ->
                 Column {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(it.heading, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        if (it.allowDelete) {
+                        Text(item.heading, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        if (item.allowDelete) {
                             IconButton(onClick = {
                                 focusManager.clearFocus()
-                                deleteItem(it)
+                                deleteItem(item)
                             }) {
                                 Icon(
                                     painterResource(Res.drawable.outline_delete_48),
-                                    "Delete item",
+                                    "Delete item ${index + 1}",
                                     Modifier.size(24.dp)
                                 )
                             }
                         }
                     }
-                    it.component.Render()
+                    item.component.Render()
                 }
             }
             if (items.isEmpty()) {
