@@ -15,7 +15,7 @@ By default the SDK uses hidden WebView as the JavaScript execution engine.
 
 ## Supported Pega use-case
 
-Currently SDK supports creating new case of given type and processing assignment.
+Currently, the SDK supports creating cases of a specified type, opening and processing assignments.
 
 ## Supported components
 The SDK provides following components out-of-the-box:
