@@ -1,88 +1,29 @@
-package com.pega.constellation.sdk.kmp.samples.androidcmpapp
+package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.waitUntilDoesNotExist
 import androidx.compose.ui.test.waitUntilNodeCount
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class CaseProcessingTest : ComposeTest() {
+class EmbeddedDataTest : ComposeTest() {
     @Test
-    fun test_case_processing_sdk_testing() = runComposeUiTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
-
-        onNodeWithText(CREATE_CASE_TEXT).performClick()
-        waitForNode("Create")
-
-        onNodeWithText("Name", substring = true).performTextInput("Jan")
-        onNodeWithText("Surname").performTextInput("Kowalski")
-        onNodeWithText("Url").performTextInput("https://pega.com")
-        onNodeWithText("Next").performClick()
-
-        waitForNode("Submit")
-        onNodeWithText("Name").assertTextContains("Jan")
-        onNodeWithText("Surname").assertTextContains("Kowalski")
-        onNodeWithText("Url").assertTextContains("https://pega.com")
-
-        onNodeWithText("Cancel").performClick()
-        waitForNode(CREATE_CASE_TEXT)
-    }
-
-    @Test
-    fun test_case_processing_service() = runComposeUiTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
-
-        onNodeWithText(CREATE_CASE_TEXT).performClick()
-        waitForNode("Customer")
-
-        onNodeWithText("First Name").performTextInput("Jan")
-        onNodeWithText("Last Name").performTextInput("Kowalski")
-        onNodeWithText("Custom Email").performTextInput("invalid email")
-
-        onNodeWithText("Service date").performClick()
-        onNodeWithText("10", substring = true).performClick()
-        onNodeWithText("OK").performClick()
-        onNodeWithText("Submit").performClick()
-
-        waitForNode("Email: Enter a valid email address")
-        onNodeWithText("Custom Email").performTextReplacement("jan.kowalski@pega.com")
-        onNodeWithText("Submit").performClick()
-
-        waitForNode("Street")
-        onNodeWithText("Street").performTextInput("ul. Krakowska 1")
-        onNodeWithText("City").performTextInput("Kraków")
-        onNodeWithText("Postal code").performTextInput("31-066")
-        onNodeWithText("Submit").performClick()
-
-        waitForNode("TV Package")
-        onNodeWithText("TV Package").onSiblings().onFirst().performClick()
-        onNodeWithText("Submit").performClick()
-
-        waitForNode("Other notes")
-        onNodeWithText("Other notes").performTextInput("Lorem ipsum")
-        onNodeWithText("Submit").performClick()
-
-        waitForNode(CREATE_CASE_TEXT)
-    }
-
-    @Test
-    fun test_case_processing_embedded_data() = runComposeUiTest {
+    fun test_embedded_data() = runComposeUiTest {
         setupApp("DIXL-MediaCo-Work-EmbeddedData")
 
         // create case
-        onNodeWithText(CREATE_CASE_TEXT).performClick()
+        onNodeWithText("New Service").performClick()
 
         // verify form title and instruction
         waitForNode("Create EmbeddedData (E-")
@@ -150,9 +91,5 @@ class CaseProcessingTest : ComposeTest() {
         waitForNode("Audi")
         waitForNode("Model")
         waitForNode("A5")
-    }
-
-    companion object {
-        private const val CREATE_CASE_TEXT = "New Service"
     }
 }

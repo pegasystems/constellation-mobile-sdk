@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.androidcmpapp
+package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi

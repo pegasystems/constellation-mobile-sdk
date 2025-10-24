@@ -55,9 +55,9 @@ jobs:
           api-level: 35
           arch: x86_64
           profile: Nexus 6
-          enable-hw-keyboard: true
+          enable-hw-keyboard: false
           disable-spellchecker: true
-          script: $GRADLE clean test:check test:connectedAndroidDeviceTest
+          script: $GRADLE clean :test:connectedAndroidTest :samples:android-cmp-app:connectedAndroidTest
 
       - name: Upload test artifacts for failures
         if: failure()

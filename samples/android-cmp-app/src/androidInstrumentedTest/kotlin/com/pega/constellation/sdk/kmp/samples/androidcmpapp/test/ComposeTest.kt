@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.androidcmpapp
+package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,8 +18,11 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.engine.webview.android.AndroidWebViewEngine
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.ComposeTest.Mode.MOCK_SERVER
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.ComposeTest.Mode.REAL_SERVER
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.AuthInterceptor
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest.Mode.MOCK_SERVER
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest.Mode.REAL_SERVER
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeAuthFlowFactory
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeTokenStore
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomEmailComponent
@@ -29,35 +32,21 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
-import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
-import org.publicvalue.multiplatform.oidc.tokenstore.AndroidSettingsTokenStore
 import kotlin.test.BeforeTest
 
 @OptIn(ExperimentalOpenIdConnect::class)
 abstract class ComposeTest {
-    enum class Mode { MOCK_SERVER, REAL_SERVER }
+    // set the mode to switch between mock server and real server testing
+    private val mode = MOCK_SERVER
 
     private val scope = CoroutineScope(Dispatchers.Default)
-    private val mode = MOCK_SERVER
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context = instrumentation.targetContext
-    private val authManager = AuthManager(
-        scope = scope,
-        authFlowFactory = AndroidCodeAuthFlowFactory(),
-        tokenStore = AndroidSettingsTokenStore(context).apply {
-            scope.launch {
-                saveTokens("YOUR_TOKEN_HERE", null, null)
-            }
-        }
-    )
-    private val engine = AndroidWebViewEngine(
-        context = context,
-        okHttpClient = buildHttpClient(authManager),
-        nonDxOkHttpClient = buildHttpClient(authManager)
-    )
+    private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore())
+    private val httpClient = buildHttpClient(authManager)
+    private val engine = AndroidWebViewEngine(context, httpClient, httpClient)
 
     @BeforeTest
     fun setUp() {
@@ -106,6 +95,8 @@ abstract class ComposeTest {
         UiDevice.getInstance(instrumentation)
             .executeShellCommand("settings put secure show_ime_with_hard_keyboard 0")
     }
+
+    enum class Mode { MOCK_SERVER, REAL_SERVER }
 
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
