@@ -2,12 +2,14 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.printToString
 import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
@@ -49,7 +51,12 @@ class CaseProcessingTest : ComposeTest() {
 
         onNodeWithText("Service date").performClick()
         // DatePicker holds nodes with text formatted as: '[Today, Friday, October 24, 2025]'
-        onNodeWithText("Today, ", substring = true).performClick()
+        runCatching {
+            onNodeWithText("Today123, ", substring = true).performClick()
+        }.onFailure {
+            val tree = onAllNodes(isRoot()).get(2).printToString()
+            error("Failed to find today's date, tree: $tree")
+        }
         onNodeWithText("OK").performClick()
         onNodeWithText("Submit").performClick()
 
