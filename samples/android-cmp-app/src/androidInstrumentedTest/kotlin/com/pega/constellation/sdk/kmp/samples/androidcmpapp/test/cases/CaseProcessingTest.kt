@@ -48,7 +48,8 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("Custom Email").performTextInput("invalid email")
 
         onNodeWithText("Service date").performClick()
-        onNodeWithText("10", substring = true).performClick()
+        // DatePicker holds nodes with text formatted as: '[Today, Friday, October 24, 2025]'
+        onNodeWithText("Today, ", substring = true).performClick()
         onNodeWithText("OK").performClick()
         onNodeWithText("Submit").performClick()
 
