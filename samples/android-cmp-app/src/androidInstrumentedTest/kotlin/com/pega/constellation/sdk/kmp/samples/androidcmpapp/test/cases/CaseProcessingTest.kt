@@ -54,8 +54,18 @@ class CaseProcessingTest : ComposeTest() {
         runCatching {
             onNodeWithText("Today123, ", substring = true).performClick()
         }.onFailure {
-            val tree = onAllNodes(isRoot()).get(2).printToString()
-            error("Failed to find today's date, tree: $tree")
+            val tree1 = onAllNodes(isRoot()).get(0).printToString()
+            val tree2 = onAllNodes(isRoot()).get(1).printToString()
+            error(
+                """
+                Failed to find today's date. Printing UI trees for debugging:
+                
+                tree1: $tree1
+                
+                tree2: $tree2
+                
+                """.trimIndent()
+            )
         }
         onNodeWithText("OK").performClick()
         onNodeWithText("Submit").performClick()
