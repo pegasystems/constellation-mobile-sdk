@@ -55,16 +55,18 @@ jobs:
           api-level: 35
           arch: x86_64
           profile: Nexus 6
-          enable-hw-keyboard: true
+          enable-hw-keyboard: false
           disable-spellchecker: true
-          script: $GRADLE clean test:check test:connectedAndroidDeviceTest
+          script: $GRADLE clean :test:connectedAndroidTest :samples:android-cmp-app:connectedAndroidTest
 
       - name: Upload test artifacts for failures
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: validate-android-artifacts
-          path: build/reports/
+          path: |
+            test/build/reports/
+            samples/android-cmp-app/build/reports/
           if-no-files-found: warn
           retention-days: 3
 
@@ -116,7 +118,7 @@ jobs:
           set -o pipefail
           rm -rf build || true
           mkdir build
-          xcodebuild -verbose -project samples/swiftui-components-app/UITest/UITest.xcodeproj -scheme UITest -destination "platform=iOS Simulator,id=$(cat simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 2 -parallel-testing-enabled NO test 2>&1
+          xcodebuild -quiet -project samples/swiftui-components-app/UITest/UITest.xcodeproj -scheme UITest -destination "platform=iOS Simulator,id=$(cat simulator.id)" -resultBundlePath ./build/iOSTests.xcresult -retry-tests-on-failure -test-iterations 2 -parallel-testing-enabled NO test 2>&1
       - name: Upload test artifacts for failures
         if: failure()
         uses: actions/upload-artifact@v4
