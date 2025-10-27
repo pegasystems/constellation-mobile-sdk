@@ -61,8 +61,7 @@ jobs:
             adb devices
             $GRADLE clean :test:connectedAndroidTest :samples:android-cmp-app:connectedAndroidTest || adb pull /storage/emulated/0/Android/data/com.pega.constellation.sdk.kmp.samples.androidcmpapp/files/Download/screenshot.png samples/android-cmp-app/build/reports/screenshot.png
 
-      - name: Upload test artifacts for failures
-        if: failure()
+      - name: Upload test artifacts always
         uses: actions/upload-artifact@v4
         with:
           name: validate-android-artifacts
