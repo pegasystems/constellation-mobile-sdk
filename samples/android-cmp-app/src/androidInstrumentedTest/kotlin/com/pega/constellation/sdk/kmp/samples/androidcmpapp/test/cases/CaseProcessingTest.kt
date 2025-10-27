@@ -52,10 +52,13 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("Service date").performClick()
         // DatePicker holds nodes with text formatted as: '[Today, Friday, October 24, 2025]'
         runCatching {
+            waitForNode("Today123")
             onNodeWithText("Today123, ", substring = true).performClick()
         }.onFailure {
-            val tree1 = onAllNodes(isRoot()).get(0).printToString()
-            val tree2 = onAllNodes(isRoot()).get(1).printToString()
+            val tree1 = runCatching { onAllNodes(isRoot()).get(0).printToString() }.getOrDefault("no tree1")
+            val tree2 = runCatching { onAllNodes(isRoot()).get(1).printToString() }.getOrDefault("no tree2")
+            val tree3 = runCatching { onAllNodes(isRoot()).get(2).printToString() }.getOrDefault("no tree3")
+            val tree4 = runCatching { onAllNodes(isRoot()).get(3).printToString() }.getOrDefault("no tree4")
             error(
                 """
                 Failed to find today's date. Printing UI trees for debugging:
@@ -63,6 +66,10 @@ class CaseProcessingTest : ComposeTest() {
                 tree1: $tree1
                 
                 tree2: $tree2
+                
+                tree3: $tree3
+                
+                tree4: $tree4
                 
                 """.trimIndent()
             )
