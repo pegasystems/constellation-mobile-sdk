@@ -57,7 +57,10 @@ jobs:
           profile: Nexus 6
           enable-hw-keyboard: false
           disable-spellchecker: true
-          script: $GRADLE clean :test:connectedAndroidTest :samples:android-cmp-app:connectedAndroidTest
+          script: |
+            adb devices
+            $GRADLE clean :test:connectedAndroidTest :samples:android-cmp-app:connectedAndroidTest
+            adb pull /storage/emulated/0/Android/data/com.pega.constellation.sdk.kmp.samples.androidcmpapp/files/Download/screenshot.png samples/android-cmp-app/build/reports/screenshot.png
 
       - name: Upload test artifacts for failures
         if: failure()

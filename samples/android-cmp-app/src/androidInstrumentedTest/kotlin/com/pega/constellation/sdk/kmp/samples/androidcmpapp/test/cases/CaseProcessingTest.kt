@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
+import android.os.Environment
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.isRoot
@@ -11,8 +12,11 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.printToString
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
+import java.io.File
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
@@ -55,10 +59,29 @@ class CaseProcessingTest : ComposeTest() {
             waitForNode("Today123")
             onNodeWithText("Today123, ", substring = true).performClick()
         }.onFailure {
-            val tree1 = runCatching { onAllNodes(isRoot()).get(0).printToString() }.getOrDefault("no tree1")
-            val tree2 = runCatching { onAllNodes(isRoot()).get(1).printToString() }.getOrDefault("no tree2")
-            val tree3 = runCatching { onAllNodes(isRoot()).get(2).printToString() }.getOrDefault("no tree3")
-            val tree4 = runCatching { onAllNodes(isRoot()).get(3).printToString() }.getOrDefault("no tree4")
+
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            val device = UiDevice.getInstance(instrumentation)
+            // Save to file
+            val file = File(
+                instrumentation.targetContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+                "screenshot.png"
+            )
+
+            // Take screenshot
+            device.takeScreenshot(file)
+
+            val path = file.absolutePath
+            println("Screenshot saved to: $path")
+
+            val tree1 =
+                runCatching { onAllNodes(isRoot()).get(0).printToString() }.getOrDefault("no tree1")
+            val tree2 =
+                runCatching { onAllNodes(isRoot()).get(1).printToString() }.getOrDefault("no tree2")
+            val tree3 =
+                runCatching { onAllNodes(isRoot()).get(2).printToString() }.getOrDefault("no tree3")
+            val tree4 =
+                runCatching { onAllNodes(isRoot()).get(3).printToString() }.getOrDefault("no tree4")
             error(
                 """
                 Failed to find today's date. Printing UI trees for debugging:
