@@ -13,6 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.printToString
+import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.waitUntilExactlyOneExists
 import androidx.test.platform.app.InstrumentationRegistry
@@ -58,7 +59,7 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("Last Name").performTextInput("Kowalski")
         onNodeWithText("Custom Email").performTextInput("invalid email")
 
-        onNodeWithText("Service date", substring = true).performClick()
+        onNodeWithContentDescription("Select date").requestFocus()
         // DatePicker holds nodes with text formatted as: '[Today, Friday, October 24, 2025]'
 //        runCatching {
 //        }.onFailure {

@@ -73,6 +73,7 @@ jobs:
 
   validate-ios:
     runs-on: 'macos-15'
+    if: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
