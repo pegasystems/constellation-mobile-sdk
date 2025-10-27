@@ -1,6 +1,5 @@
 name: "Run lints"
-on:
-  push
+on: workflow_dispatch
 jobs:
   lint-shell:
     runs-on: 'ubuntu-latest'
