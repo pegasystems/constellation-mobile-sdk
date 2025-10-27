@@ -3,8 +3,10 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 import android.os.Environment
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
@@ -12,10 +14,13 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.printToString
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.waitUntilExactlyOneExists
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
+import okhttp3.internal.wait
 import java.io.File
 import kotlin.test.Test
 
@@ -53,27 +58,30 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("Last Name").performTextInput("Kowalski")
         onNodeWithText("Custom Email").performTextInput("invalid email")
 
-        onNodeWithText("Service date").performClick()
+        onNodeWithText("Service date", substring = true).performClick()
         // DatePicker holds nodes with text formatted as: '[Today, Friday, October 24, 2025]'
+//        runCatching {
+//        }.onFailure {
+
         runCatching {
-            waitForNode("Today123")
-            onNodeWithText("Today123, ", substring = true).performClick()
-        }.onFailure {
+            waitUntilExactlyOneExists(hasText("Today, ", substring = true), timeoutMillis = 5000L)
+        }
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val device = UiDevice.getInstance(instrumentation)
+        // Save to file
+        val file = File(
+            instrumentation.targetContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+            "screenshot.png"
+        )
 
-            val instrumentation = InstrumentationRegistry.getInstrumentation()
-            val device = UiDevice.getInstance(instrumentation)
-            // Save to file
-            val file = File(
-                instrumentation.targetContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
-                "screenshot.png"
-            )
+        // Take screenshot
+        device.takeScreenshot(file)
 
-            // Take screenshot
-            device.takeScreenshot(file)
+        val path = file.absolutePath
+        println("Screenshot saved to: $path")
 
-            val path = file.absolutePath
-            println("Screenshot saved to: $path")
-
+        onNodeWithText("Today, ", substring = true).performClick()
+/*
             val tree1 =
                 runCatching { onAllNodes(isRoot()).get(0).printToString() }.getOrDefault("no tree1")
             val tree2 =
@@ -96,7 +104,9 @@ class CaseProcessingTest : ComposeTest() {
                 
                 """.trimIndent()
             )
-        }
+//        }
+
+ */
         onNodeWithText("OK").performClick()
         onNodeWithText("Submit").performClick()
 
