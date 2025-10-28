@@ -17,6 +17,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FieldGroupTemplate
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FlowContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Integer
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ListView
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
@@ -38,6 +39,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DataReferenceRe
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DefaultFormRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FieldGroupTemplateRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FlowContainerRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ListViewRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.OneColumnRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RegionRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RootContainerRenderer
@@ -88,6 +90,7 @@ object ComponentRenderers {
         FieldGroupTemplate to FieldGroupTemplateRenderer(),
         FlowContainer to FlowContainerRenderer(),
         Integer to IntegerRenderer(),
+        ListView to ListViewRenderer(),
         OneColumn to OneColumnRenderer(),
         Phone to PhoneRenderer(),
         RadioButtons to RadioButtonsRenderer(),

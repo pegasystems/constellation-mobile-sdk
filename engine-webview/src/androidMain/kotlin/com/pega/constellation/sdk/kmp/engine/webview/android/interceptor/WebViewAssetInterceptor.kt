@@ -40,9 +40,15 @@ internal class WebViewAssetInterceptor(
         get() = pegaUrl.buildUpon().encodedPath("/$SDK_ASSETS/scripts/index.html").build()
 
     class ComposePathHandler(val assetHandler: PathHandler) : PathHandler {
-        override fun handle(path: String) = assetHandler.handle(
-            Res.getUri("files/$path").removePrefix(ANDROID_ASSET_URI)
-        )
+        override fun handle(path: String): WebResourceResponse? {
+            val uri = runCatching {
+                Res.getUri("files/$path").removePrefix(ANDROID_ASSET_URI)
+            }.getOrElse {
+                Log.e(TAG, "Resource uri error: ${it.message}")
+                return null
+            }
+            return assetHandler.handle(uri)
+        }
     }
 
     companion object {

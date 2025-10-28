@@ -16,6 +16,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FieldGroupTemplate
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FlowContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Integer
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ListView
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
@@ -36,6 +37,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.DataReferenceCo
 import com.pega.constellation.sdk.kmp.core.components.containers.DefaultFormComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.FieldGroupTemplateComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.FlowContainerComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.OneColumnComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RegionComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
@@ -86,6 +88,7 @@ object ComponentRegistry {
         Def(FieldGroupTemplate) { FieldGroupTemplateComponent(it) },
         Def(FlowContainer) { FlowContainerComponent(it) },
         Def(Integer) { IntegerComponent(it) },
+        Def(ListView) { ListViewComponent(it) },
         Def(OneColumn) { OneColumnComponent(it) },
         Def(Phone) { PhoneComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },

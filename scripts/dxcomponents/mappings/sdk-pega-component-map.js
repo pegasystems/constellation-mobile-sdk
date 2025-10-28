@@ -67,7 +67,7 @@ import { FieldGroupTemplateComponent } from '../components/containers/templates/
 // import { InlineDashboardComponent } from './_components/template/inline-dashboard/inline-dashboard.component';
 // import { InlineDashboardPageComponent } from './_components/template/inline-dashboard-page/inline-dashboard-page.component';
 // import { ListPageComponent } from './_components/template/list-page/list-page.component';
-// import { ListViewComponent } from './_components/template/list-view/list-view.component';
+import { ListViewComponent } from '../components/containers/templates/listview/list-view.component.js';
 // import { MultiReferenceReadonlyComponent } from './_components/template/multi-reference-readonly/multi-reference-readonly.component';
 // import { MultiselectComponent } from './_components/field/multiselect/multiselect.component';
 // import { NarrowWideFormComponent } from './_components/template/narrow-wide-form/narrow-wide-form.component';
@@ -181,7 +181,7 @@ const pegaSdkComponentMap = {
   // //   'LeftAlignVerticalTabs': LeftAlignVerticalTabs,
   // ListPage: ListPageComponent,
   // ListUtility: ListUtilityComponent,
-  // ListView: ListViewComponent,
+  ListView: ListViewComponent,
   // ListViewActionButtons: ListViewActionButtonsComponent,
   // MaterialDetails: MaterialDetailsComponent,
   // MaterialUtility: MaterialUtilityComponent,
