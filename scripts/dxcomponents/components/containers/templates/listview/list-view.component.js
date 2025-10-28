@@ -103,9 +103,10 @@ export class ListViewComponent extends BaseComponent {
     this.componentsManager.onComponentRemoved(this);
   }
 
-  update(pConn) {
-    if (this.pConn !== pConn) {
+  update(pConn, payload) {
+    if (this.pConn !== pConn || this.payload !== payload) {
       this.pConn = pConn;
+      this.payload = payload
       this.updateSelf();
     }
   }
