@@ -249,6 +249,11 @@ export class AssignmentComponent extends BaseComponent {
     this.buttonClick(oData.action, oData.buttonType);
   }
 
+  cleanAssignmentCard() {
+    this.assignmentCardComponent.destroy();
+    this.assignmentCardComponent = undefined;
+  }
+
   buttonClick(sAction, sButtonType) {
     // needed to show client validation on banner
     PCore.getPubSubUtils().publish('updateBanners');
@@ -264,6 +269,7 @@ export class AssignmentComponent extends BaseComponent {
           const navigatePromise = this.navigateToStep('previous', this.itemKey$);
           navigatePromise
             .then(() => {
+              this.cleanAssignmentCard();
               this.updateChanges();
               this.setLoading(false);
             })
@@ -348,8 +354,9 @@ export class AssignmentComponent extends BaseComponent {
           finishPromise
             .then(() => {
               console.log(TAG, `'${sAction}' finished successfully`);
-              this.setLoading(false);
+              this.cleanAssignmentCard();
               this.updateChanges();
+              this.setLoading(false);
             })
             .catch((error) => {
               this.setLoading(false);

@@ -51,9 +51,7 @@ export class ViewComponent extends ContainerBaseComponent {
   }
 
   #checkAndUpdate() {
-    // sometimes (e.g.: when going "previous" on form) the response contains view (pzCreateDetails) which is 'dynamic'
-    // and no matter of its children shouldComponentUpdate returns false and form is not re-rendered correctly
-    if (this.jsComponentPConnect.shouldComponentUpdate(this) || this.pConn.meta.isDynamicView?.toString() === 'true') {
+    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.#updateSelf();
     }
   }
