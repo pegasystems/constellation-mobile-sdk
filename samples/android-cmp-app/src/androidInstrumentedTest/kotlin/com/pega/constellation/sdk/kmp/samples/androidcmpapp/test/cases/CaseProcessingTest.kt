@@ -1,28 +1,17 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
-import android.os.Environment
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextContains
-import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.onFirst
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
-import androidx.compose.ui.test.printToString
 import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.runComposeUiTest
-import androidx.compose.ui.test.waitUntilExactlyOneExists
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.UiDevice
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
-import okhttp3.internal.wait
-import java.io.File
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
@@ -59,55 +48,8 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("Last Name").performTextInput("Kowalski")
         onNodeWithText("Custom Email").performTextInput("invalid email")
 
-        onNodeWithContentDescription("Select date").requestFocus()
-        // DatePicker holds nodes with text formatted as: '[Today, Friday, October 24, 2025]'
-//        runCatching {
-//        }.onFailure {
-
-        runCatching {
-            waitUntilExactlyOneExists(hasText("Today, ", substring = true), timeoutMillis = 5000L)
-        }
-        val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val device = UiDevice.getInstance(instrumentation)
-        // Save to file
-        val file = File(
-            instrumentation.targetContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
-            "screenshot.png"
-        )
-
-        // Take screenshot
-        device.takeScreenshot(file)
-
-        val path = file.absolutePath
-        println("Screenshot saved to: $path")
-
+        onNodeWithText("Service date").requestFocus()
         onNodeWithText("Today, ", substring = true).performClick()
-/*
-            val tree1 =
-                runCatching { onAllNodes(isRoot()).get(0).printToString() }.getOrDefault("no tree1")
-            val tree2 =
-                runCatching { onAllNodes(isRoot()).get(1).printToString() }.getOrDefault("no tree2")
-            val tree3 =
-                runCatching { onAllNodes(isRoot()).get(2).printToString() }.getOrDefault("no tree3")
-            val tree4 =
-                runCatching { onAllNodes(isRoot()).get(3).printToString() }.getOrDefault("no tree4")
-            error(
-                """
-                Failed to find today's date. Printing UI trees for debugging:
-                
-                tree1: $tree1
-                
-                tree2: $tree2
-                
-                tree3: $tree3
-                
-                tree4: $tree4
-                
-                """.trimIndent()
-            )
-//        }
-
- */
         onNodeWithText("OK").performClick()
         onNodeWithText("Submit").performClick()
 
