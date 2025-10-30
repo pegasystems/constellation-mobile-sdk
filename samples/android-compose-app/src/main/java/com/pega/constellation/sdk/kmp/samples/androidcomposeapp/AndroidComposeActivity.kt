@@ -28,6 +28,11 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Initial
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Loading
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Ready
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
+import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition
+import com.pega.constellation.sdk.kmp.core.api.ComponentManager
+import com.pega.constellation.sdk.kmp.core.api.ComponentScript
+import com.pega.constellation.sdk.kmp.core.api.ComponentType
+import com.pega.constellation.sdk.kmp.core.components.fields.EmailComponent
 import com.pega.constellation.sdk.kmp.engine.webview.android.AndroidWebViewEngine
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Alert
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
@@ -57,7 +62,17 @@ class AndroidComposeActivity : ComponentActivity() {
     private fun initConstellation() {
         val config = ConstellationSdkConfig(
             pegaUrl = AndroidSDKConfig.PEGA_URL,
-            pegaVersion = AndroidSDKConfig.PEGA_VERSION
+            pegaVersion = AndroidSDKConfig.PEGA_VERSION,
+            componentManager = ComponentManager.create(
+                listOf(
+                    ComponentDefinition(
+                        ComponentType("Email"),
+                        ComponentScript("components_overrides/email.component.override.js"),
+                        ::EmailComponent
+                    )
+                )
+            ),
+            debuggable = true
         )
         val caseClassName = AndroidSDKConfig.PEGA_CASE_CLASS_NAME
         val engine = AndroidWebViewEngine(this, buildHttpClient())

@@ -8,12 +8,14 @@ import kotlin.jvm.JvmInline
  * @property file path to the script file. Relative to /assets folder or provided by [Res.getUri].
  *
  * Examples of creating [ComponentScript]:
+ * For script placed in multiplatform app in 'commonMain/composeResources':
  * ```kotlin
  * ComponentScript(
  *     file = Res.getUri("files/components_overrides/email.component.override.js")
  * )
  * ```
  *
+ * For script placed in native android app in 'src/main/assets'
  * ```kotlin
  * ComponentScript(
  *     file = "components_overrides/email.component.override.js"
