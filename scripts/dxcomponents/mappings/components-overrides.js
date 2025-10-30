@@ -22,9 +22,15 @@ function importComponent(type, path) {
   if (isIOS()) {
     return import(path);
   } else if (isAndroid()) {
-    return fetch(path)
+    return fetch(`/${path}`)
       .then(response => response.text())
-      .then(textContent => import('data:text/javascript;charset=utf-8,' + textContent));
+      .then(textContent => {
+        if (textContent && textContent.trim().length > 0) {
+          return import('data:text/javascript;charset=utf-8,' + textContent)
+        } else {
+          throw Error(`Empty component content for ${type} at path: ${path}`);
+        }
+      });
   } else {
     return Promise.reject("Unexpected platform.");
   }
