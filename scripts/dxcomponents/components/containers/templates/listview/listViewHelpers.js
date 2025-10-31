@@ -1,6 +1,6 @@
 import { getContext, readContextResponse } from './utils.js';
 
-export function init(props) {
+export function getListContextResponse(props) {
   const {
     referenceList,
     pConn,

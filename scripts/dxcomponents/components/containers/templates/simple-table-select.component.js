@@ -9,7 +9,7 @@ export class SimpleTableSelectComponent extends BaseComponent {
   jsComponentPConnectData = {};
   childComponent;
   props = {
-    child: undefined
+    child: null
   }
 
   label = '';

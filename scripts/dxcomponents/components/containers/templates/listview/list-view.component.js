@@ -1,4 +1,4 @@
-import { init } from './listViewHelpers.js';
+import { getListContextResponse } from './listViewHelpers.js';
 import { BaseComponent } from '../../../base.component.js';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
@@ -44,7 +44,7 @@ export class ListViewComponent extends BaseComponent {
 
   init() {
     this.componentsManager.onComponentAdded(this);
-    this.updateSelf()
+    this.#updateSelf()
   }
 
   destroy() {
@@ -55,20 +55,20 @@ export class ListViewComponent extends BaseComponent {
     if (this.pConn !== pConn || this.payload !== payload) {
       this.pConn = pConn;
       this.payload = payload
-      this.updateSelf();
+      this.#updateSelf();
     }
   }
 
   onEvent(event) {
     if (event.type === 'SelectSingleItem') {
-      this.fieldOnChange(event.componentData.idValue);
+      this.#fieldOnChange(event.componentData.idValue);
     } else {
       console.log(TAG, `onEvent received unsupported event type ${event.type}`);
     }
 
   }
 
-  fieldOnChange(value) {
+  #fieldOnChange(value) {
     const reqObj = {};
     if (this.compositeKeys?.length > 1) {
       const index = this.response.findIndex(element => element[this.rowID] === value);
@@ -83,7 +83,7 @@ export class ListViewComponent extends BaseComponent {
     this.pConn?.getListActions?.()?.setSelectedRows([reqObj]);
   }
 
-  updateSelf() {
+  #updateSelf() {
     this.configProps$ = this.pConn.getConfigProps();
     /** By default, pyGUID is used for Data classes and pyID is for Work classes as row-id/key */
     const defRowID = this.configProps$?.referenceType === 'Case' ? 'pyID' : 'pyGUID';
@@ -108,7 +108,7 @@ export class ListViewComponent extends BaseComponent {
       if (!this.payload) {
         this.payload = { referenceList: this.configProps$.referenceList };
       }
-      init({
+      getListContextResponse({
         pConn: this.pConn,
         bInForm$: this.bInForm$,
         ...this.payload,
@@ -119,14 +119,14 @@ export class ListViewComponent extends BaseComponent {
         selectionMode: this.selectionMode
       }).then(response => {
         this.listContext = response;
-        this.getListData(() => {
-          this.sendPropsUpdate()
+        this.#getListData(() => {
+          this.#sendPropsUpdate()
         });
       });
     }
   }
 
-  sendPropsUpdate() {
+  #sendPropsUpdate() {
     this.props = {
       label: this.label,
       selectionMode: this.selectionMode,
@@ -137,17 +137,16 @@ export class ListViewComponent extends BaseComponent {
     this.componentsManager.onComponentPropsUpdate(this);
   }
 
-  getFieldsMetadata(refList) {
-    // @ts-ignore - 3rd parameter "associationFilter" should be optional for getDataViewMetadata method
+  #getFieldsMetadata(refList) {
     return PCore.getAnalyticsUtils().getDataViewMetadata(refList, this.showDynamicFields);
   }
 
-  getListData(onDataCollected) {
+  #getListData(onDataCollected) {
     const componentConfig = this.pConn.getComponentConfig();
     if (this.configProps$) {
-      this.preparePayload();
+      this.#preparePayload();
       const refList = this.configProps$.referenceList;
-      const fieldsMetaDataPromise = this.getFieldsMetadata(refList);
+      const fieldsMetaDataPromise = this.#getFieldsMetadata(refList);
       // returns a promise
       const payload = this.payload || this.filterPayload || {};
       const dataViewParameters = this.payload.parameters;
@@ -163,9 +162,7 @@ export class ListViewComponent extends BaseComponent {
           );
 
       Promise.all([fieldsMetaDataPromise, workListDataPromise])
-        .then((results) => {
-          const fieldsMetaData = results[0];
-          const workListData = results[1];
+        .then( ([fieldsMetaData, workListData]) => {
 
           this.fields$ = this.configProps$.presets[0].children[0].children;
           // this is an unresovled version of this.fields$, need unresolved, so can get the property reference
@@ -173,11 +170,9 @@ export class ListViewComponent extends BaseComponent {
 
           const tableDataResults = !this.bInForm$ ? workListData.data.data : workListData.data;
 
-          const columns = this.getHeaderCells(columnFields, this.fieldDefs);
-          this.fields$ = this.updateFields(this.fields$, fieldsMetaData.data.fields, columns);
-          this.displayedColumns$ = columns.map(col => {
-            return col.id;
-          });
+          const columns = this.#getHeaderCells(columnFields, this.fieldDefs);
+          this.fields$ = this.#updateFields(this.fields$, fieldsMetaData.data.fields, columns);
+          this.displayedColumns$ = columns.map(c => c.id);
           this.response = tableDataResults;
           // disabling parsing for now parsing data according to field types like date/date-time/currency
           // this.updatedRefList = this.updateData(tableDataResults, this.fields$);
@@ -195,11 +190,11 @@ export class ListViewComponent extends BaseComponent {
     }
   }
 
-  preparePayload() {
+  #preparePayload() {
     const { fieldDefs, itemKey, patchQueryFields } = this.listContext.meta;
     this.fieldDefs = fieldDefs;
-    let listFields = fieldDefs ? this.buildSelect(fieldDefs, undefined, patchQueryFields, this.payload?.compositeKeys) : [];
-    listFields = this.addItemKeyInSelect(fieldDefs, itemKey, listFields, this.payload?.compositeKeys);
+    let listFields = fieldDefs ? this.#buildSelect(fieldDefs, undefined, patchQueryFields, this.payload?.compositeKeys) : [];
+    listFields = this.#addItemKeyInSelect(fieldDefs, itemKey, listFields, this.payload?.compositeKeys);
     if (this.payload.query) {
       this.query = this.payload.query;
     } else if (listFields?.length && this.listContext.meta.isQueryable) {
@@ -216,7 +211,7 @@ export class ListViewComponent extends BaseComponent {
     }
   }
 
-  updateFields(arFields, arColumns, fields) {
+  #updateFields(arFields, arColumns, fields) {
     const arReturn = arFields;
     arReturn.forEach((field, i) => {
       field.config = { ...field.config, ...fields[i], name: fields[i].id };
@@ -224,7 +219,7 @@ export class ListViewComponent extends BaseComponent {
     return arReturn;
   }
 
-  getHeaderCells(colFields, fields) {
+  #getHeaderCells(colFields, fields) {
     const AssignDashObjects = ['Assign-Worklist', 'Assign-WorkBasket'];
     return colFields.map((field, index) => {
       let theField = field.config.value.substring(field.config.value.indexOf(' ') + 1);
@@ -253,10 +248,10 @@ export class ListViewComponent extends BaseComponent {
     });
   }
 
-  buildSelect(fieldDefs, colId, patchQueryFields = [], compositeKeys = []) {
+  #buildSelect(fieldDefs, colId, patchQueryFields = [], compositeKeys = []) {
     const listFields= [];
     if (colId) {
-      const field = this.getField(fieldDefs, colId);
+      const field = this.#getField(fieldDefs, colId);
       listFields.push({
         field: field.name
       });
@@ -270,40 +265,31 @@ export class ListViewComponent extends BaseComponent {
           });
         }
       });
-      patchQueryFields.forEach(k => {
-        if (!listFields.find(f => f.field === k)) {
-          listFields.push({
-            field: k
-          });
-        }
-      });
+      this.#addToListFieldIfMissing(listFields, patchQueryFields)
     }
-
-    compositeKeys.forEach(k => {
-      if (!listFields.find(f => f.field === k)) {
-        listFields.push({
-          field: k
-        });
-      }
-    });
+    this.#addToListFieldIfMissing(listFields, compositeKeys)
     return listFields;
   }
 
-  getField(fieldDefs, columnId) {
-    const fieldsMap = this.getFieldsMap(fieldDefs);
+  #addToListFieldIfMissing(listFields, keys) {
+    keys.forEach(k => {
+      if (!listFields.find(f => f.field === k)) {
+        listFields.push({ field: k });
+      }
+    });
+  }
+
+  #getField(fieldDefs, columnId) {
+    const fieldsMap = this.#getFieldsMap(fieldDefs);
     return fieldsMap.get(columnId);
   }
 
-  getFieldsMap(fieldDefs) {
-    const fieldsMap = new Map();
-    fieldDefs.forEach(element => {
-      fieldsMap.set(element.id, element);
-    });
-    return fieldsMap;
+  #getFieldsMap(fieldDefs) {
+    return new Map(fieldDefs.map(elem => [elem.id, elem]));
   }
 
-  addItemKeyInSelect(fieldDefs, itemKey, select, compositeKeys) {
-    const elementFound = this.getField(fieldDefs, itemKey);
+  #addItemKeyInSelect(fieldDefs, itemKey, select, compositeKeys) {
+    const elementFound = this.#getField(fieldDefs, itemKey);
 
     if (
       itemKey &&
