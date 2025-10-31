@@ -10,7 +10,7 @@ export class PicklistBaseComponent extends FieldBaseComponent {
 
   getLocalizedOptionValue(opt, localePath, localeClass, localeContext, localeName) {
     return this.pConn.getLocalizedValue(
-      opt.text,
+      opt.value ?? opt.text,
       localePath,
       this.pConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
     );

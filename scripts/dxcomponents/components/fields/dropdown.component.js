@@ -23,7 +23,7 @@ export class DropdownComponent extends PicklistBaseComponent {
     const compositeKeys = configProps.compositeKeys;
     let parameters = configProps.parameters;
     let datasource = configProps.datasource;
-    let columns = configProps.columns;
+    let columns = configProps.columns ?? [];
     let listType = configProps.listType;
     let isDeferredDatasource = configProps.deferDatasource;
     const className = this.pConn.getCaseInfo().getClassName();
@@ -85,8 +85,7 @@ export class DropdownComponent extends PicklistBaseComponent {
     displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
     const localeContext = metaData?.datasource?.tableType === 'DataPage' ? Constants.DATAPAGE : Constants.ASSOCIATED;
 
-    const datasourceItems = Array.isArray(datasource) ? datasource.map(item => {return { key: item.key, text: item.value }; }) : [];
-    const options = buildListSourceItems(deferDatasource, isSourceDataPage, this.listItems, this.pConn, datasourceItems);
+    const options = buildListSourceItems(deferDatasource, isSourceDataPage, this.listItems, this.pConn, datasource);
 
     this.propName = this.pConn.getStateProps().value;
     const refName = this.propName?.slice(this.propName.lastIndexOf('.') + 1);
