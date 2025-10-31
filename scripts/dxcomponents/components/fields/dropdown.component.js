@@ -9,6 +9,15 @@ import {
 
 export class DropdownComponent extends PicklistBaseComponent {
   listItems = [];
+  onRecordChange = null;
+
+  fieldOnChange(value) {
+    super.fieldOnChange(value);
+    if (this.onRecordChange) {
+      let event = { target: { value: value } };
+      this.onRecordChange(event);
+    }
+  }
 
   updateSelf() {
     this.updateBaseProps();
@@ -21,6 +30,7 @@ export class DropdownComponent extends PicklistBaseComponent {
     const datasourceMetadata = configProps.datasourceMetadata;
     const contextClass = configProps.contextClass;
     const compositeKeys = configProps.compositeKeys;
+    this.onRecordChange = configProps.onRecordChange;
     let parameters = configProps.parameters;
     let datasource = configProps.datasource;
     let columns = configProps.columns ?? [];
@@ -85,7 +95,7 @@ export class DropdownComponent extends PicklistBaseComponent {
     displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
     const localeContext = metaData?.datasource?.tableType === 'DataPage' ? Constants.DATAPAGE : Constants.ASSOCIATED;
 
-    const options = buildListSourceItems(deferDatasource, isSourceDataPage, this.listItems, this.pConn, datasource);
+    const options = buildListSourceItems(deferDatasource, isSourceDataPage, this.listItems, this.pConn, datasource) ?? [];
 
     this.propName = this.pConn.getStateProps().value;
     const refName = this.propName?.slice(this.propName.lastIndexOf('.') + 1);

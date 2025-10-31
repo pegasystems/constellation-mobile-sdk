@@ -42,7 +42,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
     // added
     this.children = this.pConn.getChildren();
     this.updateSelf();
-    if (this.firstChildMeta?.type === 'Dropdown' && this.rawViewMetadata.config?.parameters) {
+    if (this.firstChildMeta?.type === 'Dropdown' && this.rawViewMetadata.config?.parameters && !this.firstChildMeta.config.deferDatasource) {
       const { value, key, text } = this.firstChildMeta.config.datasource.fields;
       PCore.getDataApiUtils()
         .getData(
@@ -120,7 +120,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
       if (this.firstChildMeta.config?.readOnly) {
         delete this.firstChildMeta.config.readOnly;
       }
-      if (this.firstChildMeta?.type === 'Dropdown') {
+    if (this.firstChildMeta?.type === 'Dropdown' && !this.firstChildMeta.config.deferDatasource) {
         this.firstChildMeta.config.datasource.source = this.rawViewMetadata.config?.parameters
           ? this.dropDownDataSource
           : '@DATASOURCE '.concat(this.refList).concat('.pxResults');
