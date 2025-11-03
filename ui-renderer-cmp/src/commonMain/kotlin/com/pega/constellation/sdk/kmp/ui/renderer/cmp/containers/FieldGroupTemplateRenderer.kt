@@ -14,15 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.core.components.containers.FieldGroupTemplateComponent
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 import com.pega.constellation.sdk.kmp.ui_renderer_cmp.generated.resources.Res
-import com.pega.constellation.sdk.kmp.ui_renderer_cmp.generated.resources.no_items
 import com.pega.constellation.sdk.kmp.ui_renderer_cmp.generated.resources.icon_empty_list_48
+import com.pega.constellation.sdk.kmp.ui_renderer_cmp.generated.resources.no_items
 import com.pega.constellation.sdk.kmp.ui_renderer_cmp.generated.resources.outline_delete_48
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -39,7 +39,7 @@ class FieldGroupTemplateRenderer : ComponentRenderer<FieldGroupTemplateComponent
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(item.heading, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Heading(item.heading, fontSize = 16.sp)
                         if (item.allowDelete) {
                             IconButton(onClick = {
                                 focusManager.clearFocus()
