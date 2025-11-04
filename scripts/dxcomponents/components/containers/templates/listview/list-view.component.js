@@ -139,8 +139,13 @@ export class ListViewComponent extends BaseComponent {
 
    #updateSelectedItemIndex() {
       const index = this.response.findIndex((item) => {
-         return item[this.rowID] === this.componentValue;
+         const left = item[this.rowID];
+         const right = this.componentValue;
+         return left != null && right != null && left === right;
       });
+      if (index == -1) {
+         console.log(TAG, `No matching item found for componentValue.`);
+      }
       this.selectedItemIndex = index === -1 ? null : index;
    }
 
