@@ -17,10 +17,10 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 class ListViewRenderer : ComponentRenderer<ListViewComponent> {
     @Composable
     override fun ListViewComponent.Render() {
-        selectedItemId?.let { itemId ->
-            val selectedItem = items.firstOrNull { it.data[itemId.name] == itemId.value }
-            ListView(label, selectionMode, columnNames, items, selectedItem, ::selectItem)
+        val selectedItem = selectedItemIndex?.let {
+            items.getOrNull(it)
         }
+        ListView(label, selectionMode, columnNames, items, selectedItem, ::onItemSelected)
     }
 }
 
@@ -31,7 +31,7 @@ fun ListView(
     columnNames: List<String>,
     items: List<ListViewComponent.Item>,
     selectedItem: ListViewComponent.Item?,
-    onItemClick: (ListViewComponent.Item) -> Unit
+    onItemSelectionChanged: (Int) -> Unit
 ) {
     Column {
         Text(
@@ -42,14 +42,14 @@ fun ListView(
             textAlign = TextAlign.Left
         )
 
-        items.forEach { item ->
+        items.forEachIndexed { index, item ->
             Column {
                 when (selectionMode) {
                     ListViewComponent.SelectionMode.SINGLE ->
                         RadioButton(
                             selected = item == selectedItem,
-                            onClick = { onItemClick(item) })
-
+                            onClick = { onItemSelectionChanged(index) }
+                        )
                     ListViewComponent.SelectionMode.MULTI -> Checkbox(false, onCheckedChange = {})
                 }
                 columnNames.forEach { columnName ->
@@ -59,7 +59,6 @@ fun ListView(
                             Text(it, modifier = Modifier.weight(1f))
                         }
                     }
-
                 }
             }
         }
