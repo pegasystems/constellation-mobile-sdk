@@ -1,0 +1,54 @@
+{
+  "fetchDateTime": "2025-11-03T16:47:02.923Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 5,
+  "data": [
+    {
+      "Brand": "Toyota",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Owner": "John",
+      "Color": "Silver",
+      "Model": "Corolla",
+      "Id": 1
+    },
+    {
+      "Brand": "Ford",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Owner": "Betty",
+      "Color": "Yellow",
+      "Model": "Fiesta",
+      "Id": 2
+    },
+    {
+      "Brand": "Fiat",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Owner": "Andrzej",
+      "Color": "Red",
+      "Model": "126p",
+      "Id": 3
+    },
+    {
+      "Brand": "Skoda",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Owner": "Sebastian",
+      "Color": "Black",
+      "Model": "Octavia",
+      "Id": 4
+    },
+    {
+      "Brand": "Audi",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Owner": "Jessica",
+      "Color": "White",
+      "Model": "A5",
+      "Id": 5
+    }
+  ],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS",
+    "sourceExecutionTime": "689.8 μs"
+  },
+  "pageSize": 5
+}

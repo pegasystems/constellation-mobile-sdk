@@ -1,10 +1,10 @@
 package com.pega.constellation.sdk.kmp.test.mock.handlers
 
 import com.pega.constellation.sdk.kmp.test.mock.MockHandler
+import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -12,22 +12,21 @@ import kotlinx.serialization.json.jsonPrimitive
 class DxCasesHandler : MockHandler {
     override fun canHandle(request: MockRequest) = request.isDxApi("cases")
 
-    override fun handle(request: MockRequest): MockResponse {
-        return when (request.method) {
-            "POST" -> handlePost(request)
-            "DELETE" -> handleDelete(request)
-            else -> Error(500, "Method ${request.method} not supported")
-        }
+    override fun handle(request: MockRequest) = when (request.method) {
+        "POST" -> handlePost(request)
+        "DELETE" -> handleDelete(request)
+        else -> Error(500, "Method ${request.method} not supported")
     }
 
     private fun handlePost(request: MockRequest): MockResponse {
         val body = request.body ?: return Error(400, "Missing request body")
-        val caseTypeId =
-            Json.parseToJsonElement(body).jsonObject.getValue("caseTypeID").jsonPrimitive.content
+        val bodyJson = Json.parseToJsonElement(body).jsonObject
+        val caseTypeId = bodyJson.getValue("caseTypeID").jsonPrimitive.content
         return when (caseTypeId) {
             "DIXL-MediaCo-Work-SDKTesting" -> Asset("responses/dx/cases/SDKTesting-POST.json")
             "DIXL-MediaCo-Work-NewService" -> Asset("responses/dx/cases/NewService-POST.json")
             "DIXL-MediaCo-Work-EmbeddedData" -> Asset("responses/dx/cases/EmbeddedData-POST.json")
+            "O40M3A-MarekCo-Work-DataReferenceTest" -> Asset("responses/dx/cases/DataReferenceTest-POST.json")
             else -> Error(500, "Missing response for case $caseTypeId")
         }
     }

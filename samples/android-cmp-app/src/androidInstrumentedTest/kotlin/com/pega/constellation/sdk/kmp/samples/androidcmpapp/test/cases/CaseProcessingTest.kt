@@ -21,7 +21,7 @@ class CaseProcessingTest : ComposeTest() {
         setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
 
         onNodeWithText("New Service").performClick()
-        waitForNode("Create")
+        waitForNode("Create (S-", substring = true)
 
         onNodeWithText("Name", substring = true).performTextInput("Jan")
         onNodeWithText("Surname").performTextInput("Kowalski")
@@ -42,7 +42,7 @@ class CaseProcessingTest : ComposeTest() {
         setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
 
         onNodeWithText("New Service").performClick()
-        waitForNode("Customer")
+        waitForNode("Customer (N-", substring = true)
 
         onNodeWithText("First Name").performTextInput("Jan")
         onNodeWithText("Last Name").performTextInput("Kowalski")

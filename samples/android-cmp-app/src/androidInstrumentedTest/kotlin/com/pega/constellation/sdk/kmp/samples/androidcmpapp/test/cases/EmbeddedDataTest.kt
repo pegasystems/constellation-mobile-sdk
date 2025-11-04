@@ -26,8 +26,8 @@ class EmbeddedDataTest : ComposeTest() {
         onNodeWithText("New Service").performClick()
 
         // verify form title and instruction
-        waitForNode("Create EmbeddedData (E-")
-        waitForNode("Embedded Data use-case")
+        waitForNode("Create EmbeddedData (E-", substring = true)
+        waitForNode("Embedded Data use-case", substring = true)
         waitForNode("EmbeddedData cars editable")
         waitForNode("EmbeddedData cars readonly")
 
@@ -83,7 +83,7 @@ class EmbeddedDataTest : ComposeTest() {
         onNodeWithText("Next").performClick()
 
         // verify form components on 2nd step
-        waitForNode("Verify EmbeddedData (E-")
+        waitForNode("Verify EmbeddedData (E-", substring = true)
         waitForNode("EmbeddedData cars readonly")
         waitForNode("Lukasz")
         waitForNode("Details")
