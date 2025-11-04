@@ -16,9 +16,8 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
-    enum class SelectionMode {
-        SINGLE, MULTI;
-    }
+    enum class SelectionMode { SINGLE, MULTI }
+    data class Item(val data: Map<String, String>)
 
     var label by mutableStateOf("")
         private set
@@ -58,7 +57,6 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
             mapOf("selectedItemIndex" to itemIndex.toString())
         )
 
-    data class Item(val data: Map<String, String>)
 
     private fun JsonObject.selectionMode() =
         getString("selectionMode").toSelectionMode()
