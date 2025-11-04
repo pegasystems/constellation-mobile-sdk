@@ -46,7 +46,7 @@ export const useDropdownInitialProcessing = (
     });
     columns = [...columns, ...additionalColumns];
   }
-  return [listType, columns, datasource, parameters];
+  return [listType, columns, datasource, parameters ?? {}];
 };
 
 const generateAdditionalColumns = (existingColumns, extraOptions) => {

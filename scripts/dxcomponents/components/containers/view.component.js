@@ -13,7 +13,7 @@ export class ViewComponent extends ContainerBaseComponent {
   SUPPORTED_FORM_TEMPLATES = ['DefaultForm', 'OneColumn'];
   UNSUPPORTED_FORM_TEMPLATES = ['TwoColumn', 'ThreeColumn', 'WideNarrow'];
 
-  SUPPORTED_TEMPLATES = [...this.SUPPORTED_FORM_TEMPLATES, 'SimpleTable'];
+  SUPPORTED_TEMPLATES = [...this.SUPPORTED_FORM_TEMPLATES, 'SimpleTable', 'DataReference'];
 
   jsComponentPConnectData = {};
   props = {
@@ -51,9 +51,7 @@ export class ViewComponent extends ContainerBaseComponent {
   }
 
   #checkAndUpdate() {
-    // sometimes (e.g.: when going "previous" on form) the response contains view (pzCreateDetails) which is 'dynamic'
-    // and no matter of its children shouldComponentUpdate returns false and form is not re-rendered correctly
-    if (this.jsComponentPConnect.shouldComponentUpdate(this) || this.pConn.meta.isDynamicView?.toString() === 'true') {
+    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
       this.#updateSelf();
     }
   }

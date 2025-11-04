@@ -9,11 +9,13 @@ export class UnsupportedComponent extends BaseComponent {
     visible: true,
     type: ''
   }
+  unsupportedType;
 
-  constructor(componentsManager, pConn) {
+  constructor(componentsManager, pConn, unsupportedType) {
     super(componentsManager, pConn);
     this.type = "Unsupported";
     this.utils = new Utils();
+    this.unsupportedType = unsupportedType ?? this.pConn.meta.type;
   }
 
   init() {
@@ -35,7 +37,7 @@ export class UnsupportedComponent extends BaseComponent {
   updateSelf() {
     this.propName = this.pConn.getStateProps().value;
     const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-    this.props.type = this.pConn.meta.type;
+    this.props.type = this.unsupportedType;
     if (configProps.visibility != null) {
       this.props.visible = this.utils.getBooleanValue(configProps.visibility);
     }

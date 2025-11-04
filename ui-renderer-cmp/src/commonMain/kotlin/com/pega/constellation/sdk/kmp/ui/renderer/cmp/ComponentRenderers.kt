@@ -7,6 +7,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Assignment
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AssignmentCard
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Checkbox
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Currency
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DataReference
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Date
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DateTime
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Decimal
@@ -16,12 +17,14 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FieldGroupTemplate
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FlowContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Integer
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ListView
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RootContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTable
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableSelect
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextArea
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextInput
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Time
@@ -32,13 +35,16 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ViewContain
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AlertBannerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AssignmentCardRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AssignmentRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DataReferenceRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DefaultFormRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FieldGroupTemplateRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FlowContainerRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ListViewRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.OneColumnRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RegionRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RootContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.SimpleTableRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.SimpleTableSelectRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ViewContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ViewRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.CheckboxRenderer
@@ -74,6 +80,7 @@ object ComponentRenderers {
         AssignmentCard to AssignmentCardRenderer(),
         Checkbox to CheckboxRenderer(),
         Currency to CurrencyRenderer(),
+        DataReference to DataReferenceRenderer(),
         Date to DateRenderer(),
         DateTime to DateTimeRenderer(),
         Decimal to DecimalRenderer(),
@@ -83,12 +90,14 @@ object ComponentRenderers {
         FieldGroupTemplate to FieldGroupTemplateRenderer(),
         FlowContainer to FlowContainerRenderer(),
         Integer to IntegerRenderer(),
+        ListView to ListViewRenderer(),
         OneColumn to OneColumnRenderer(),
         Phone to PhoneRenderer(),
         RadioButtons to RadioButtonsRenderer(),
         Region to RegionRenderer(),
         RootContainer to RootContainerRenderer(),
         SimpleTable to SimpleTableRenderer(),
+        SimpleTableSelect to SimpleTableSelectRenderer(),
         TextArea to TextAreaRenderer(),
         TextInput to TextInputRenderer(),
         Time to TimeRenderer(),

@@ -51,7 +51,7 @@ import { UnsupportedComponent } from '../components/widgets/unsupported.componen
 // import { CaseSummaryComponent } from './_components/template/case-summary/case-summary.component';
 // import { CaseViewComponent } from './_components/template/case-view/case-view.component';
 // import { ConfirmationComponent } from './_components/template/confirmation/confirmation.component';
-// import { DataReferenceComponent } from './_components/template/data-reference/data-reference.component';
+import { DataReferenceComponent } from '../components/containers/templates/data-reference.component.js';
 import { DefaultFormComponent } from '../components/containers/default-form.component.js';
 // import { DetailsComponent } from './_components/template/details/details.component';
 // import { DetailsNarrowWideComponent } from './_components/template/details-narrow-wide/details-narrow-wide.component';
@@ -67,7 +67,7 @@ import { FieldGroupTemplateComponent } from '../components/containers/templates/
 // import { InlineDashboardComponent } from './_components/template/inline-dashboard/inline-dashboard.component';
 // import { InlineDashboardPageComponent } from './_components/template/inline-dashboard-page/inline-dashboard-page.component';
 // import { ListPageComponent } from './_components/template/list-page/list-page.component';
-// import { ListViewComponent } from './_components/template/list-view/list-view.component';
+import { ListViewComponent } from '../components/containers/templates/listview/list-view.component.js';
 // import { MultiReferenceReadonlyComponent } from './_components/template/multi-reference-readonly/multi-reference-readonly.component';
 // import { MultiselectComponent } from './_components/field/multiselect/multiselect.component';
 // import { NarrowWideFormComponent } from './_components/template/narrow-wide-form/narrow-wide-form.component';
@@ -78,7 +78,7 @@ import { OneColumnComponent } from '../components/containers/one-column.componen
 // import { PromotedFiltersComponent } from './_components/template/promoted-filters/promoted-filters.component';
 import { SimpleTableComponent } from '../components/containers/templates/simple-table.component.js';
 // import { SimpleTableManualComponent } from './_components/template/simple-table-manual/simple-table-manual.component';
-// import { SimpleTableSelectComponent } from './_components/template/simple-table-select/simple-table-select.component';
+import { SimpleTableSelectComponent } from '../components/containers/templates/simple-table-select.component.js';
 // import { SingleReferenceReadonlyComponent } from './_components/template/single-reference-readonly/single-reference-readonly.component';
 // import { ThreeColumnComponent } from './_components/template/three-column/three-column.component';
 // import { ThreeColumnPageComponent } from './_components/template/three-column-page/three-column-page.component';
@@ -150,7 +150,7 @@ const pegaSdkComponentMap = {
   // Confirmation: ConfirmationComponent,
   Currency: CurrencyComponent,
   // DashboardFilter: DashboardFilterComponent,
-  // DataReference: DataReferenceComponent,
+  DataReference: DataReferenceComponent,
   Date: DateComponent,
   DateTime: DateTimeComponent,
   Decimal: DecimalComponent,
@@ -181,7 +181,7 @@ const pegaSdkComponentMap = {
   // //   'LeftAlignVerticalTabs': LeftAlignVerticalTabs,
   // ListPage: ListPageComponent,
   // ListUtility: ListUtilityComponent,
-  // ListView: ListViewComponent,
+  ListView: ListViewComponent,
   // ListViewActionButtons: ListViewActionButtonsComponent,
   // MaterialDetails: MaterialDetailsComponent,
   // MaterialUtility: MaterialUtilityComponent,
@@ -214,7 +214,7 @@ const pegaSdkComponentMap = {
   // SemanticLink: SemanticLinkComponent,
   SimpleTable: SimpleTableComponent,
   // SimpleTableManual: SimpleTableManualComponent,
-  // SimpleTableSelect: SimpleTableSelectComponent,
+  SimpleTableSelect: SimpleTableSelectComponent,
   // SingleReferenceReadOnly: SingleReferenceReadonlyComponent,
   // Stages: StagesComponent,
   // SubTabs: SubTabsComponent,
