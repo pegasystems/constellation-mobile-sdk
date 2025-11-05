@@ -35,6 +35,7 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebView
 import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
+import com.pega.constellation.sdk.kmp.engine.webview.common.toEnvironmentInfo
 
 import okhttp3.OkHttpClient
 import org.json.JSONObject
@@ -108,7 +109,7 @@ class AndroidWebViewEngine(
             is UpdateComponent -> componentManager.updateComponent(event.id, event.propsJson)
             is RemoveComponent -> componentManager.removeComponent(event.id)
             is SetRequestBody -> networkInterceptor.setRequestBody(event.body)
-            is OnReady -> handler.handle(EngineEvent.Ready)
+            is OnReady -> handler.handle(EngineEvent.Ready(event.envInfoJson.toEnvironmentInfo()))
             is OnFinished -> handler.handle(EngineEvent.Finished(event.successMessage))
             is OnError -> handler.handle(
                 EngineEvent.Error(JsError(event.type, event.message))

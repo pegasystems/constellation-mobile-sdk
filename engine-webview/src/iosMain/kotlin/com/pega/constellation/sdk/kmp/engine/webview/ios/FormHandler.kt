@@ -8,6 +8,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsErrorType.Companion.toJsErrorType
+import com.pega.constellation.sdk.kmp.engine.webview.common.toEnvironmentInfo
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.serialization.json.Json
@@ -38,7 +39,7 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             "updateComponent" -> handleUpdateComponent(array)
             "addComponent" -> handleAddComponent(array)
             "removeComponent" -> handleRemoveComponent(array)
-            "ready" -> eventHandler.handle(EngineEvent.Ready)
+            "ready" -> handleOnReady(array)
             "finished" -> eventHandler.handle(EngineEvent.Finished(array.getOrNull(1) as? String))
             "cancelled" -> eventHandler.handle(EngineEvent.Cancelled)
             "error" -> {
@@ -89,6 +90,13 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             return
         }
         componentManager.removeComponent(ComponentId(cId))
+    }
+
+    private fun handleOnReady(input: List<Any?>) {
+        (input.getOrNull(1) as? String)?.let {
+            val envInfoJson = Json.parseToJsonElement(it).jsonObject
+            eventHandler.handle(EngineEvent.Ready(envInfoJson.toEnvironmentInfo()))
+        } ?: Log.w(TAG, "Unexpected input for onReady")
     }
 }
 

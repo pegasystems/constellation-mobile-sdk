@@ -57,9 +57,16 @@ interface ConstellationSdk {
     sealed class State {
         data object Initial : State()
         data object Loading : State()
-        data class Ready(val root: RootContainerComponent) : State()
+        data class Ready(val environmentInfo: EnvironmentInfo, val root: RootContainerComponent) : State()
         data class Error(val error: EngineError) : State()
         data class Finished(val successMessage: String?) : State()
         data object Cancelled : State()
     }
 }
+
+/**
+ * Represents environment information the Pega app works with
+ * - locale: current locale in IETF BCP 47 format, e.g. "en-US"
+ * - timeZone: current time zone in TZ database format, e.g. "America/New_York"
+ */
+data class EnvironmentInfo(val locale: String, val timeZone: String)

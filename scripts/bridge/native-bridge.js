@@ -20,8 +20,8 @@ class NativeBridge {
       sdkbridge.setRequestBody(body);
    }
 
-   onReady() {
-      sdkbridge.onReady();
+   onReady(envInfo) {
+      sdkbridge.onReady(JSON.stringify(envInfo));
    }
 
    onFinished(successMessage) {
