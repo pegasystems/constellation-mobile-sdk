@@ -1,0 +1,359 @@
+{
+  "data": {
+    "caseInfo": {
+      "content": {
+        "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
+        "CarsDataReferenceSingle": {
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "Id": 5,
+          "Model": "A5",
+          "Color": "White",
+          "Brand": "Audi"
+        }
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "Create": [
+          {
+            "name": "Create",
+            "type": "View",
+            "config": {
+              "template": "DefaultForm",
+              "ruleClass": "O40M3A-MarekCo-Work-DataReferenceTest2",
+              "localeReference": "@LR O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE"
+            },
+            "children": [
+              {
+                "name": "Fields",
+                "type": "Region",
+                "children": [
+                  {
+                    "type": "reference",
+                    "config": {
+                      "name": "Create_CarsDataReferenceSingle",
+                      "inheritedProps": [
+                        {
+                          "prop": "label",
+                          "value": "@L Car for rent"
+                        }
+                      ],
+                      "labelOption": "custom",
+                      "ruleClass": "O40M3A-MarekCo-Work-DataReferenceTest2",
+                      "type": "view",
+                      "authorContext": ".CarsDataReferenceSingle",
+                      "referenceType": "Data"
+                    }
+                  }
+                ]
+              }
+            ],
+            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
+          }
+        ],
+        "Create_CarsDataReferenceSingle": [
+          {
+            "name": "Create_CarsDataReferenceSingle",
+            "type": "View",
+            "config": {
+              "template": "DataReference",
+              "referenceList": "D_CarsList",
+              "name": "CarsDataReferenceSingle",
+              "mode": "singleselect",
+              "contextClass": "O40M3A-MarekCo-Data-Cars",
+              "ruleClass": "O40M3A-MarekCo-Work-DataReferenceTest2",
+              "selectionMode": "single",
+              "classKeys": [
+                {
+                  "name": "Id"
+                }
+              ],
+              "localeReference": "@LR O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE_CARSDATAREFERENCESINGLE",
+              "displayAs": "dropdown"
+            },
+            "children": [
+              {
+                "type": "Dropdown",
+                "config": {
+                  "value": "@P .CarsDataReferenceSingle.Id",
+                  "label": "@L ",
+                  "placeholder": "Select...",
+                  "listType": "datapage",
+                  "primaryField": "@P .CarsDataReferenceSingle.Model",
+                  "datasource": "D_CarsList",
+                  "deferDatasource": true,
+                  "contextPage": "@P .CarsDataReferenceSingle",
+                  "columns": [
+                    {
+                      "value": ".Id",
+                      "setProperty": "Associated property",
+                      "key": "true"
+                    },
+                    {
+                      "value": ".Model",
+                      "display": "true",
+                      "useForSearch": true,
+                      "primary": "true"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "Views",
+                "type": "Region",
+                "children": [
+                  {
+                    "type": "reference",
+                    "config": {
+                      "name": "Foobar",
+                      "inheritedProps": [
+                        {
+                          "prop": "label",
+                          "value": "@L Car details"
+                        },
+                        {
+                          "prop": "showLabel",
+                          "value": true
+                        }
+                      ],
+                      "ruleClass": "O40M3A-MarekCo-Data-Cars",
+                      "type": "view",
+                      "context": ".CarsDataReferenceSingle",
+                      "readOnly": true
+                    }
+                  }
+                ]
+              }
+            ],
+            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
+          }
+        ],
+        "Foobar": [
+          {
+            "name": "Foobar",
+            "type": "View",
+            "config": {
+              "ruleClass": "O40M3A-MarekCo-Data-Cars",
+              "template": "Details",
+              "localeReference": "@LR O40M3A-MAREKCO-DATA-CARS!VIEW!FOOBAR"
+            },
+            "children": [
+              {
+                "name": "A",
+                "type": "Region",
+                "children": [
+                  {
+                    "type": "TextInput",
+                    "config": {
+                      "value": "@P .Brand",
+                      "label": "@FL .Brand",
+                      "labelOption": "default"
+                    }
+                  },
+                  {
+                    "type": "TextInput",
+                    "config": {
+                      "value": "@P .Color",
+                      "label": "@FL .Color",
+                      "labelOption": "default"
+                    }
+                  }
+                ]
+              }
+            ],
+            "classID": "O40M3A-MarekCo-Data-Cars"
+          }
+        ]
+      },
+      "paragraphs": {
+        "CarsDataReferenceSingle_additionalInfo": [
+          {
+            "content": "",
+            "name": "CarsDataReferenceSingle_additionalInfo",
+            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
+          }
+        ],
+        "Id_additionalInfo": [
+          {
+            "content": "",
+            "name": "Id_additionalInfo",
+            "classID": "O40M3A-MarekCo-Data-Cars"
+          }
+        ],
+        "Model_additionalInfo": [
+          {
+            "content": "",
+            "name": "Model_additionalInfo",
+            "classID": "O40M3A-MarekCo-Data-Cars"
+          }
+        ],
+        "Color_additionalInfo": [
+          {
+            "content": "",
+            "name": "Color_additionalInfo",
+            "classID": "O40M3A-MarekCo-Data-Cars"
+          }
+        ],
+        "Brand_additionalInfo": [
+          {
+            "content": "",
+            "name": "Brand_additionalInfo",
+            "classID": "O40M3A-MarekCo-Data-Cars"
+          }
+        ]
+      },
+      "datapages": {
+        "D_cars": {
+          "parameters": [
+            {
+              "name": "Id",
+              "defaultValue": "",
+              "linkedField": "Id"
+            }
+          ],
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": false,
+          "isAlternateKeyStorage": true,
+          "structure": "page"
+        },
+        "D_CarsList": {
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": true,
+          "structure": "list",
+          "isWorkObject": false,
+          "isDataObject": true
+        },
+        "D_carsSavable": {
+          "parameters": [
+            {
+              "name": "Id",
+              "defaultValue": "",
+              "linkedField": "Id"
+            }
+          ],
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "mode": "editable",
+          "isSearchable": false,
+          "isQueryable": false,
+          "isAlternateKeyStorage": true,
+          "structure": "page"
+        }
+      },
+      "dataTypes": {
+        "O40M3A-MarekCo-Data-Cars": {
+          "classKeys": [
+            "Id"
+          ],
+          "savableDataPage": "D_carsSavable",
+          "lookupDataPage": "D_cars",
+          "lookupDataPageInfo": {
+            "isAlternateKeyStorage": true,
+            "parameters": {
+              "Id": "@P .Id"
+            }
+          }
+        }
+      },
+      "fields": {
+        "CarsDataReferenceSingle": [
+          {
+            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
+            "type": "Page",
+            "dataRetrievalType": "refer",
+            "additionalInformation": "@PARAGRAPH CarsDataReferenceSingle_additionalInfo",
+            "pageClass": "O40M3A-MarekCo-Data-Cars",
+            "label": "CarsDataReferenceSingle",
+            "datasource": {
+              "name": "D_cars",
+              "parameters": {
+                "Id": "@P .CarsDataReferenceSingle.Id"
+              }
+            }
+          }
+        ],
+        "Id": [
+          {
+            "classID": "O40M3A-MarekCo-Data-Cars",
+            "type": "Integer",
+            "displayAs": "pxInteger",
+            "additionalInformation": "@PARAGRAPH Id_additionalInfo",
+            "label": "id",
+            "isClassKey": true
+          }
+        ],
+        "Model": [
+          {
+            "classID": "O40M3A-MarekCo-Data-Cars",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "additionalInformation": "@PARAGRAPH Model_additionalInfo",
+            "label": "model"
+          }
+        ],
+        "Color": [
+          {
+            "classID": "O40M3A-MarekCo-Data-Cars",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "additionalInformation": "@PARAGRAPH Color_additionalInfo",
+            "label": "color"
+          }
+        ],
+        "Brand": [
+          {
+            "classID": "O40M3A-MarekCo-Data-Cars",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "additionalInformation": "@PARAGRAPH Brand_additionalInfo",
+            "label": "brand"
+          }
+        ]
+      }
+    },
+    "components": [
+      "DefaultForm",
+      "Details",
+      "Dropdown",
+      "Region",
+      "TextInput",
+      "View",
+      "DataReference"
+    ],
+    "localeReferences": [
+      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE",
+      "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!ID_ADDITIONALINFO",
+      "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!COLOR_ADDITIONALINFO",
+      "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!MODEL_ADDITIONALINFO",
+      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!PARAGRAPH!CARSDATAREFERENCESINGLE_ADDITIONALINFO",
+      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE_CARSDATAREFERENCESINGLE",
+      "O40M3A-MAREKCO-DATA-CARS!VIEW!FOOBAR",
+      "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!BRAND_ADDITIONALINFO",
+      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!CASE!DATAREFERENCETEST2",
+      "@BASECLASS!DATAPAGE!D_CARSLIST"
+    ],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "Create",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {
+      "caseInfo": {
+        "content": {
+          "summary_of_when_conditions__": {}
+        }
+      }
+    }
+  }
+}

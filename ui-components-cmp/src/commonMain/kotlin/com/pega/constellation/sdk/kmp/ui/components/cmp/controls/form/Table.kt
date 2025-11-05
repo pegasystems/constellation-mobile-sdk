@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.TableSelectionMode.MULTI
@@ -47,9 +49,9 @@ fun Table(
         DataTable(
             modifier = Modifier.horizontalScroll(rememberScrollState()),
             columns = {
-                headerBackground { Box(Modifier.background(Color.Black.copy(alpha = 0.1f))) }
-                column {}
-                columns.forEach { column { Text(it) } }
+                headerBackground { TableHeaderBackground() }
+                column {} // for selection control
+                columns.forEach { column { Text(it.uppercase(), fontWeight = FontWeight.Bold) } }
             }
         ) {
             items.forEachIndexed { i, item ->
@@ -66,4 +68,14 @@ fun Table(
             }
         }
     }
+}
+
+@Composable
+private fun TableHeaderBackground() {
+    Box(
+        Modifier.background(
+            color = Color.Black.copy(alpha = 0.1f),
+            shape = RoundedCornerShape(8.dp)
+        )
+    )
 }

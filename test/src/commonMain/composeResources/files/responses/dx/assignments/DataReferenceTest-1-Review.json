@@ -48,7 +48,7 @@
           "urgency": "10",
           "processName": "Create",
           "isMultiStep": "true",
-          "name": "Rent a car",
+          "name": "Review car details",
           "context": "",
           "links": {
             "open": {
@@ -61,28 +61,28 @@
           "ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT",
           "actions": [
             {
-              "name": "Rent a car",
+              "name": "Create",
               "links": {
                 "submit": {
                   "rel": "self",
-                  "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/actions/SingleDisplayAsTable",
+                  "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/actions/Create",
                   "type": "PATCH",
                   "title": "Submit assignment action "
                 },
                 "save": {
                   "rel": "self",
-                  "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/actions/SingleDisplayAsTable/save",
+                  "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/actions/Create/save",
                   "type": "PATCH",
                   "title": "Save assignment action "
                 },
                 "open": {
                   "rel": "self",
-                  "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/actions/SingleDisplayAsTable",
+                  "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/actions/Create",
                   "type": "GET",
                   "title": "Get assignment action details"
                 }
               },
-              "ID": "SingleDisplayAsTable",
+              "ID": "Create",
               "type": "FlowAction"
             }
           ]
@@ -99,12 +99,12 @@
       ],
       "caseTypeName": "DataReferenceTest2",
       "urgency": "10",
-      "createTime": "2025-11-05T11:57:40.339Z",
+      "createTime": "2025-11-04T19:31:33.265Z",
       "createdBy": "rep@mediaco",
       "name": "DataReferenceTest2",
       "stages": [
         {
-          "entryTime": "2025-11-05T11:57:40.345Z",
+          "entryTime": "2025-11-04T19:31:33.270Z",
           "name": "Create",
           "links": {
             "open": {
@@ -125,112 +125,33 @@
       "status": "New",
       "stageID": "PRIM0",
       "stageLabel": "Create",
-      "lastUpdateTime": "2025-11-05T11:57:40.347Z",
+      "lastUpdateTime": "2025-11-04T19:33:12.224Z",
       "content": {
         "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
-        "pxObjClass": "O40M3A-MarekCo-Work-DataReferenceTest2",
-        "pyLabel": "DataReferenceTest2",
-        "pyID": "D-2036",
-        "pyViewName": "SingleDisplayAsTable",
-        "pyViewContext": "",
         "CarsDataReferenceSingle": {
           "classID": "O40M3A-MarekCo-Data-Cars",
-          "Id": "",
-          "Brand": ""
-        }
+          "Id": 5,
+          "Model": "A5",
+          "Color": "White",
+          "Brand": "Audi"
+        },
+        "pxObjClass": "O40M3A-MarekCo-Work-DataReferenceTest2",
+        "pyLabel": "DataReferenceTest2",
+        "pyID": "D-2036"
       }
     }
   },
   "uiResources": {
     "resources": {
       "views": {
-        "pyEmbedAssignment": [
+        "Create": [
           {
-            "name": "pyEmbedAssignment",
-            "type": "View",
-            "config": {
-              "ruleClass": "Work-"
-            },
-            "children": [
-              {
-                "name": "A",
-                "type": "Region",
-                "children": [
-                  {
-                    "type": "reference",
-                    "config": {
-                      "type": "view",
-                      "name": "pyCaseWorkarea"
-                    }
-                  }
-                ]
-              }
-            ],
-            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
-          }
-        ],
-        "pyCaseWorkarea": [
-          {
-            "name": "pyCaseWorkarea",
-            "type": "View",
-            "config": {
-              "ruleClass": "Work-"
-            },
-            "children": [
-              {
-                "name": "A",
-                "type": "Region",
-                "children": [
-                  {
-                    "type": "reference",
-                    "config": {
-                      "type": "view",
-                      "name": "pzFlowContainer"
-                    }
-                  }
-                ]
-              }
-            ],
-            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
-          }
-        ],
-        "pzFlowContainer": [
-          {
-            "name": "pzFlowContainer",
-            "type": "View",
-            "config": {
-              "ruleClass": "@baseclass"
-            },
-            "children": [
-              {
-                "type": "FlowContainer",
-                "config": {
-                  "name": "workarea",
-                  "routingInfo": "@ROUTING_INFO"
-                },
-                "children": [
-                  {
-                    "type": "reference",
-                    "config": {
-                      "type": "view",
-                      "name": "@P .pyViewName",
-                      "context": "@P .pyViewContext"
-                    }
-                  }
-                ]
-              }
-            ],
-            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
-          }
-        ],
-        "SingleDisplayAsTable": [
-          {
-            "name": "SingleDisplayAsTable",
+            "name": "Create",
             "type": "View",
             "config": {
               "template": "DefaultForm",
               "ruleClass": "O40M3A-MarekCo-Work-DataReferenceTest2",
-              "localeReference": "@LR O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!SINGLEDISPLAYASTABLE"
+              "localeReference": "@LR O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE"
             },
             "children": [
               {
@@ -240,11 +161,11 @@
                   {
                     "type": "reference",
                     "config": {
-                      "name": "SingleDisplayAsTable_CarsDataReferenceSingle",
+                      "name": "Create_CarsDataReferenceSingle",
                       "inheritedProps": [
                         {
                           "prop": "label",
-                          "value": "@L Select your car"
+                          "value": "@L Car for rent"
                         }
                       ],
                       "labelOption": "custom",
@@ -260,9 +181,9 @@
             "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
           }
         ],
-        "SingleDisplayAsTable_CarsDataReferenceSingle": [
+        "Create_CarsDataReferenceSingle": [
           {
-            "name": "SingleDisplayAsTable_CarsDataReferenceSingle",
+            "name": "Create_CarsDataReferenceSingle",
             "type": "View",
             "config": {
               "template": "DataReference",
@@ -277,72 +198,32 @@
                   "name": "Id"
                 }
               ],
-              "localeReference": "@LR O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!SINGLEDISPLAYASTABLE_CARSDATAREFERENCESINGLE",
-              "displayAs": "table"
+              "localeReference": "@LR O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE_CARSDATAREFERENCESINGLE",
+              "displayAs": "dropdown"
             },
             "children": [
               {
-                "type": "SimpleTableSelect",
+                "type": "Dropdown",
                 "config": {
-                  "label": "@L ",
-                  "selectionKey": "@P .CarsDataReferenceSingle.Id",
                   "value": "@P .CarsDataReferenceSingle.Id",
+                  "label": "@L ",
+                  "placeholder": "Select...",
+                  "listType": "datapage",
+                  "primaryField": "@P .CarsDataReferenceSingle.Model",
+                  "datasource": "D_CarsList",
+                  "deferDatasource": true,
                   "contextPage": "@P .CarsDataReferenceSingle",
-                  "referenceList": "D_CarsList",
-                  "selectionMode": "single",
-                  "primaryField": "@P .CarsDataReferenceSingle.Brand",
-                  "promotedFilters": [],
-                  "presets": [
+                  "columns": [
                     {
-                      "name": "presets",
-                      "template": "Table",
-                      "config": {},
-                      "label": "",
-                      "id": "P_",
-                      "children": [
-                        {
-                          "name": "Columns",
-                          "type": "Region",
-                          "children": [
-                            {
-                              "type": "Integer",
-                              "config": {
-                                "value": "@P .Id",
-                                "label": "@FL .Id",
-                                "labelOption": "default",
-                                "readOnly": true
-                              }
-                            },
-                            {
-                              "type": "TextInput",
-                              "config": {
-                                "value": "@P .Brand",
-                                "label": "@FL .Brand",
-                                "labelOption": "default",
-                                "readOnly": true
-                              }
-                            },
-                            {
-                              "type": "TextInput",
-                              "config": {
-                                "value": "@P .Model",
-                                "label": "@FL .Model",
-                                "labelOption": "default",
-                                "readOnly": true
-                              }
-                            },
-                            {
-                              "type": "TextInput",
-                              "config": {
-                                "value": "@P .Color",
-                                "label": "@FL .Color",
-                                "labelOption": "default",
-                                "readOnly": true
-                              }
-                            }
-                          ]
-                        }
-                      ]
+                      "value": ".Id",
+                      "setProperty": "Associated property",
+                      "key": "true"
+                    },
+                    {
+                      "value": ".Model",
+                      "display": "true",
+                      "useForSearch": true,
+                      "primary": "true"
                     }
                   ]
                 }
@@ -350,10 +231,67 @@
               {
                 "name": "Views",
                 "type": "Region",
-                "children": []
+                "children": [
+                  {
+                    "type": "reference",
+                    "config": {
+                      "name": "Foobar",
+                      "inheritedProps": [
+                        {
+                          "prop": "label",
+                          "value": "@L Car details"
+                        },
+                        {
+                          "prop": "showLabel",
+                          "value": true
+                        }
+                      ],
+                      "ruleClass": "O40M3A-MarekCo-Data-Cars",
+                      "type": "view",
+                      "context": ".CarsDataReferenceSingle",
+                      "readOnly": true
+                    }
+                  }
+                ]
               }
             ],
             "classID": "O40M3A-MarekCo-Work-DataReferenceTest2"
+          }
+        ],
+        "Foobar": [
+          {
+            "name": "Foobar",
+            "type": "View",
+            "config": {
+              "ruleClass": "O40M3A-MarekCo-Data-Cars",
+              "template": "Details",
+              "localeReference": "@LR O40M3A-MAREKCO-DATA-CARS!VIEW!FOOBAR"
+            },
+            "children": [
+              {
+                "name": "A",
+                "type": "Region",
+                "children": [
+                  {
+                    "type": "TextInput",
+                    "config": {
+                      "value": "@P .Brand",
+                      "label": "@FL .Brand",
+                      "labelOption": "default"
+                    }
+                  },
+                  {
+                    "type": "TextInput",
+                    "config": {
+                      "value": "@P .Color",
+                      "label": "@FL .Color",
+                      "labelOption": "default"
+                    }
+                  }
+                ]
+              }
+            ],
+            "classID": "O40M3A-MarekCo-Data-Cars"
           }
         ]
       },
@@ -369,6 +307,20 @@
           {
             "content": "",
             "name": "Id_additionalInfo",
+            "classID": "O40M3A-MarekCo-Data-Cars"
+          }
+        ],
+        "Model_additionalInfo": [
+          {
+            "content": "",
+            "name": "Model_additionalInfo",
+            "classID": "O40M3A-MarekCo-Data-Cars"
+          }
+        ],
+        "Color_additionalInfo": [
+          {
+            "content": "",
+            "name": "Color_additionalInfo",
             "classID": "O40M3A-MarekCo-Data-Cars"
           }
         ],
@@ -437,47 +389,6 @@
         }
       },
       "fields": {
-        "pyLabel": [
-          {
-            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
-            "type": "Text",
-            "maxLength": 64,
-            "displayAs": "pxTextInput",
-            "definedOnClassID": "Work-",
-            "expectedLength": 60,
-            "label": "Label"
-          }
-        ],
-        "pyID": [
-          {
-            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
-            "type": "Text",
-            "maxLength": 32,
-            "displayAs": "pxDisplayText",
-            "definedOnClassID": "Work-Cover-",
-            "expectedLength": 22,
-            "label": "Case ID",
-            "isClassKey": true
-          }
-        ],
-        "pyViewName": [
-          {
-            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
-            "type": "Text",
-            "displayAs": "pxTextInput",
-            "definedOnClassID": "Work-",
-            "label": "pyViewName"
-          }
-        ],
-        "pyViewContext": [
-          {
-            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
-            "type": "Text",
-            "displayAs": "pxTextInput",
-            "definedOnClassID": "Work-",
-            "label": "pyViewContext"
-          }
-        ],
         "CarsDataReferenceSingle": [
           {
             "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
@@ -504,6 +415,26 @@
             "isClassKey": true
           }
         ],
+        "Model": [
+          {
+            "classID": "O40M3A-MarekCo-Data-Cars",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "additionalInformation": "@PARAGRAPH Model_additionalInfo",
+            "label": "model"
+          }
+        ],
+        "Color": [
+          {
+            "classID": "O40M3A-MarekCo-Data-Cars",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "additionalInformation": "@PARAGRAPH Color_additionalInfo",
+            "label": "color"
+          }
+        ],
         "Brand": [
           {
             "classID": "O40M3A-MarekCo-Data-Cars",
@@ -514,52 +445,67 @@
             "label": "brand"
           }
         ],
-        "Model": [
+        "pyLabel": [
           {
-            "classID": "O40M3A-MarekCo-Data-Cars",
+            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
             "type": "Text",
-            "maxLength": 256,
+            "maxLength": 64,
             "displayAs": "pxTextInput",
-            "label": "model"
+            "definedOnClassID": "Work-",
+            "expectedLength": 60,
+            "label": "Label"
           }
         ],
-        "Color": [
+        "pyID": [
           {
-            "classID": "O40M3A-MarekCo-Data-Cars",
+            "classID": "O40M3A-MarekCo-Work-DataReferenceTest2",
             "type": "Text",
-            "maxLength": 256,
-            "displayAs": "pxTextInput",
-            "label": "color"
+            "maxLength": 32,
+            "displayAs": "pxDisplayText",
+            "definedOnClassID": "Work-Cover-",
+            "expectedLength": 22,
+            "label": "Case ID",
+            "isClassKey": true
           }
         ]
       }
     },
     "components": [
       "DefaultForm",
-      "FlowContainer",
+      "Details",
+      "Dropdown",
       "Region",
-      "SimpleTableSelect",
+      "TextInput",
       "View",
       "DataReference"
     ],
     "localeReferences": [
+      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE",
       "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!ID_ADDITIONALINFO",
+      "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!COLOR_ADDITIONALINFO",
+      "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!MODEL_ADDITIONALINFO",
       "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!PARAGRAPH!CARSDATAREFERENCESINGLE_ADDITIONALINFO",
-      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!SINGLEDISPLAYASTABLE",
+      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!CREATE_CARSDATAREFERENCESINGLE",
+      "O40M3A-MAREKCO-DATA-CARS!VIEW!FOOBAR",
       "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!BRAND_ADDITIONALINFO",
       "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!CASE!DATAREFERENCETEST2",
-      "@BASECLASS!DATAPAGE!D_CarsList",
-      "O40M3A-MAREKCO-WORK-DATAREFERENCETEST2!VIEW!SINGLEDISPLAYASTABLE_CARSDATAREFERENCESINGLE"
+      "@BASECLASS!DATAPAGE!D_CARSLIST"
     ],
     "root": {
       "type": "reference",
       "config": {
         "type": "view",
-        "name": "pyEmbedAssignment",
+        "name": "Create",
         "context": "caseInfo.content"
       }
     },
-    "context_data": {},
+    "context_data": {
+      "caseInfo": {
+        "content": {
+          "summary_of_when_conditions__": {}
+        }
+      }
+    },
     "navigation": {
       "template": "Horizontal",
       "steps": [
@@ -567,22 +513,22 @@
           "allow_jump": true,
           "name": "Rent a car",
           "actionID": "SingleDisplayAsTable",
-          "visited_status": "current",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF3",
+              "type": "PATCH",
+              "title": "Go to Rent a car"
+            }
+          },
           "ID": "AssignmentSF3"
         },
         {
           "allow_jump": true,
           "name": "Review car details",
           "actionID": "Create",
-          "visited_status": "future",
-          "links": {
-            "open": {
-              "rel": "self",
-              "href": "assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF1",
-              "type": "PATCH",
-              "title": "Go to Review car details"
-            }
-          },
+          "visited_status": "current",
           "ID": "AssignmentSF1"
         },
         {
@@ -653,6 +599,19 @@
           "jsAction": "cancelAssignment",
           "name": "Cancel",
           "actionID": "cancel"
+        },
+        {
+          "jsAction": "navigateToStep",
+          "name": "Previous",
+          "actionID": "back",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK D-2036!CREATEFORM_DEFAULT/navigation_steps/previous",
+              "type": "PATCH",
+              "title": "Go back to previous step"
+            }
+          }
         }
       ],
       "main": [
@@ -664,7 +623,6 @@
       ]
     }
   },
-  "ID": "O40M3A-MAREKCO-WORK D-2036",
   "nextAssignmentInfo": {
     "context": "self",
     "className": "O40M3A-MarekCo-Work-DataReferenceTest2",
