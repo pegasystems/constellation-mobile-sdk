@@ -77,7 +77,9 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 
 release/
 
