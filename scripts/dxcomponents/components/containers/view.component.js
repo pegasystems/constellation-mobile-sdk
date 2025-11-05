@@ -4,16 +4,6 @@ import { ContainerBaseComponent } from "./container-base.component.js";
 const TAG = "[ViewComponent]";
 
 export class ViewComponent extends ContainerBaseComponent {
-   DETAILS_TEMPLATES = [
-      "Details",
-      "DetailsFields",
-      "DetailsOneColumn",
-      "DetailsSubTabs",
-      "DetailsThreeColumn",
-      "DetailsTwoColumn",
-      "NarrowWideDetails",
-      "WideNarrowDetails",
-   ];
 
    READ_ONLY_DETAILS_TEMPLATES = [
       "Details",
@@ -23,6 +13,8 @@ export class ViewComponent extends ContainerBaseComponent {
       "NarrowWideDetails",
       "WideNarrowDetails",
    ];
+
+   DETAILS_TEMPLATES = [...this.READ_ONLY_DETAILS_TEMPLATES, "DetailsFields", "DetailsSubTabs"];
 
    SUPPORTED_FORM_TEMPLATES = ["DefaultForm", "OneColumn"];
    UNSUPPORTED_FORM_TEMPLATES = ["TwoColumn", "ThreeColumn", "WideNarrow"];
