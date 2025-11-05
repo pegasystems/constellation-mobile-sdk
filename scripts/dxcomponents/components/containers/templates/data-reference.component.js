@@ -245,6 +245,13 @@ export class DataReferenceComponent extends ContainerBaseComponent {
    #handleSelection(event) {
       const caseKey = this.pConn.getCaseInfo().getKey();
       const refreshOptions = { autoDetectRefresh: true };
+
+      const children = this.pConn.getRawMetadata()?.children;
+      if (children?.length > 0 && children[0].config?.value) {
+         refreshOptions.propertyName = children[0].config.value;
+         refreshOptions.classID = this.pConn.getRawMetadata().classID;
+      }
+
       if (this.canBeChangedInReviewMode && this.pConn.getValue("__currentPageTabViewName")) {
          this.pConn
             .getActionsApi()
