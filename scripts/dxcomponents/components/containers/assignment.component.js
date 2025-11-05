@@ -1,384 +1,397 @@
-import {ReferenceComponent} from './reference.component.js';
-import {BaseComponent} from '../base.component.js';
+import { ReferenceComponent } from "./reference.component.js";
+import { BaseComponent } from "../base.component.js";
 
-const TAG = '[AssignmentComponent]';
+const TAG = "[AssignmentComponent]";
 
 export class AssignmentComponent extends BaseComponent {
+   childrenPConns;
+   assignmentCardComponent;
+   itemKey$;
 
-  childrenPConns;
-  assignmentCardComponent;
-  itemKey$;
+   jsComponentPConnectData = {};
+   configProps$;
+   props;
 
-  jsComponentPConnectData = {};
-  configProps$;
-  props;
+   newPConn;
+   containerName$;
 
-  newPConn;
-  containerName$;
+   bInitialized = false;
 
-  bInitialized = false;
+   templateName$;
 
-  templateName$;
+   arMainButtons$;
+   arSecondaryButtons$;
 
-  arMainButtons$;
-  arSecondaryButtons$;
+   actionsAPI;
 
-  actionsAPI;
+   bHasNavigation$ = false;
+   bIsVertical$ = false;
+   arCurrentStepIndicies$ = [];
+   arNavigationSteps$ = [];
 
-  bHasNavigation$ = false;
-  bIsVertical$ = false;
-  arCurrentStepIndicies$ = [];
-  arNavigationSteps$ = [];
+   finishAssignment;
+   navigateToStep;
+   saveAssignment;
+   cancelAssignment;
+   cancelCreateStageAssignment;
+   showPage;
+   approveCase;
+   rejectCase;
 
-  finishAssignment;
-  navigateToStep;
-  saveAssignment;
-  cancelAssignment;
-  cancelCreateStageAssignment;
-  showPage;
-  approveCase;
-  rejectCase;
+   bReInit = false;
+   loading = true;
+   localizedVal;
+   localeCategory = "Assignment";
+   localeReference;
 
-  bReInit = false;
-  loading = true;
-  localizedVal;
-  localeCategory = 'Assignment';
-  localeReference;
+   constructor(componentsManager, pConn, childrenPConns, itemKey) {
+      super(componentsManager, pConn);
 
+      this.type = "Assignment";
+      this.childrenPConns = childrenPConns;
+      this.itemKey$ = itemKey;
+   }
 
-  constructor(componentsManager, pConn, childrenPConns, itemKey) {
-    super(componentsManager, pConn);
+   init() {
+      this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
+      this.componentsManager.onComponentAdded(this);
 
-    this.type = "Assignment"
-    this.childrenPConns = childrenPConns;
-    this.itemKey$ = itemKey;
-  }
+      this.initComponent();
 
-  init() {
-    this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
-    this.componentsManager.onComponentAdded(this);
+      this.jsComponentPConnect.shouldComponentUpdate(this);
 
-    this.initComponent();
+      this.bInitialized = true;
+      this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
+      this.localeReference = `${this.pConn.getCaseInfo().getClassName()}!CASE!${this.pConn
+         .getCaseInfo()
+         .getName()}`.toUpperCase();
+   }
 
-    this.jsComponentPConnect.shouldComponentUpdate(this);
+   destroy() {
+      this.jsComponentPConnectData.unsubscribeFn?.();
+      this.assignmentCardComponent.destroy();
+      this.componentsManager.onComponentRemoved(this);
+   }
 
-    this.bInitialized = true;
-    this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
-    this.localeReference = `${this.pConn.getCaseInfo().getClassName()}!CASE!${this.pConn.getCaseInfo().getName()}`.toUpperCase();
-  }
-
-  destroy() {
-    this.jsComponentPConnectData.unsubscribeFn?.();
-    this.assignmentCardComponent.destroy();
-    this.componentsManager.onComponentRemoved(this);
-  }
-
-  update(pConn, pConnChildren, itemKey) {
-    if (this.pConn !== pConn) {
-      this.pConn = pConn;
-    }
-    this.childrenPConns = pConnChildren;
-    this.itemKey$ = itemKey;
-    if (this.bInitialized) {
-      this.updateChanges();
-    }
-  }
-
-  blurAllFields() {
-    const event = {
-      type: 'FieldChangeWithFocus',
-      eventData: {
-        focused: 'false'
+   update(pConn, pConnChildren, itemKey) {
+      if (this.pConn !== pConn) {
+         this.pConn = pConn;
       }
-    }
-    this.assignmentCardComponent.onEvent(event);
-  }
+      this.childrenPConns = pConnChildren;
+      this.itemKey$ = itemKey;
+      if (this.bInitialized) {
+         this.updateChanges();
+      }
+   }
 
-  sendPropsUpdate() {
-    this.props = {
-      children: [this.assignmentCardComponent.compId],
-      loading: this.loading
-    };
-    this.componentsManager.onComponentPropsUpdate(this);
-  }
+   blurAllFields() {
+      const event = {
+         type: "FieldChangeWithFocus",
+         eventData: {
+            focused: "false",
+         },
+      };
+      this.assignmentCardComponent.onEvent(event);
+   }
 
-  checkAndUpdate() {
-    if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-      this.setLoading(this.newPConn.getLoadingStatus());
-    }
-  }
+   sendPropsUpdate() {
+      this.props = {
+         children: [this.assignmentCardComponent.compId],
+         loading: this.loading,
+      };
+      this.componentsManager.onComponentPropsUpdate(this);
+   }
 
-  updateChanges() {
-    this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
-    this.createButtons();
+   checkAndUpdate() {
+      if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
+         this.setLoading(this.newPConn.getLoadingStatus());
+      }
+   }
 
-    const assignmentCardArgs = [this.newPConn, this.childrenPConns, this.arMainButtons$, this.arSecondaryButtons$, this.onActionButtonClick];
-    this.assignmentCardComponent = this.componentsManager.upsert(this.assignmentCardComponent, "AssignmentCard", assignmentCardArgs);
-    this.loading = this.newPConn.getLoadingStatus();
-    this.sendPropsUpdate();
-  }
-
-  initComponent() {
-    this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
-    // prevent re-intializing with flowContainer update unless an action is taken
-    this.bReInit = false;
-    this.bHasNavigation$ = false;
-
-    this.configProps$ = this.newPConn.resolveConfigProps(this.newPConn.getConfigProps());
-
-    this.templateName$ = this.configProps$.template;
-
-    const actionsAPI = this.newPConn.getActionsApi();
-    const baseContext = this.newPConn.getContextName();
-    const acName = this.newPConn.getContainerName();
-
-    // for now, in general this should be overridden by updateSelf(), and not be blank
-    if (this.itemKey$ === '') {
-      this.itemKey$ = baseContext.concat('/').concat(acName);
-    }
-
-    this.newPConn.isBoundToState();
-
-    // store off bound functions to below pointers
-    this.finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
-    this.navigateToStep = actionsAPI.navigateToStep.bind(actionsAPI);
-    this.saveAssignment = actionsAPI.saveAssignment.bind(actionsAPI);
-    this.cancelAssignment = actionsAPI.cancelAssignment.bind(actionsAPI);
-    this.showPage = actionsAPI.showPage.bind(actionsAPI);
-
-    this.cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
-    this.approveCase = actionsAPI.approveCase?.bind(actionsAPI);
-    this.rejectCase = actionsAPI.rejectCase?.bind(actionsAPI);
-    this.onActionButtonClick = this.onActionButtonClick.bind(this);
-
-    if (this.childrenPConns) {
+   updateChanges() {
+      this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
       this.createButtons();
-    }
-  }
 
-  setLoading(loading) {
-    this.loading = loading;
-    this.sendPropsUpdate();
-  }
+      const assignmentCardArgs = [
+         this.newPConn,
+         this.childrenPConns,
+         this.arMainButtons$,
+         this.arSecondaryButtons$,
+         this.onActionButtonClick,
+      ];
+      this.assignmentCardComponent = this.componentsManager.upsert(
+         this.assignmentCardComponent,
+         "AssignmentCard",
+         assignmentCardArgs
+      );
+      this.loading = this.newPConn.getLoadingStatus();
+      this.sendPropsUpdate();
+   }
 
-  createButtons() {
-    if (!this.childrenPConns) return;
-    const oData = this.newPConn.getDataObject();
-    // inside
-    // get fist kid, get the name and display
-    // pass first kid to a view container, which will disperse it to a view which will use one column, two column, etc.
-    const oWorkItem = this.childrenPConns[0].getPConnect();
-    const oWorkData = oWorkItem.getDataObject();
-
-    if (oWorkData) {
-      this.actionsAPI = oWorkItem.getActionsApi();
-      if (oWorkData.caseInfo && oWorkData.caseInfo.assignments !== null) {
-        this.containerName$ = oWorkData.caseInfo.assignments?.[0].name;
-        const oCaseInfo = oData.caseInfo;
-
-        if (oCaseInfo && oCaseInfo.actionButtons) {
-          this.arMainButtons$ = oCaseInfo.actionButtons.main ?? [];
-          this.arSecondaryButtons$ = oCaseInfo.actionButtons.secondary ?? [];
-        }
-
-        if (oCaseInfo.navigation != null) {
-          this.createButtonsForMultiStepForm(oCaseInfo);
-        } else {
-          this.bHasNavigation$ = false;
-        }
-      }
-    }
-  }
-
-  createButtonsForMultiStepForm(oCaseInfo) {
-    this.bHasNavigation$ = true;
-
-    if ((oCaseInfo.navigation.template && oCaseInfo.navigation.template.toLowerCase() === 'standard') || oCaseInfo?.navigation?.steps?.length === 1) {
+   initComponent() {
+      this.newPConn = ReferenceComponent.normalizePConn(this.pConn);
+      // prevent re-intializing with flowContainer update unless an action is taken
+      this.bReInit = false;
       this.bHasNavigation$ = false;
-    } else if (oCaseInfo.navigation.template && oCaseInfo.navigation.template.toLowerCase() === 'vertical') {
-      this.bIsVertical$ = true;
-    } else {
-      this.bIsVertical$ = false;
-    }
 
-    // iterate through steps to find current one(s)
-    // immutable, so we want to change the local copy, so need to make a copy
-    // what comes back now in configObject is the children of the flowContainer
-    this.arNavigationSteps$ = JSON.parse(JSON.stringify(oCaseInfo.navigation.steps));
-    this.arNavigationSteps$.forEach(step => {
-      if (step.name) {
-        step.name = PCore.getLocaleUtils().getLocaleValue(step.name, undefined, this.localeReference);
+      this.configProps$ = this.newPConn.resolveConfigProps(this.newPConn.getConfigProps());
+
+      this.templateName$ = this.configProps$.template;
+
+      const actionsAPI = this.newPConn.getActionsApi();
+      const baseContext = this.newPConn.getContextName();
+      const acName = this.newPConn.getContainerName();
+
+      // for now, in general this should be overridden by updateSelf(), and not be blank
+      if (this.itemKey$ === "") {
+         this.itemKey$ = baseContext.concat("/").concat(acName);
       }
-    });
-    this.arCurrentStepIndicies$ = [];
-    this.arCurrentStepIndicies$ = this.findCurrentIndicies(this.arNavigationSteps$, this.arCurrentStepIndicies$, 0);
-  }
 
-  findCurrentIndicies(arStepperSteps, arIndicies, depth) {
-    let count = 0;
-    arStepperSteps.forEach(step => {
-      if (step.visited_status == 'current') {
-        arIndicies[depth] = count;
+      this.newPConn.isBoundToState();
 
-        // add in
-        step.step_status = '';
-      } else if (step.visited_status == 'success') {
-        count++;
-        step.step_status = 'completed';
+      // store off bound functions to below pointers
+      this.finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
+      this.navigateToStep = actionsAPI.navigateToStep.bind(actionsAPI);
+      this.saveAssignment = actionsAPI.saveAssignment.bind(actionsAPI);
+      this.cancelAssignment = actionsAPI.cancelAssignment.bind(actionsAPI);
+      this.showPage = actionsAPI.showPage.bind(actionsAPI);
+
+      this.cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
+      this.approveCase = actionsAPI.approveCase?.bind(actionsAPI);
+      this.rejectCase = actionsAPI.rejectCase?.bind(actionsAPI);
+      this.onActionButtonClick = this.onActionButtonClick.bind(this);
+
+      if (this.childrenPConns) {
+         this.createButtons();
+      }
+   }
+
+   setLoading(loading) {
+      this.loading = loading;
+      this.sendPropsUpdate();
+   }
+
+   createButtons() {
+      if (!this.childrenPConns) return;
+      const oData = this.newPConn.getDataObject();
+      // inside
+      // get fist kid, get the name and display
+      // pass first kid to a view container, which will disperse it to a view which will use one column, two column, etc.
+      const oWorkItem = this.childrenPConns[0].getPConnect();
+      const oWorkData = oWorkItem.getDataObject();
+
+      if (oWorkData) {
+         this.actionsAPI = oWorkItem.getActionsApi();
+         if (oWorkData.caseInfo && oWorkData.caseInfo.assignments !== null) {
+            this.containerName$ = oWorkData.caseInfo.assignments?.[0].name;
+            const oCaseInfo = oData.caseInfo;
+
+            if (oCaseInfo && oCaseInfo.actionButtons) {
+               this.arMainButtons$ = oCaseInfo.actionButtons.main ?? [];
+               this.arSecondaryButtons$ = oCaseInfo.actionButtons.secondary ?? [];
+            }
+
+            if (oCaseInfo.navigation != null) {
+               this.createButtonsForMultiStepForm(oCaseInfo);
+            } else {
+               this.bHasNavigation$ = false;
+            }
+         }
+      }
+   }
+
+   createButtonsForMultiStepForm(oCaseInfo) {
+      this.bHasNavigation$ = true;
+
+      if (
+         (oCaseInfo.navigation.template && oCaseInfo.navigation.template.toLowerCase() === "standard") ||
+         oCaseInfo?.navigation?.steps?.length === 1
+      ) {
+         this.bHasNavigation$ = false;
+      } else if (oCaseInfo.navigation.template && oCaseInfo.navigation.template.toLowerCase() === "vertical") {
+         this.bIsVertical$ = true;
       } else {
-        count++;
-        step.step_status = '';
+         this.bIsVertical$ = false;
       }
 
-      if (step.steps) {
-        arIndicies = this.findCurrentIndicies(step.steps, arIndicies, depth + 1);
+      // iterate through steps to find current one(s)
+      // immutable, so we want to change the local copy, so need to make a copy
+      // what comes back now in configObject is the children of the flowContainer
+      this.arNavigationSteps$ = JSON.parse(JSON.stringify(oCaseInfo.navigation.steps));
+      this.arNavigationSteps$.forEach((step) => {
+         if (step.name) {
+            step.name = PCore.getLocaleUtils().getLocaleValue(step.name, undefined, this.localeReference);
+         }
+      });
+      this.arCurrentStepIndicies$ = [];
+      this.arCurrentStepIndicies$ = this.findCurrentIndicies(this.arNavigationSteps$, this.arCurrentStepIndicies$, 0);
+   }
+
+   findCurrentIndicies(arStepperSteps, arIndicies, depth) {
+      let count = 0;
+      arStepperSteps.forEach((step) => {
+         if (step.visited_status == "current") {
+            arIndicies[depth] = count;
+
+            // add in
+            step.step_status = "";
+         } else if (step.visited_status == "success") {
+            count++;
+            step.step_status = "completed";
+         } else {
+            count++;
+            step.step_status = "";
+         }
+
+         if (step.steps) {
+            arIndicies = this.findCurrentIndicies(step.steps, arIndicies, depth + 1);
+         }
+      });
+
+      return arIndicies;
+   }
+
+   onSaveActionSuccess(data) {
+      this.actionsAPI.cancelAssignment(this.itemKey$).then(() => {
+         this.setLoading(false);
+         PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED, data);
+      });
+   }
+
+   onActionButtonClick(oData) {
+      this.buttonClick(oData.action, oData.buttonType);
+   }
+
+   cleanAssignmentCard() {
+      this.assignmentCardComponent.destroy();
+      this.assignmentCardComponent = undefined;
+   }
+
+   buttonClick(sAction, sButtonType) {
+      // needed to show client validation on banner
+      PCore.getPubSubUtils().publish("updateBanners");
+      if (sButtonType === "secondary") {
+         switch (sAction) {
+            case "navigateToStep":
+               this.blurAllFields();
+               this.bReInit = true;
+               this.setLoading(true);
+               const navigatePromise = this.navigateToStep("previous", this.itemKey$);
+               navigatePromise
+                  .then(() => {
+                     this.cleanAssignmentCard();
+                     this.updateChanges();
+                  })
+                  .catch((error) => {
+                     console.warn(TAG, `'${sAction}' failed with error ${error}`);
+                  })
+                  .finally(() => {
+                     this.setLoading(false);
+                     PCore.getPubSubUtils().publish("updateBanners");
+                  });
+               break;
+
+            case "saveAssignment": {
+               const caseID = this.pConn.getCaseInfo().getKey();
+               const assignmentID = this.pConn.getCaseInfo().getAssignmentID();
+               const savePromise = this.saveAssignment(this.itemKey$);
+               this.setLoading(true);
+               savePromise
+                  .then(() => {
+                     const caseType = this.pConn
+                        .getCaseInfo()
+                        .c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
+                     PCore.getPubSubUtils().publish("cancelPressed");
+                     this.onSaveActionSuccess({ caseType, caseID, assignmentID });
+                  })
+                  .catch((error) => {
+                     console.warn(TAG, `'${sAction}' failed with error ${error}`);
+                  })
+                  .finally(() => {
+                     this.setLoading(false);
+                     PCore.getPubSubUtils().publish("updateBanners");
+                  });
+
+               break;
+            }
+
+            case "cancelAssignment":
+               this.bReInit = true;
+               PCore.getPubSubUtils().publish("cancelPressed");
+               // cancel will never cause case to be deleted.
+               // That could be done with 'cancelCreateStageAssignment' but it needs assignment action to be 'modal'
+               // current bootstrap-shell.js does not provide any option to use 'modal'.
+               const cancelPromise = this.cancelAssignment(this.itemKey$);
+               this.setLoading(true);
+               cancelPromise
+                  .then(() => {
+                     PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
+                  })
+                  .catch((error) => {
+                     console.warn(TAG, `'${sAction}' failed with error ${error}`);
+                  })
+                  .finally(() => {
+                     this.setLoading(false);
+                  });
+               break;
+
+            case "rejectCase": {
+               const rejectPromise = this.rejectCase(this.itemKey$);
+               this.setLoading(true);
+               rejectPromise
+                  .then(() => {})
+                  .catch((error) => {
+                     console.warn(TAG, `'${sAction}' failed with error ${error}`);
+                  })
+                  .finally(() => {
+                     this.setLoading(false);
+                  });
+
+               break;
+            }
+
+            default:
+               break;
+         }
+      } else if (sButtonType === "primary") {
+         switch (sAction) {
+            case "finishAssignment":
+               this.blurAllFields();
+               this.bReInit = true;
+               this.setLoading(true);
+               const finishPromise = this.finishAssignment(this.itemKey$);
+               finishPromise
+                  .then(() => {
+                     console.log(TAG, `'${sAction}' finished successfully`);
+                     this.cleanAssignmentCard();
+                     this.updateChanges();
+                  })
+                  .catch((error) => {
+                     console.warn(TAG, `'${sAction}' failed with error ${error}`);
+                  })
+                  .finally(() => {
+                     this.setLoading(false);
+                     PCore.getPubSubUtils().publish("updateBanners");
+                  });
+               break;
+
+            case "approveCase": {
+               const approvePromise = this.approveCase(this.itemKey$);
+               this.setLoading(true);
+               approvePromise
+                  .then(() => {})
+                  .catch((error) => {
+                     console.warn(TAG, `'${sAction}' failed with error ${error}`);
+                  })
+                  .finally(() => {
+                     this.setLoading(false);
+                     PCore.getPubSubUtils().publish("updateBanners");
+                  });
+               break;
+            }
+            default:
+               break;
+         }
       }
-    });
-
-    return arIndicies;
-  }
-
-  onSaveActionSuccess(data) {
-    this.actionsAPI.cancelAssignment(this.itemKey$).then(() => {
-      this.setLoading(false);
-      PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED, data);
-    });
-  }
-
-  onActionButtonClick(oData) {
-    this.buttonClick(oData.action, oData.buttonType);
-  }
-
-  cleanAssignmentCard() {
-    this.assignmentCardComponent.destroy();
-    this.assignmentCardComponent = undefined;
-  }
-
-  buttonClick(sAction, sButtonType) {
-    // needed to show client validation on banner
-    PCore.getPubSubUtils().publish('updateBanners');
-    if (sButtonType === 'secondary') {
-      switch (sAction) {
-        case 'navigateToStep':
-          this.blurAllFields();
-          this.bReInit = true;
-          this.setLoading(true);
-          const navigatePromise = this.navigateToStep('previous', this.itemKey$);
-          navigatePromise
-            .then(() => {
-              this.cleanAssignmentCard();
-              this.updateChanges();
-            })
-            .catch((error) => {
-              console.warn(TAG, `'${sAction}' failed with error ${error}`);
-            })
-            .finally(() => {
-              this.setLoading(false);
-              PCore.getPubSubUtils().publish('updateBanners');
-            });
-          break;
-
-        case 'saveAssignment': {
-          const caseID = this.pConn.getCaseInfo().getKey();
-          const assignmentID = this.pConn.getCaseInfo().getAssignmentID();
-          const savePromise = this.saveAssignment(this.itemKey$);
-          this.setLoading(true);
-          savePromise
-            .then(() => {
-              const caseType = this.pConn.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
-              PCore.getPubSubUtils().publish('cancelPressed');
-              this.onSaveActionSuccess({caseType, caseID, assignmentID});
-            })
-            .catch((error) => {
-              console.warn(TAG, `'${sAction}' failed with error ${error}`);
-            })
-            .finally(() => {
-              this.setLoading(false);
-              PCore.getPubSubUtils().publish('updateBanners');
-            });
-
-          break;
-        }
-
-        case 'cancelAssignment':
-          this.bReInit = true;
-          PCore.getPubSubUtils().publish('cancelPressed');
-          // cancel will never cause case to be deleted.
-          // That could be done with 'cancelCreateStageAssignment' but it needs assignment action to be 'modal'
-          // current bootstrap-shell.js does not provide any option to use 'modal'.
-          const cancelPromise = this.cancelAssignment(this.itemKey$);
-          this.setLoading(true);
-          cancelPromise
-            .then(() => {
-              PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
-            })
-            .catch((error) => {
-              console.warn(TAG, `'${sAction}' failed with error ${error}`);
-            })
-            .finally(() => {
-              this.setLoading(false);
-            });
-          break;
-
-        case 'rejectCase': {
-          const rejectPromise = this.rejectCase(this.itemKey$);
-          this.setLoading(true);
-          rejectPromise
-            .then(() => {
-            })
-            .catch((error) => {
-              console.warn(TAG, `'${sAction}' failed with error ${error}`);
-            })
-            .finally(() => {
-              this.setLoading(false);
-            });
-
-          break;
-        }
-
-        default:
-          break;
-      }
-    } else if (sButtonType === 'primary') {
-      switch (sAction) {
-        case 'finishAssignment':
-          this.blurAllFields();
-          this.bReInit = true;
-          this.setLoading(true);
-          const finishPromise = this.finishAssignment(this.itemKey$);
-          finishPromise
-            .then(() => {
-              console.log(TAG, `'${sAction}' finished successfully`);
-              this.cleanAssignmentCard();
-              this.updateChanges();
-            })
-            .catch((error) => {
-              console.warn(TAG, `'${sAction}' failed with error ${error}`);
-            })
-            .finally(() => {
-              this.setLoading(false);
-              PCore.getPubSubUtils().publish('updateBanners');
-            });
-          break;
-
-        case 'approveCase': {
-          const approvePromise = this.approveCase(this.itemKey$);
-          this.setLoading(true);
-          approvePromise
-            .then(() => {
-            })
-            .catch((error) => {
-              console.warn(TAG, `'${sAction}' failed with error ${error}`);
-            })
-            .finally(() => {
-              this.setLoading(false);
-              PCore.getPubSubUtils().publish('updateBanners');
-            });
-          break;
-        }
-        default:
-          break;
-      }
-    }
-  }
+   }
 }

@@ -1,7 +1,7 @@
 export function isIOS() {
-    return (typeof iosWVJSEngine !== 'undefined')
+   return typeof iosWVJSEngine !== "undefined";
 }
 
 export function isAndroid() {
-    return !isIOS()
+   return !isIOS();
 }

@@ -4,7 +4,6 @@ import { ContainerBaseComponent } from "./container-base.component.js";
 const TAG = "[ViewComponent]";
 
 export class ViewComponent extends ContainerBaseComponent {
-
    READ_ONLY_DETAILS_TEMPLATES = [
       "Details",
       "DetailsOneColumn",
