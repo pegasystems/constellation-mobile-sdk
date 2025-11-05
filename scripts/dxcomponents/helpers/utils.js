@@ -1,89 +1,89 @@
 export class Utils {
-   getOptionList(configProps, dataObject) {
-      const listType = configProps.listType;
+    getOptionList(configProps, dataObject) {
+        const listType = configProps.listType;
 
-      if (listType == null) {
-         return [];
-      }
-
-      switch (listType.toLowerCase()) {
-         case "associated":
-            return this.handleAssociatedList(configProps);
-         case "datapage":
-            return this.handleDataPageList(configProps, dataObject);
-         default:
+        if (listType == null) {
             return [];
-      }
-   }
+        }
 
-   handleAssociatedList(configProps) {
-      const dataSource = configProps.datasource;
+        switch (listType.toLowerCase()) {
+            case "associated":
+                return this.handleAssociatedList(configProps);
+            case "datapage":
+                return this.handleDataPageList(configProps, dataObject);
+            default:
+                return [];
+        }
+    }
 
-      if (Array.isArray(dataSource)) {
-         return dataSource;
-      }
+    handleAssociatedList(configProps) {
+        const dataSource = configProps.datasource;
 
-      return [];
-   }
+        if (Array.isArray(dataSource)) {
+            return dataSource;
+        }
 
-   handleDataPageList(configProps, dataObject) {
-      const dataPage = configProps.datasource;
+        return [];
+    }
 
-      if (dataObject && dataObject[dataPage]) {
-         // alert('need to handle data page');
-         return [];
-      }
+    handleDataPageList(configProps, dataObject) {
+        const dataPage = configProps.datasource;
 
-      let listSourceItems = configProps.listOutput;
+        if (dataObject && dataObject[dataPage]) {
+            // alert('need to handle data page');
+            return [];
+        }
 
-      if (typeof dataPage === "object" && !Array.isArray(listSourceItems)) {
-         listSourceItems = dataPage.source ? dataPage.source : [];
-      }
+        let listSourceItems = configProps.listOutput;
 
-      return this.transformListSourceItems(listSourceItems);
-   }
+        if (typeof dataPage === "object" && !Array.isArray(listSourceItems)) {
+            listSourceItems = dataPage.source ? dataPage.source : [];
+        }
 
-   transformListSourceItems(listSourceItems) {
-      return (listSourceItems || []).map((item) => {
-         return { ...item, value: item.text || item.value };
-      });
-   }
+        return this.transformListSourceItems(listSourceItems);
+    }
 
-   getBooleanValue(inValue) {
-      let bReturn = false;
+    transformListSourceItems(listSourceItems) {
+        return (listSourceItems || []).map((item) => {
+            return { ...item, value: item.text || item.value };
+        });
+    }
 
-      if (typeof inValue === "string") {
-         if (inValue.toLowerCase() === "true") {
-            bReturn = true;
-         }
-      } else {
-         bReturn = inValue;
-      }
+    getBooleanValue(inValue) {
+        let bReturn = false;
 
-      return bReturn;
-   }
+        if (typeof inValue === "string") {
+            if (inValue.toLowerCase() === "true") {
+                bReturn = true;
+            }
+        } else {
+            bReturn = inValue;
+        }
 
-   getStringValue(inValue) {
-      if (typeof inValue === "string") {
-         return inValue;
-      } else {
-         return inValue.toString();
-      }
-   }
+        return bReturn;
+    }
 
-   static hasViewContainer() {
-      return sdkSessionStorage.getItem("hasViewContainer") == "true";
-   }
+    getStringValue(inValue) {
+        if (typeof inValue === "string") {
+            return inValue;
+        } else {
+            return inValue.toString();
+        }
+    }
 
-   static setHasViewContainer(hasViewContainer) {
-      sdkSessionStorage.setItem("hasViewContainer", hasViewContainer);
-   }
+    static hasViewContainer() {
+        return sdkSessionStorage.getItem("hasViewContainer") == "true";
+    }
 
-   static okToInitFlowContainer() {
-      return sdkSessionStorage.getItem("okToInitFlowContainer") == "true";
-   }
+    static setHasViewContainer(hasViewContainer) {
+        sdkSessionStorage.setItem("hasViewContainer", hasViewContainer);
+    }
 
-   static setOkToInitFlowContainer(okToInit) {
-      sdkSessionStorage.setItem("okToInitFlowContainer", okToInit);
-   }
+    static okToInitFlowContainer() {
+        return sdkSessionStorage.getItem("okToInitFlowContainer") == "true";
+    }
+
+    static setOkToInitFlowContainer(okToInit) {
+        sdkSessionStorage.setItem("okToInitFlowContainer", okToInit);
+    }
 }

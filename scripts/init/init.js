@@ -12,41 +12,41 @@ import { initErrorHandling } from "./init-error-handling.js";
 const TAG = "[Init]";
 
 async function init(sdkConfig, componentsOverridesStr) {
-   try {
-      console.log(TAG, "Constellation SDK initialization started");
-      initErrorHandling();
-      initPlatforms(componentsOverridesStr);
-      const config = JSON.parse(sdkConfig);
-      await bootstrap(config.url, config.version, onPCoreReady);
+    try {
+        console.log(TAG, "Constellation SDK initialization started");
+        initErrorHandling();
+        initPlatforms(componentsOverridesStr);
+        const config = JSON.parse(sdkConfig);
+        await bootstrap(config.url, config.version, onPCoreReady);
 
-      if (config.action.type === "CreateCase") {
-         await createCase(config.action.caseClassName, config.action.startingFields);
-      } else if (config.action.type === "OpenAssignment") {
-         await openAssignment(config.action.assignmentId);
-      } else {
-         const errorMessage = "Unknown action type: " + config.action.type;
-         throw new Error(errorMessage);
-      }
+        if (config.action.type === "CreateCase") {
+            await createCase(config.action.caseClassName, config.action.startingFields);
+        } else if (config.action.type === "OpenAssignment") {
+            await openAssignment(config.action.assignmentId);
+        } else {
+            const errorMessage = "Unknown action type: " + config.action.type;
+            throw new Error(errorMessage);
+        }
 
-      console.log(TAG, "Constellation SDK initialization completed");
-      bridge.onReady();
-   } catch (error) {
-      const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "");
-      console.error(errorMessage);
-      bridge.onError("InitError", errorMessage);
-   }
+        console.log(TAG, "Constellation SDK initialization completed");
+        bridge.onReady();
+    } catch (error) {
+        const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "");
+        console.error(errorMessage);
+        bridge.onError("InitError", errorMessage);
+    }
 }
 
 async function onPCoreReady(renderObj) {
-   console.log(TAG, "PCore ready!");
-   await getSdkComponentMap(localSdkComponentMap);
-   console.log(TAG, "SdkComponentMap initialized");
-   const root = initialRender(renderObj);
-   subscribeForEvents(root);
+    console.log(TAG, "PCore ready!");
+    await getSdkComponentMap(localSdkComponentMap);
+    console.log(TAG, "SdkComponentMap initialized");
+    const root = initialRender(renderObj);
+    subscribeForEvents(root);
 }
 
 function sendEventToComponent(id, event) {
-   bridge.onEvent(id, JSON.parse(event));
+    bridge.onEvent(id, JSON.parse(event));
 }
 
 window.sendEventToComponent = sendEventToComponent;
