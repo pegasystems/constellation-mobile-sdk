@@ -1,18 +1,17 @@
-import { FieldBaseComponent } from './field-base.component.js';
-import { handleEvent } from '../../helpers/event-util.js';
+import { FieldBaseComponent } from "./field-base.component.js";
+import { handleEvent } from "../../helpers/event-util.js";
 
 export class PicklistBaseComponent extends FieldBaseComponent {
+   fieldOnChange(value) {
+      this.props.value = value;
+      handleEvent(this.pConn.getActionsApi(), "changeNblur", this.propName, this.props.value);
+   }
 
-  fieldOnChange(value) {
-    this.props.value = value;
-    handleEvent(this.pConn.getActionsApi(), 'changeNblur', this.propName, this.props.value);
-  }
-
-  getLocalizedOptionValue(opt, localePath, localeClass, localeContext, localeName) {
-    return this.pConn.getLocalizedValue(
-      opt.value ?? opt.text,
-      localePath,
-      this.pConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-    );
-  }
+   getLocalizedOptionValue(opt, localePath, localeClass, localeContext, localeName) {
+      return this.pConn.getLocalizedValue(
+         opt.value ?? opt.text,
+         localePath,
+         this.pConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+      );
+   }
 }
