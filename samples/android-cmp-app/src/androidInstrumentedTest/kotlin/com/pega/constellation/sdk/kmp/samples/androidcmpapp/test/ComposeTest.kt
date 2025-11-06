@@ -19,8 +19,8 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.engine.webview.android.AndroidWebViewEngine
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.AuthInterceptor
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest.Mode.MOCK_SERVER
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest.Mode.REAL_SERVER
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTestMode.MockServer
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTestMode.RealServer
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeAuthFlowFactory
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeTokenStore
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
@@ -37,14 +37,11 @@ import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import kotlin.test.BeforeTest
 
 @OptIn(ExperimentalOpenIdConnect::class)
-abstract class ComposeTest {
-    // set the mode to switch between mock server and real server testing
-    private val mode = MOCK_SERVER
-
+abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     private val scope = CoroutineScope(Dispatchers.Default)
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context = instrumentation.targetContext
-    private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore())
+    private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
     private val httpClient = buildHttpClient(authManager)
     private val engine = AndroidWebViewEngine(context, httpClient, httpClient)
 
@@ -85,8 +82,8 @@ abstract class ComposeTest {
     private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
     private fun buildHttpClient(authManager: AuthManager) = when (mode) {
-        MOCK_SERVER -> MockHttpClient(context)
-        REAL_SERVER -> OkHttpClient().newBuilder()
+        is MockServer -> MockHttpClient(context)
+        is RealServer -> OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .build()
     }
@@ -96,7 +93,6 @@ abstract class ComposeTest {
             .executeShellCommand("settings put secure show_ime_with_hard_keyboard 0")
     }
 
-    enum class Mode { MOCK_SERVER, REAL_SERVER }
 
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
