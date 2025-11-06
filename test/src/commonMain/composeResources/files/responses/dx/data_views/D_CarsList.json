@@ -1,0 +1,49 @@
+{
+  "fetchDateTime": "2025-11-04T19:30:45.454Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 5,
+  "data": [
+    {
+      "Brand": "Ford",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Color": "Silver",
+      "Model": "Focus",
+      "Id": 1
+    },
+    {
+      "Brand": "Toyota",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Color": "Yellow",
+      "Model": "Corolla",
+      "Id": 2
+    },
+    {
+      "Brand": "Fiat",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Color": "Red",
+      "Model": "126p",
+      "Id": 3
+    },
+    {
+      "Brand": "Skoda",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Color": "Black",
+      "Model": "Octavia",
+      "Id": 4
+    },
+    {
+      "Brand": "Audi",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Color": "White",
+      "Model": "A5",
+      "Id": 5
+    }
+  ],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS",
+    "sourceExecutionTime": "927.3 μs"
+  },
+  "pageSize": 5
+}
