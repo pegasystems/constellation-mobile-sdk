@@ -27,7 +27,7 @@ class AuthManager(
     private val scope: CoroutineScope,
     private val authFlowFactory: CodeAuthFlowFactory,
     private val tokenStore: TokenStore,
-    val config: AuthConfig = AuthConfig()
+    private val config: AuthConfig = AuthConfig()
 ) {
     data class AuthConfig(
         val pegaUrl: String = SDKConfig.PEGA_URL,
