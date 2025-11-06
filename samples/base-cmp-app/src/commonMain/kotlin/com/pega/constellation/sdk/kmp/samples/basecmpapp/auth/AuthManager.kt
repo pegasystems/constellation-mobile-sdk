@@ -20,13 +20,14 @@ import org.publicvalue.multiplatform.oidc.tokenstore.TokenStore
 import org.publicvalue.multiplatform.oidc.tokenstore.removeTokens
 import org.publicvalue.multiplatform.oidc.tokenstore.saveTokens
 import org.publicvalue.multiplatform.oidc.types.CodeChallengeMethod
+import org.publicvalue.multiplatform.oidc.types.remote.AccessTokenResponse
 
 @OptIn(ExperimentalOpenIdConnect::class)
 class AuthManager(
     private val scope: CoroutineScope,
     private val authFlowFactory: CodeAuthFlowFactory,
     private val tokenStore: TokenStore,
-    private val config: AuthConfig = AuthConfig()
+    val config: AuthConfig = AuthConfig()
 ) {
     data class AuthConfig(
         val pegaUrl: String = SDKConfig.PEGA_URL,
@@ -40,8 +41,8 @@ class AuthManager(
 
     init {
         scope.launch {
-            if (tokenStore.getAccessToken() != null) {
-                _authState.value = Authenticated
+            tokenStore.getAccessToken()?.let {
+                _authState.value = Authenticated(it)
             }
         }
     }
@@ -52,14 +53,14 @@ class AuthManager(
      * Authenticates the user using OAuth 2.0.
      */
     fun authenticate(onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        if (authState.value != Authenticated) {
+        if (authState.value !is Authenticated) {
             authJob?.cancel()
             authJob = scope.launch {
                 _authState.value = Authenticating
                 delay(1000)
                 authenticate()
-                    .onSuccess {
-                        _authState.value = Authenticated
+                    .onSuccess { it ->
+                        _authState.value = Authenticated(it.access_token)
                         onSuccess()
                     }
                     .onFailure {
@@ -74,12 +75,13 @@ class AuthManager(
         }
     }
 
-    private suspend fun authenticate(): Result<Unit> {
+    private suspend fun authenticate(): Result<AccessTokenResponse> {
         val client = createOidcClient()
         val flow = authFlowFactory.createAuthFlow(client)
         return runCatching {
             val tokens = flow.getAccessToken()
             tokenStore.saveTokens(tokens)
+            tokens
         }
     }
 

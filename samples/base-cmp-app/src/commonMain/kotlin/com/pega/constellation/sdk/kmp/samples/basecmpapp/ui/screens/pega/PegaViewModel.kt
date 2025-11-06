@@ -4,17 +4,48 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.SDKConfig
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomComponents.CustomDefinitions
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State as SdkState
+
+@Serializable
+data class Assignment(
+    val caseID: String,
+    val ID: String,
+    val name: String,
+    val pxObjClass: String,
+    val routedTo: String,
+    val type: String,
+    val urgency: String
+)
+
+@Serializable
+data class AssignmentsResponse(
+    val pxObjClass: String,
+    val assignments: List<Assignment>
+)
 
 class PegaViewModel(
     private val authManager: AuthManager,
@@ -25,10 +56,45 @@ class PegaViewModel(
     var dismissed by mutableStateOf(false)
     val sdkState: StateFlow<SdkState> = sdk.state
 
+    private val _assignments = MutableStateFlow<List<Assignment>>(emptyList())
+    val assignments: StateFlow<List<Assignment>> = _assignments
+
+    fun loadAssignments(accessToken: String) {
+        viewModelScope.launch {
+            if (accessToken.isNotEmpty()) {
+                _assignments.value = fetchAssignments(accessToken)
+            }
+        }
+    }
+
+    suspend fun fetchAssignments(accessToken: String): List<Assignment> = withContext(Dispatchers.Default) {
+        try {
+            val client = HttpClient()
+            val response: HttpResponse =
+                client.get("${authManager.config.pegaUrl}/api/v1/assignments") {
+                    header(HttpHeaders.Authorization, "Bearer $accessToken")
+                }
+            val assignmentsResponse =
+                Json.decodeFromString<AssignmentsResponse>(response.bodyAsText())
+            assignmentsResponse.assignments
+        } catch (e: Exception) {
+            Log.e("PegaViewModel", "Failed to fetch assignments: ${e.message}")
+            emptyList()
+        }
+    }
+
     fun createCase(onFailure: (String) -> Unit) {
         dismissed = false
         authManager.authenticate(
             onSuccess = { sdk.createCase(caseClassName) },
+            onFailure = onFailure
+        )
+    }
+
+    fun openAssignment(assignmentID: String, onFailure: (String) -> Unit) {
+        dismissed = false
+        authManager.authenticate(
+            onSuccess = { sdk.openAssignment(assignmentID) },
             onFailure = onFailure
         )
     }
