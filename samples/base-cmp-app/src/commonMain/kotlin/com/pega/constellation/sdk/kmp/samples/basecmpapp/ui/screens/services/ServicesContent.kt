@@ -48,13 +48,13 @@ fun ServicesContent(
                             .padding(vertical = 8.dp)
                     ) {
                         Text(
-                            text = assignment.name,
+                            text = "${assignment.pxTaskLabel} in \"${assignment.pyLabel}\"",
                             fontWeight = FontWeight.Bold,
                             fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             color = MaterialTheme.colorScheme.primary
                         )
                         Text(
-                            text = assignment.caseID,
+                            text = assignment.pxRefObjectKey,
                             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                             color = MaterialTheme.colorScheme.onBackground
                         )

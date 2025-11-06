@@ -16,8 +16,8 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.SDKConfig
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomComponents.CustomDefinitions
 import io.ktor.client.HttpClient
-import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
@@ -32,19 +32,24 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State as SdkState
 
 @Serializable
 data class Assignment(
-    val caseID: String,
-    val ID: String,
-    val name: String,
     val pxObjClass: String,
-    val routedTo: String,
-    val type: String,
-    val urgency: String
+    val pxProcessName: String,
+    val pxRefObjectInsName: String,
+    val pxRefObjectKey: String,
+    val pxAssignedOperatorID: String,
+    val pxTaskLabel: String,
+    val pxRefObjectClass: String,
+    val pyAssignmentStatus: String,
+    val pzInsKey: String,
+    val pyLabel: String,
 )
 
 @Serializable
 data class AssignmentsResponse(
+    val fetchDateTime: String,
     val pxObjClass: String,
-    val assignments: List<Assignment>
+    val resultCount: Int? = null,
+    val data: List<Assignment>,
 )
 
 class PegaViewModel(
@@ -71,12 +76,15 @@ class PegaViewModel(
         try {
             val client = HttpClient()
             val response: HttpResponse =
-                client.get("${authManager.config.pegaUrl}/api/v1/assignments") {
+                client.post("${authManager.config.pegaUrl}/api/application/v2/data_views/D_pyMyWorkList") {
                     header(HttpHeaders.Authorization, "Bearer $accessToken")
                 }
+            val lenientJson = Json {
+                ignoreUnknownKeys = true
+            }
             val assignmentsResponse =
-                Json.decodeFromString<AssignmentsResponse>(response.bodyAsText())
-            assignmentsResponse.assignments
+                lenientJson.decodeFromString<AssignmentsResponse>(response.bodyAsText())
+            assignmentsResponse.data
         } catch (e: Exception) {
             Log.e("PegaViewModel", "Failed to fetch assignments: ${e.message}")
             emptyList()

@@ -56,7 +56,7 @@ fun HomeScreen(
         onFabClick = { pegaViewModel.createCase(onFailure = showSnackbar) },
         onAssignmentClick = {
             pegaViewModel.openAssignment(
-                it.ID,
+                it.pzInsKey,
                 onFailure = showSnackbar
             )
         },
