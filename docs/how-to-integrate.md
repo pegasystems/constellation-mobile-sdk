@@ -25,7 +25,16 @@
     ```bash
     ./gradlew publishToMavenLocal
     ```
-   
+- Add mavenLocal() entry to dependencyResolutionManagement in settings.gradle.kts so that the application loads dependencies from maven local:
+    ```kotlin
+      dependencyResolutionManagement {
+          repositories {
+              [...]
+              mavenLocal() // add this line
+          }
+      }
+
+    ```
 2. Add the following dependencies to your app `build.gradle.kts` file:
 
 - For Compose Multiplatform application:
