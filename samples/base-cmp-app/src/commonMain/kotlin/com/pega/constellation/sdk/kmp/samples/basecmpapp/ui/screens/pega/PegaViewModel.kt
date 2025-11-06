@@ -43,7 +43,6 @@ class PegaViewModel(
     val assignments: StateFlow<List<Assignment>> = _assignments
 
     fun loadAssignments(onFailure: (String) -> Unit) {
-        dismissed = false
         authManager.authenticate(
             onSuccess = {
                 viewModelScope.launch {

@@ -87,6 +87,12 @@ private fun HomeScreen(
 
     var selectedNavItem by remember { mutableStateOf(NavItem.Home) }
 
+    LaunchedEffect(selectedNavItem) {
+        if (selectedNavItem == NavItem.Services && authenticated) {
+            loadAssignments()
+        }
+    }
+
     Scaffold(
         topBar = { MediaCoTopAppBar() },
         bottomBar = {
@@ -108,7 +114,6 @@ private fun HomeScreen(
         when (selectedNavItem) {
             NavItem.Home -> HomeContent(innerPadding, news)
             NavItem.Services -> {
-                loadAssignments()
                 ServicesContent(assignments, onAssignmentClick, loadAssignments)
             }
         }
