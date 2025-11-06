@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -41,12 +42,19 @@ class PegaViewModel(
     private val _assignments = MutableStateFlow<List<Assignment>>(emptyList())
     val assignments: StateFlow<List<Assignment>> = _assignments
 
-    fun loadAssignments(accessToken: String) {
-        viewModelScope.launch {
-            if (accessToken.isNotEmpty()) {
-                _assignments.value = fetchAssignments(accessToken)
-            }
-        }
+    fun loadAssignments(onFailure: (String) -> Unit) {
+        dismissed = false
+        authManager.authenticate(
+            onSuccess = {
+                viewModelScope.launch {
+                    val accessToken = authManager.getAccessToken()
+                    if (accessToken != null) {
+                        _assignments.value = fetchAssignments(accessToken)
+                    }
+                }
+            },
+            onFailure = onFailure
+        )
     }
 
     fun createCase(onFailure: (String) -> Unit) {
@@ -65,24 +73,25 @@ class PegaViewModel(
         )
     }
 
-    private suspend fun fetchAssignments(accessToken: String): List<Assignment> = withContext(Dispatchers.Default) {
-        try {
-            val client = HttpClient()
-            val response: HttpResponse =
-                client.post("${authManager.config.pegaUrl}/api/application/v2/data_views/D_pyMyWorkList") {
-                    header(HttpHeaders.Authorization, "Bearer $accessToken")
+    private suspend fun fetchAssignments(accessToken: String): List<Assignment> =
+        withContext(Dispatchers.Default) {
+            try {
+                val client = HttpClient()
+                val response: HttpResponse =
+                    client.post("${SDKConfig.PEGA_URL}/api/application/v2/data_views/D_pyMyWorkList") {
+                        header(HttpHeaders.Authorization, "Bearer $accessToken")
+                    }
+                val lenientJson = Json {
+                    ignoreUnknownKeys = true
                 }
-            val lenientJson = Json {
-                ignoreUnknownKeys = true
+                val assignmentsResponse =
+                    lenientJson.decodeFromString<AssignmentsResponse>(response.bodyAsText())
+                assignmentsResponse.data
+            } catch (e: Exception) {
+                Log.e("PegaViewModel", "Failed to fetch assignments: ${e.message}")
+                emptyList()
             }
-            val assignmentsResponse =
-                lenientJson.decodeFromString<AssignmentsResponse>(response.bodyAsText())
-            assignmentsResponse.data
-        } catch (e: Exception) {
-            Log.e("PegaViewModel", "Failed to fetch assignments: ${e.message}")
-            emptyList()
         }
-    }
 
     companion object {
         val Factory = viewModelFactory {

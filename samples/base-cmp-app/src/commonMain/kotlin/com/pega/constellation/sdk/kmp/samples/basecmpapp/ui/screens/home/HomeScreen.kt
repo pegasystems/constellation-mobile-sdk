@@ -42,11 +42,6 @@ fun HomeScreen(
         homeViewModel.snackbarMessages += msg
     }
 
-    val accessToken = (authState as? Authenticated)?.accessToken ?: ""
-    LaunchedEffect(accessToken) {
-        pegaViewModel.loadAssignments(accessToken)
-    }
-
     HomeScreen(
         authState = authState,
         news = news,
@@ -59,6 +54,9 @@ fun HomeScreen(
                 it.pzInsKey,
                 onFailure = showSnackbar
             )
+        },
+        loadAssignments = {
+            pegaViewModel.loadAssignments(onFailure = showSnackbar)
         },
         assignments = assignments
     )
@@ -73,6 +71,7 @@ private fun HomeScreen(
     onSnackbarClose: () -> Unit = {},
     onFabClick: () -> Unit = {},
     onAssignmentClick: (Assignment) -> Unit = {},
+    loadAssignments: () -> Unit = {},
     assignments: List<Assignment> = emptyList()
 ) {
     val authenticated = authState is Authenticated
@@ -108,7 +107,10 @@ private fun HomeScreen(
     ) { innerPadding ->
         when (selectedNavItem) {
             NavItem.Home -> HomeContent(innerPadding, news)
-            NavItem.Services -> ServicesContent(assignments, onAssignmentClick)
+            NavItem.Services -> {
+                loadAssignments()
+                ServicesContent(assignments, onAssignmentClick, loadAssignments)
+            }
         }
         if (authenticated) {
             PegaBottomSheet(onMessage = onSnackbarMessage)
