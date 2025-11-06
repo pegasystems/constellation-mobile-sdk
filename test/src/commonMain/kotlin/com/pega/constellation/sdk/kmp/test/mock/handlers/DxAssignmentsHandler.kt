@@ -26,6 +26,11 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
             assignmentId.contains("N-16042") -> handleNewService(actionId)
             assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
+            assignmentId.contains("K-10048") -> when (actionId) {
+                "SimpleTable" -> Asset("responses/dx/assignments/KeysCiphers-Table.json")
+                "Table" -> Asset("responses/dx/assignments/KeysCiphers-Dropdown.json")
+                else -> Error(404, "Invalid actionId for K-10048: $actionId")
+            }
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }

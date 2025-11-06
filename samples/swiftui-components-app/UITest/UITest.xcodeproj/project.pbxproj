@@ -33,9 +33,10 @@
 		B583B3352E8FDDD900A50A67 /* Exceptions for "Mocked Application" folder in "UITest" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				responses/cdn/.gitkeep,
-				responses/download_js_files.sh,
-				responses/README.md,
+				responses/cdn/8.24.2/99.4989502c.js,
+				"responses/cdn/8.24.2/bootstrap-shell.js",
+				"responses/cdn/8.24.2/constellation-core.js",
+				responses/cdn/8.24.2/lib_asset.json,
 			);
 			target = B583B07A2E8FCF6500A50A67 /* UITest */;
 		};

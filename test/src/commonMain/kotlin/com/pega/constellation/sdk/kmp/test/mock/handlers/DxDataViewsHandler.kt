@@ -6,6 +6,9 @@ import com.pega.constellation.sdk.kmp.test.mock.MockRequest.Companion.DX_API_PAT
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class DxDataViewsHandler : MockHandler {
     override fun canHandle(request: MockRequest) = request.isDxApi("data_views")
@@ -13,9 +16,27 @@ class DxDataViewsHandler : MockHandler {
     override fun handle(request: MockRequest): MockResponse {
         val dataViewId = request.url.substringAfter(DX_API_PATH + "data_views/")
         return when (dataViewId) {
-            "D_pxBootstrapConfig" -> Asset("responses/dx/data_views/D_pxBootstrapConfig.json")
+            "D_pxBootstrapConfig8.24.1" -> Asset("responses/dx/data_views/D_pxBootstrapConfig8.24.1.json")
+            "D_pxBootstrapConfig8.24.2" -> Asset("responses/dx/data_views/D_pxBootstrapConfig8.24.2.json")
             "D_CarsList" -> Asset("responses/dx/data_views/D_CarsList.json")
+            "D_ListOfFilteredEncryptionKeys" -> handleEncryptionKeysList(request.body ?: "")
             else -> Error(404, "Missing response for data page $dataViewId")
+        }
+    }
+
+    private fun handleEncryptionKeysList(body: String): MockResponse {
+        val filter = Json.parseToJsonElement(body)
+            .jsonObject["dataViewParameters"]
+            ?.jsonObject
+            ?.get("Algo")
+            ?.jsonPrimitive
+            ?.content
+        return when(filter) {
+            null, "" -> Asset("responses/dx/data_views/D_EncryptionKeysList-all.json")
+            "AES" -> Asset("responses/dx/data_views/D_EncryptionKeysList-AES.json")
+            "RSA" -> Asset("responses/dx/data_views/D_EncryptionKeysList-RSA.json")
+            "ECC" -> Asset("responses/dx/data_views/D_EncryptionKeysList-ECC.json")
+            else -> Error(404, "Unexpected filter value $filter")
         }
     }
 }
