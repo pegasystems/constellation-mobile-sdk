@@ -8,7 +8,7 @@
 				"links": {
 					"open": {
 						"rel": "self",
-						"href": "/cases/O40M3A-MAREKCO-WORK K-10067/actions/pyUpdateCaseDetails",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/actions/pyUpdateCaseDetails",
 						"type": "GET",
 						"title": "Get case action details"
 					}
@@ -20,7 +20,7 @@
 				"links": {
 					"open": {
 						"rel": "self",
-						"href": "/cases/O40M3A-MAREKCO-WORK K-10067/actions/pyChangeStage",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/actions/pyChangeStage",
 						"type": "GET",
 						"title": "Get case action details"
 					}
@@ -49,30 +49,30 @@
 				"links": {
 					"open": {
 						"rel": "self",
-						"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10067!FILTERED_FLOW",
+						"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW",
 						"type": "GET",
 						"title": "Get assignment details"
 					}
 				},
-				"ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10067!FILTERED_FLOW",
+				"ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW",
 				"actions": [{
 					"name": "Unfiltered Dropdown",
 					"links": {
 						"submit": {
 							"rel": "self",
-							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10067!FILTERED_FLOW/actions/Dropdown",
+							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW/actions/Dropdown",
 							"type": "PATCH",
 							"title": "Submit assignment action "
 						},
 						"save": {
 							"rel": "self",
-							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10067!FILTERED_FLOW/actions/Dropdown/save",
+							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW/actions/Dropdown/save",
 							"type": "PATCH",
 							"title": "Save assignment action "
 						},
 						"open": {
 							"rel": "self",
-							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10067!FILTERED_FLOW/actions/Dropdown",
+							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW/actions/Dropdown",
 							"type": "GET",
 							"title": "Get assignment action details"
 						}
@@ -82,7 +82,7 @@
 				}]
 			}],
 			"hasNewAttachments": false,
-			"businessID": "K-10067",
+			"businessID": "K-10048",
 			"sla": {
 				"goal": "",
 				"deadline": ""
@@ -99,7 +99,7 @@
 				"links": {
 					"open": {
 						"rel": "self",
-						"href": "/cases/O40M3A-MAREKCO-WORK K-10067/stages/PRIM0",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM0",
 						"type": "PUT",
 						"title": "Jump to this stage"
 					}
@@ -114,7 +114,7 @@
 				"links": {
 					"open": {
 						"rel": "self",
-						"href": "/cases/O40M3A-MAREKCO-WORK K-10067/stages/PRIM1",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM1",
 						"type": "PUT",
 						"title": "Jump to this stage"
 					}
@@ -128,7 +128,7 @@
 				"links": {
 					"open": {
 						"rel": "self",
-						"href": "/cases/O40M3A-MAREKCO-WORK K-10067/stages/PRIM2",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM2",
 						"type": "PUT",
 						"title": "Jump to this stage"
 					}
@@ -142,7 +142,7 @@
 				"links": {
 					"open": {
 						"rel": "self",
-						"href": "/cases/O40M3A-MAREKCO-WORK K-10067/stages/PRIM3",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM3",
 						"type": "PUT",
 						"title": "Jump to this stage"
 					}
@@ -152,7 +152,7 @@
 				"type": "Primary",
 				"transitionType": "manual"
 			}],
-			"ID": "O40M3A-MAREKCO-WORK K-10067",
+			"ID": "O40M3A-MAREKCO-WORK K-10048",
 			"caseTypeIcon": "cmicons/pycase.svg",
 			"status": "New",
 			"stageID": "PRIM1",
@@ -171,7 +171,7 @@
 				},
 				"pxObjClass": "O40M3A-MarekCo-Work-KeysAndCiphers",
 				"pyLabel": "KeysAndCiphers",
-				"pyID": "K-10067"
+				"pyID": "K-10048"
 			}
 		}
 	},
@@ -580,11 +580,11 @@
 		"links": {
 			"open": {
 				"rel": "self",
-				"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10067!FILTERED_FLOW",
+				"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW",
 				"type": "GET",
 				"title": "Get assignment details"
 			}
 		},
-		"ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10067!FILTERED_FLOW"
+		"ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW"
 	}
 }

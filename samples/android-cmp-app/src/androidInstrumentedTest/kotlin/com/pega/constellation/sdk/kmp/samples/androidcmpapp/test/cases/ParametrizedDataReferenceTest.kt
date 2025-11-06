@@ -1,6 +1,8 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
@@ -17,21 +19,21 @@ class ParametrizedDataReferenceTest : ComposeTest(mode = ComposeTestMode.MockSer
     private val columns = listOf("KeyName", "KeyLength", "Algorithm")
 
     private val unfilteredKeys = listOf(
-        listOf("AeroCrypt" /*, "4096", "ChaCha20" */),
-        listOf("AeroCrypt-AuroraCrypt" /*, "32", "Blowfish" */),
-        listOf("AeroCrypt-JadeCrypt" /*, "128", "Twofish" */)
+        "AeroCrypt",
+        "AeroCrypt-AuroraCrypt",
+        "AeroCrypt-JadeCrypt"
     )
 
     private val rsaKeys = listOf(
-        listOf("AeroCrypt-MagnetSafe" /*, 256, "RSA"*/),
-        listOf("AeroCrypt-MeteorVault" /*, 65536, "RSA"*/),
-        listOf("AeroCrypt-VortexLock" /*, 256, "RSA"*/)
+        "AeroCrypt-MagnetSafe",
+        "AeroCrypt-MeteorVault",
+        "AeroCrypt-VortexLock"
     )
 
     private val eccKeys = listOf(
-        listOf("AeroCrypt-VertexCrypt" /*, 256, "ECC"*/),
-        listOf("AuroraCrypt-ZenSafe" /*, 8192, "ECC"*/),
-        listOf("BlueWave-HyperShield" /*, 1024, "ECC"*/)
+        "AeroCrypt-VertexCrypt",
+        "AuroraCrypt-ZenSafe",
+        "BlueWave-HyperShield"
     )
 
     @Test
@@ -48,34 +50,43 @@ class ParametrizedDataReferenceTest : ComposeTest(mode = ComposeTestMode.MockSer
         columns.forEach { waitForNodes(it.uppercase(), 2) }
 
         // verify unfiltered keys
-        unfilteredKeys.flatten().forEach { waitForNodes(it, count = 2) }
+        unfilteredKeys.forEach { waitForNodes(it, count = 2) }
 
         // verify keys filtered by RSA
         onAllNodesWithText("RSA").onFirst().performClick()
-        rsaKeys.flatten().forEach { waitForNodes(it, count = 2) }
+        rsaKeys.forEach { waitForNodes(it, count = 2) }
 
         // verify keys filtered by ECC
         onAllNodesWithText("ECC").onFirst().performClick()
-        eccKeys.flatten().forEach { waitForNodes(it, count = 2) }
+        eccKeys.forEach { waitForNodes(it, count = 2) }
 
         // Next step
         onNodeWithText("Submit").performClick()
         waitForNode("Table (K-", substring = true)
 
         // verify unfiltered keys
-        unfilteredKeys.flatten().forEach { waitForNodes(it, count = 2) }
+        unfilteredKeys.forEach { waitForNodes(it, count = 2) }
 
         // verify keys filtered by RSA
         onAllNodesWithText("RSA").onFirst().performClick()
-        rsaKeys.flatten().forEach { waitForNodes(it, count = 2) }
+        rsaKeys.forEach { waitForNodes(it, count = 2) }
 
         // verify keys filtered by ECC
         onAllNodesWithText("ECC").onFirst().performClick()
-        eccKeys.flatten().forEach { waitForNodes(it, count = 2) }
+        eccKeys.forEach { waitForNodes(it, count = 2) }
 
         // Next step
         onNodeWithText("Submit").performClick()
         waitForNode("Dropdown (K-", substring = true)
-        // TODO: verify dropdown+details
+
+        onAllNodesWithText("RSA").onFirst().performClick()
+        onNode(hasText("Key Selector") and hasClickAction()).performClick()
+        onNodeWithText("AeroCrypt-MagnetSafe").performClick()
+        waitForNode("2022-12-09")
+
+        onAllNodesWithText("ECC").onFirst().performClick()
+        onNode(hasText("Key Selector") and hasClickAction()).performClick()
+        onNodeWithText("CrystalVault").performClick()
+        waitForNode("2025-11-25")
     }
 }
