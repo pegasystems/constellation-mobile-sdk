@@ -17,6 +17,18 @@ import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
 class CaseProcessingTest : ComposeTest() {
+
+    @Test
+    fun test_open_assignment() = runComposeUiTest {
+        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
+        onNodeWithText("Services").performClick()
+
+        waitForNode("K-11019", substring = true)
+        onNodeWithText("K-11019", substring = true).performClick()
+
+        waitForNode("DOES_NOT_EXIST", substring = true)
+    }
+
     @Test
     fun test_case_processing_sdk_testing() = runComposeUiTest {
         setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting", PegaVersion.V_24_1_0)

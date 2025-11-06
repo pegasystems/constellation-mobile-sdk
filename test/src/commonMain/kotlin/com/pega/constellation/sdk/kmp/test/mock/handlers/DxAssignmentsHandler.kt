@@ -16,7 +16,11 @@ class DxAssignmentsHandler : MockHandler {
     override fun canHandle(request: MockRequest) = request.isDxApi("assignments")
 
     override fun handle(request: MockRequest): MockResponse {
-        // we should check path
+        // simple open assignment - without any action
+        if (request.url.contains("K-11019")) {
+            return Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment.json")
+        }
+        // we should check path - assignment action
         val match = regex.find(request.url) ?: return Error(400, "Invalid request")
         val assignmentId = match.groupValues[1]
         val actionId = match.groupValues[2]
