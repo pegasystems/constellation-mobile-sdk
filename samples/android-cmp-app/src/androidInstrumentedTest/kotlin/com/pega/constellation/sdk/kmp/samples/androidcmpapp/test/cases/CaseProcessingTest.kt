@@ -23,12 +23,13 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("New Service").performClick()
         waitForNode("Create (S-", substring = true)
 
+        waitForNode("Name")
         onNodeWithText("Name", substring = true).performTextInput("Jan")
         onNodeWithText("Surname").performTextInput("Kowalski")
         onNodeWithText("Url").performTextInput("https://pega.com")
         onNodeWithText("Next").performClick()
 
-        waitForNode("Submit")
+        waitForNode("Name")
         onNodeWithText("Name").assertTextContains("Jan")
         onNodeWithText("Surname").assertTextContains("Kowalski")
         onNodeWithText("Url").assertTextContains("https://pega.com")
@@ -44,6 +45,7 @@ class CaseProcessingTest : ComposeTest() {
         onNodeWithText("New Service").performClick()
         waitForNode("Customer (N-", substring = true)
 
+        waitForNode("First Name")
         onNodeWithText("First Name").performTextInput("Jan")
         onNodeWithText("Last Name").performTextInput("Kowalski")
         onNodeWithText("Custom Email").performTextInput("invalid email")
