@@ -26,31 +26,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State as SdkState
-
-@Serializable
-data class Assignment(
-    val pxObjClass: String,
-    val pxProcessName: String,
-    val pxRefObjectInsName: String,
-    val pxRefObjectKey: String,
-    val pxAssignedOperatorID: String,
-    val pxTaskLabel: String,
-    val pxRefObjectClass: String,
-    val pyAssignmentStatus: String,
-    val pzInsKey: String,
-    val pyLabel: String,
-)
-
-@Serializable
-data class AssignmentsResponse(
-    val fetchDateTime: String,
-    val pxObjClass: String,
-    val resultCount: Int? = null,
-    val data: List<Assignment>,
-)
 
 class PegaViewModel(
     private val authManager: AuthManager,
@@ -72,7 +49,23 @@ class PegaViewModel(
         }
     }
 
-    suspend fun fetchAssignments(accessToken: String): List<Assignment> = withContext(Dispatchers.Default) {
+    fun createCase(onFailure: (String) -> Unit) {
+        dismissed = false
+        authManager.authenticate(
+            onSuccess = { sdk.createCase(caseClassName) },
+            onFailure = onFailure
+        )
+    }
+
+    fun openAssignment(assignmentID: String, onFailure: (String) -> Unit) {
+        dismissed = false
+        authManager.authenticate(
+            onSuccess = { sdk.openAssignment(assignmentID) },
+            onFailure = onFailure
+        )
+    }
+
+    private suspend fun fetchAssignments(accessToken: String): List<Assignment> = withContext(Dispatchers.Default) {
         try {
             val client = HttpClient()
             val response: HttpResponse =
@@ -89,22 +82,6 @@ class PegaViewModel(
             Log.e("PegaViewModel", "Failed to fetch assignments: ${e.message}")
             emptyList()
         }
-    }
-
-    fun createCase(onFailure: (String) -> Unit) {
-        dismissed = false
-        authManager.authenticate(
-            onSuccess = { sdk.createCase(caseClassName) },
-            onFailure = onFailure
-        )
-    }
-
-    fun openAssignment(assignmentID: String, onFailure: (String) -> Unit) {
-        dismissed = false
-        authManager.authenticate(
-            onSuccess = { sdk.openAssignment(assignmentID) },
-            onFailure = onFailure
-        )
     }
 
     companion object {

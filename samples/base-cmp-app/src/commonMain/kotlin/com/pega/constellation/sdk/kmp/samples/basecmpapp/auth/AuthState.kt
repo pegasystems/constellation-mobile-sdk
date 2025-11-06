@@ -1,7 +1,5 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.auth
 
-import org.publicvalue.multiplatform.oidc.types.remote.AccessTokenResponse
-
 sealed class AuthState {
     data object Unauthenticated : AuthState()
     data object Authenticating : AuthState()
