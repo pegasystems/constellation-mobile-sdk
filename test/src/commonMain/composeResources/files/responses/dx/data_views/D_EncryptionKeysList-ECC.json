@@ -1,0 +1,173 @@
+{
+    "fetchDateTime": "2025-11-05T09:36:23.955Z",
+    "pxObjClass": "Pega-API-DataExploration-Data",
+    "pageNumber": 1,
+    "data": [
+        {
+            "KeyName": "AeroCrypt-VertexCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1056,
+            "pzRank": 1,
+            "KeyLength": 256.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "AuroraCrypt-ZenSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1308,
+            "pzRank": 2,
+            "KeyLength": 8192.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "BlueWave-HyperShield",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1123,
+            "pzRank": 3,
+            "KeyLength": 1024.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CascadeGate-StratusLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1874,
+            "pzRank": 4,
+            "KeyLength": 128.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CelestialKey-CelestialKey",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1148,
+            "pzRank": 5,
+            "KeyLength": 512.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CelestialKey-ZenithLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1360,
+            "pzRank": 6,
+            "KeyLength": 8192.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CometSafe-IgniteGate",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1006,
+            "pzRank": 7,
+            "KeyLength": 1024.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CrystalVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1746,
+            "pzRank": 8,
+            "KeyLength": 512.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CrystalVault-NebulaKey",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1889,
+            "pzRank": 9,
+            "KeyLength": 512.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CrystalVault-QuasarVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1695,
+            "pzRank": 10,
+            "KeyLength": 1024.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "CrystalVault-TerraLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1493,
+            "pzRank": 11,
+            "KeyLength": 65536.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "DriftCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1710,
+            "pzRank": 12,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "DriftCrypt-GalaxyLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1919,
+            "pzRank": 13,
+            "KeyLength": 8192.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "DriftCrypt-IgniteGate",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1772,
+            "pzRank": 14,
+            "KeyLength": 512.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "DriftCrypt-NebulaKey",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1671,
+            "pzRank": 15,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "EchoShield",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1022,
+            "pzRank": 16,
+            "KeyLength": 8192.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "EchoShield-CrystalVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1042,
+            "pzRank": 17,
+            "KeyLength": 128.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "EchoShield-SpectrumCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1372,
+            "pzRank": 18,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "EchoShield-UmbraGate",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1741,
+            "pzRank": 19,
+            "KeyLength": 16.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "EchoShield-XenonKey",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1347,
+            "pzRank": 20,
+            "KeyLength": 8192.000000000,
+            "Algorithm": "ECC"
+        }
+    ],
+    "queryStats": {
+        "pxObjClass": "Embed-DataExploration-QueryStats",
+        "sourceType": "RDBMS",
+        "sourceExecutionTime": "1.313 ms"
+    },
+    "pageSize": 20
+}

@@ -52,12 +52,12 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     }
 
     @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String) {
+    protected fun ComposeUiTest.setupApp(caseClassName: String, version: String? = null) {
         setContent {
             MediaCoTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
                     Box(Modifier.padding(innerPadding)) {
-                        HomeScreen(pegaViewModel = viewModel(factory = testFactory(caseClassName)))
+                        HomeScreen(pegaViewModel = viewModel(factory = testFactory(caseClassName, version)))
                     }
                 }
             }
@@ -65,16 +65,16 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     }
 
     @OptIn(ExperimentalOpenIdConnect::class)
-    private fun testFactory(caseClassName: String) = viewModelFactory {
+    private fun testFactory(caseClassName: String, version: String?) = viewModelFactory {
         initializer {
-            val sdk = ConstellationSdk.create(buildSdkConfig(), engine)
+            val sdk = ConstellationSdk.create(buildSdkConfig(version), engine)
             PegaViewModel(authManager, sdk, caseClassName)
         }
     }
 
-    private fun buildSdkConfig() = ConstellationSdkConfig(
+    private fun buildSdkConfig(version: String?) = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
-        pegaVersion = PEGA_VERSION,
+        pegaVersion = version ?: PEGA_VERSION,
         componentManager = buildComponentManager(),
         debuggable = true
     )

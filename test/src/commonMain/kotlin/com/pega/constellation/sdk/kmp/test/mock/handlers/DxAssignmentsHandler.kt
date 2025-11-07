@@ -26,17 +26,17 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
             assignmentId.contains("N-16042") -> handleNewService(actionId)
             assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
+            assignmentId.contains("K-10048") -> handleKeysAndCiphers(request, actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
     }
 
     private fun handleDataReferenceTest(request: MockRequest, actionId: String): MockResponse {
-        val body = request.body ?: return Error(400, "Missing request body")
-        val bodyJson = Json.parseToJsonElement(body).jsonObject
-        val content = bodyJson.getValue("content").jsonObject
-        val carRef = content.getValue("CarsDataReferenceSingle").jsonObject
-        val carId = carRef.getValue("Id").jsonPrimitive.int
+        val carId = request.getContentPageKey("CarsDataReferenceSingle", "Id") ?: return Error(
+            400,
+            "Missing request body"
+        )
 
         return when (actionId) {
             "SingleDisplayAsTable" -> Asset("responses/dx/assignments/DataReferenceTest-1-Review.json")
@@ -45,6 +45,17 @@ class DxAssignmentsHandler : MockHandler {
         }
     }
 
+    private fun handleKeysAndCiphers(request: MockRequest, actionId: String) =
+        when (actionId) {
+            "SimpleTable" -> Asset("responses/dx/assignments/KeysCiphers-Table.json")
+            "Table" -> Asset("responses/dx/assignments/KeysCiphers-Dropdown.json")
+            "Dropdown/refresh" -> request.getContentPageKey("KeySelector", "Identifier")?.let {
+                Asset("responses/dx/assignments/KeysCiphers-Dropdown-Refresh-$it.json")
+            } ?: Error(400, "Missing request body")
+
+            else -> Error(404, "Invalid actionId for K-10048: $actionId")
+        }
+
     private fun handleNewService(actionId: String) = when (actionId) {
         "Customer" -> Asset("responses/dx/assignments/NewService-1-Customer.json")
         "Address" -> Asset("responses/dx/assignments/NewService-2-Address.json")
@@ -52,4 +63,12 @@ class DxAssignmentsHandler : MockHandler {
         "OtherNotes" -> Asset("responses/dx/assignments/NewService-4-OtherNotes.json")
         else -> Error(404, "Invalid actionId: $actionId")
     }
+}
+
+private fun MockRequest.getContentPageKey(page: String, key: String) = body?.let {
+    Json.parseToJsonElement(it).jsonObject
+        .getValue("content").jsonObject
+        .getValue(page).jsonObject
+        .getValue(key).jsonPrimitive
+        .int
 }

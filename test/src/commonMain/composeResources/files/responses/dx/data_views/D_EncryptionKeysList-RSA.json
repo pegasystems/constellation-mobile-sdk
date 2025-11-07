@@ -1,0 +1,173 @@
+{
+    "fetchDateTime": "2025-11-05T09:36:02.282Z",
+    "pxObjClass": "Pega-API-DataExploration-Data",
+    "pageNumber": 1,
+    "data": [
+        {
+            "KeyName": "AeroCrypt-MagnetSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1082,
+            "pzRank": 1,
+            "KeyLength": 256.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AeroCrypt-MeteorVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1142,
+            "pzRank": 2,
+            "KeyLength": 65536.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AeroCrypt-VortexLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1641,
+            "pzRank": 3,
+            "KeyLength": 256.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AeroCrypt-WhirlVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1733,
+            "pzRank": 4,
+            "KeyLength": 512.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AuroraCrypt-HyperShield",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1820,
+            "pzRank": 5,
+            "KeyLength": 32.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AuroraCrypt-LyraKey",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1801,
+            "pzRank": 6,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AuroraCrypt-PulseCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1572,
+            "pzRank": 7,
+            "KeyLength": 16.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AuroraCrypt-SapphireGate",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1414,
+            "pzRank": 8,
+            "KeyLength": 32768.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AuroraCrypt-TempestSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1434,
+            "pzRank": 9,
+            "KeyLength": 512.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "BlueWave-MatrixLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1015,
+            "pzRank": 10,
+            "KeyLength": 64.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "BlueWave-TempestSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1499,
+            "pzRank": 11,
+            "KeyLength": 512.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CascadeGate-LyraKey",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1177,
+            "pzRank": 12,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CascadeGate-ZenithLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1459,
+            "pzRank": 13,
+            "KeyLength": 256.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CelestialKey-HorizonSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1067,
+            "pzRank": 14,
+            "KeyLength": 64.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CelestialKey-HyperShield",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1199,
+            "pzRank": 15,
+            "KeyLength": 256.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CelestialKey-LyraKey",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1195,
+            "pzRank": 16,
+            "KeyLength": 16.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CelestialKey-MagnetSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1521,
+            "pzRank": 17,
+            "KeyLength": 32.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CelestialKey-OnyxGate",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1194,
+            "pzRank": 18,
+            "KeyLength": 65536.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CometSafe-DriftCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1385,
+            "pzRank": 19,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "CometSafe-GalaxyLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1462,
+            "pzRank": 20,
+            "KeyLength": 2048.000000000,
+            "Algorithm": "RSA"
+        }
+    ],
+    "queryStats": {
+        "pxObjClass": "Embed-DataExploration-QueryStats",
+        "sourceType": "RDBMS",
+        "sourceExecutionTime": "1.245 ms"
+    },
+    "pageSize": 20
+}
