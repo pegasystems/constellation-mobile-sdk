@@ -3,17 +3,16 @@ package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 import androidx.compose.runtime.Composable
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.fields.DateTimeComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.DateTimeComponent.Companion.getTimeZoneOffset
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.DateTime
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.LocalEnv
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
-import kotlinx.datetime.offsetAt
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.DurationUnit
@@ -57,17 +56,6 @@ class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
         ?.runCatching { LocalDateTime.parse(this.removeSuffix("Z")) }
         ?.onFailure { Log.e(TAG, "Unable to parse value as DateTime", it) }
         ?.getOrNull()
-
-    private fun getTimeZoneOffset(timeZone: String): Int {
-        if (timeZone.isEmpty()) {
-            Log.w(TAG, "Time zone is empty, defaulting to UTC")
-            return 0
-        }
-        val zone = TimeZone.of(timeZone)
-        val now = Clock.System.now()
-        val offset = zone.offsetAt(now)
-        return (offset.totalSeconds / 60)
-    }
 
     private fun LocalDateTime.minusOffset(minusOffset: Int) = toInstant(TimeZone.UTC)
         .minus(minusOffset.toDuration(DurationUnit.MINUTES))

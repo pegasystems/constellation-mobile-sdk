@@ -7,7 +7,8 @@ struct DateTimeComponentView: View {
     @State var selectedDate: Date = .now
 
     private var timeZone: TimeZone {
-        TimeZone(secondsFromGMT: Int(state.component.timeZoneMinutesOffset)) ?? TimeZone(abbreviation: "UTC")!
+        let timeZoneMinutesOffset = DateTimeComponent.Companion().getTimeZoneOffset(timeZone: EnvironmentInfo.shared.timeZone)
+        return TimeZone(secondsFromGMT: Int(timeZoneMinutesOffset)) ?? TimeZone(abbreviation: "UTC")!
     }
 
     private static let gmtFormatter: DateFormatter = {
