@@ -6,7 +6,7 @@ import SwiftUI
 enum SDKState {
     case initial
     case loading
-    case ready(RootContainerComponent)
+    case ready(RootContainerComponent, EnvironmentInfo)
     case error(String?)
     case finished(String?)
     case cancelled
@@ -25,7 +25,7 @@ class SDKWrapper {
             switch kotlinState {
             case is ConstellationSdkState.Loading: .loading
             case is ConstellationSdkState.Initial: .initial
-            case let readyState as ConstellationSdkState.Ready: .ready(readyState.root)
+            case let readyState as ConstellationSdkState.Ready: .ready(readyState.root, readyState.environmentInfo)
             case let errorState as ConstellationSdkState.Error: .error(errorState.error.message)
             case let finishedState as ConstellationSdkState.Finished: .finished(finishedState.successMessage)
             case is ConstellationSdkState.Cancelled: .cancelled

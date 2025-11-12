@@ -29,7 +29,11 @@ async function init(sdkConfig, componentsOverridesStr) {
         }
 
         console.log(TAG, "Constellation SDK initialization completed");
-        bridge.onReady();
+        const envInfo = {
+          locale: PCore.getEnvironmentInfo().getUseLocale(),
+          timeZone: PCore.getEnvironmentInfo().getTimeZone()
+        };
+        bridge.onReady(envInfo);
     } catch (error) {
         const errorMessage = "Constellation SDK initialization failed! " + (error?.message ?? "");
         console.error(errorMessage);

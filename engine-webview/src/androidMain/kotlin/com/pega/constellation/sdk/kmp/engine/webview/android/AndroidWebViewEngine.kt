@@ -11,6 +11,7 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
+import com.pega.constellation.sdk.kmp.core.EnvironmentInfo.Companion.toEnvironmentInfo
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
@@ -108,7 +109,7 @@ class AndroidWebViewEngine(
             is UpdateComponent -> componentManager.updateComponent(event.id, event.propsJson)
             is RemoveComponent -> componentManager.removeComponent(event.id)
             is SetRequestBody -> networkInterceptor.setRequestBody(event.body)
-            is OnReady -> handler.handle(EngineEvent.Ready)
+            is OnReady -> handler.handle(EngineEvent.Ready(event.envInfoJson.toEnvironmentInfo()))
             is OnFinished -> handler.handle(EngineEvent.Finished(event.successMessage))
             is OnError -> handler.handle(
                 EngineEvent.Error(JsError(event.type, event.message))

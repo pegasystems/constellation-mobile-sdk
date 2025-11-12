@@ -13,8 +13,10 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Initial
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Loading
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Ready
+import com.pega.constellation.sdk.kmp.core.EnvironmentInfo
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomComponents.CustomRenderers
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ProvideLocale
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ProvideRenderers
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 
@@ -23,7 +25,7 @@ fun PegaForm(state: State) {
     when (state) {
         is Initial -> PegaLoader()
         is Loading -> PegaLoader("Loading form...")
-        is Ready -> Render(state.root)
+        is Ready -> Render(state.environmentInfo, state.root)
         else -> {}
     }
 }
@@ -38,6 +40,10 @@ fun PegaLoader(message: String? = null) {
 }
 
 @Composable
-private fun Render(root: RootContainerComponent) {
-    ProvideRenderers(CustomRenderers) { root.Render() }
+private fun Render(envInfo: EnvironmentInfo, root: RootContainerComponent) {
+    ProvideLocale(envInfo) {
+        ProvideRenderers(CustomRenderers) {
+            root.Render()
+        }
+    }
 }

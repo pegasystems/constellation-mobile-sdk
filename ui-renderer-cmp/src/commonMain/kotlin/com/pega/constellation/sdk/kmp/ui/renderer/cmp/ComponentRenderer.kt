@@ -3,9 +3,10 @@ package com.pega.constellation.sdk.kmp.ui.renderer.cmp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
+import com.pega.constellation.sdk.kmp.core.EnvironmentInfo
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Unsupported
-import com.pega.constellation.sdk.kmp.core.components.ComponentRegistry
 import com.pega.constellation.sdk.kmp.core.api.Component
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
@@ -14,6 +15,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderers.Default
 
 private const val TAG = "ComponentRenderer"
 private val LocalRenderers = compositionLocalOf { DefaultRenderers }
+val LocalEnv = staticCompositionLocalOf { EnvironmentInfo("en-US", "America/New_York") }
 
 /**
  * Allows to render components using Jetpack Compose.
@@ -57,4 +59,9 @@ fun ProvideRenderers(
 ) {
     val renderers = DefaultRenderers + customRenderers
     CompositionLocalProvider(LocalRenderers provides renderers, content)
+}
+
+@Composable
+fun ProvideLocale(envInfo: EnvironmentInfo, content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalEnv provides envInfo, content)
 }

@@ -6,10 +6,6 @@ struct DateTimeComponentView: View {
 
     @State var selectedDate: Date = .now
 
-    private var timeZone: TimeZone {
-        TimeZone(secondsFromGMT: Int(state.component.timeZoneMinutesOffset)) ?? TimeZone(abbreviation: "UTC")!
-    }
-
     private static let gmtFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -36,7 +32,6 @@ struct DateTimeComponentView: View {
                 )
             }
             .environment(\.locale, pickerLocale)
-            .environment(\.timeZone, timeZone)
         }
         .onChange(of: selectedDate) { _, newValue in
             state.component.updateValue(

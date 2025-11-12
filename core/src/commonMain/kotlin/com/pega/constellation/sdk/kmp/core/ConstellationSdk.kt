@@ -57,7 +57,7 @@ interface ConstellationSdk {
     sealed class State {
         data object Initial : State()
         data object Loading : State()
-        data class Ready(val root: RootContainerComponent) : State()
+        data class Ready(val environmentInfo: EnvironmentInfo, val root: RootContainerComponent) : State()
         data class Error(val error: EngineError) : State()
         data class Finished(val successMessage: String?) : State()
         data object Cancelled : State()

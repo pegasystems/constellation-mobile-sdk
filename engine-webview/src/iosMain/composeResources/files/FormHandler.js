@@ -14,8 +14,8 @@
             window.webkit.messageHandlers.formHandler.postMessage(["removeComponent", String(param)]);
         },
 
-        onReady: function() {
-            window.webkit.messageHandlers.formHandler.postMessage(["ready"]);
+        onReady: function(envInfo) {
+            window.webkit.messageHandlers.formHandler.postMessage(["ready", envInfo]);
         },
 
         onFinished: function(successMessage) {

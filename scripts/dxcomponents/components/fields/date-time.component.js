@@ -6,7 +6,6 @@ export class DateTimeComponent extends FieldBaseComponent {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
         this.propName = this.pConn.getStateProps().value;
         this.props.clockFormat = this.parseClockFormat(configProps.clockFormat);
-        this.props.timeZone = PCore.getEnvironmentInfo().getTimeZone() ?? "";
 
         this.componentsManager.onComponentPropsUpdate(this);
     }
