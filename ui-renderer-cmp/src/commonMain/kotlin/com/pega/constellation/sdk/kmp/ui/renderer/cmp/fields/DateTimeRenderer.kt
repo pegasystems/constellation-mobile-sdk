@@ -57,12 +57,12 @@ class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
         ?.onFailure { Log.e(TAG, "Unable to parse value as DateTime", it) }
         ?.getOrNull()
 
-    private fun LocalDateTime.minusOffset(minusOffset: Int) = toInstant(TimeZone.UTC)
-        .minus(minusOffset.toDuration(DurationUnit.MINUTES))
+    private fun LocalDateTime.minusOffset(offset: Int) = toInstant(TimeZone.UTC)
+        .minus(offset.toDuration(DurationUnit.MINUTES))
         .toLocalDateTime(TimeZone.UTC)
 
-    private fun LocalDateTime.plusOffset(minusOffset: Int) = toInstant(TimeZone.UTC)
-        .plus(minusOffset.toDuration(DurationUnit.MINUTES))
+    private fun LocalDateTime.plusOffset(offset: Int) = toInstant(TimeZone.UTC)
+        .plus(offset.toDuration(DurationUnit.MINUTES))
         .toLocalDateTime(TimeZone.UTC)
 
     companion object {
