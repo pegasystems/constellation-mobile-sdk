@@ -63,10 +63,3 @@ interface ConstellationSdk {
         data object Cancelled : State()
     }
 }
-
-/**
- * Represents environment information the Pega app works with
- * - locale: current locale in IETF BCP 47 format, e.g. "en-US"
- * - timeZone: current time zone in TZ database format, e.g. "America/New_York"
- */
-data class EnvironmentInfo(val locale: String, val timeZone: String)
