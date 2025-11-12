@@ -33,10 +33,8 @@ class DxAssignmentsHandler : MockHandler {
     }
 
     private fun handleDataReferenceTest(request: MockRequest, actionId: String): MockResponse {
-        val carId = request.getContentPageKey("CarsDataReferenceSingle", "Id") ?: return Error(
-            400,
-            "Missing request body"
-        )
+        val carId = request.getContentPageKey("CarsDataReferenceSingle", "Id")
+            ?: return Error(400, "Missing request body")
 
         return when (actionId) {
             "SingleDisplayAsTable" -> Asset("responses/dx/assignments/DataReferenceTest-1-Review.json")

@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaVersion
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import kotlin.test.Test
 
@@ -18,7 +19,7 @@ import kotlin.test.Test
 class CaseProcessingTest : ComposeTest() {
     @Test
     fun test_case_processing_sdk_testing() = runComposeUiTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
+        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting", PegaVersion.v24_1_0)
 
         onNodeWithText("New Service").performClick()
         waitForNode("Create (S-", substring = true)
@@ -40,7 +41,7 @@ class CaseProcessingTest : ComposeTest() {
 
     @Test
     fun test_case_processing_service() = runComposeUiTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
+        setupApp(caseClassName = "DIXL-MediaCo-Work-NewService", PegaVersion.v24_1_0)
 
         onNodeWithText("New Service").performClick()
         waitForNode("Customer (N-", substring = true)

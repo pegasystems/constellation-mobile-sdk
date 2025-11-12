@@ -9,9 +9,9 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
-import androidx.compose.ui.test.waitUntilAtLeastOneExists
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTestMode
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaVersion
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import kotlin.test.Test
@@ -39,8 +39,8 @@ class ParametrizedDataReferenceTest : ComposeTest(mode = ComposeTestMode.MockSer
     )
 
     @Test
-    fun test_embedded_data() = runComposeUiTest {
-        setupApp("O40M3A-MarekCo-Work-KeysAndCiphers", "24.2.2")
+    fun test_datareference_with_parametrized_dp() = runComposeUiTest {
+        setupApp("O40M3A-MarekCo-Work-KeysAndCiphers", PegaVersion.v24_2_2)
 
         // create case
         onNodeWithText("New Service").performClick()

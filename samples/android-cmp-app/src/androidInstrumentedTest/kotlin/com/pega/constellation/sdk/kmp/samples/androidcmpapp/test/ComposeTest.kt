@@ -52,12 +52,12 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     }
 
     @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String, version: String? = null) {
+    protected fun ComposeUiTest.setupApp(caseClassName: String, pegaVersion: PegaVersion) {
         setContent {
             MediaCoTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
                     Box(Modifier.padding(innerPadding)) {
-                        HomeScreen(pegaViewModel = viewModel(factory = testFactory(caseClassName, version)))
+                        HomeScreen(pegaViewModel = viewModel(factory = testFactory(caseClassName, pegaVersion)))
                     }
                 }
             }
@@ -65,16 +65,16 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     }
 
     @OptIn(ExperimentalOpenIdConnect::class)
-    private fun testFactory(caseClassName: String, version: String?) = viewModelFactory {
+    private fun testFactory(caseClassName: String, pegaVersion: PegaVersion) = viewModelFactory {
         initializer {
-            val sdk = ConstellationSdk.create(buildSdkConfig(version), engine)
+            val sdk = ConstellationSdk.create(buildSdkConfig(pegaVersion), engine)
             PegaViewModel(authManager, sdk, caseClassName)
         }
     }
 
-    private fun buildSdkConfig(version: String?) = ConstellationSdkConfig(
+    private fun buildSdkConfig(pegaVersion: PegaVersion) = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
-        pegaVersion = version ?: PEGA_VERSION,
+        pegaVersion = pegaVersion.versionString,
         componentManager = buildComponentManager(),
         debuggable = true
     )
@@ -93,13 +93,16 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
             .executeShellCommand("settings put secure show_ime_with_hard_keyboard 0")
     }
 
-
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
-        private const val PEGA_VERSION = "24.1.0"
 
         val TestComponentDefinitions = listOf(
             ComponentDefinition(Email) { CustomEmailComponent(it) }
         )
     }
+}
+
+enum class PegaVersion(val versionString: String) {
+    v24_1_0("24.1.0"),
+    v24_2_2("24.2.2")
 }
