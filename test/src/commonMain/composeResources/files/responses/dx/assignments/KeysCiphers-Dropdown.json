@@ -1,0 +1,590 @@
+{
+	"data": {
+		"caseInfo": {
+			"caseTypeID": "O40M3A-MarekCo-Work-KeysAndCiphers",
+			"owner": "rep@mediaco",
+			"availableActions": [{
+				"name": "Edit details",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/actions/pyUpdateCaseDetails",
+						"type": "GET",
+						"title": "Get case action details"
+					}
+				},
+				"ID": "pyUpdateCaseDetails",
+				"type": "Case"
+			}, {
+				"name": "Change stage",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/actions/pyChangeStage",
+						"type": "GET",
+						"title": "Get case action details"
+					}
+				},
+				"ID": "pyChangeStage",
+				"type": "Case"
+			}],
+			"associations": {
+				"follows": false
+			},
+			"lastUpdatedBy": "rep@mediaco",
+			"assignments": [{
+				"instructions": "",
+				"canPerform": "true",
+				"assigneeInfo": {
+					"name": "Administrator",
+					"ID": "rep@mediaco",
+					"type": "worklist"
+				},
+				"processID": "Filtered_Flow",
+				"urgency": "10",
+				"processName": "Filtered",
+				"isMultiStep": "false",
+				"name": "Dropdown",
+				"context": "",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW",
+						"type": "GET",
+						"title": "Get assignment details"
+					}
+				},
+				"ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW",
+				"actions": [{
+					"name": "Unfiltered Dropdown",
+					"links": {
+						"submit": {
+							"rel": "self",
+							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW/actions/Dropdown",
+							"type": "PATCH",
+							"title": "Submit assignment action "
+						},
+						"save": {
+							"rel": "self",
+							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW/actions/Dropdown/save",
+							"type": "PATCH",
+							"title": "Save assignment action "
+						},
+						"open": {
+							"rel": "self",
+							"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW/actions/Dropdown",
+							"type": "GET",
+							"title": "Get assignment action details"
+						}
+					},
+					"ID": "Dropdown",
+					"type": "FlowAction"
+				}]
+			}],
+			"hasNewAttachments": false,
+			"businessID": "K-10048",
+			"sla": {
+				"goal": "",
+				"deadline": ""
+			},
+			"WidgetsToRefresh": ["TaskList"],
+			"caseTypeName": "KeysAndCiphers",
+			"urgency": "10",
+			"createTime": "2025-11-05T15:36:36.946Z",
+			"createdBy": "rep@mediaco",
+			"name": "KeysAndCiphers",
+			"stages": [{
+				"entryTime": "2025-11-05T15:36:36.953Z",
+				"name": "Create",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM0",
+						"type": "PUT",
+						"title": "Jump to this stage"
+					}
+				},
+				"visited_status": "completed",
+				"ID": "PRIM0",
+				"type": "Primary",
+				"transitionType": "create"
+			}, {
+				"entryTime": "2025-11-05T15:36:36.955Z",
+				"name": "Filtered",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM1",
+						"type": "PUT",
+						"title": "Jump to this stage"
+					}
+				},
+				"visited_status": "active",
+				"ID": "PRIM1",
+				"type": "Primary",
+				"transitionType": "automatic"
+			}, {
+				"name": "Unfiltered",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM2",
+						"type": "PUT",
+						"title": "Jump to this stage"
+					}
+				},
+				"visited_status": "future",
+				"ID": "PRIM2",
+				"type": "Primary",
+				"transitionType": "automatic"
+			}, {
+				"name": "End",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/O40M3A-MAREKCO-WORK K-10048/stages/PRIM3",
+						"type": "PUT",
+						"title": "Jump to this stage"
+					}
+				},
+				"visited_status": "future",
+				"ID": "PRIM3",
+				"type": "Primary",
+				"transitionType": "manual"
+			}],
+			"ID": "O40M3A-MAREKCO-WORK K-10048",
+			"caseTypeIcon": "cmicons/pycase.svg",
+			"status": "New",
+			"stageID": "PRIM1",
+			"stageLabel": "Filtered",
+			"lastUpdateTime": "2025-11-05T15:36:41.736Z",
+			"content": {
+				"classID": "O40M3A-MarekCo-Work-KeysAndCiphers",
+				"KeyCipher": "",
+				"KeySelector": {
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"KeyName": "",
+					"Identifier": "",
+					"Algorithm": "",
+					"GenerationDate": "",
+					"KeyLength": ""
+				},
+				"pxObjClass": "O40M3A-MarekCo-Work-KeysAndCiphers",
+				"pyLabel": "KeysAndCiphers",
+				"pyID": "K-10048"
+			}
+		}
+	},
+	"uiResources": {
+		"resources": {
+			"views": {
+				"Dropdown": [{
+					"name": "Dropdown",
+					"type": "View",
+					"config": {
+						"template": "DefaultForm",
+						"ruleClass": "O40M3A-MarekCo-Work-KeysAndCiphers",
+						"localeReference": "@LR O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!VIEW!DROPDOWN"
+					},
+					"children": [{
+						"name": "Fields",
+						"type": "Region",
+						"children": [{
+							"type": "RadioButtons",
+							"config": {
+								"value": "@P .KeyCipher",
+								"label": "@FL .KeyCipher",
+								"labelOption": "default",
+								"listType": "associated",
+								"datasource": "@ASSOCIATED .KeyCipher"
+							}
+						}, {
+							"type": "reference",
+							"config": {
+								"name": "Dropdown_KeySelector",
+								"inheritedProps": [{
+									"prop": "label",
+									"value": "@FL .KeySelector"
+								}],
+								"labelOption": "default",
+								"ruleClass": "O40M3A-MarekCo-Work-KeysAndCiphers",
+								"type": "view",
+								"authorContext": ".KeySelector",
+								"referenceType": "Data"
+							}
+						}]
+					}],
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers"
+				}],
+				"Dropdown_KeySelector": [{
+					"name": "Dropdown_KeySelector",
+					"type": "View",
+					"config": {
+						"template": "DataReference",
+						"referenceList": "D_ListOfFilteredEncryptionKeys",
+						"name": "KeySelector",
+						"mode": "singleselect",
+						"contextClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+						"ruleClass": "O40M3A-MarekCo-Work-KeysAndCiphers",
+						"selectionMode": "single",
+						"classKeys": [{
+							"name": "Identifier"
+						}],
+						"localeReference": "@LR O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!VIEW!DROPDOWN_KEYSELECTOR",
+						"displayAs": "dropdown",
+						"actions": [],
+						"allowAddingNewRecords": false,
+						"parameters": {
+							"Algo": "@P .KeyCipher"
+						}
+					},
+					"children": [{
+						"type": "Dropdown",
+						"config": {
+							"value": "@P .KeySelector.Identifier",
+							"label": "@L ",
+							"placeholder": "Select...",
+							"listType": "datapage",
+							"primaryField": "@P .KeySelector.KeyName",
+							"datasource": "D_ListOfFilteredEncryptionKeys",
+							"deferDatasource": true,
+							"contextPage": "@P .KeySelector",
+							"columns": [{
+								"value": ".Identifier",
+								"setProperty": "Associated property",
+								"key": "true"
+							}, {
+								"value": ".KeyName",
+								"display": "true",
+								"useForSearch": true,
+								"primary": "true"
+							}]
+						}
+					}, {
+						"name": "Views",
+						"type": "Region",
+						"children": [{
+							"type": "reference",
+							"config": {
+								"name": "SelectedKeyDetails",
+								"inheritedProps": [{
+									"prop": "label",
+									"value": "@L Selected Key Details"
+								}, {
+									"prop": "showLabel",
+									"value": true
+								}],
+								"ruleClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+								"type": "view",
+								"context": ".KeySelector",
+								"readOnly": true
+							}
+						}]
+					}],
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers"
+				}],
+				"SelectedKeyDetails": [{
+					"name": "SelectedKeyDetails",
+					"type": "View",
+					"config": {
+						"ruleClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+						"template": "Details",
+						"localeReference": "@LR O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!VIEW!SELECTEDKEYDETAILS"
+					},
+					"children": [{
+						"name": "A",
+						"type": "Region",
+						"children": [{
+							"type": "Integer",
+							"config": {
+								"value": "@P .Identifier",
+								"label": "@FL .Identifier",
+								"labelOption": "default"
+							}
+						}, {
+							"type": "TextInput",
+							"config": {
+								"value": "@P .KeyName",
+								"label": "@FL .KeyName",
+								"labelOption": "default"
+							}
+						}, {
+							"type": "Dropdown",
+							"config": {
+								"value": "@P .Algorithm",
+								"label": "@FL .Algorithm",
+								"labelOption": "default",
+								"placeholder": "@L Select...",
+								"listType": "associated",
+								"datasource": "@ASSOCIATED .Algorithm",
+								"deferDatasource": true
+							}
+						}, {
+							"type": "Decimal",
+							"config": {
+								"value": "@P .KeyLength",
+								"label": "@FL .KeyLength",
+								"labelOption": "default"
+							}
+						}, {
+							"type": "Date",
+							"config": {
+								"value": "@P .GenerationDate",
+								"label": "@FL .GenerationDate",
+								"labelOption": "default"
+							}
+						}]
+					}],
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys"
+				}]
+			},
+			"paragraphs": {
+				"KeyCipher_additionalInfo": [{
+					"content": "",
+					"name": "KeyCipher_additionalInfo",
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers"
+				}],
+				"KeyName_additionalInfo": [{
+					"content": "",
+					"name": "KeyName_additionalInfo",
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys"
+				}],
+				"KeySelector_additionalInfo": [{
+					"content": "",
+					"name": "KeySelector_additionalInfo",
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers"
+				}],
+				"Identifier_additionalInfo": [{
+					"content": "",
+					"name": "Identifier_additionalInfo",
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys"
+				}],
+				"Algorithm_additionalInfo": [{
+					"content": "",
+					"name": "Algorithm_additionalInfo",
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys"
+				}],
+				"GenerationDate_additionalInfo": [{
+					"content": "",
+					"name": "GenerationDate_additionalInfo",
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys"
+				}],
+				"KeyLength_additionalInfo": [{
+					"content": "",
+					"name": "KeyLength_additionalInfo",
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys"
+				}]
+			},
+			"datapages": {
+				"D_EncryptionKeys": {
+					"parameters": [{
+						"name": "Identifier",
+						"defaultValue": "",
+						"linkedField": "Identifier"
+					}],
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"mode": "readonly",
+					"isSearchable": false,
+					"isQueryable": false,
+					"isAlternateKeyStorage": true,
+					"structure": "page"
+				},
+				"D_ListOfFilteredEncryptionKeys": {
+					"parameters": [{
+						"name": "Algo",
+						"defaultValue": "AES"
+					}],
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"mode": "readonly",
+					"isSearchable": false,
+					"isQueryable": true,
+					"structure": "list",
+					"isWorkObject": false,
+					"isDataObject": true
+				},
+				"D_EncryptionKeysSavable": {
+					"parameters": [{
+						"name": "Identifier",
+						"defaultValue": "",
+						"linkedField": "Identifier"
+					}],
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"mode": "editable",
+					"isSearchable": false,
+					"isQueryable": false,
+					"isAlternateKeyStorage": true,
+					"structure": "page"
+				}
+			},
+			"dataTypes": {
+				"O40M3A-MarekCo-Data-EncryptionKeys": {
+					"classKeys": ["Identifier"],
+					"savableDataPage": "D_EncryptionKeysSavable",
+					"lookupDataPage": "D_EncryptionKeys",
+					"lookupDataPageInfo": {
+						"isAlternateKeyStorage": true,
+						"parameters": {
+							"Identifier": "@P .Identifier"
+						}
+					}
+				}
+			},
+			"fields": {
+				"KeyCipher": [{
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers",
+					"type": "Text",
+					"displayAs": "pxRadioButtons",
+					"additionalInformation": "@PARAGRAPH KeyCipher_additionalInfo",
+					"label": "Key Cipher",
+					"datasource": {
+						"tableType": "PromptList",
+						"records": [{
+							"key": "AES",
+							"value": "AES"
+						}, {
+							"key": "RSA",
+							"value": "RSA"
+						}, {
+							"key": "ECC",
+							"value": "ECC"
+						}]
+					}
+				}],
+				"KeyName": [{
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"type": "Text",
+					"maxLength": 256,
+					"displayAs": "pxTextInput",
+					"additionalInformation": "@PARAGRAPH KeyName_additionalInfo",
+					"label": "Key Name"
+				}],
+				"KeySelector": [{
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers",
+					"type": "Page",
+					"dataRetrievalType": "refer",
+					"additionalInformation": "@PARAGRAPH KeySelector_additionalInfo",
+					"pageClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"label": "Key Selector",
+					"datasource": {
+						"name": "D_EncryptionKeys",
+						"parameters": {
+							"Identifier": "@P .KeySelector.Identifier"
+						}
+					}
+				}],
+				"Identifier": [{
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"type": "Integer",
+					"displayAs": "pxInteger",
+					"additionalInformation": "@PARAGRAPH Identifier_additionalInfo",
+					"label": "Identifier",
+					"isClassKey": true
+				}],
+				"Algorithm": [{
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"type": "Text",
+					"maxLength": 256,
+					"displayAs": "pxDropdown",
+					"additionalInformation": "@PARAGRAPH Algorithm_additionalInfo",
+					"label": "Algorithm",
+					"datasource": {
+						"tableType": "PromptList",
+						"records": [{
+							"key": "AES",
+							"value": "AES"
+						}, {
+							"key": "RSA",
+							"value": "RSA"
+						}, {
+							"key": "ECC",
+							"value": "ECC"
+						}]
+					}
+				}],
+				"GenerationDate": [{
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"type": "Date",
+					"displayAs": "pxDateTime",
+					"additionalInformation": "@PARAGRAPH GenerationDate_additionalInfo",
+					"label": "Generation Date"
+				}],
+				"KeyLength": [{
+					"classID": "O40M3A-MarekCo-Data-EncryptionKeys",
+					"type": "Decimal",
+					"displayAs": "pxNumber",
+					"additionalInformation": "@PARAGRAPH KeyLength_additionalInfo",
+					"label": "Key Length"
+				}],
+				"pyLabel": [{
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers",
+					"type": "Text",
+					"maxLength": 64,
+					"displayAs": "pxTextInput",
+					"definedOnClassID": "Work-",
+					"expectedLength": 60,
+					"label": "Label"
+				}],
+				"pyID": [{
+					"classID": "O40M3A-MarekCo-Work-KeysAndCiphers",
+					"type": "Text",
+					"maxLength": 32,
+					"displayAs": "pxDisplayText",
+					"definedOnClassID": "Work-Cover-",
+					"expectedLength": 22,
+					"label": "Case ID",
+					"isClassKey": true
+				}]
+			}
+		},
+		"components": ["Integer", "DefaultForm", "Details", "Decimal", "RadioButtons", "Dropdown", "Region", "TextInput", "View", "DataReference", "Date"],
+		"localeReferences": ["O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!ASSOCIATED!ALGORITHM", "O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!VIEW!DROPDOWN", "O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!PARAGRAPH!KEYNAME_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!VIEW!SELECTEDKEYDETAILS", "O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!PARAGRAPH!KEYLENGTH_ADDITIONALINFO", "O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!PARAGRAPH!KEYCIPHER_ADDITIONALINFO", "O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!ASSOCIATED!KEYCIPHER", "@BASECLASS!DATAPAGE!D_LISTOFFILTEREDENCRYPTIONKEYS", "O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!PARAGRAPH!KEYSELECTOR_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!PARAGRAPH!GENERATIONDATE_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!PARAGRAPH!IDENTIFIER_ADDITIONALINFO", "O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!CASE!KEYSANDCIPHERS", "O40M3A-MAREKCO-DATA-ENCRYPTIONKEYS!PARAGRAPH!ALGORITHM_ADDITIONALINFO", "O40M3A-MAREKCO-WORK-KEYSANDCIPHERS!VIEW!DROPDOWN_KEYSELECTOR"],
+		"root": {
+			"type": "reference",
+			"config": {
+				"type": "view",
+				"name": "Dropdown",
+				"context": "caseInfo.content"
+			}
+		},
+		"context_data": {
+			"caseInfo": {
+				"content": {
+					"summary_of_when_conditions__": {},
+					"KeySelector": {
+						"summary_of_associated_lists__": {}
+					},
+					"summary_of_associated_lists__": {}
+				}
+			}
+		},
+		"actionButtons": {
+			"secondary": [{
+				"jsAction": "cancelAssignment",
+				"name": "Cancel",
+				"actionID": "cancel"
+			}, {
+				"jsAction": "saveAssignment",
+				"name": "Save for later",
+				"actionID": "save"
+			}],
+			"main": [{
+				"jsAction": "finishAssignment",
+				"name": "Submit",
+				"actionID": "submit"
+			}]
+		}
+	},
+	"nextAssignmentInfo": {
+		"context": "self",
+		"className": "O40M3A-MarekCo-Work-KeysAndCiphers",
+		"links": {
+			"open": {
+				"rel": "self",
+				"href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW",
+				"type": "GET",
+				"title": "Get assignment details"
+			}
+		},
+		"ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK K-10048!FILTERED_FLOW"
+	}
+}
