@@ -20,7 +20,10 @@ struct StateView: View {
     var body: some View {
         Group {
             switch sdkState {
-            case .ready(let root): root.renderView()
+            case .ready(let root, let envInfo):
+                root.renderView()
+                    .environment(\.timeZone, envInfo.timeZoneObject)
+                    .environment(\.locale, envInfo.localeObject)
             default: ProgressView()
             }
         }
@@ -28,5 +31,16 @@ struct StateView: View {
         .onReceive(wrapper.state) { newState in
             sdkState = newState
         }
+    }
+}
+
+extension EnvironmentInfo {
+    var timeZoneObject: TimeZone {
+        let timeZoneMinutesOffset = DateTimeComponent.Companion().getTimeZoneOffset(timeZone: timeZone)
+        return TimeZone(secondsFromGMT: Int(timeZoneMinutesOffset)) ?? TimeZone(abbreviation: "UTC")!
+    }
+
+    var localeObject: Locale {
+        Locale(identifier: locale)
     }
 }

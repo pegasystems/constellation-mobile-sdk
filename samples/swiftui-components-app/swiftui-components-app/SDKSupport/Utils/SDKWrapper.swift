@@ -6,7 +6,7 @@ import SwiftUI
 enum SDKState {
     case initial
     case loading
-    case ready(RootContainerComponent)
+    case ready(RootContainerComponent, EnvironmentInfo)
     case error(String?)
     case finished(String?)
     case cancelled
@@ -23,16 +23,13 @@ class SDKWrapper {
     init(sdk: ConstellationSdk) {
         let collector = Collector<SDKState> { kotlinState in
             switch kotlinState {
-            case is ConstellationSdkState.Loading: return .loading
-            case is ConstellationSdkState.Initial: return .initial
-            case let readyState as ConstellationSdkState.Ready:
-                EnvironmentInfo.shared.locale = readyState.environmentInfo.locale
-                EnvironmentInfo.shared.timeZone = readyState.environmentInfo.timeZone
-                return .ready(readyState.root)
-            case let errorState as ConstellationSdkState.Error: return .error(errorState.error.message)
-            case let finishedState as ConstellationSdkState.Finished: return .finished(finishedState.successMessage)
-            case is ConstellationSdkState.Cancelled: return .cancelled
-            default: return nil
+            case is ConstellationSdkState.Loading: .loading
+            case is ConstellationSdkState.Initial: .initial
+            case let readyState as ConstellationSdkState.Ready: .ready(readyState.root, readyState.environmentInfo)
+            case let errorState as ConstellationSdkState.Error: .error(errorState.error.message)
+            case let finishedState as ConstellationSdkState.Finished: .finished(finishedState.successMessage)
+            case is ConstellationSdkState.Cancelled: .cancelled
+            default: nil
             }
         }
 
@@ -44,11 +41,4 @@ class SDKWrapper {
     func create(_ caseClassName: String) {
         sdk.createCase(caseClassName: caseClassName, startingFields: [:])
     }
-}
-
-class EnvironmentInfo {
-    static let shared = EnvironmentInfo()
-    private init() {}
-    var locale = "en-US"
-    var timeZone = "New York"
 }
