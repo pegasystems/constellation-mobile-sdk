@@ -25,9 +25,11 @@ internal class ConstellationSdkImpl(
     }
 
     override fun createCase(caseClassName: String, startingFields: Map<String, Any>) {
-        engine.performAction(ConstellationSdkAction.CreateCase(
-            caseClassName,
-            startingFields.toJsonElement() as? JsonObject)
+        engine.performAction(
+            ConstellationSdkAction.CreateCase(
+                caseClassName,
+                startingFields.toJsonElement() as? JsonObject
+            )
         )
     }
 
@@ -38,7 +40,10 @@ internal class ConstellationSdkImpl(
     private fun onEngineEvent(event: EngineEvent) {
         _state.value = when (event) {
             is EngineEvent.Loading -> State.Loading
-            is EngineEvent.Ready -> State.Ready(componentManager.rootContainerComponent as RootContainerComponent)
+            is EngineEvent.Ready -> State.Ready(
+                environmentInfo = event.environmentInfo,
+                root = componentManager.rootContainerComponent as RootContainerComponent
+            )
             is EngineEvent.Finished -> State.Finished(event.successMessage)
             is EngineEvent.Cancelled -> State.Cancelled
             is EngineEvent.Error -> State.Error(event.error)

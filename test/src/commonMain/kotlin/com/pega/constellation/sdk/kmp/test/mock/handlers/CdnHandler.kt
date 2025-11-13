@@ -8,9 +8,16 @@ import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 
 class CdnHandler : MockHandler {
     private val assets = mapOf(
-        "https://release.constellation.pega.io/8.24.1/react/prod/bootstrap-shell.js" to "responses/cdn/bootstrap-shell.js",
-        "https://release.constellation.pega.io/8.24.2-422/react/prod/lib_asset.json" to "responses/cdn/lib_asset.json",
-        "https://release.constellation.pega.io/8.24.2-422/react/prod/prerequisite/constellation-core.HASH.js" to "responses/cdn/constellation-core.js",
+        // 8.24.1
+        "https://release.constellation.pega.io/8.24.1/react/prod/bootstrap-shell.js" to "responses/cdn/8.24.1/bootstrap-shell.js",
+        "https://release.constellation.pega.io/8.24.2-422/react/prod/lib_asset.json" to "responses/cdn/8.24.1/lib_asset.json",
+        "https://release.constellation.pega.io/8.24.2-422/react/prod/prerequisite/constellation-core.HASH.js" to "responses/cdn/8.24.1/constellation-core.js",
+
+        // 8.24.2
+        "https://release.constellation.pega.io/8.24.2/react/prod/bootstrap-shell.js" to "responses/cdn/8.24.2/bootstrap-shell.js",
+        "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/lib_asset.json" to "responses/cdn/8.24.2/lib_asset.json",
+        "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/constellation-core.HASH.js" to "responses/cdn/8.24.2/constellation-core.js",
+        "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/js/99.4989502c.js" to "responses/cdn/8.24.2/99.4989502c.js",
     ).mapValues { MockResponse.Asset(it.value) }
 
     override fun canHandle(request: MockRequest) = assets.containsKey(request.rawUrlWithHashPlaceholder)

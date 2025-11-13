@@ -35,7 +35,7 @@ fun interface EngineEventHandler {
  */
 sealed class EngineEvent {
     data object Loading : EngineEvent()
-    data object Ready : EngineEvent()
+    data class Ready(val environmentInfo: EnvironmentInfo) : EngineEvent()
     data class Finished(val successMessage: String?) : EngineEvent()
     data class Error(val error: EngineError) : EngineEvent()
     data object Cancelled : EngineEvent()

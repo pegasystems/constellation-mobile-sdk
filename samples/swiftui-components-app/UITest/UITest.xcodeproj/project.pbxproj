@@ -34,6 +34,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				responses/cdn/.gitkeep,
+				responses/cdn/8.24.2/99.4989502c.js,
+				"responses/cdn/8.24.2/bootstrap-shell.js",
+				"responses/cdn/8.24.2/constellation-core.js",
+				responses/cdn/8.24.2/lib_asset.json,
 				responses/download_js_files.sh,
 				responses/README.md,
 			);

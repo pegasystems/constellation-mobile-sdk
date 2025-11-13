@@ -27,6 +27,7 @@ class DxCasesHandler : MockHandler {
             "DIXL-MediaCo-Work-NewService" -> Asset("responses/dx/cases/NewService-POST.json")
             "DIXL-MediaCo-Work-EmbeddedData" -> Asset("responses/dx/cases/EmbeddedData-POST.json")
             "O40M3A-MarekCo-Work-DataReferenceTest2" -> Asset("responses/dx/cases/DataReferenceTest-POST.json")
+            "O40M3A-MarekCo-Work-KeysAndCiphers" -> Asset("responses/dx/cases/KeysAndCiphers-POST.json")
             else -> Error(500, "Missing response for case $caseTypeId")
         }
     }

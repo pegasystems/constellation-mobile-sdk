@@ -1,0 +1,173 @@
+{
+    "fetchDateTime": "2025-11-05T09:33:32.425Z",
+    "pxObjClass": "Pega-API-DataExploration-Data",
+    "pageNumber": 1,
+    "data": [
+        {
+            "KeyName": "AeroCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1437,
+            "pzRank": 1,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "ChaCha20"
+        },
+        {
+            "KeyName": "AeroCrypt-AuroraCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1248,
+            "pzRank": 2,
+            "KeyLength": 32.000000000,
+            "Algorithm": "Blowfish"
+        },
+        {
+            "KeyName": "AeroCrypt-CascadeGate",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1904,
+            "pzRank": 3,
+            "KeyLength": 2048.000000000,
+            "Algorithm": "ChaCha20"
+        },
+        {
+            "KeyName": "AeroCrypt-FalconLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1805,
+            "pzRank": 4,
+            "KeyLength": 65536.000000000,
+            "Algorithm": "Blowfish"
+        },
+        {
+            "KeyName": "AeroCrypt-GalaxyLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1764,
+            "pzRank": 5,
+            "KeyLength": 16384.000000000,
+            "Algorithm": "ChaCha20"
+        },
+        {
+            "KeyName": "AeroCrypt-HorizonSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1197,
+            "pzRank": 6,
+            "KeyLength": 64.000000000,
+            "Algorithm": "ChaCha20"
+        },
+        {
+            "KeyName": "AeroCrypt-HyperShield",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1729,
+            "pzRank": 7,
+            "KeyLength": 32.000000000,
+            "Algorithm": "Blowfish"
+        },
+        {
+            "KeyName": "AeroCrypt-JadeCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1991,
+            "pzRank": 8,
+            "KeyLength": 128.000000000,
+            "Algorithm": "Twofish"
+        },
+        {
+            "KeyName": "AeroCrypt-KryptonVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1302,
+            "pzRank": 9,
+            "KeyLength": 128.000000000,
+            "Algorithm": "Twofish"
+        },
+        {
+            "KeyName": "AeroCrypt-MagnetSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1082,
+            "pzRank": 10,
+            "KeyLength": 256.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AeroCrypt-MatrixLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1768,
+            "pzRank": 11,
+            "KeyLength": 32.000000000,
+            "Algorithm": "Blowfish"
+        },
+        {
+            "KeyName": "AeroCrypt-MeteorVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1142,
+            "pzRank": 12,
+            "KeyLength": 65536.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AeroCrypt-VertexCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1056,
+            "pzRank": 13,
+            "KeyLength": 256.000000000,
+            "Algorithm": "ECC"
+        },
+        {
+            "KeyName": "AeroCrypt-VortexLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1641,
+            "pzRank": 14,
+            "KeyLength": 256.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AeroCrypt-WhirlVault",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1733,
+            "pzRank": 15,
+            "KeyLength": 512.000000000,
+            "Algorithm": "RSA"
+        },
+        {
+            "KeyName": "AeroCrypt-ZenithLock",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1935,
+            "pzRank": 16,
+            "KeyLength": 65536.000000000,
+            "Algorithm": "AES"
+        },
+        {
+            "KeyName": "AuroraCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1025,
+            "pzRank": 17,
+            "KeyLength": 65536.000000000,
+            "Algorithm": "Twofish"
+        },
+        {
+            "KeyName": "AuroraCrypt-CometSafe",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1900,
+            "pzRank": 18,
+            "KeyLength": 128.000000000,
+            "Algorithm": "ChaCha20"
+        },
+        {
+            "KeyName": "AuroraCrypt-DriftCrypt",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1229,
+            "pzRank": 19,
+            "KeyLength": 4096.000000000,
+            "Algorithm": "AES"
+        },
+        {
+            "KeyName": "AuroraCrypt-HyperShield",
+            "pxObjClass": "O40M3A-MarekCo-Data-EncryptionKeys",
+            "Identifier": 1820,
+            "pzRank": 20,
+            "KeyLength": 32.000000000,
+            "Algorithm": "RSA"
+        }
+    ],
+    "queryStats": {
+        "pxObjClass": "Embed-DataExploration-QueryStats",
+        "sourceType": "RDBMS",
+        "sourceExecutionTime": "13.30 ms"
+    },
+    "pageSize": 20
+}

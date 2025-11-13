@@ -2,6 +2,7 @@ package com.pega.constellation.sdk.kmp.engine.webview.ios
 
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
+import com.pega.constellation.sdk.kmp.core.EnvironmentInfo.Companion.toEnvironmentInfo
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
@@ -38,7 +39,7 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             "updateComponent" -> handleUpdateComponent(array)
             "addComponent" -> handleAddComponent(array)
             "removeComponent" -> handleRemoveComponent(array)
-            "ready" -> eventHandler.handle(EngineEvent.Ready)
+            "ready" -> handleOnReady(array)
             "finished" -> eventHandler.handle(EngineEvent.Finished(array.getOrNull(1) as? String))
             "cancelled" -> eventHandler.handle(EngineEvent.Cancelled)
             "error" -> {
@@ -89,6 +90,13 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             return
         }
         componentManager.removeComponent(ComponentId(cId))
+    }
+
+    private fun handleOnReady(input: List<Any?>) {
+        (input.getOrNull(1) as? String)?.let {
+            val envInfoJson = Json.parseToJsonElement(it).jsonObject
+            eventHandler.handle(EngineEvent.Ready(envInfoJson.toEnvironmentInfo()))
+        } ?: Log.w(TAG, "Unexpected input for onReady")
     }
 }
 

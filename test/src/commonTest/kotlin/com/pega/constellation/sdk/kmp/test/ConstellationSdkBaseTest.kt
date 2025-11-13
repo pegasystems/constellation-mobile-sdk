@@ -27,7 +27,9 @@ abstract class ConstellationSdkBaseTest {
         assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()
-        sdk.assertState<State.Ready>()
+        val environmentInfo = sdk.assertState<State.Ready>().environmentInfo
+        assertEquals("en-US", environmentInfo.locale)
+        assertEquals("America/New_York", environmentInfo.timeZone)
     }
 
     @Test

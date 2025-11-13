@@ -37,7 +37,6 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
     private val httpClient = buildHttpClient(authManager)
     private val engine = AndroidWebViewEngine(context, httpClient, httpClient)
-    private val sdk by lazy { ConstellationSdk.create(buildSdkConfig(), engine) }
 
     @BeforeTest
     fun setUp() {
@@ -46,18 +45,23 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     }
 
     @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String) {
+    protected fun ComposeUiTest.setupApp(caseClassName: String, pegaVersion: PegaVersion) {
         setContent {
             MediaCoApp(
                 appViewModel = viewModel { MediaCoAppViewModel(authManager) },
-                pegaViewModel = viewModel { PegaViewModel(sdk, caseClassName) }
+                pegaViewModel = viewModel {
+                    PegaViewModel(
+                        sdk = ConstellationSdk.create(buildSdkConfig(pegaVersion), engine),
+                        caseClassName = caseClassName
+                    )
+                }
             )
         }
     }
 
-    private fun buildSdkConfig() = ConstellationSdkConfig(
+    private fun buildSdkConfig(pegaVersion: PegaVersion) = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
-        pegaVersion = PEGA_VERSION,
+        pegaVersion = pegaVersion.versionString,
         componentManager = buildComponentManager(),
         debuggable = true
     )
@@ -76,13 +80,16 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
             .executeShellCommand("settings put secure show_ime_with_hard_keyboard 0")
     }
 
-
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
-        private const val PEGA_VERSION = "24.1.0"
 
         val TestComponentDefinitions = listOf(
             ComponentDefinition(Email) { CustomEmailComponent(it) }
         )
     }
+}
+
+enum class PegaVersion(val versionString: String) {
+    V_24_1_0("24.1.0"),
+    V_24_2_2("24.2.2")
 }

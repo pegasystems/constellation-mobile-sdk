@@ -42,7 +42,8 @@ internal class SdkBridge(private val handler: BridgeEventHandler) {
     fun setRequestBody(body: String) = handle(SetRequestBody(body))
 
     @JavascriptInterface
-    fun onReady() = handle(OnReady)
+    fun onReady(envInfoJson: String) =
+        handle(OnReady(Json.parseToJsonElement(envInfoJson).jsonObject))
 
     @JavascriptInterface
     fun onFinished(successMessage: String?) = handle(OnFinished(successMessage))
@@ -64,7 +65,7 @@ internal class SdkBridge(private val handler: BridgeEventHandler) {
         data class RemoveComponent(val id: ComponentId) : BridgeEvent()
         data class UpdateComponent(val id: ComponentId, val propsJson: JsonObject) : BridgeEvent()
         data class SetRequestBody(val body: String) : BridgeEvent()
-        data object OnReady : BridgeEvent()
+        data class OnReady(val envInfoJson: JsonObject) : BridgeEvent()
         data class OnFinished(val successMessage: String?) : BridgeEvent()
         data object OnCancelled : BridgeEvent()
         data class OnError(val type: JsErrorType, val message: String) : BridgeEvent()

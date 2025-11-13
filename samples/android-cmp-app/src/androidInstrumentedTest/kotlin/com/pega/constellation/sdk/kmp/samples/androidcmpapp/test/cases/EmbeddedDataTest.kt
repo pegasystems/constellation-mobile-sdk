@@ -12,6 +12,7 @@ import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.waitUntilDoesNotExist
 import androidx.compose.ui.test.waitUntilNodeCount
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaVersion
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import kotlin.test.Test
@@ -20,7 +21,7 @@ import kotlin.test.Test
 class EmbeddedDataTest : ComposeTest() {
     @Test
     fun test_embedded_data() = runComposeUiTest {
-        setupApp("DIXL-MediaCo-Work-EmbeddedData")
+        setupApp("DIXL-MediaCo-Work-EmbeddedData", PegaVersion.V_24_1_0)
 
         // create case
         onNodeWithText("New Service").performClick()
