@@ -1,15 +1,8 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
@@ -24,11 +17,11 @@ import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTestMode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeAuthFlowFactory
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeTokenStore
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoAppViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomEmailComponent
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.home.HomeScreen
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +37,7 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
     private val httpClient = buildHttpClient(authManager)
     private val engine = AndroidWebViewEngine(context, httpClient, httpClient)
+    private val sdk by lazy { ConstellationSdk.create(buildSdkConfig(), engine) }
 
     @BeforeTest
     fun setUp() {
@@ -54,21 +48,10 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     @OptIn(ExperimentalTestApi::class)
     protected fun ComposeUiTest.setupApp(caseClassName: String) {
         setContent {
-            MediaCoTheme {
-                Scaffold(Modifier.fillMaxSize()) { innerPadding ->
-                    Box(Modifier.padding(innerPadding)) {
-                        HomeScreen(pegaViewModel = viewModel(factory = testFactory(caseClassName)))
-                    }
-                }
-            }
-        }
-    }
-
-    @OptIn(ExperimentalOpenIdConnect::class)
-    private fun testFactory(caseClassName: String) = viewModelFactory {
-        initializer {
-            val sdk = ConstellationSdk.create(buildSdkConfig(), engine)
-            PegaViewModel(authManager, sdk, caseClassName)
+            MediaCoApp(
+                appViewModel = viewModel { MediaCoAppViewModel(authManager) },
+                pegaViewModel = viewModel { PegaViewModel(sdk, caseClassName) }
+            )
         }
     }
 

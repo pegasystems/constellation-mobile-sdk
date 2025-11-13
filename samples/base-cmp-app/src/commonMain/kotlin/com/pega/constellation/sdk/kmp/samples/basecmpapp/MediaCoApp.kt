@@ -10,11 +10,13 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.Authenti
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.TokenExpired
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.login.LoginScreen
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.main.MainScreen
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 
 @Composable
 fun MediaCoApp(
-    appViewModel: MediaCoAppViewModel = viewModel(factory = MediaCoAppViewModel.Factory)
+    appViewModel: MediaCoAppViewModel = viewModel(factory = MediaCoAppViewModel.Factory),
+    pegaViewModel: PegaViewModel = viewModel(factory = PegaViewModel.Factory),
 ) {
     val authState by appViewModel.authState.collectAsState()
     val authenticated = authState == Authenticated
@@ -29,7 +31,7 @@ fun MediaCoApp(
 
     MediaCoTheme {
         if (authenticated) {
-            MainScreen(appViewModel)
+            MainScreen(appViewModel, pegaViewModel)
         } else {
             LoginScreen(appViewModel)
         }
