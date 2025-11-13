@@ -55,11 +55,13 @@ do
     echo "First 256 chars from downloaded file (for verification)"
     head -c 256 "${OUTPUT_DIR}/bootstrap-shell.js"
 
+    if [ "$RELEASE" = "8.24.2" ]; then
+       DEPENDENCY_HASH=$(grep -oE 'js/.+\.([0-9a-f]+)\.js' "${OUTPUT_DIR}/constellation-core.js" | sed -E 's/.*\.([0-9a-f]+)\.js/\1/' | head -n1)
+       curl "${CDN_URLS[i]}/prerequisite/js/99.${DEPENDENCY_HASH}.js" -o "${OUTPUT_DIR}/99.js"
+    fi
+
     # Replace pxBootstrapConfig name in downloaded files, so it will be distinguishable between versions
     sed -i.bak -e "s/D_pxBootstrapConfig/D_pxBootstrapConfig-${RELEASE}/g" "${OUTPUT_DIR}"/*
     rm "${OUTPUT_DIR}"/*.bak
 
 done
-
-# Required for 8.24.2
-curl "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/js/99.4989502c.js" -o "cdn/8.24.2/99.4989502c.js"

@@ -17,7 +17,7 @@ class CdnHandler : MockHandler {
         "https://release.constellation.pega.io/8.24.2/react/prod/bootstrap-shell.js" to "responses/cdn/8.24.2/bootstrap-shell.js",
         "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/lib_asset.json" to "responses/cdn/8.24.2/lib_asset.json",
         "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/constellation-core.HASH.js" to "responses/cdn/8.24.2/constellation-core.js",
-        "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/js/99.4989502c.js" to "responses/cdn/8.24.2/99.4989502c.js",
+        "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/js/99.HASH.js" to "responses/cdn/8.24.2/99.js",
     ).mapValues { MockResponse.Asset(it.value) }
 
     override fun canHandle(request: MockRequest) = assets.containsKey(request.rawUrlWithHashPlaceholder)
@@ -30,8 +30,9 @@ class CdnHandler : MockHandler {
     private val MockRequest.rawUrlWithHashPlaceholder: String
         get() {
             // replace hash in the JS file name to the literal string 'HASH'
-            val hashRegex = "(/[A-Za-z_-]+\\.)([a-f0-9]+\\.js)".toRegex()
+            val hashRegex = "(/[A-Za-z0-9_-]+\\.)([a-f0-9]+\\.js)".toRegex()
             val replacement = "$1HASH.js"
-            return rawUrl.replace(hashRegex, replacement)
+            val result = rawUrl.replace(hashRegex, replacement)
+            return result
         }
 }
