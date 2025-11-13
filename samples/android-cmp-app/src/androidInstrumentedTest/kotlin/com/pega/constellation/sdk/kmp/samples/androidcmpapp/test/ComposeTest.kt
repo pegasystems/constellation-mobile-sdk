@@ -37,7 +37,10 @@ import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import kotlin.test.BeforeTest
 
 @OptIn(ExperimentalOpenIdConnect::class)
-abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
+abstract class ComposeTest(
+    private val pegaVersion: PegaVersion,
+    val mode: ComposeTestMode = MockServer,
+) {
     private val scope = CoroutineScope(Dispatchers.Default)
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context = instrumentation.targetContext
@@ -52,7 +55,7 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     }
 
     @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String, pegaVersion: PegaVersion) {
+    protected fun ComposeUiTest.setupApp(caseClassName: String) {
         setContent {
             MediaCoTheme {
                 Scaffold(Modifier.fillMaxSize()) { innerPadding ->
@@ -82,7 +85,7 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
     private fun buildHttpClient(authManager: AuthManager) = when (mode) {
-        is MockServer -> MockHttpClient(context)
+        is MockServer -> MockHttpClient(context, pegaVersion.versionString)
         is RealServer -> OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .build()

@@ -10,14 +10,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTestMode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaVersion
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class ParametrizedDataReferenceTest : ComposeTest(mode = ComposeTestMode.MockServer) {
+class ParametrizedDataReferenceTest : ComposeTest(PegaVersion.v24_2_2) {
     private val columns = listOf("KeyName", "KeyLength", "Algorithm")
 
     private val unfilteredKeys = listOf(
@@ -40,7 +39,7 @@ class ParametrizedDataReferenceTest : ComposeTest(mode = ComposeTestMode.MockSer
 
     @Test
     fun test_datareference_with_parametrized_dp() = runComposeUiTest {
-        setupApp("O40M3A-MarekCo-Work-KeysAndCiphers", PegaVersion.v24_2_2)
+        setupApp("O40M3A-MarekCo-Work-KeysAndCiphers")
 
         // create case
         onNodeWithText("New Service").performClick()
