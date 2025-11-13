@@ -17,7 +17,7 @@ declare -a RELEASE_URLS=(
 )
 declare -a CDN_URLS=( 
     "https://release.constellation.pega.io/8.24.2-422/react/prod"
-    "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod"
+    "https://release.constellation.pega.io/8.24.52-349/react/prod"
 )
 
 for i in "${!RELEASES[@]}"
@@ -60,6 +60,3 @@ do
     rm "${OUTPUT_DIR}"/*.bak
 
 done
-
-# Required for 8.24.2
-curl "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/js/99.4989502c.js" -o "cdn/8.24.2/99.4989502c.js"
