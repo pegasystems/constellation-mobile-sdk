@@ -19,12 +19,14 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.home.HomeScr
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaBottomSheet
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesScreen
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel
 
 
 @Composable
 fun MainScreen(
     appViewModel: MediaCoAppViewModel,
-    pegaViewModel: PegaViewModel
+    pegaViewModel: PegaViewModel,
+    servicesViewModel: ServicesViewModel
 ) {
     val navController = rememberNavController()
     val currentEntry by navController.currentBackStackEntryAsState()
@@ -40,7 +42,9 @@ fun MainScreen(
         Box(Modifier.padding(innerPadding)) {
             NavHost(navController, startDestination = MainTab.Home.name) {
                 composable(MainTab.Home.name) { HomeScreen() }
-                composable(MainTab.Services.name) { ServicesScreen(pegaViewModel) }
+                composable(MainTab.Services.name) {
+                    ServicesScreen(pegaViewModel, servicesViewModel)
+                }
             }
 
             if (pegaViewModel.showForm) {

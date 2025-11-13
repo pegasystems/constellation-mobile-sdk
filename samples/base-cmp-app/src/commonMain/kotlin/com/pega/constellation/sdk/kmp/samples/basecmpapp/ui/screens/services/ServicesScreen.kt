@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.Assignment
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel.UiState
@@ -32,7 +31,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.Ser
 @Composable
 fun ServicesScreen(
     pegaViewModel: PegaViewModel,
-    servicesViewModel: ServicesViewModel = viewModel(factory = ServicesViewModel.Factory),
+    servicesViewModel: ServicesViewModel
 ) {
     val uiState by servicesViewModel.uiState.collectAsState()
 

@@ -14,6 +14,7 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.AndroidWebViewEngin
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.AuthInterceptor
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTestMode.MockServer
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTestMode.RealServer
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeAssignmentsRepository
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeAuthFlowFactory
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeTokenStore
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
@@ -22,6 +23,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoAppViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomEmailComponent
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,15 +51,14 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
         setContent {
             MediaCoApp(
                 appViewModel = viewModel { MediaCoAppViewModel(authManager) },
-                pegaViewModel = viewModel {
-                    PegaViewModel(
-                        sdk = ConstellationSdk.create(buildSdkConfig(pegaVersion), engine),
-                        caseClassName = caseClassName
-                    )
-                }
+                pegaViewModel = viewModel { PegaViewModel(buildSdk(pegaVersion), caseClassName) },
+                servicesViewModel = viewModel { ServicesViewModel(FakeAssignmentsRepository()) }
             )
         }
     }
+
+    private fun buildSdk(pegaVersion: PegaVersion) =
+        ConstellationSdk.create(buildSdkConfig(pegaVersion), engine)
 
     private fun buildSdkConfig(pegaVersion: PegaVersion) = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
