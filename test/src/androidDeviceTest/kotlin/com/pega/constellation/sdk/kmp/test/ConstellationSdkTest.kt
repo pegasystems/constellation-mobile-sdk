@@ -15,8 +15,8 @@ class ConstellationSdkTest : ConstellationSdkBaseTest() {
     fun setup() {
         engine = AndroidWebViewEngine(
             context = appContext,
-            okHttpClient = MockHttpClient(appContext),
-            nonDxOkHttpClient = MockHttpClient(appContext)
+            okHttpClient = MockHttpClient(appContext, "24.1.0"),
+            nonDxOkHttpClient = MockHttpClient(appContext, "24.1.0")
         )
     }
 }
