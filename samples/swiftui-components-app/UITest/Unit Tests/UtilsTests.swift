@@ -37,6 +37,20 @@ extension UtilsTests {
             XCTAssertEqual(expect, input.formattedToDecimalPlaces(decimal))
         }
     }
+
+    func testHtmlStripping() {
+        let expectations: [(String, String)] = [
+            // expected, input
+            ("Paragraph", "<p>Paragraph</p>"),
+            ("Link inside the div", "<div><a href=\"#\">Link</a> inside the div</div>"),
+            ("Deprecated font tag.", "Deprecated <font color=\"red\" size=10>font</font> tag."),
+            ("Styled div tag", "Styled <div style=\"font-size:11px;color: red;\">div</div> tag")
+        ]
+
+        for (expect, input) in expectations {
+            XCTAssertEqual(expect, input.strippingHtmlTags)
+        }
+    }
 }
 
 // MARK: - Bundle Utils
