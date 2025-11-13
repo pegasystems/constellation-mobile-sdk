@@ -28,12 +28,12 @@ import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
 @Composable
 fun PegaBottomSheet(
     viewModel: PegaViewModel = viewModel(factory = PegaViewModel.Factory),
-    onMessage: (String) -> Unit,
+    onMessage: (String) -> Unit
 ) {
     val sdkState by viewModel.sdkState.collectAsState()
     val showForm by remember {
         derivedStateOf {
-            !viewModel.dismissed && (sdkState is State.Loading || sdkState is State.Ready)
+            viewModel.showForm && (sdkState is State.Loading || sdkState is State.Ready)
         }
     }
     LaunchedEffect(sdkState) {
@@ -42,7 +42,7 @@ fun PegaBottomSheet(
 
     if (showForm) {
         ModalBottomSheet(
-            onDismissRequest = { viewModel.dismissed = true },
+            onDismissRequest = { viewModel.showForm = false },
             sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             containerColor = MaterialTheme.colorScheme.surface,

@@ -39,8 +39,11 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.navigation.compose)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.ktor.client.auth)
+                implementation(libs.ktor.client.core)
                 implementation(libs.oidc.appsupport)
                 implementation(libs.oidc.tokenstore)
             }

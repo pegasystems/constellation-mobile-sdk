@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.bars
+package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.common
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
@@ -16,7 +16,7 @@ import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_cont
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_home
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_offers
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_services
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.home.NavItem
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.main.MainTab
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -24,8 +24,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MediaCoBottomAppBar(
-    selectedNavItem: NavItem = NavItem.Home,
-    onNavItemSelected: (NavItem) -> Unit = {}
+    selected: MainTab = MainTab.Home,
+    onNavItemSelected: (MainTab) -> Unit = {}
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
@@ -34,14 +34,14 @@ fun MediaCoBottomAppBar(
         NavItem(
             "Home",
             Res.drawable.icon_home,
-            selected = selectedNavItem == NavItem.Home,
-            onSelected = { onNavItemSelected(NavItem.Home) }
+            selected = selected == MainTab.Home,
+            onSelected = { onNavItemSelected(MainTab.Home) }
         )
         NavItem(
             "Services",
             Res.drawable.icon_services,
-            selected = selectedNavItem == NavItem.Services,
-            onSelected = { onNavItemSelected(NavItem.Services) }
+            selected = selected == MainTab.Services,
+            onSelected = { onNavItemSelected(MainTab.Services) }
         )
         NavItem("Offers", Res.drawable.icon_offers)
         NavItem("Contact", Res.drawable.icon_contact)

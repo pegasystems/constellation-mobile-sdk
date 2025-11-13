@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.bars
+package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
