@@ -30,6 +30,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.home.HomeScr
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -85,7 +86,7 @@ abstract class ComposeTest(
     private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
     private fun buildHttpClient(authManager: AuthManager) = when (mode) {
-        is MockServer -> MockHttpClient(context, pegaVersion.versionString)
+        is MockServer -> MockHttpClient(context, pegaVersion)
         is RealServer -> OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .build()
@@ -103,9 +104,4 @@ abstract class ComposeTest(
             ComponentDefinition(Email) { CustomEmailComponent(it) }
         )
     }
-}
-
-enum class PegaVersion(val versionString: String) {
-    v24_1_0("24.1.0"),
-    v24_2_2("24.2.2")
 }

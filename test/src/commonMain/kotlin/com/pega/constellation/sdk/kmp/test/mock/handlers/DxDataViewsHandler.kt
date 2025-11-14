@@ -6,22 +6,19 @@ import com.pega.constellation.sdk.kmp.test.mock.MockRequest.Companion.DX_API_PAT
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-class DxDataViewsHandler(private val pegaVersion: String) : MockHandler {
-    private val pegaToCoreJsVersion = mapOf(
-        "24.1.0" to "8.24.1",
-        "24.2.2" to "8.24.2",
-    )
+class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
 
     override fun canHandle(request: MockRequest) = request.isDxApi("data_views")
 
     override fun handle(request: MockRequest): MockResponse {
         val dataViewId = request.url.substringAfter(DX_API_PATH + "data_views/")
         return when (dataViewId) {
-            "D_pxBootstrapConfig" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-${pegaToCoreJsVersion[pegaVersion]}.json")
+            "D_pxBootstrapConfig" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-${pegaVersion.coreJsVersionString}.json")
             "D_CarsList" -> Asset("responses/dx/data_views/D_CarsList.json")
             "D_ListOfFilteredEncryptionKeys" -> handleEncryptionKeysList(request.body ?: "")
             else -> Error(404, "Missing response for data page $dataViewId")

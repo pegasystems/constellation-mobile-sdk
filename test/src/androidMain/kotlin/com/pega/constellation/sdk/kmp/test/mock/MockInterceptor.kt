@@ -18,7 +18,7 @@ import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 
-class MockInterceptor(private val context: Context, pegaVersion: String) : Interceptor {
+class MockInterceptor(private val context: Context, pegaVersion: PegaVersion) : Interceptor {
 
     private val cdnHosts = listOf(
         "release.constellation.pega.io",
