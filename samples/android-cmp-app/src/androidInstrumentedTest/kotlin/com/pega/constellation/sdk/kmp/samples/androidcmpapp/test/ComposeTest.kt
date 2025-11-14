@@ -1,6 +1,7 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
 import androidx.compose.ui.test.ComposeUiTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeAssignmentsRepository
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.platform.app.InstrumentationRegistry
@@ -22,6 +23,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoAppViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomEmailComponent
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.coroutines.CoroutineScope
@@ -53,15 +55,13 @@ abstract class ComposeTest(
         setContent {
             MediaCoApp(
                 appViewModel = viewModel { MediaCoAppViewModel(authManager) },
-                pegaViewModel = viewModel {
-                    PegaViewModel(
-                        sdk = ConstellationSdk.create(buildSdkConfig(), engine),
-                        caseClassName = caseClassName
-                    )
-                }
+                pegaViewModel = viewModel { PegaViewModel(buildSdk(), caseClassName) },
+                servicesViewModel = viewModel { ServicesViewModel(FakeAssignmentsRepository()) }
             )
         }
     }
+
+    private fun buildSdk() = ConstellationSdk.create(buildSdkConfig(), engine)
 
     private fun buildSdkConfig() = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,

@@ -11,17 +11,18 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class DxAssignmentsHandler : MockHandler {
-    private val regex = Regex(".*/assignments/(.*)/actions/([^?]+)")
+    private val regex = Regex(".*/assignments/(.+?)[/?](?:actions/([^?]+))?")
 
     override fun canHandle(request: MockRequest) = request.isDxApi("assignments")
 
     override fun handle(request: MockRequest): MockResponse {
-        // we should check path
         val match = regex.find(request.url) ?: return Error(400, "Invalid request")
         val assignmentId = match.groupValues[1]
         val actionId = match.groupValues[2]
 
         return when {
+            assignmentId.contains("K-11018") && actionId.isEmpty() -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11018.json")
+            assignmentId.contains("K-11019") && actionId.isEmpty() -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11019.json")
             assignmentId.contains("S-17098") && actionId == "Create" -> Asset("responses/dx/assignments/SDKTesting-1-Create.json")
             assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
             assignmentId.contains("N-16042") -> handleNewService(actionId)
