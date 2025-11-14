@@ -12,6 +12,7 @@ object ComponentTypes {
     val DataReference = ComponentType("DataReference")
     val DefaultForm = ComponentType("DefaultForm")
     val FlowContainer = ComponentType("FlowContainer")
+    val Group = ComponentType("Group")
     val ListView = ComponentType("ListView")
     val OneColumn = ComponentType("OneColumn")
     val Region = ComponentType("Region")

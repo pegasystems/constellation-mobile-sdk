@@ -8,13 +8,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaVersion
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class DataReferenceTest : ComposeTest() {
+class DataReferenceTest : ComposeTest(PegaVersion.v24_1_0) {
     private val columns = listOf("ID", "BRAND", "MODEL", "COLOR")
     private val cars = listOf(
         listOf("1", "Ford", "Focus", "Silver"),
@@ -26,7 +26,7 @@ class DataReferenceTest : ComposeTest() {
 
     @Test
     fun test_simple_table() = runComposeUiTest {
-        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2", PegaVersion.V_24_1_0)
+        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2")
 
         // create case
         onNodeWithText("New Service").performClick()
@@ -44,7 +44,7 @@ class DataReferenceTest : ComposeTest() {
 
     @Test
     fun test_dropdown() = runComposeUiTest {
-        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2", PegaVersion.V_24_1_0)
+        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2")
 
         // create case
         onNodeWithText("New Service").performClick()

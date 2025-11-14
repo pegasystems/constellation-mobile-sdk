@@ -23,6 +23,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomEmailComponent
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -30,7 +31,10 @@ import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import kotlin.test.BeforeTest
 
 @OptIn(ExperimentalOpenIdConnect::class)
-abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
+abstract class ComposeTest(
+    private val pegaVersion: PegaVersion,
+    val mode: ComposeTestMode = MockServer,
+) {
     private val scope = CoroutineScope(Dispatchers.Default)
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context = instrumentation.targetContext
@@ -45,13 +49,13 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     }
 
     @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String, pegaVersion: PegaVersion) {
+    protected fun ComposeUiTest.setupApp(caseClassName: String) {
         setContent {
             MediaCoApp(
                 appViewModel = viewModel { MediaCoAppViewModel(authManager) },
                 pegaViewModel = viewModel {
                     PegaViewModel(
-                        sdk = ConstellationSdk.create(buildSdkConfig(pegaVersion), engine),
+                        sdk = ConstellationSdk.create(buildSdkConfig(), engine),
                         caseClassName = caseClassName
                     )
                 }
@@ -59,7 +63,7 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
         }
     }
 
-    private fun buildSdkConfig(pegaVersion: PegaVersion) = ConstellationSdkConfig(
+    private fun buildSdkConfig() = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
         pegaVersion = pegaVersion.versionString,
         componentManager = buildComponentManager(),
@@ -69,7 +73,7 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
     private fun buildHttpClient(authManager: AuthManager) = when (mode) {
-        is MockServer -> MockHttpClient(context)
+        is MockServer -> MockHttpClient(context, pegaVersion)
         is RealServer -> OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .build()
@@ -87,9 +91,4 @@ abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
             ComponentDefinition(Email) { CustomEmailComponent(it) }
         )
     }
-}
-
-enum class PegaVersion(val versionString: String) {
-    V_24_1_0("24.1.0"),
-    V_24_2_2("24.2.2")
 }
