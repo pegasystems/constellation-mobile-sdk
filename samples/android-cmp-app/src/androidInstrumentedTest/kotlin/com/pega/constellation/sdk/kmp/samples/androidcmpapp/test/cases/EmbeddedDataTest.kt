@@ -62,7 +62,9 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_1_0) {
 
         // enter data in Row 2
         waitForNodes("Row 2", count = 2)
-        onNode(hasText("Client name") and !hasText("Lukasz") and hasSetTextAction()).performTextInput("Marek")
+        onNode(hasText("Client name") and !hasText("Lukasz") and hasSetTextAction()).performTextInput(
+            "Marek"
+        )
         onNode(hasText("Brand") and !hasText("Audi") and hasSetTextAction()).performTextInput("Ford")
         onNode(hasText("Model") and !hasText("A5") and hasSetTextAction()).performTextInput("Focus")
         onNodeWithText("Row 2").performClick() // remove focus to propagate data
