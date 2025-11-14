@@ -6,21 +6,24 @@ import com.pega.constellation.sdk.kmp.test.mock.MockRequest.Companion.DX_API_PAT
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-class DxDataViewsHandler : MockHandler {
+class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
+
     override fun canHandle(request: MockRequest) = request.isDxApi("data_views")
 
-    override fun handle(request: MockRequest) =
-        when (val dataViewId = request.url.substringAfter(DX_API_PATH + "data_views/")) {
-            "D_pxBootstrapConfig-8.24.1" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-8.24.1.json")
-            "D_pxBootstrapConfig-8.24.2" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-8.24.2.json")
+    override fun handle(request: MockRequest): MockResponse {
+        val dataViewId = request.url.substringAfter(DX_API_PATH + "data_views/")
+        return when (dataViewId) {
+            "D_pxBootstrapConfig" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-${pegaVersion.coreJsVersionString}.json")
             "D_CarsList" -> Asset("responses/dx/data_views/D_CarsList.json")
             "D_ListOfFilteredEncryptionKeys" -> handleEncryptionKeysList(request.body ?: "")
             else -> Error(404, "Missing response for data page $dataViewId")
         }
+    }
 
     private fun handleEncryptionKeysList(body: String): MockResponse {
         val filter = Json.parseToJsonElement(body)
@@ -29,7 +32,7 @@ class DxDataViewsHandler : MockHandler {
             ?.get("Algo")
             ?.jsonPrimitive
             ?.content
-        return when (filter) {
+        return when(filter) {
             null, "" -> Asset("responses/dx/data_views/D_EncryptionKeysList-all.json")
             "AES" -> Asset("responses/dx/data_views/D_EncryptionKeysList-AES.json")
             "RSA" -> Asset("responses/dx/data_views/D_EncryptionKeysList-RSA.json")

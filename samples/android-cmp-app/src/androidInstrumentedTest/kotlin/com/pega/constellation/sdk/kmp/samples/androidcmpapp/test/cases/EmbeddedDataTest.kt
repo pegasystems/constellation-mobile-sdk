@@ -12,16 +12,16 @@ import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.waitUntilDoesNotExist
 import androidx.compose.ui.test.waitUntilNodeCount
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaVersion
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class EmbeddedDataTest : ComposeTest() {
+class EmbeddedDataTest : ComposeTest(PegaVersion.v24_1_0) {
     @Test
     fun test_embedded_data() = runComposeUiTest {
-        setupApp("DIXL-MediaCo-Work-EmbeddedData", PegaVersion.V_24_1_0)
+        setupApp("DIXL-MediaCo-Work-EmbeddedData")
 
         // create case
         onNodeWithText("New Service").performClick()
@@ -73,12 +73,12 @@ class EmbeddedDataTest : ComposeTest() {
         waitForNodes("Focus", 2)
 
         // remove Row 1 and verify
-        onNodeWithContentDescription("Delete item 1").performClick()
+        onNodeWithContentDescription("Delete item 2").performClick()
 
         waitUntilDoesNotExist(hasText("Row 2"))
-        waitUntilDoesNotExist(hasText("Lukasz"))
-        waitUntilDoesNotExist(hasText("Audi"))
-        waitUntilDoesNotExist(hasText("A5"))
+        waitUntilDoesNotExist(hasText("Marek"))
+        waitUntilDoesNotExist(hasText("Ford"))
+        waitUntilDoesNotExist(hasText("Focus"))
 
         // go to next step
         onNodeWithText("Next").performClick()
