@@ -138,7 +138,6 @@ class AndroidWebViewEngine(
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun createWebView(client: WebViewClient) = WebView(context).apply {
-
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
         webViewClient = client

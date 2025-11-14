@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.bars
+package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.common
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
@@ -16,19 +16,33 @@ import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_cont
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_home
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_offers
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_services
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.main.MainTab
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MediaCoBottomAppBar() {
+fun MediaCoBottomAppBar(
+    selected: MainTab = MainTab.Home,
+    onNavItemSelected: (MainTab) -> Unit = {}
+) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp
     ) {
-        NavItem("Home", Res.drawable.icon_home, selected = true)
-        NavItem("Services", Res.drawable.icon_services)
+        NavItem(
+            "Home",
+            Res.drawable.icon_home,
+            selected = selected == MainTab.Home,
+            onSelected = { onNavItemSelected(MainTab.Home) }
+        )
+        NavItem(
+            "Services",
+            Res.drawable.icon_services,
+            selected = selected == MainTab.Services,
+            onSelected = { onNavItemSelected(MainTab.Services) }
+        )
         NavItem("Offers", Res.drawable.icon_offers)
         NavItem("Contact", Res.drawable.icon_contact)
     }
@@ -40,10 +54,11 @@ fun RowScope.NavItem(
     icon: DrawableResource,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
+    onSelected: () -> Unit = { }
 ) {
     NavigationBarItem(
         selected = selected,
-        onClick = {},
+        onClick = onSelected,
         icon = { Icon(painterResource(icon), "home", modifier = modifier.height(24.dp)) },
         label = { Text(label, fontSize = 12.sp) }
     )

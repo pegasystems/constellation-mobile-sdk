@@ -33,10 +33,10 @@ class DxCasesHandler : MockHandler {
     }
 
     private fun handleDelete(request: MockRequest) =
-        if (request.url.contains("S-17098")) {
-            Asset("responses/dx/cases/SDKTesting-DELETE.json")
-        } else {
-            Error(500, "Missing response for ${request.url}")
+        when {
+            request.url.contains("S-17098") -> Asset("responses/dx/cases/SDKTesting-DELETE.json")
+            request.url.contains("K-11019") -> Asset("responses/dx/cases/KeysAndCiphers-DELETE.json")
+            else -> Error(500, "Missing response for ${request.url}")
         }
 }
 

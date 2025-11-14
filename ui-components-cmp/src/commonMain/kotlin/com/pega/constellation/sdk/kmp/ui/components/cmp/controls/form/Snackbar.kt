@@ -15,7 +15,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun Snackbar(
     messages: List<String>,
-    onSnackbarClose: () -> Unit,
+    onSnackbarClose: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -28,7 +28,7 @@ fun Snackbar(
                 actionLabel = dismiss,
                 duration = SnackbarDuration.Short
             )
-            onSnackbarClose()
+            onSnackbarClose(it)
         }
     }
 }
