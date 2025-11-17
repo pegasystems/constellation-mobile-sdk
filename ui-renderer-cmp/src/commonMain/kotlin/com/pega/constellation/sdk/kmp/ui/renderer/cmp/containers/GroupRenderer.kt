@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.core.api.Component
@@ -24,6 +25,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.GroupComponent
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithVisibility
 import com.pega.constellation.sdk.kmp.ui_renderer_cmp.generated.resources.Res
 import com.pega.constellation.sdk.kmp.ui_renderer_cmp.generated.resources.arrow_right_48
 import org.jetbrains.compose.resources.painterResource
@@ -31,16 +33,18 @@ import org.jetbrains.compose.resources.painterResource
 class GroupRenderer : ComponentRenderer<GroupComponent> {
     @Composable
     override fun GroupComponent.Render() {
-        if (collapsible) {
-            CollapsibleGroup(heading, children)
-        } else {
-            NonCollapsibleGroup(heading, children)
+        WithVisibility(visible) {
+            if (collapsible) {
+                CollapsibleGroup(heading, instructions, children)
+            } else {
+                NonCollapsibleGroup(heading, children)
+            }
         }
     }
 }
 
 @Composable
-fun CollapsibleGroup(heading: String, children: List<Component>) {
+fun CollapsibleGroup(heading: String, instructions: String, children: List<Component>) {
     var collapsed by remember { mutableStateOf(false) }
     val rotationAngle by animateFloatAsState(
         targetValue = if (collapsed) 0f else 90f,
@@ -58,6 +62,14 @@ fun CollapsibleGroup(heading: String, children: List<Component>) {
                 modifier = Modifier.height(24.dp).rotate(rotationAngle)
             )
             Heading(heading, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
+        }
+        if (instructions.isNotEmpty()) {
+            Heading(
+                instructions,
+                Modifier.padding(vertical = 8.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
         }
         AnimatedVisibility(visible = !collapsed) {
             Column {

@@ -10,16 +10,18 @@ import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithVisibility
 
 class ViewRenderer : ComponentRenderer<ViewComponent> {
     @Composable
     override fun ViewComponent.Render() {
-        if (!visible) return
-        Column(Modifier.padding(bottom = 8.dp)) {
-            if (showLabel && label.isNotEmpty()) {
-                Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
+        WithVisibility(visible) {
+            Column(Modifier.padding(bottom = 8.dp)) {
+                if (showLabel && label.isNotEmpty()) {
+                    Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
+                }
+                children.forEach { it.Render() }
             }
-            children.forEach { it.Render() }
         }
     }
 }
