@@ -77,7 +77,7 @@ import { OneColumnComponent } from "../components/containers/one-column.componen
 // import { PageComponent } from './_components/template/page/page.component';
 // import { PromotedFiltersComponent } from './_components/template/promoted-filters/promoted-filters.component';
 import { SimpleTableComponent } from "../components/containers/templates/simple-table.component.js";
-// import { SimpleTableManualComponent } from './_components/template/simple-table-manual/simple-table-manual.component';
+import { SimpleTableManualComponent } from "../components/containers/templates/simple-table-manual.component.js";
 import { SimpleTableSelectComponent } from "../components/containers/templates/simple-table-select.component.js";
 // import { SingleReferenceReadonlyComponent } from './_components/template/single-reference-readonly/single-reference-readonly.component';
 // import { ThreeColumnComponent } from './_components/template/three-column/three-column.component';
@@ -213,7 +213,7 @@ const pegaSdkComponentMap = {
     // ScalarList: ScalarListComponent,
     // SemanticLink: SemanticLinkComponent,
     SimpleTable: SimpleTableComponent,
-    // SimpleTableManual: SimpleTableManualComponent,
+    SimpleTableManual: SimpleTableManualComponent,
     SimpleTableSelect: SimpleTableSelectComponent,
     // SingleReferenceReadOnly: SingleReferenceReadonlyComponent,
     // Stages: StagesComponent,
