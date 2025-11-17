@@ -19,8 +19,20 @@ Currently, the SDK supports creating cases of a specified type, opening and proc
 
 ## Supported components
 The SDK provides following components out-of-the-box:
-- **Fields**: 
+- **Simple fields**: 
   - Checkbox, Currency, Date, DateTime, Decimal, Dropdown, Email, Integer, Phone, RadioButtons, TextArea, TextInput, Time, Url
+- **Advanced fields**:
+  - EmbeddedData
+    - Single record - not supported
+    - List of records
+      - Displayed as "Repeating View” - supported
+      - Displayed as “Table”, “SimpleTable” - not supported
+  - DataReference
+    - Single record
+      - Displayed as “SimpleTable”, “Table”, “Dropdown” - supported
+      - Displayed as “Autocomplete”, “Advanced Search" - not supported
+    - List of records - not supported
+    - Many to many - not supported
 - **Containers**: 
   - Assignment, AssignmentCard, DefaultForm, FlowContainer, Region, RootContainer, View, ViewContainer
 - **Other**: 
