@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake
+package com.pega.constellation.sdk.kmp.samples.basecmpapp.data.fake
 
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.AssignmentsRepository
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.AssignmentsResponse

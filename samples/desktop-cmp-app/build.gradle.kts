@@ -15,6 +15,7 @@ kotlin {
             dependencies {
                 implementation(project(":samples:base-cmp-app"))
                 implementation(compose.desktop.currentOs)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.kotlinx.coroutinesSwing)
                 implementation(libs.oidc.appsupport)
             }
