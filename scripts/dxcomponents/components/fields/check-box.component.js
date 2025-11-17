@@ -14,7 +14,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
             return;
         }
         this.updateBaseProps();
-        this.props.showLabel = this.props.label !== "";
+        this.props.hideLabel = configProps.hideLabel ?? false;
         this.props.caption = configProps.caption ?? "";
         this.props.trueLabel = configProps.trueLabel ?? "Yes";
         this.props.falseLabel = configProps.falseLabel ?? "No";
