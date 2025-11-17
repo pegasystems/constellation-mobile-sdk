@@ -7,6 +7,9 @@ final class TestCaseProcessing: MockedAppTestCase {
         verifyMainScreen()
         tapCreateButton("SDKTesting")
 
+        // Verify that html tags are removed from Step instructions.
+        app.staticTexts["Step instructions"].assertExists()
+
         fillTextField(0, "Name", "Jan", dismissSlidingDialog: true)
         fillTextField(1, "Surname", "Kowalski")
         // Second text field has also placeholder text set

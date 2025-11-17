@@ -10,25 +10,12 @@ struct DefaultFormView: View {
 
     var body: some View {
         VStack {
-            if !state.component.instructions.stripHTML.isEmpty {
-                Text(state.component.instructions.stripHTML)
+            if !state.component.instructions.strippingHtmlTags.isEmpty {
+                Text(state.component.instructions.strippingHtmlTags)
             }
             ForEach(state.component.children, id: \.context.id) { child in
                 child.renderView()
             }
         }
-    }
-}
-
-extension String {
-    fileprivate var stripHTML: String {
-        (try? NSAttributedString(
-            data: Data(self.utf8),
-            options: [
-                .documentType: NSAttributedString.DocumentType.html,
-                .characterEncoding: String.Encoding.utf8.rawValue
-            ],
-            documentAttributes: nil
-        ))?.string ?? ""
     }
 }

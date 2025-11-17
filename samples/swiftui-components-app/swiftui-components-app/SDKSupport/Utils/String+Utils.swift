@@ -15,4 +15,8 @@ extension String {
         }
         return filtered
     }
+
+    var strippingHtmlTags: String {
+        replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+    }
 }
