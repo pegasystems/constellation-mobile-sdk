@@ -1,5 +1,6 @@
 import { Utils } from "../../../helpers/utils.js";
 import { BaseComponent } from "../../base.component.js";
+import { getReferenceList } from "./template-utils.js";
 
 export class FieldGroupTemplateComponent extends BaseComponent {
     jsComponentPConnectData = {};
@@ -75,7 +76,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         const lookForChildInConfig = this.configProps.lookForChildInConfig;
         this.heading = this.configProps.heading ?? "Row";
         this.fieldHeader = this.configProps.fieldHeader;
-        const resolvedList = this.getReferenceList(this.pConn);
+        const resolvedList = getReferenceList(this.pConn);
         this.pConn.setReferenceList(resolvedList);
         const newReferenceList = this.configProps.referenceList ?? [];
         if (
@@ -207,7 +208,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
 
     buildItemPConnect(pConn, index, viewConfigPath, allowEdit) {
         const context = pConn.getContextName();
-        const referenceList = this.getReferenceList(pConn);
+        const referenceList = getReferenceList(pConn);
 
         const isDatapage = referenceList.startsWith("D_");
         const pageReference = isDatapage
@@ -241,19 +242,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
             return PCore.getExpressionEngine().evaluate(expression, rowData);
         }
         return false;
-    }
-
-    getReferenceList(pConn) {
-        let resolvePage = pConn.getComponentConfig().referenceList.replace("@P ", "");
-        if (resolvePage.includes("D_")) {
-            resolvePage = pConn.resolveDatasourceReference(resolvePage);
-            if (resolvePage?.pxResults) {
-                resolvePage = resolvePage?.pxResults;
-            } else if (resolvePage.startsWith("D_") && !resolvePage.endsWith(".pxResults")) {
-                resolvePage = `${resolvePage}.pxResults`;
-            }
-        }
-        return resolvePage;
     }
 
     destroyItems() {
