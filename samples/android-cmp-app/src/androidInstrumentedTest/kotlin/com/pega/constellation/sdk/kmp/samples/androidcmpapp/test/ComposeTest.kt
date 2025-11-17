@@ -1,7 +1,6 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
 import androidx.compose.ui.test.ComposeUiTest
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.fake.FakeAssignmentsRepository
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.platform.app.InstrumentationRegistry
@@ -21,6 +20,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoAppViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.fake.FakeAssignmentsRepository
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomEmailComponent
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel

@@ -9,6 +9,8 @@ import com.pega.constellation.sdk.kmp.engine.mock.MockSdkEngine
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.fake.FakeAssignmentsRepository
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
@@ -24,7 +26,9 @@ fun main() {
             state = rememberWindowState(size = DpSize(1024.dp, 768.dp)),
             title = "MediaCo Desktop CMP App",
         ) {
-            MediaCoApp()
+            MediaCoApp(
+                servicesViewModel = ServicesViewModel(FakeAssignmentsRepository())
+            )
         }
     }
 }
