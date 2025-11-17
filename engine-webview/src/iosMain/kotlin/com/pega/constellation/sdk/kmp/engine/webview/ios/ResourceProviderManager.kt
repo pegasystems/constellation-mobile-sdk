@@ -11,7 +11,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
 import platform.Foundation.NSURLResponse
 
-class ResourceProviderManager (
+class ResourceProviderManager(
     baseUrl: String,
     componentManager: ComponentManager,
     private val customDelegate: ResourceProvider? = null

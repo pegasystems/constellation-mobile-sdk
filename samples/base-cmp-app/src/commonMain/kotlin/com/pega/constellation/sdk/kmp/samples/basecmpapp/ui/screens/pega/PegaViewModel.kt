@@ -11,33 +11,32 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.SDKConfig
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomComponents.CustomDefinitions
 import kotlinx.coroutines.flow.StateFlow
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State as SdkState
 
 class PegaViewModel(
-    private val authManager: AuthManager,
     private val sdk: ConstellationSdk,
     private val caseClassName: String,
 ) : ViewModel() {
 
-    var dismissed by mutableStateOf(false)
+    var showForm by mutableStateOf(false)
     val sdkState: StateFlow<SdkState> = sdk.state
 
-    fun createCase(onFailure: (String) -> Unit) {
-        dismissed = false
-        authManager.authenticate(
-            onSuccess = { sdk.createCase(caseClassName) },
-            onFailure = onFailure
-        )
+    fun createCase() {
+        showForm = true
+        sdk.createCase(caseClassName)
+    }
+
+    fun openAssignment(assignmentID: String) {
+        showForm = true
+        sdk.openAssignment(assignmentID)
     }
 
     companion object {
         val Factory = viewModelFactory {
             initializer {
                 PegaViewModel(
-                    authManager = Injector.authManager,
                     sdk = ConstellationSdk.create(buildConfig(), Injector.engine),
                     caseClassName = SDKConfig.PEGA_CASE_CLASS_NAME
                 )
