@@ -5,6 +5,7 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
+import com.pega.constellation.sdk.kmp.core.EnvironmentInfo
 import com.pega.constellation.sdk.kmp.core.api.Component
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
@@ -36,7 +37,7 @@ class MockSdkEngine : ConstellationSdkEngine {
     override fun performAction(action: ConstellationSdkAction) {
         handler.handle(EngineEvent.Loading)
         config.componentManager.configureComponents()
-        handler.handle(EngineEvent.Ready)
+        handler.handle(EngineEvent.Ready(EnvironmentInfo("en-US", "America/New_York")))
     }
 
     private fun ComponentManager.configureComponents() {
