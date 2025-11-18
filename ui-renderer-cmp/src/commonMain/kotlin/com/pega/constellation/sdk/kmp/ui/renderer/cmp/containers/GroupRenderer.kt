@@ -67,16 +67,16 @@ fun CollapsibleGroup(heading: String, instructions: String, children: List<Compo
             )
             Heading(heading, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
         }
-        if (instructions.isNotEmpty()) {
-            Heading(
-                instructions,
-                Modifier.padding(vertical = 8.dp),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal
-            )
-        }
         AnimatedVisibility(visible = !collapsed) {
             Column {
+                if (instructions.isNotEmpty()) {
+                    Heading(
+                        instructions,
+                        Modifier.padding(vertical = 8.dp),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
                 children.forEach { it.Render() }
             }
         }
