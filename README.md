@@ -34,7 +34,7 @@ The SDK provides following components out-of-the-box:
     - List of records - not supported
     - Many to many - not supported
 - **Containers**: 
-  - Assignment, AssignmentCard, DefaultForm, FlowContainer, Region, RootContainer, View, ViewContainer
+  - Assignment, AssignmentCard, DefaultForm, FlowContainer, Region, RootContainer, View, ViewContainer, Field Group
 - **Other**: 
   - ActionButtons, AlertBanner
 
