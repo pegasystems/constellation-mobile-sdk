@@ -27,6 +27,7 @@ class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
                     disabled = disabled,
                     readOnly = readOnly,
                     onValueChange = { updateValue(it.toString()) },
+                    testTag = "checkbox_[$caption]"
                 )
             }
         )
