@@ -22,7 +22,7 @@ export class SimpleTableComponent extends BaseComponent {
     }
 
     destroy() {
-        this.childComponent.destroy?.();
+        this.childComponent?.destroy?.();
         this.props.child = undefined;
         this.componentsManager.onComponentPropsUpdate(this);
         this.componentsManager.onComponentRemoved(this);
