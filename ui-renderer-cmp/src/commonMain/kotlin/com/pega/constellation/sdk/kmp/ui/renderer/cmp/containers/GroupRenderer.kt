@@ -34,10 +34,14 @@ class GroupRenderer : ComponentRenderer<GroupComponent> {
     @Composable
     override fun GroupComponent.Render() {
         WithVisibility(visible) {
-            if (collapsible) {
-                CollapsibleGroup(heading, instructions, children)
+            if (showHeading) {
+                if (collapsible) {
+                    CollapsibleGroup(heading, instructions, children)
+                } else {
+                    NonCollapsibleGroup(heading, children)
+                }
             } else {
-                NonCollapsibleGroup(heading, children)
+                children.forEach { it.Render() }
             }
         }
     }

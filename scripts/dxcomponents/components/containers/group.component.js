@@ -9,7 +9,7 @@ export class GroupComponent extends ContainerBaseComponent {
     props = {
         visible: true,
         children: [],
-        showHeading: false,
+        showHeading: true,
         heading: "",
         instructions: "",
         collapsible: false,
@@ -22,44 +22,46 @@ export class GroupComponent extends ContainerBaseComponent {
     }
 
     init() {
-        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
-            this,
-            this.checkAndUpdate
-        );
+        this.jsComponentPConnectData =
+            this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
         this.componentsManager.onComponentAdded(this);
-        this.checkAndUpdate();
+        this.#checkAndUpdate();
     }
 
     destroy() {
         this.jsComponentPConnectData.unsubscribeFn?.();
+        this.destroyChildren();
+        this.props.children = [];
+        this.componentsManager.onComponentPropsUpdate(this);
         this.componentsManager.onComponentRemoved(this);
     }
 
     update(pConn) {
         if (this.pConn !== pConn) {
             this.pConn = pConn;
-            this.jsComponentPConnectData.unsubscribeFn?.();
-            this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
-                this,
-                this.checkAndUpdate
-            );
-            this.checkAndUpdate();
+            this.#checkAndUpdate();
         }
     }
 
-    checkAndUpdate() {
+    onEvent(event) {
+        this.childrenComponents.forEach((component) => {
+            component.onEvent(event);
+        });
+    }
+
+    #checkAndUpdate() {
         if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.updateSelf();
+            this.#updateSelf();
         }
     }
 
-    updateSelf() {
+    #updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-        this.props.visible = configProps.visibility ?? this.pConn.getComputedVisibility() ?? this.props.visible;
-        this.props.showHeading = configProps.showHeading ?? this.props.showHeading;
-        this.props.heading = configProps.heading ?? this.props.heading;
-        this.props.instructions = configProps.instructions ?? this.props.instructions;
-        this.props.collapsible = configProps.collapsible ?? this.props.collapsible;
+        this.props.visible = configProps.visibility ?? this.pConn.getComputedVisibility() ?? true;
+        this.props.showHeading = configProps.showHeading ?? true;
+        this.props.heading = configProps.heading ?? "";
+        this.props.instructions = configProps.instructions !== 'none' ? configProps.instructions : "";
+        this.props.collapsible = configProps.collapsible ?? false;
 
         this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
         if (configProps.displayMode === "DISPLAY_ONLY") {
@@ -72,11 +74,5 @@ export class GroupComponent extends ContainerBaseComponent {
         this.reconcileChildren();
         this.props.children = this.getChildrenComponentsIds();
         this.componentsManager.onComponentPropsUpdate(this);
-    }
-
-    onEvent(event) {
-        this.childrenComponents.forEach((component) => {
-            component.onEvent(event);
-        });
     }
 }

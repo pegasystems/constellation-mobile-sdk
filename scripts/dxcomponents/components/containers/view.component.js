@@ -29,10 +29,8 @@ export class ViewComponent extends ContainerBaseComponent {
     };
 
     init() {
-        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
-            this,
-            this.#checkAndUpdate
-        );
+        this.jsComponentPConnectData =
+            this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
         this.componentsManager.onComponentAdded(this);
         this.#checkAndUpdate();
     }
