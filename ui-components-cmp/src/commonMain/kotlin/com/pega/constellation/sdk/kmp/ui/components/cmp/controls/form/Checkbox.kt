@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.HelperText
@@ -28,7 +29,8 @@ fun Checkbox(
     required: Boolean = false,
     disabled: Boolean = false,
     readOnly: Boolean = false,
-    onValueChange: (Boolean) -> Unit = {}
+    onValueChange: (Boolean) -> Unit = {},
+    testTag: String? = null
 ) {
     Column(modifier = modifier) {
         Label(
@@ -53,6 +55,7 @@ fun Checkbox(
             Checkbox(
                 checked = value,
                 onCheckedChange = onValueChange,
+                modifier = testTag?.let { Modifier.testTag(it) } ?: Modifier,
                 enabled = !disabled
             )
         }

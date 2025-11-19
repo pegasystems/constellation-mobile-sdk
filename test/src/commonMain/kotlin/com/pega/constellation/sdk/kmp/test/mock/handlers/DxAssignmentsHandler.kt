@@ -28,6 +28,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("N-16042") -> handleNewService(actionId)
             assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
             assignmentId.contains("K-10048") -> handleKeysAndCiphers(request, actionId)
+            assignmentId.contains("G-3025") -> handleGroupTest(actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -40,6 +41,14 @@ class DxAssignmentsHandler : MockHandler {
         return when (actionId) {
             "SingleDisplayAsTable" -> Asset("responses/dx/assignments/DataReferenceTest-1-Review.json")
             "Create/refresh" -> Asset("responses/dx/assignments/refresh/DataReferenceTest-Refresh-$carId.json")
+            else -> Error(404, "Invalid actionId: $actionId")
+        }
+    }
+
+    private fun handleGroupTest(actionId: String): MockResponse {
+        return when (actionId) {
+            "Create" -> Asset("responses/dx/assignments/GroupTest-1-Create.json")
+            "Step2/refresh" -> Asset("responses/dx/assignments/refresh/GroupTest-Step2-Refresh-1.json")
             else -> Error(404, "Invalid actionId: $actionId")
         }
     }

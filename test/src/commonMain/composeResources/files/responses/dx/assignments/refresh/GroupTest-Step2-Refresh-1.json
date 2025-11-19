@@ -1,0 +1,241 @@
+{
+  "data": {
+    "caseInfo": {
+      "content": {
+        "classID": "O40M3A-MarekCo-Work-GroupTest",
+        "Show": true,
+        "pyLabel": "Group test",
+        "pyDescription": ""
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "Step2": [{
+          "name": "Step2",
+          "type": "View",
+          "config": {
+            "template": "DefaultForm",
+            "ruleClass": "O40M3A-MarekCo-Work-GroupTest",
+            "localeReference": "@LR O40M3A-MAREKCO-WORK-GROUPTEST!VIEW!STEP2"
+          },
+          "children": [{
+            "name": "Fields",
+            "type": "Region",
+            "children": [{
+              "type": "Group",
+              "config": {
+                "id": "group_fvc2ums6y",
+                "type": "any",
+                "showHeading": true,
+                "collapsible": true,
+                "instructions": "none",
+                "heading": "@L Details group heading"
+              },
+              "children": [{
+                "type": "reference",
+                "config": {
+                  "name": "pyReview",
+                  "inheritedProps": [{
+                    "prop": "label",
+                    "value": "@L Details"
+                  }, {
+                    "prop": "showLabel",
+                    "value": true
+                  }],
+                  "ruleClass": "Work-",
+                  "type": "view"
+                }
+              }]
+            }, {
+              "type": "Checkbox",
+              "config": {
+                "caption": "@L Show Editable view group no heading",
+                "value": "@P .Show",
+                "labelOption": "default",
+                "captionOption": "custom",
+                "trueLabel": "@L Yes",
+                "falseLabel": "@L No",
+                "label": "@FL .Show",
+                "hideLabel": true
+              }
+            }, {
+              "type": "Group",
+              "config": {
+                "id": "group_dioumek44",
+                "type": "any",
+                "showHeading": false,
+                "collapsible": true,
+                "instructions": "@PARAGRAPH group_dioumek44",
+                "heading": "@L Editable view group heading",
+                "visibility": "@W ShowWhen"
+              },
+              "children": [{
+                "type": "reference",
+                "config": {
+                  "name": "pyEdit",
+                  "inheritedProps": [{
+                    "prop": "label",
+                    "value": "@L Edit"
+                  }, {
+                    "prop": "showLabel",
+                    "value": true
+                  }],
+                  "ruleClass": "Work-",
+                  "type": "view"
+                }
+              }]
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-GroupTest"
+        }],
+        "pyEdit": [{
+          "name": "pyEdit",
+          "type": "View",
+          "config": {
+            "template": "DefaultForm",
+            "ruleClass": "Work-",
+            "localeReference": "@LR WORK-!VIEW!PYEDIT"
+          },
+          "children": [{
+            "name": "Fields",
+            "type": "Region",
+            "children": [{
+              "type": "reference",
+              "config": {
+                "name": "pyPrimaryFields",
+                "inheritedProps": [{
+                  "prop": "label",
+                  "value": "@L Primary fields"
+                }, {
+                  "prop": "showLabel",
+                  "value": false
+                }],
+                "ruleClass": "Work-",
+                "type": "view"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-GroupTest"
+        }],
+        "pyPrimaryFields": [{
+          "name": "pyPrimaryFields",
+          "type": "View",
+          "label": "Primary fields",
+          "config": {
+            "template": "DefaultForm",
+            "ruleClass": "O40M3A-MarekCo-Work-GroupTest",
+            "label": "Primary fields",
+            "localeReference": "@LR O40M3A-MarekCo-Work-GroupTest!VIEW!pyPrimaryFields"
+          },
+          "children": [{
+            "name": "Fields",
+            "type": "Region",
+            "children": [{
+              "type": "TextInput",
+              "config": {
+                "value": "@P .pyLabel",
+                "label": "@L Label"
+              }
+            }, {
+              "type": "TextArea",
+              "config": {
+                "value": "@P .pyDescription",
+                "label": "@L Description"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-GroupTest"
+        }],
+        "pyReview": [{
+          "name": "pyReview",
+          "type": "View",
+          "config": {
+            "template": "Details",
+            "ruleClass": "Work-",
+            "showLabel": true,
+            "label": "@L Details",
+            "localeReference": "@LR WORK-!VIEW!PYREVIEW"
+          },
+          "children": [{
+            "name": "A",
+            "type": "Region",
+            "children": [{
+              "type": "reference",
+              "config": {
+                "name": "pyPrimaryFields",
+                "inheritedProps": [{
+                  "prop": "label",
+                  "value": "@L Primary fields"
+                }, {
+                  "prop": "showLabel",
+                  "value": false
+                }],
+                "ruleClass": "Work-",
+                "type": "view"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-GroupTest"
+        }]
+      },
+      "paragraphs": {
+        "Show_additionalInfo": [{
+          "content": "",
+          "name": "Show_additionalInfo",
+          "classID": "O40M3A-MarekCo-Work-GroupTest"
+        }],
+        "group_dioumek44": [{
+          "content": "<p>Editable view group instructions</p>",
+          "name": "group_dioumek44",
+          "classID": "O40M3A-MarekCo-Work-GroupTest"
+        }]
+      },
+      "fields": {
+        "Show": [{
+          "classID": "O40M3A-MarekCo-Work-GroupTest",
+          "type": "True-False",
+          "displayAs": "pxCheckbox",
+          "additionalInformation": "@PARAGRAPH Show_additionalInfo",
+          "label": "show"
+        }],
+        "pyLabel": [{
+          "classID": "O40M3A-MarekCo-Work-GroupTest",
+          "type": "Text",
+          "maxLength": 64,
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "expectedLength": 60,
+          "label": "Label"
+        }],
+        "pyDescription": [{
+          "classID": "O40M3A-MarekCo-Work-GroupTest",
+          "type": "Text",
+          "displayAs": "pxTextArea",
+          "definedOnClassID": "Work-",
+          "label": "Description"
+        }]
+      }
+    },
+    "components": ["reference", "Group", "DefaultForm", "Details", "TextArea", "Checkbox", "Region", "TextInput", "View"],
+    "localeReferences": ["O40M3A-MAREKCO-WORK-GROUPTEST!VIEW!STEP2", "WORK-!VIEW!PYREVIEW", "O40M3A-MAREKCO-WORK-GROUPTEST!CASE!GROUP TEST", "O40M3A-MarekCo-Work-GroupTest!VIEW!pyPrimaryFields", "WORK-!VIEW!PYEDIT", "O40M3A-MAREKCO-WORK-GROUPTEST!PARAGRAPH!SHOW_ADDITIONALINFO", "O40M3A-MAREKCO-WORK-GROUPTEST!PARAGRAPH!GROUP_DIOUMEK44"],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "Step2",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {
+      "caseInfo": {
+        "content": {
+          "summary_of_when_conditions__": {
+            "ShowWhen": true
+          }
+        }
+      }
+    }
+  }
+}

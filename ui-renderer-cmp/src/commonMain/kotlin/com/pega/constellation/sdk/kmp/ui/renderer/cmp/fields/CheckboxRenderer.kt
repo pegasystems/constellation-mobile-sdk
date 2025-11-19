@@ -22,10 +22,12 @@ class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
                     label = label,
                     helperText = helperText,
                     validateMessage = validateMessage,
+                    hideLabel = hideLabel,
                     required = required,
                     disabled = disabled,
                     readOnly = readOnly,
                     onValueChange = { updateValue(it.toString()) },
+                    testTag = "checkbox_[$caption]"
                 )
             }
         )
