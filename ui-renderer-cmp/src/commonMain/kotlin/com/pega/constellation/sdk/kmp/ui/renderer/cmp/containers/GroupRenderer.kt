@@ -36,9 +36,9 @@ class GroupRenderer : ComponentRenderer<GroupComponent> {
         WithVisibility(visible) {
             if (showHeading) {
                 if (collapsible) {
-                    CollapsibleGroup(heading, instructions, children)
+                    CollapsibleGroup(heading, instructionsText, children)
                 } else {
-                    NonCollapsibleGroup(heading, instructions, children)
+                    NonCollapsibleGroup(heading, instructionsText, children)
                 }
             } else {
                 children.forEach { it.Render() }

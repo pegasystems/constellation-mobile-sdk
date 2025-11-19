@@ -13,8 +13,8 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 class DefaultFormRenderer : ComponentRenderer<DefaultFormComponent> {
     @Composable
     override fun DefaultFormComponent.Render() {
-        if (instructions.isNotEmpty()) {
-            val rawText = instructions
+        if (instructionsText.isNotEmpty()) {
+            val rawText = instructionsText
             Text(
                 text = rawText,
                 textAlign = TextAlign.Left,

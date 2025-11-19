@@ -8,11 +8,14 @@ import com.pega.constellation.sdk.kmp.core.components.getString
 import kotlinx.serialization.json.JsonObject
 
 class DefaultFormComponent(context: ComponentContext) : ContainerComponent(context) {
-    var instructions: String by mutableStateOf("")
+    var instructionsHtml: String by mutableStateOf("")
+        private set
+    var instructionsText: String by mutableStateOf("")
         private set
 
     override fun applyProps(props: JsonObject) {
         super.applyProps(props)
-        instructions = props.getString("instructions")
+        instructionsHtml = props.getString("instructionsHtml")
+        instructionsText = props.getString("instructionsText")
     }
 }

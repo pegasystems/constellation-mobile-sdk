@@ -39,9 +39,11 @@ export class DefaultFormComponent extends ContainerBaseComponent {
     }
 
     sendPropsUpdate() {
+        let instructionsHtml = this.instructions || "";
         this.props = {
             children: this.getChildrenComponentsIds(),
-            instructions: this.instructions || "",
+            instructionsHtml: this.instructions || "",
+            instructionsText: this.utils.stripHtmlTagsAndDecode(instructionsHtml),
         };
         this.componentsManager.onComponentPropsUpdate(this);
     }

@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.core.api
 
+import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.core.internal.ComponentObservableDelegate
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -39,3 +40,8 @@ abstract class BaseComponent(
     protected fun <T> JsonArray.mapWithIndex(transform: JsonArray.(Int) -> T) =
         List(size) { this.transform(it) }
 }
+
+interface HideableComponent {
+    val visible: Boolean
+}
+
