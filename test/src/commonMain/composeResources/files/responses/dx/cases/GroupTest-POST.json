@@ -262,7 +262,7 @@
                 "type": "any",
                 "showHeading": true,
                 "collapsible": false,
-                "instructions": "none",
+                "instructions": "@PARAGRAPH group_1trlnx631",
                 "heading": "@L Lists group heading",
                 "visibility": "@E .Show == true"
               },
@@ -517,6 +517,11 @@
         "group_0ekdkoaon": [{
           "content": "<p>Simple fields group instruction</p>",
           "name": "group_0ekdkoaon",
+          "classID": "O40M3A-MarekCo-Work-GroupTest"
+        }],
+        "group_1trlnx631": [{
+          "content": "<p>List group instructions</p>",
+          "name": "group_1trlnx631",
           "classID": "O40M3A-MarekCo-Work-GroupTest"
         }]
       },

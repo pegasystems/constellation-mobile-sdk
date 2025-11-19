@@ -71,12 +71,14 @@ class GroupTest : ComposeTest(PegaVersion.v24_2_2) {
 
     private fun ComposeUiTest.verifyListGroupShown() {
         waitForNode("Lists group heading", substring = true)
+        waitForNode("List group instructions", substring = true)
         waitForNode("cars")
         waitForNode("Encryption keys")
     }
 
     private fun ComposeUiTest.verifyListGroupGone() {
         waitUntilDoesNotExist(hasText("Lists group heading"))
+        waitUntilDoesNotExist(hasText("List group instructions"))
         waitUntilDoesNotExist(hasText("cars"))
         waitUntilDoesNotExist(hasText("Encryption keys"))
     }

@@ -38,7 +38,7 @@ class GroupRenderer : ComponentRenderer<GroupComponent> {
                 if (collapsible) {
                     CollapsibleGroup(heading, instructions, children)
                 } else {
-                    NonCollapsibleGroup(heading, children)
+                    NonCollapsibleGroup(heading, instructions, children)
                 }
             } else {
                 children.forEach { it.Render() }
@@ -84,9 +84,17 @@ fun CollapsibleGroup(heading: String, instructions: String, children: List<Compo
 }
 
 @Composable
-fun NonCollapsibleGroup(heading: String, children: List<Component>) {
+fun NonCollapsibleGroup(heading: String, instructions: String, children: List<Component>) {
     Column {
         Heading(heading, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
+        if (instructions.isNotEmpty()) {
+            Heading(
+                instructions,
+                Modifier.padding(vertical = 8.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+        }
         children.forEach { it.Render() }
     }
 }
