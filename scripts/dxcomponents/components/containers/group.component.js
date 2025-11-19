@@ -39,6 +39,9 @@ export class GroupComponent extends ContainerBaseComponent {
     update(pConn) {
         if (this.pConn !== pConn) {
             this.pConn = pConn;
+            this.jsComponentPConnectData.unsubscribeFn?.();
+            this.jsComponentPConnectData =
+                this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
             this.#checkAndUpdate();
         }
     }
