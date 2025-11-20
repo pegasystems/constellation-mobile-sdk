@@ -71,12 +71,6 @@ export class Utils {
         }
     }
 
-    stripHtmlTagsAndDecode(html) {
-        var div = document.createElement("div");
-        div.innerHTML = html;
-        return div.textContent || div.innerText || "";
-    }
-
     static hasViewContainer() {
         return sdkSessionStorage.getItem("hasViewContainer") == "true";
     }

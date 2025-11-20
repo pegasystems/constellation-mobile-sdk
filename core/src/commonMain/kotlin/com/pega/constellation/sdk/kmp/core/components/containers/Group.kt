@@ -3,6 +3,7 @@ package com.pega.constellation.sdk.kmp.core.components.containers
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.fleeksoft.ksoup.Ksoup
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.HideableComponent
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
@@ -29,8 +30,8 @@ class GroupComponent(context: ComponentContext) : ContainerComponent(context), H
             visible = getBoolean("visible")
             showHeading = getBoolean("showHeading")
             heading = getString("heading")
-            instructionsHtml = getString("instructionsHtml")
-            instructionsText = getString("instructionsText")
+            instructionsHtml = getString("instructions")
+            instructionsText = Ksoup.parse(getString("instructions")).wholeText()
             collapsible = getBoolean("collapsible")
         }
     }

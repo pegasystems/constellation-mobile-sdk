@@ -10,8 +10,7 @@ export class GroupComponent extends ContainerBaseComponent {
         children: [],
         showHeading: true,
         heading: "",
-        instructionsHtml: "",
-        instructionsText: "",
+        instructions: "",
         collapsible: false,
     };
 
@@ -63,12 +62,10 @@ export class GroupComponent extends ContainerBaseComponent {
 
     #updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-        let instructionsHtml = configProps.instructions !== "none" ? configProps.instructions : "";
         this.props.visible = configProps.visibility ?? this.pConn.getComputedVisibility() ?? true;
         this.props.showHeading = configProps.showHeading ?? true;
         this.props.heading = configProps.heading ?? "";
-        this.props.instructionsHtml = instructionsHtml;
-        this.props.instructionsText = this.utils.stripHtmlTagsAndDecode(instructionsHtml);
+        this.props.instructions = configProps.instructions !== "none" ? configProps.instructions : "";
         this.props.collapsible = configProps.collapsible ?? false;
 
         this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
