@@ -136,13 +136,13 @@
               "type": "TextInput",
               "config": {
                 "value": "@P .pyLabel",
-                "label": "@L Label"
+                "label": "@L Edit label"
               }
             }, {
               "type": "TextArea",
               "config": {
                 "value": "@P .pyDescription",
-                "label": "@L Description"
+                "label": "@L Edit description"
               }
             }]
           }],
