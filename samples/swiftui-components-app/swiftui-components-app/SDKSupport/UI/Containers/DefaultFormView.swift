@@ -10,8 +10,8 @@ struct DefaultFormView: View {
 
     var body: some View {
         VStack {
-            if !state.component.instructionsText.isEmpty {
-                Text(state.component.instructionsText)
+            if !state.component.instructions.strippingHtmlTags.isEmpty {
+                Text(state.component.instructions.strippingHtmlTags)
             }
             ForEach(state.component.children, id: \.context.id) { child in
                 child.renderView()
