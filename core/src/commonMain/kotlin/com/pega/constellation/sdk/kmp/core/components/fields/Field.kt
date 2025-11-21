@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.api.BaseComponent
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
+import com.pega.constellation.sdk.kmp.core.api.HideableComponent
 import com.pega.constellation.sdk.kmp.core.components.DisplayMode
 import com.pega.constellation.sdk.kmp.core.components.DisplayMode.Companion.toDisplayMode
 import com.pega.constellation.sdk.kmp.core.components.getString
@@ -14,13 +15,13 @@ import com.pega.constellation.sdk.kmp.core.components.optBoolean
 import com.pega.constellation.sdk.kmp.core.components.optString
 import kotlinx.serialization.json.JsonObject
 
-abstract class FieldComponent(context: ComponentContext) : BaseComponent(context) {
+abstract class FieldComponent(context: ComponentContext) : BaseComponent(context), HideableComponent {
     private var focused by mutableStateOf(false)
     var value: String by mutableStateOf("")
         private set
     var label: String by mutableStateOf("")
         private set
-    var visible: Boolean by mutableStateOf(false)
+    override var visible: Boolean by mutableStateOf(false)
         private set
     var required: Boolean by mutableStateOf(false)
         private set

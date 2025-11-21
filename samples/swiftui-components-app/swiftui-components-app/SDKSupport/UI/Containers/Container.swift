@@ -9,8 +9,11 @@ struct Container: View {
     }
 
     var body: some View {
-        ForEach(state.component.children, id: \.context.id) { child in
-            child.renderView()
+        let visible = (state.component as? HideableComponent)?.visible ?? true
+        if visible {
+            ForEach(state.component.children, id: \.context.id) { child in
+                child.renderView()
+            }
         }
     }
 }

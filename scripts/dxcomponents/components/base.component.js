@@ -1,3 +1,5 @@
+import { Utils } from "../helpers/utils.js";
+
 export class BaseComponent {
     pConn;
     componentsManager;
@@ -11,5 +13,6 @@ export class BaseComponent {
         this.jsComponentPConnect = componentsManager.jsComponentPConnect;
         this.compId = componentsManager.getNextComponentId();
         this.type = pConn.meta.type;
+        this.utils = new Utils();
     }
 }

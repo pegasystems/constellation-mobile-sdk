@@ -37,6 +37,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.datetime)
+                implementation(libs.ksoup.http.parser)
             }
         }
     }

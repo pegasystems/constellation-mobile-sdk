@@ -8,6 +8,7 @@ import com.pega.constellation.sdk.kmp.core.api.BaseComponent
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
+import com.pega.constellation.sdk.kmp.core.api.HideableComponent
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getString
@@ -20,12 +21,12 @@ class UnsupportedComponent(
     type: ComponentType = ComponentType("Unknown"),
     cause: Cause = UNKNOWN_CAUSE,
     visible: Boolean = false
-) : BaseComponent(context) {
+) : BaseComponent(context), HideableComponent {
     var type by mutableStateOf(type)
         private set
     var cause by mutableStateOf(cause)
         private set
-    var visible by mutableStateOf(visible)
+    override var visible by mutableStateOf(visible)
         private set
 
     override fun applyProps(props: JsonObject) {
