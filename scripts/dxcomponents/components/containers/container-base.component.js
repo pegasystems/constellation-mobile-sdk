@@ -25,8 +25,13 @@ export class ContainerBaseComponent extends BaseComponent {
      *
      */
     reconcileChildren(newChildren = this.pConn.getChildren()) {
-        // children may have a 'reference' so normalize the children array
-        newChildren = ReferenceComponent.normalizePConnArray(newChildren);
+        if (this.pConn.getComputedVisibility()) {
+            // children may have a 'reference' so normalize the children array
+            newChildren = ReferenceComponent.normalizePConnArray(newChildren);
+        } else {
+            newChildren = [];
+        }
+
         const oldChildrenComponents = this.childrenComponents;
         const reconciledComponents = [];
         const uninitializedComponents = [];
