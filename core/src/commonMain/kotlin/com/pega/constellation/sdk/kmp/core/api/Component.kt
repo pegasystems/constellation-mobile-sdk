@@ -1,5 +1,9 @@
 package com.pega.constellation.sdk.kmp.core.api
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.pega.constellation.sdk.kmp.core.components.optString
 import com.pega.constellation.sdk.kmp.core.internal.ComponentObservableDelegate
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -27,9 +31,17 @@ abstract class BaseComponent(
     override val context: ComponentContext
 ) : Component, ComponentObservable by ComponentObservableDelegate() {
 
+    var pConnectPageReference: String by mutableStateOf("")
+        private set
+    var pConnectFullReference: String by mutableStateOf("")
+        private set
+
     protected abstract fun applyProps(props: JsonObject)
 
     override fun onUpdate(props: JsonObject) {
+        pConnectPageReference = props.optString("pConnectPageReference")
+        pConnectFullReference = props.optString("pConnectFullReference")
+
         applyProps(props)
         notifyObservers()
     }
