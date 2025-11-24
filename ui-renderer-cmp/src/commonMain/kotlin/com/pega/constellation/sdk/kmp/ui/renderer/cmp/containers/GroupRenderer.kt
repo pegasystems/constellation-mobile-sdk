@@ -34,13 +34,13 @@ import org.jetbrains.compose.resources.painterResource
 class GroupRenderer : ComponentRenderer<GroupComponent> {
     @Composable
     override fun GroupComponent.Render() {
-        val instructionsRawText = Ksoup.parse(instructions).wholeText()
+        val instructionsText = Ksoup.parse(instructions).wholeText()
         WithVisibility(visible) {
             if (showHeading) {
                 if (collapsible) {
-                    CollapsibleGroup(heading, instructionsRawText, children)
+                    CollapsibleGroup(heading, instructionsText, children)
                 } else {
-                    NonCollapsibleGroup(heading, instructionsRawText, children)
+                    NonCollapsibleGroup(heading, instructionsText, children)
                 }
             } else {
                 children.forEach { it.Render() }

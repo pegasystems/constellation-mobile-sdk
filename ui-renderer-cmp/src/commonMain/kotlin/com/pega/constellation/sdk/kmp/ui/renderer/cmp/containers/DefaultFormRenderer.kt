@@ -15,9 +15,9 @@ class DefaultFormRenderer : ComponentRenderer<DefaultFormComponent> {
     @Composable
     override fun DefaultFormComponent.Render() {
         if (instructions.isNotEmpty()) {
-            val rawText = Ksoup.parse(instructions).wholeText()
+            val instructionsText = Ksoup.parse(instructions).wholeText()
             Text(
-                text = rawText,
+                text = instructionsText,
                 textAlign = TextAlign.Left,
                 modifier = Modifier.fillMaxWidth()
             )
