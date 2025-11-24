@@ -41,7 +41,9 @@ class GroupRenderer : ComponentRenderer<GroupComponent> {
                     NonCollapsibleGroup(heading, instructions, children)
                 }
             } else {
-                children.forEach { it.Render() }
+                Column {
+                    children.forEach { it.Render() }
+                }
             }
         }
     }
