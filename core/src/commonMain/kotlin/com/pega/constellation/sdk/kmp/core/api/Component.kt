@@ -31,24 +31,17 @@ abstract class BaseComponent(
     override val context: ComponentContext
 ) : Component, ComponentObservable by ComponentObservableDelegate() {
 
-    /**
-     * The page-level reference path within the Pega Constellation data model for the current component.
-     */
-    var pConnectPageReference: String by mutableStateOf("")
-        private set
-
 
     /**
      * The fully qualified property reference for the current component, including its page context.
      */
-    var pConnectFullReference: String by mutableStateOf("")
+    var pConnectPropertyReference: String by mutableStateOf("")
         private set
 
     protected abstract fun applyProps(props: JsonObject)
 
     override fun onUpdate(props: JsonObject) {
-        pConnectPageReference = props.optString("pConnectPageReference")
-        pConnectFullReference = props.optString("pConnectFullReference")
+        pConnectPropertyReference = props.optString("pConnectPropertyReference")
 
         applyProps(props)
         notifyObservers()

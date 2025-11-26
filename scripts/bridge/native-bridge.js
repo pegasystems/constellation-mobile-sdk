@@ -85,16 +85,36 @@ class NativeBridge {
         }
         let componentProps = component.props;
         if (component.pConn) {
-            componentProps["pConnectPageReference"] = component.pConn.getPageReference();
-            if (component.pConn.getFullReference) {
-                // The `getFullReference` is not a public PConnect's API, so check for its existence just in case.
-                componentProps["pConnectFullReference"] = component.pConn.getFullReference();
-            }
+            componentProps["pConnectPropertyReference"] = this.#getPropertyReference(component.pConn);
         }
 
         const props = JSON.stringify(componentProps);
         console.log(TAG, `Updating component ${component.type}#${id}, props: ${props}`);
         sdkbridge.updateComponent(id, props);
+    }
+
+    /**
+     * Retrieves the full reference for a PConnect object.
+     * Falls back to constructing it manually if getFullReference is not available.
+     */
+    #getPropertyReference(pConn) {
+        if (pConn.getFullReference) {
+            // The `getFullReference` is not a public PConnect API, so check for its existence.
+            return pConn.getFullReference();
+        } else if (pConn.getPropertyName) {
+            let pageReference = pConn.getPageReference();
+            let propertyName = PCore.getAnnotationUtils().getPropertyName(pConn.getPropertyName());
+            if (propertyName && !propertyName.startsWith(".")) {
+                propertyName = `.${propertyName}`;
+            }
+            return `${pageReference}${propertyName}`;
+        } else {
+            console.warn(
+                TAG,
+                `Cannot determine full property reference for component. PConnect does not expose required methods.`
+            );
+            return "";
+        }
     }
 }
 
