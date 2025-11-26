@@ -5,9 +5,16 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.api.Component
+import com.pega.constellation.sdk.kmp.core.components.containers.AssignmentCardComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ContainerComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.DefaultFormComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.FlowContainerComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.OneColumnComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.RegionComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.ViewContainerComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.TextInputComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -96,6 +103,22 @@ abstract class ConstellationSdkBaseTest {
                 """.trimIndent(),
             root.structure()
         )
+
+        val viewContainer = root.children()[0] as? ViewContainerComponent
+        val view = viewContainer?.children[0] as? ViewComponent
+        val oneColumn = view?.children[0] as? OneColumnComponent
+        val region = oneColumn?.children[0] as? RegionComponent
+        val view2 = region?.children[0] as? ViewComponent
+        val region2 = view2?.children[0] as? RegionComponent
+        val view3 = region2?.children[0] as? ViewComponent
+        val flowContainer = view3?.children[0] as? FlowContainerComponent
+        val assignment = flowContainer?.assignment
+        val assignmentCard = assignment?.children[0] as? AssignmentCardComponent
+        val view4 = assignmentCard?.children[0] as? ViewComponent
+        val defaultForm = view4?.children[0] as? DefaultFormComponent
+        val region3 = defaultForm?.children[0] as? RegionComponent
+        val textInput = region3?.children[0] as? TextInputComponent
+        assertEquals("caseInfo.content.Name", textInput?.pConnectPropertyReference)
     }
 
     companion object {
