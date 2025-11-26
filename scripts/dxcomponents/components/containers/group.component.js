@@ -1,5 +1,4 @@
 import { ContainerBaseComponent } from "./container-base.component.js";
-import { Utils } from "../../helpers/utils.js";
 import { ReferenceComponent } from "./reference.component.js";
 
 const TAG = "[GroupComponent]";
@@ -18,12 +17,13 @@ export class GroupComponent extends ContainerBaseComponent {
     constructor(componentsManager, pConn) {
         super(componentsManager, pConn);
         this.type = "Group";
-        this.utils = new Utils();
     }
 
     init() {
-        this.jsComponentPConnectData =
-            this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
+        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
+            this,
+            this.#checkAndUpdate
+        );
         this.componentsManager.onComponentAdded(this);
         this.#checkAndUpdate();
     }
@@ -40,8 +40,10 @@ export class GroupComponent extends ContainerBaseComponent {
         if (this.pConn !== pConn) {
             this.pConn = pConn;
             this.jsComponentPConnectData.unsubscribeFn?.();
-            this.jsComponentPConnectData =
-                this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
+            this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
+                this,
+                this.#checkAndUpdate
+            );
             this.#checkAndUpdate();
         }
     }
@@ -63,7 +65,7 @@ export class GroupComponent extends ContainerBaseComponent {
         this.props.visible = configProps.visibility ?? this.pConn.getComputedVisibility() ?? true;
         this.props.showHeading = configProps.showHeading ?? true;
         this.props.heading = configProps.heading ?? "";
-        this.props.instructions = configProps.instructions !== 'none' ? configProps.instructions : "";
+        this.props.instructions = configProps.instructions !== "none" ? configProps.instructions : "";
         this.props.collapsible = configProps.collapsible ?? false;
 
         this.childrenPConns = ReferenceComponent.normalizePConnArray(this.pConn.getChildren());
