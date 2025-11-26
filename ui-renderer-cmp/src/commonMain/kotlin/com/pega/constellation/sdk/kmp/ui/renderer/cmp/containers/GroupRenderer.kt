@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fleeksoft.ksoup.Ksoup
 import com.pega.constellation.sdk.kmp.core.api.Component
 import com.pega.constellation.sdk.kmp.core.components.containers.GroupComponent
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
@@ -33,12 +34,13 @@ import org.jetbrains.compose.resources.painterResource
 class GroupRenderer : ComponentRenderer<GroupComponent> {
     @Composable
     override fun GroupComponent.Render() {
+        val instructionsText = Ksoup.parse(instructions).wholeText()
         WithVisibility(visible) {
             if (showHeading) {
                 if (collapsible) {
-                    CollapsibleGroup(heading, instructions, children)
+                    CollapsibleGroup(heading, instructionsText, children)
                 } else {
-                    NonCollapsibleGroup(heading, instructions, children)
+                    NonCollapsibleGroup(heading, instructionsText, children)
                 }
             } else {
                 Column {

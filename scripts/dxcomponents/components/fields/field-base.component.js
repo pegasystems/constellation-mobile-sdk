@@ -1,5 +1,4 @@
 import { handleEvent } from "../../helpers/event-util.js";
-import { Utils } from "../../helpers/utils.js";
 import { BaseComponent } from "../base.component.js";
 
 export class FieldBaseComponent extends BaseComponent {
@@ -21,7 +20,6 @@ export class FieldBaseComponent extends BaseComponent {
 
     constructor(componentsManager, pConn) {
         super(componentsManager, pConn);
-        this.utils = new Utils();
     }
 
     init() {
