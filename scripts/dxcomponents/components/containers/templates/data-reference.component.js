@@ -84,6 +84,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.jsComponentPConnectData.unsubscribeFn?.();
         this.destroyChildren();
         this.props.children = [];

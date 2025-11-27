@@ -45,6 +45,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.destroyItems();
         this.props.items = [];
         this.componentsManager.onComponentPropsUpdate(this);
