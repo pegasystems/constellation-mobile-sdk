@@ -11,8 +11,10 @@ import com.pega.constellation.sdk.kmp.core.components.containers.ListViewCompone
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent.SelectionMode.SINGLE
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
@@ -67,8 +69,8 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
         initialResult: Map<String, String>,
         currentPath: String
     ): Map<String, String> =
-        if (this is JsonObject) {
-            jsonObject.entries.fold(initialResult) { accumulator, element ->
+        when (this) {
+            is JsonObject -> jsonObject.entries.fold(initialResult) { accumulator, element ->
                 val nextPath = if (currentPath.isNotEmpty()) {
                     "$currentPath.${element.key}"
                 } else {
@@ -76,8 +78,10 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
                 }
                 element.value.toFoldedItemContent(accumulator, nextPath)
             }
-        } else {
-            initialResult + mapOf(currentPath to jsonPrimitive.content)
+            is JsonArray -> jsonArray.foldIndexed(initialResult) { index, accumulator, element ->
+                element.toFoldedItemContent(accumulator, "$currentPath[$index]")
+            }
+            else -> initialResult + mapOf(currentPath to jsonPrimitive.content)
         }
 
     private fun String.toSelectionMode() =
