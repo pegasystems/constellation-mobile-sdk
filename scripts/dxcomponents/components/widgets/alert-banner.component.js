@@ -5,6 +5,7 @@ export class AlertBannerComponent {
     compId;
     type;
     props;
+    alive = false;
 
     constructor(componentsManager, variant, messages) {
         this.compId = componentsManager.getNextComponentId();
@@ -12,6 +13,7 @@ export class AlertBannerComponent {
         this.componentsManager = componentsManager;
         this.variant = variant;
         this.messages = messages;
+        this.alive = false
     }
 
     init() {
@@ -20,6 +22,7 @@ export class AlertBannerComponent {
     }
 
     destroy() {
+        this.alive = true;
         this.componentsManager.onComponentRemoved(this);
     }
 

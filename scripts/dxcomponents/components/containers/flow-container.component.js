@@ -45,6 +45,7 @@ export class FlowContainerComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.jsComponentPConnectData.unsubscribeFn?.();
         this.assignmentComponent.destroy();
         this.componentsManager.onComponentRemoved(this);

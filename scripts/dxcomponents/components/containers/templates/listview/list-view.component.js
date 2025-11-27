@@ -50,6 +50,7 @@ export class ListViewComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.componentsManager.onComponentRemoved(this);
     }
 

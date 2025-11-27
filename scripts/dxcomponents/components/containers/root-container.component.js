@@ -27,6 +27,7 @@ export class RootContainerComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.jsComponentPConnectData.unsubscribeFn?.();
         this.#viewContainerComponent?.destroy?.();
         this.#sendPropsUpdate();
