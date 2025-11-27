@@ -17,26 +17,34 @@ export class SimpleTableComponent extends BaseComponent {
     }
 
     init() {
+        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
+            this,
+            this.checkAndUpdate
+        );
         this.componentsManager.onComponentAdded(this);
         this.checkAndUpdate();
     }
 
     destroy() {
+        super.destroy();
+        this.jsComponentPConnectData.unsubscribeFn?.();
         this.childComponent?.destroy?.();
-        this.props.child = undefined;
-        this.componentsManager.onComponentPropsUpdate(this);
+        this.childComponent = null
+        this.#sendPropsUpdate();
         this.componentsManager.onComponentRemoved(this);
     }
 
     update(pConn) {
         if (this.pConn !== pConn) {
             this.pConn = pConn;
+            this.checkAndUpdate();
         }
-        this.checkAndUpdate();
     }
 
     checkAndUpdate() {
-        this.#updateSelf();
+        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
+            this.#updateSelf();
+        }
     }
 
     #updateSelf() {
@@ -139,7 +147,8 @@ export class SimpleTableComponent extends BaseComponent {
             //     TAG,
             //     `Unsupported display mode: ${multiRecordDisplayAs}. ListView and SimpleTableManual are not supported yet.`
             // );
-            this.childComponent = this.componentsManager.upsert(this.childComponent, "SimpleTableManual", [this.pConn])
+            this.childComponent = this.componentsManager.upsert(this.childComponent, "SimpleTableManual", [this.pConn]);
+            this.#sendPropsUpdate();
         }
     }
 
@@ -150,7 +159,7 @@ export class SimpleTableComponent extends BaseComponent {
 
     #sendPropsUpdate() {
         this.props = {
-            child: this.childComponent?.compId,
+            child: this.childComponent?.compId ?? "-1",
         };
         this.componentsManager.onComponentPropsUpdate(this);
     }
