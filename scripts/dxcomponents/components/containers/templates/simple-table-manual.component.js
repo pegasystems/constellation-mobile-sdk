@@ -207,16 +207,13 @@ export class SimpleTableManualComponent extends BaseComponent {
         this.componentsManager.onComponentPropsUpdate(this)
     }
 
-    // #buildFieldLabels(configFields, pConnect, options) {
-    //     const {primaryFieldsViewIndex, fields} = options;
-    //     // get resolved field labels for primary fields raw config included in configFields
-    //     return updateFieldLabels(fields, configFields, primaryFieldsViewIndex, pConnect, {
-    //         columnsRawConfig: pConnect.getRawConfigProps()?.children?.find(item => item?.name === 'Columns')?.children
-    //     });
-    // }
-
     onEvent(event) {
-
+        // TODO PELCM: add add/remove/re-order event handling
+        this.editableRows?.forEach((row) => {
+            row.forEach(cell => {
+                cell.component.onEvent(event);
+            })
+        });
     }
 
     #checkIfAllowActionsOrRowEditingExist(newflagobject) {

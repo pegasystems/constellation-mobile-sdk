@@ -24,6 +24,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButton
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RootContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTable
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableManual
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableSelect
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextArea
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextInput
@@ -44,6 +45,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.OneColumnCompon
 import com.pega.constellation.sdk.kmp.core.components.containers.RegionComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableManualComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableSelectComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewContainerComponent
@@ -98,6 +100,7 @@ object ComponentRegistry {
         Def(Region) { RegionComponent(it) },
         Def(RootContainer) { RootContainerComponent(it) },
         Def(SimpleTable) { SimpleTableComponent(it) },
+        Def(SimpleTableManual) { SimpleTableManualComponent(it) },
         Def(SimpleTableSelect) { SimpleTableSelectComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(TextInput) { TextInputComponent(it) },

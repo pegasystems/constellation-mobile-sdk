@@ -22,6 +22,7 @@ object ComponentTypes {
 
     // templates
     val SimpleTable = ComponentType("SimpleTable")
+    val SimpleTableManual = ComponentType("SimpleTableManual")
     val SimpleTableSelect = ComponentType("SimpleTableSelect")
     val FieldGroupTemplate = ComponentType("FieldGroupTemplate")
 
