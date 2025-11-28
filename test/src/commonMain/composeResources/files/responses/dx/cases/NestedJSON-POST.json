@@ -1,0 +1,537 @@
+{
+  "data": {
+    "caseInfo": {
+      "caseTypeID": "O40M3A-MarekCo-Work-NestedJSON",
+      "owner": "rep@mediaco",
+      "availableActions": [{
+        "name": "Edit details",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/O40M3A-MAREKCO-WORK N-2001/actions/pyUpdateCaseDetails",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyUpdateCaseDetails",
+        "type": "Case"
+      }, {
+        "name": "Change stage",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/O40M3A-MAREKCO-WORK N-2001/actions/pyChangeStage",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyChangeStage",
+        "type": "Case"
+      }],
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "rep@mediaco",
+      "assignments": [{
+        "instructions": "",
+        "canPerform": "true",
+        "assigneeInfo": {
+          "name": "Administrator",
+          "ID": "rep@mediaco",
+          "type": "worklist"
+        },
+        "processID": "CreateForm_Default",
+        "urgency": "10",
+        "processName": "Create",
+        "isMultiStep": "true",
+        "name": "Create",
+        "context": "",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK N-2001!CREATEFORM_DEFAULT",
+            "type": "GET",
+            "title": "Get assignment details"
+          }
+        },
+        "ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK N-2001!CREATEFORM_DEFAULT",
+        "actions": [{
+          "name": "Create",
+          "links": {
+            "submit": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK N-2001!CREATEFORM_DEFAULT/actions/Create",
+              "type": "PATCH",
+              "title": "Submit assignment action "
+            },
+            "save": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK N-2001!CREATEFORM_DEFAULT/actions/Create/save",
+              "type": "PATCH",
+              "title": "Save assignment action "
+            },
+            "open": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK N-2001!CREATEFORM_DEFAULT/actions/Create",
+              "type": "GET",
+              "title": "Get assignment action details"
+            }
+          },
+          "ID": "Create",
+          "type": "FlowAction"
+        }]
+      }],
+      "hasNewAttachments": false,
+      "businessID": "N-2001",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "WidgetsToRefresh": ["TaskList"],
+      "caseTypeName": "NestedJSON",
+      "urgency": "10",
+      "createTime": "2025-11-28T13:56:28.529Z",
+      "createdBy": "rep@mediaco",
+      "name": "NestedJSON",
+      "stages": [{
+        "entryTime": "2025-11-28T13:56:28.542Z",
+        "name": "Create",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/O40M3A-MAREKCO-WORK N-2001/stages/PRIM0",
+            "type": "PUT",
+            "title": "Jump to this stage"
+          }
+        },
+        "visited_status": "active",
+        "ID": "PRIM0",
+        "type": "Primary",
+        "transitionType": "create"
+      }],
+      "ID": "O40M3A-MAREKCO-WORK N-2001",
+      "caseTypeIcon": "cmicons/pycase.svg",
+      "status": "New",
+      "stageID": "PRIM0",
+      "stageLabel": "Create",
+      "lastUpdateTime": "2025-11-28T13:56:28.633Z",
+      "content": {
+        "classID": "O40M3A-MarekCo-Work-NestedJSON",
+        "pxObjClass": "O40M3A-MarekCo-Work-NestedJSON",
+        "pyLabel": "NestedJSON",
+        "pyID": "N-2001",
+        "pyViewName": "Create",
+        "pyViewContext": "",
+        "pyDescription": "",
+        "SampleCaseTypeReference": {
+          "classID": "O40M3A-MarekCo-Work-SampleCaseType",
+          "pyID": "",
+          "pzInsKey": "",
+          "pyLabel": ""
+        }
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "pyEmbedAssignment": [{
+          "name": "pyEmbedAssignment",
+          "type": "View",
+          "config": {
+            "ruleClass": "Work-"
+          },
+          "children": [{
+            "name": "A",
+            "type": "Region",
+            "children": [{
+              "type": "reference",
+              "config": {
+                "type": "view",
+                "name": "pyCaseWorkarea"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-NestedJSON"
+        }],
+        "pyCaseWorkarea": [{
+          "name": "pyCaseWorkarea",
+          "type": "View",
+          "config": {
+            "ruleClass": "Work-"
+          },
+          "children": [{
+            "name": "A",
+            "type": "Region",
+            "children": [{
+              "type": "reference",
+              "config": {
+                "type": "view",
+                "name": "pzFlowContainer"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-NestedJSON"
+        }],
+        "pzFlowContainer": [{
+          "name": "pzFlowContainer",
+          "type": "View",
+          "config": {
+            "ruleClass": "@baseclass"
+          },
+          "children": [{
+            "type": "FlowContainer",
+            "config": {
+              "name": "workarea",
+              "routingInfo": "@ROUTING_INFO"
+            },
+            "children": [{
+              "type": "reference",
+              "config": {
+                "type": "view",
+                "name": "@P .pyViewName",
+                "context": "@P .pyViewContext"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-NestedJSON"
+        }],
+        "Create": [{
+          "name": "Create",
+          "type": "View",
+          "config": {
+            "template": "DefaultForm",
+            "ruleClass": "O40M3A-MarekCo-Work-NestedJSON",
+            "localeReference": "@LR O40M3A-MAREKCO-WORK-NESTEDJSON!VIEW!CREATE"
+          },
+          "children": [{
+            "name": "Fields",
+            "type": "Region",
+            "children": [{
+              "type": "reference",
+              "config": {
+                "name": "pyPrimaryFields",
+                "inheritedProps": [{
+                  "prop": "label",
+                  "value": "@L Primary fields"
+                }, {
+                  "prop": "showLabel",
+                  "value": false
+                }],
+                "ruleClass": "Work-",
+                "type": "view"
+              }
+            }, {
+              "type": "reference",
+              "config": {
+                "name": "Create_SampleCaseTypeReference",
+                "inheritedProps": [{
+                  "prop": "label",
+                  "value": "@FL .SampleCaseTypeReference"
+                }],
+                "labelOption": "default",
+                "ruleClass": "O40M3A-MarekCo-Work-NestedJSON",
+                "type": "view",
+                "authorContext": ".SampleCaseTypeReference",
+                "referenceType": "Case"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-NestedJSON"
+        }],
+        "pyPrimaryFields": [{
+          "name": "pyPrimaryFields",
+          "type": "View",
+          "label": "Primary fields",
+          "config": {
+            "template": "DefaultForm",
+            "ruleClass": "O40M3A-MarekCo-Work-NestedJSON",
+            "label": "Primary fields",
+            "localeReference": "@LR O40M3A-MarekCo-Work-NestedJSON!VIEW!pyPrimaryFields"
+          },
+          "children": [{
+            "name": "Fields",
+            "type": "Region",
+            "children": [{
+              "type": "TextInput",
+              "config": {
+                "value": "@P .pyLabel",
+                "label": "@L Label"
+              }
+            }, {
+              "type": "TextArea",
+              "config": {
+                "value": "@P .pyDescription",
+                "label": "@L Description"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Work-NestedJSON"
+        }],
+        "Create_SampleCaseTypeReference": [{
+          "name": "Create_SampleCaseTypeReference",
+          "type": "View",
+          "config": {
+            "template": "DataReference",
+            "referenceList": "D_SampleCaseTypeList",
+            "name": "SampleCaseTypeReference",
+            "mode": "singleselect",
+            "contextClass": "O40M3A-MarekCo-Work-SampleCaseType",
+            "ruleClass": "O40M3A-MarekCo-Work-NestedJSON",
+            "selectionMode": "single",
+            "classKeys": [{
+              "name": "pyID"
+            }],
+            "localeReference": "@LR O40M3A-MAREKCO-WORK-NESTEDJSON!VIEW!CREATE_SAMPLECASETYPEREFERENCE",
+            "displayAs": "simpleTable"
+          },
+          "children": [{
+            "type": "SimpleTableSelect",
+            "config": {
+              "label": "@L ",
+              "selectionKey": "@P .SampleCaseTypeReference.pyID",
+              "value": "@P .SampleCaseTypeReference.pyID",
+              "contextPage": "@P .SampleCaseTypeReference",
+              "previewKey": "@P .SampleCaseTypeReference.pzInsKey",
+              "referenceList": "D_SampleCaseTypeList",
+              "selectionMode": "single",
+              "primaryField": "@P .SampleCaseTypeReference.pyLabel",
+              "presets": [{
+                "name": "presets",
+                "template": "Table",
+                "config": {},
+                "label": "",
+                "id": "P_",
+                "children": [{
+                  "name": "Columns",
+                  "type": "Region",
+                  "children": [{
+                    "type": "TextInput",
+                    "config": {
+                      "value": "@P .pyID",
+                      "label": "@FL .pyID",
+                      "labelOption": "default",
+                      "readOnly": true,
+                      "additionalDetails": {
+                        "type": "DISPLAY_LINK",
+                        "params": {}
+                      }
+                    }
+                  }, {
+                    "type": "TextInput",
+                    "config": {
+                      "value": "@P .EmbeddedSampleDataObject.Data1",
+                      "label": "@FL .EmbeddedSampleDataObject.Data1",
+                      "labelOption": "default",
+                      "readOnly": true
+                    }
+                  }, {
+                    "type": "TextInput",
+                    "config": {
+                      "value": "@P .EmbeddedSampleDataObject.Data2",
+                      "label": "@FL .EmbeddedSampleDataObject.Data2",
+                      "labelOption": "default",
+                      "readOnly": true
+                    }
+                  }]
+                }]
+              }]
+            }
+          }, {
+            "name": "Views",
+            "type": "Region",
+            "children": []
+          }],
+          "classID": "O40M3A-MarekCo-Work-NestedJSON"
+        }]
+      },
+      "paragraphs": {
+        "SampleCaseTypeReference_additionalInfo": [{
+          "content": "",
+          "name": "SampleCaseTypeReference_additionalInfo",
+          "classID": "O40M3A-MarekCo-Work-NestedJSON"
+        }]
+      },
+      "datapages": {
+        "D_SampleCaseType": {
+          "parameters": [{
+            "name": "pyID",
+            "defaultValue": ""
+          }],
+          "classID": "O40M3A-MarekCo-Work-SampleCaseType",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": false,
+          "structure": "page",
+          "isWorkObject": true,
+          "isCaseTypeWorkObject": true
+        },
+        "D_SampleCaseTypeList": {
+          "classID": "O40M3A-MarekCo-Work-SampleCaseType",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": false,
+          "structure": "list",
+          "refreshStrategy": {
+            "type": "reloadOncePerInteraction"
+          },
+          "isWorkObject": true,
+          "isCaseTypeWorkObject": true
+        }
+      },
+      "fields": {
+        "pyLabel": [{
+          "classID": "O40M3A-MarekCo-Work-NestedJSON",
+          "type": "Text",
+          "maxLength": 64,
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "expectedLength": 60,
+          "label": "Label"
+        }, {
+          "classID": "O40M3A-MarekCo-Work-SampleCaseType",
+          "type": "Text",
+          "maxLength": 64,
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "expectedLength": 60,
+          "label": "Label"
+        }],
+        "pyID": [{
+          "classID": "O40M3A-MarekCo-Work-NestedJSON",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "pxDisplayText",
+          "definedOnClassID": "Work-Cover-",
+          "expectedLength": 22,
+          "label": "Case ID",
+          "isClassKey": true
+        }, {
+          "classID": "O40M3A-MarekCo-Work-SampleCaseType",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "pxDisplayText",
+          "definedOnClassID": "Work-Cover-",
+          "expectedLength": 22,
+          "label": "Case ID",
+          "isClassKey": true
+        }],
+        "pyViewName": [{
+          "classID": "O40M3A-MarekCo-Work-NestedJSON",
+          "type": "Text",
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "label": "pyViewName"
+        }],
+        "pyViewContext": [{
+          "classID": "O40M3A-MarekCo-Work-NestedJSON",
+          "type": "Text",
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "label": "pyViewContext"
+        }],
+        "pyDescription": [{
+          "classID": "O40M3A-MarekCo-Work-NestedJSON",
+          "type": "Text",
+          "displayAs": "pxTextArea",
+          "definedOnClassID": "Work-",
+          "label": "Description"
+        }],
+        "SampleCaseTypeReference": [{
+          "classID": "O40M3A-MarekCo-Work-NestedJSON",
+          "type": "Page",
+          "dataRetrievalType": "refer",
+          "additionalInformation": "@PARAGRAPH SampleCaseTypeReference_additionalInfo",
+          "pageClass": "O40M3A-MarekCo-Work-SampleCaseType",
+          "label": "SampleCaseTypeReference",
+          "datasource": {
+            "name": "D_SampleCaseType",
+            "parameters": {
+              "pyID": "@P .SampleCaseTypeReference.pyID"
+            }
+          }
+        }],
+        "pzInsKey": [{
+          "classID": "O40M3A-MarekCo-Work-SampleCaseType",
+          "type": "Identifier",
+          "definedOnClassID": "@baseclass",
+          "label": "Instance Handle Key",
+          "isSpecial": true
+        }],
+        "EmbeddedSampleDataObject": [{
+          "classID": "O40M3A-MarekCo-Work-SampleCaseType",
+          "label": "EmbeddedSampleDataObject",
+          "type": "Page",
+          "pageClass": "O40M3A-MarekCo-Data-SampleDataObject"
+        }],
+        "Data1": [{
+          "classID": "O40M3A-MarekCo-Data-SampleDataObject",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxTextInput",
+          "label": "data1",
+          "isQueryable": true,
+          "isPageProp": true,
+          "category": "EmbeddedSampleDataObject"
+        }],
+        "Data2": [{
+          "classID": "O40M3A-MarekCo-Data-SampleDataObject",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxTextInput",
+          "label": "data2",
+          "isQueryable": true,
+          "isPageProp": true,
+          "category": "EmbeddedSampleDataObject"
+        }]
+      }
+    },
+    "components": ["DefaultForm", "FlowContainer", "TextArea", "Region", "SimpleTableSelect", "TextInput", "View", "DataReference"],
+    "localeReferences": ["O40M3A-MAREKCO-WORK-NESTEDJSON!PARAGRAPH!SAMPLECASETYPEREFERENCE_ADDITIONALINFO", "@BASECLASS!DATAPAGE!D_SAMPLECASETYPELIST", "O40M3A-MAREKCO-WORK-NESTEDJSON!VIEW!CREATE_SAMPLECASETYPEREFERENCE", "O40M3A-MarekCo-Work-NestedJSON!VIEW!pyPrimaryFields", "O40M3A-MAREKCO-WORK-NESTEDJSON!VIEW!CREATE", "O40M3A-MAREKCO-WORK-NESTEDJSON!CASE!NESTEDJSON"],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "pyEmbedAssignment",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {},
+    "navigation": {
+      "template": "Horizontal",
+      "steps": [{
+        "allow_jump": true,
+        "name": "Create",
+        "actionID": "Create",
+        "visited_status": "current",
+        "ID": "AssignmentSF1"
+      }]
+    },
+    "actionButtons": {
+      "secondary": [{
+        "jsAction": "cancelAssignment",
+        "name": "Cancel",
+        "actionID": "cancel"
+      }],
+      "main": [{
+        "jsAction": "finishAssignment",
+        "name": "Submit",
+        "actionID": "submit"
+      }]
+    }
+  },
+  "ID": "O40M3A-MAREKCO-WORK N-2001",
+  "nextAssignmentInfo": {
+    "context": "self",
+    "className": "O40M3A-MarekCo-Work-NestedJSON",
+    "links": {
+      "open": {
+        "rel": "self",
+        "href": "/assignments/ASSIGN-WORKLIST O40M3A-MAREKCO-WORK N-2001!CREATEFORM_DEFAULT",
+        "type": "GET",
+        "title": "Get assignment details"
+      }
+    },
+    "ID": "ASSIGN-WORKLIST O40M3A-MAREKCO-WORK N-2001!CREATEFORM_DEFAULT"
+  }
+}

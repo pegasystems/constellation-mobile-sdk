@@ -29,6 +29,7 @@ class DxCasesHandler : MockHandler {
             "O40M3A-MarekCo-Work-DataReferenceTest2" -> Asset("responses/dx/cases/DataReferenceTest-POST.json")
             "O40M3A-MarekCo-Work-KeysAndCiphers" -> Asset("responses/dx/cases/KeysAndCiphers-POST.json")
             "O40M3A-MarekCo-Work-GroupTest" -> Asset("responses/dx/cases/GroupTest-POST.json")
+            "O40M3A-MarekCo-Work-NestedJSON" -> Asset("responses/dx/cases/NestedJSON-POST.json")
             else -> Error(500, "Missing response for case $caseTypeId")
         }
     }

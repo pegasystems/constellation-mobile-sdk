@@ -38,6 +38,7 @@ fun Table(
     label: String,
     selectionMode: TableSelectionMode,
     columns: List<String>,
+    columnsLabels: List<String>,
     items: List<TableItem>,
     selectedItem: TableItem?,
     onItemClick: (Int) -> Unit
@@ -51,7 +52,7 @@ fun Table(
             columns = {
                 headerBackground { TableHeaderBackground() }
                 column {} // for selection control
-                columns.forEach { column { Text(it.uppercase(), fontWeight = FontWeight.Bold) } }
+                columnsLabels.forEach { column { Text(it.uppercase(), fontWeight = FontWeight.Bold) } }
             }
         ) {
             items.forEachIndexed { i, item ->
