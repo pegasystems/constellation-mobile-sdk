@@ -9,6 +9,7 @@ export class ListViewComponent extends BaseComponent {
     payload;
     fields$;
     displayedColumns$ = [];
+    displayedColumnsLabels$ = [];
     configProps$;
     selectionMode;
     selectedItemIndex = null;
@@ -155,6 +156,7 @@ export class ListViewComponent extends BaseComponent {
             selectionMode: this.selectionMode,
             selectedItemIndex: String(this.selectedItemIndex),
             columnNames: this.displayedColumns$,
+            columnLabels: this.displayedColumnsLabels$,
             items: this.response,
         };
         this.componentsManager.onComponentPropsUpdate(this);
@@ -192,9 +194,15 @@ export class ListViewComponent extends BaseComponent {
 
                     const tableDataResults = !this.bInForm$ ? workListData.data.data : workListData.data;
 
+                    // update resolved labels
+                    this.fieldDefs.forEach((field, i) => {
+                       field.label = this.fields$[i].config.label;
+                    });
+
                     const columns = this.#getHeaderCells(columnFields, this.fieldDefs);
                     this.fields$ = this.#updateFields(this.fields$, fieldsMetaData.data.fields, columns);
                     this.displayedColumns$ = columns.map((c) => c.id);
+                    this.displayedColumnsLabels$ = columns.map((c) => c.label);
                     this.response = tableDataResults;
 
                     // disabling parsing for now parsing data according to field types like date/date-time/currency

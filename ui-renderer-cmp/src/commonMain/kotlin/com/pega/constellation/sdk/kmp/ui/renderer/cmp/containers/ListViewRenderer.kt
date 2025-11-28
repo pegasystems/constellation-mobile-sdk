@@ -16,6 +16,7 @@ class ListViewRenderer : ComponentRenderer<ListViewComponent> {
             label = label,
             selectionMode = selectionMode.toTableSelectionMode(),
             columns = columnNames,
+            columnsLabels = columnLabels,
             items = items.map { TableItem(it.data) },
             selectedItem = selectedItem?.let { TableItem(it.data) },
             onItemClick = ::onItemSelected

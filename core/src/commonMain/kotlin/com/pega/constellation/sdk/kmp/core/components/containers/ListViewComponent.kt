@@ -30,6 +30,8 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
         private set
     var columnNames by mutableStateOf(emptyList<String>())
         private set
+    var columnLabels by mutableStateOf(emptyList<String>())
+        private set
     var items by mutableStateOf(emptyList<Item>())
         private set
 
@@ -41,6 +43,7 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
         selectionMode = SINGLE
         selectedItemIndex = props.getIntOrNull("selectedItemIndex")
         columnNames = props.getJSONArray("columnNames").map { it.jsonPrimitive.content }
+        columnLabels = props.getJSONArray("columnLabels").map { it.jsonPrimitive.content }
         items = props.getJSONArray("items")
             .map {
                 Item(it.toFoldedItemContent(emptyMap(), ""))
