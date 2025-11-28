@@ -6,6 +6,7 @@ export class BaseComponent {
     jsComponentPConnect;
     compId;
     type;
+    alive = false
 
     constructor(componentsManager, pConn) {
         this.pConn = pConn;
@@ -14,5 +15,10 @@ export class BaseComponent {
         this.compId = componentsManager.getNextComponentId();
         this.type = pConn.meta.type;
         this.utils = new Utils();
+        this.alive = true;
+    }
+
+    destroy() {
+        this.alive = false;
     }
 }

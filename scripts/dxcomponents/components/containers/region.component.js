@@ -11,6 +11,7 @@ export class RegionComponent extends ContainerBaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.destroyChildren();
         this.props.children = [];
         this.componentsManager.onComponentPropsUpdate(this);

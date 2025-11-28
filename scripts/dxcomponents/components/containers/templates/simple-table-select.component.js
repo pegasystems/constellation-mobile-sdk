@@ -40,6 +40,7 @@ export class SimpleTableSelectComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.jsComponentPConnectData.unsubscribeFn?.();
         this.componentsManager.onComponentRemoved(this);
     }

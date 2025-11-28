@@ -83,6 +83,10 @@ class NativeBridge {
             console.error(TAG, `Cannot update component #${id} - missing props.`);
             return;
         }
+        if (component.alive === false) {
+            console.debug(TAG, `Skipping component update #${id} - component is destroyed.`);
+            return;
+        }
         let componentProps = component.props;
         if (component.pConn) {
             componentProps["pConnectPropertyReference"] = this.#getPropertyReference(component.pConn);

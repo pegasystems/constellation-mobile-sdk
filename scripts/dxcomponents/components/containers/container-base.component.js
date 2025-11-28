@@ -4,6 +4,10 @@ import { ReferenceComponent } from "./reference.component.js";
 export class ContainerBaseComponent extends BaseComponent {
     childrenComponents = [];
 
+    destroy() {
+        super.destroy();
+    }
+
     destroyChildren() {
         this.childrenComponents.forEach((component) => component.destroy?.());
         this.childrenComponents = [];

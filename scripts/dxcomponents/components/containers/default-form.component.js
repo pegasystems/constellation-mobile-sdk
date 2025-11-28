@@ -19,6 +19,7 @@ export class DefaultFormComponent extends ContainerBaseComponent {
     }
 
     destroy() {
+        super.destroy();
         // prevents sending fields from previous steps on next submit see: TASK-1776419 pulse
         PCore.getContextTreeManager().removeContextTreeNode(this.pConn.getContextName());
         this.destroyChildren();
