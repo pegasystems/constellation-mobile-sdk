@@ -1,6 +1,6 @@
 import {BaseComponent} from "../../base.component.js";
 import {Utils} from "../../../helpers/utils.js";
-import {buildFieldsForTable, getReferenceList, updateFieldLabels} from "./template-utils.js";
+import {buildFieldsForTable, evaluateAllowRowAction, getReferenceList, updateFieldLabels} from "./template-utils.js";
 
 export class SimpleTableManualComponent extends BaseComponent {
     jsComponentPConnectData = {};
@@ -21,25 +21,17 @@ export class SimpleTableManualComponent extends BaseComponent {
     bUseSeparateViewForEdit;
     editView;
     prevReferenceList = null;
-    originalData;
     props = {
         visible: true,
         label: "",
         displayMode: this.EDITABLE_IN_ROW,
-        showAddRowButton: true,
+        allowAddRows: true,
+        allowReorderRows: true,
+        buttonLabel: "+ Add",
         columnLabels: [],
         rows: [],
     }
     editableRows = [];
-
-
-//     if (this.readOnlyMode && !this.allowEditingInModal) {
-//     this.props.displayMode = 'READ_ONLY';
-// } else if(editableMode && this.allowEditingInModal) {
-//     this.props.displayMode = 'EDITABLE_IN_MODAL';
-// } else if(editableMode && !this.allowEditingInModal){
-//     this.props.displayMode = 'EDITABLE_IN_ROW';
-// }
 
     constructor(componentsManager, pConn) {
         super(componentsManager, pConn);
@@ -48,6 +40,10 @@ export class SimpleTableManualComponent extends BaseComponent {
     }
 
     init() {
+        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
+            this,
+            this.#checkAndUpdate
+        );
         this.isInitialized = true;
         this.componentsManager.onComponentAdded(this);
         this.#updateSelf();
@@ -55,8 +51,9 @@ export class SimpleTableManualComponent extends BaseComponent {
 
     destroy() {
         super.destroy();
-        this.editableRows.forEach(rowCells => {
-            rowCells.forEach(cell => {
+        this.jsComponentPConnectData.unsubscribeFn?.();
+        this.editableRows.forEach(row => {
+            row.cells.forEach(cell => {
                 cell.component.destroy();
             });
         })
@@ -69,6 +66,12 @@ export class SimpleTableManualComponent extends BaseComponent {
     update(pConn) {
         if (this.pConn !== pConn) {
             this.pConn = pConn;
+            this.#updateSelf();
+        }
+    }
+
+    #checkAndUpdate() {
+        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
             this.#updateSelf();
         }
     }
@@ -92,6 +95,7 @@ export class SimpleTableManualComponent extends BaseComponent {
             allowActions,
             allowTableEdit,
             allowRowDelete,
+            allowRowEdit,
             label: labelProp,
             propertyLabel,
             fieldMetadata,
@@ -148,11 +152,9 @@ export class SimpleTableManualComponent extends BaseComponent {
         this.readOnlyMode = renderMode === 'ReadOnly';
         const editableMode = renderMode === 'Editable';
         const isDisplayModeEnabled = displayMode === 'DISPLAY_ONLY';
-        this.showAddRowButton = !this.readOnlyMode && !simpleTableManualProps.hideAddRow;
+        this.props.allowAddRows = editableMode && !simpleTableManualProps.hideAddRow;
         this.allowEditingInModal =
             (editMode ? editMode === 'modal' : addAndEditRowsWithin === 'modal') && !(renderMode === 'ReadOnly' || isDisplayModeEnabled);
-        const displayAsReadOnly = this.readOnlyMode || this.allowEditingInModal
-        const displayAsEditable = editableMode && !this.allowEditingInModal
 
         if (this.readOnlyMode) {
             this.props.displayMode = this.DISPLAY_ONLY;
@@ -161,11 +163,13 @@ export class SimpleTableManualComponent extends BaseComponent {
         } else if (editableMode && !this.allowEditingInModal) {
             this.props.displayMode = this.EDITABLE_IN_ROW;
         }
-        const showDeleteButton = editableMode && !simpleTableManualProps.hideDeleteRow //&& evaluateAllowRowAction(allowRowDelete, this.rowData); // TODO: implement
+
         this.defaultView = editModeConfig ? editModeConfig.defaultView : viewForAddAndEditModal;
         this.bUseSeparateViewForEdit = editModeConfig ? editModeConfig.useSeparateViewForEdit : useSeparateViewForEdit;
         this.editView = editModeConfig ? editModeConfig.editView : viewForEditModal;
         const primaryFieldsViewIndex = resolvedFields.findIndex(field => field.config.value === 'pyPrimaryFields');
+
+        this.props.addButtonLabel =  targetClassLabel ? `+ Add ${targetClassLabel}` : "+ Add";
 
         // fieldDefs will be an array where each entry will have a "name" which will be the
         //  "resolved" property name (that we can use as the colId) though it's not really
@@ -173,8 +177,7 @@ export class SimpleTableManualComponent extends BaseComponent {
         //  Nebula does). It will also have the "label", and "meta" contains the original,
         //  unchanged config info. For now, much of the info here is carried over from
         //  Nebula and we may not end up using it all.
-        // PELCM: metadata for table rows like labels
-        this.fieldDefs = buildFieldsForTable(rawFields, this.pConn, showDeleteButton, {
+        this.fieldDefs = buildFieldsForTable(rawFields, this.pConn, {
             primaryFieldsViewIndex,
             fields: resolvedFields
         });
@@ -201,16 +204,35 @@ export class SimpleTableManualComponent extends BaseComponent {
         });
 
         if (JSON.stringify(this.prevReferenceList) !== JSON.stringify(this.referenceList)) { //TODO PELCM: make it more efficient
-            this.#buildRows();
+            this.#buildRows(editableMode, !simpleTableManualProps.hideDeleteRow, allowRowDelete, !simpleTableManualProps.hideEditRow, allowRowEdit);
         }
         this.prevReferenceList = this.referenceList;
         this.componentsManager.onComponentPropsUpdate(this)
     }
 
     onEvent(event) {
-        // TODO PELCM: add add/remove/re-order event handling
+        if (this.readonlyMode) {
+            return; // no-op
+        }
+        if (event.type === "SimpleTableManualEvent") {
+            switch (event.eventData?.type) {
+                case "addRow":
+                    this.#addSimpleTableRow();
+                    break;
+                case "deleteRow":
+                    this.#deleteSimpleTableRow(event.eventData?.rowId);
+                    break;
+                case "reorderRow":
+                    this.#reorderSimpleTableRow(event.eventData?.fromIndex, event.eventData?.toIndex);
+                    break;
+                default:
+                    console.warn("SimpleTableManualComponent", "Unexpected event: ", event.eventData?.type);
+            }
+            return;
+        }
+
         this.editableRows?.forEach((row) => {
-            row.forEach(cell => {
+            row.cells.forEach(cell => {
                 cell.component.onEvent(event);
             })
         });
@@ -254,10 +276,13 @@ export class SimpleTableManualComponent extends BaseComponent {
         }
     }
 
-    #buildRows() {
+    #buildRows(editableMode, allowDelete, allowRowDeleteExpression, allowEdit, allowRowEditExpression) {
         const context = this.pConn.getContextName();
         const newEditableRows = [];
         this.referenceList.forEach((element, rowIndex) => {
+            const showDeleteButton = editableMode && allowDelete && evaluateAllowRowAction(allowRowDeleteExpression, element);
+            const showEditButton = editableMode && allowEdit && evaluateAllowRowAction(allowRowEditExpression, element) && this.allowEditingInModal;
+
             const editableRow = this.editableRows[rowIndex];
             const newEditableCells = [];
             this.rawFields?.forEach((item, cellIndex) => {
@@ -285,85 +310,45 @@ export class SimpleTableManualComponent extends BaseComponent {
                         }
                     };
                     const cellPConn = PCore.createPConnect(config).getPConnect();
-                    const oldComponent = editableRow?.[cellIndex]?.component;
+                    const oldComponent = editableRow?.cells?.[cellIndex]?.component;
                     const newComponent = this.componentsManager.upsert(oldComponent, cellPConn.meta.type, [cellPConn]);
-                    newEditableCells.push({
-                        cellId: cellIndex,
-                        component: newComponent
-                    })
+                    newEditableCells.push({ component: newComponent })
                 }
             });
-            newEditableRows.push(newEditableCells);
+            newEditableRows.push({
+                cells: newEditableCells,
+                showEditButton: showEditButton,
+                showDeleteButton: showDeleteButton
+            });
         });
         this.editableRows = newEditableRows;
-        this.props.rows = newEditableRows.map((row, index) => {
+        this.props.rows = newEditableRows.map((row) => {
             return {
-                id: index,
-                cellComponentIds: row.map((cell) => cell.component.compId)
+                cellComponentIds: row.cells.map((cell) => cell.component.compId),
+                showEditButton: row.showEditButton,
+                showDeleteButton: row.showDeleteButton
             }
         });
     }
 
-    // #generateReadOnlyRows(referenceList, dataPageName, displayedColumns) {
-    //     if (!referenceList.length && dataPageName) {
-    //         const context = this.pConn.getContextName();
-    //         this.#getDataPageData(dataPageName, this.parameters, context).then(listData => {
-    //             const data = this.#filterData(listData, displayedColumns);
-    //             this.props.rows = data.map((item, index) => {
-    //                 return {
-    //                     id: index,
-    //                     rowData: item
-    //                 }
-    //             })
-    //             this.componentsManager.onComponentPropsUpdate(this)
-    //         });
-    //     } else {
-    //         const data = this.#filterData(referenceList, displayedColumns);
-    //         this.props.rows = Object.entries(data).map((rowItem, index) => {
-    //             return {
-    //                 id: index,
-    //                 readonlyData: rowItem
-    //             }
-    //         })
-    //     }
-    // }
+    #addSimpleTableRow() {
+        this.pConn.getListActions().insert({ classID: this.contextClass }, this.referenceList.length);
+    }
 
-    // #getDataPageData(dataPageName, parameters, context) {
-    //     let dataViewParams;
-    //     if (parameters) {
-    //         dataViewParams = {
-    //             dataViewParameters: parameters
-    //         };
-    //     }
-    //     return new Promise((resolve, reject) => {
-    //         (PCore.getDataApiUtils().getData(dataPageName, dataViewParams, context))
-    //             .then((response) => {
-    //                 resolve(response.data.data);
-    //             }).catch(e => {
-    //             if (e) {
-    //                 // check specific error if 401, and wiped out if so stored token is stale.  Fetcch new tokens.
-    //                 reject(e);
-    //             }
-    //         });
-    //     });
-    // }
-    //
-    // #filterData(data, displayedColumns) {
-    //     return data.map(item =>
-    //         Object.fromEntries(Object.entries(item).filter(([key]) => displayedColumns.includes(key)))
-    //     );
-    // }
+    #deleteSimpleTableRow(index) {
+        if (index) {
+            this.pConn.getListActions().deleteEntry(parseInt(index));
+        } else {
+            console.error("SimpleTableManualComponent", "Cannot delete row - index not provided.");
+        }
+    }
 
-    // // return the value that should be shown as the contents for the given row data
-    // //  of the given row field
-    // #getRowValue(inRowData, inColKey) {
-    //     // See what data (if any) we have to display
-    //     const refKeys = inColKey.split('.');
-    //     let valBuilder = inRowData;
-    //     for (const key of refKeys) {
-    //         valBuilder = valBuilder ?? valBuilder[key];
-    //     }
-    //     return valBuilder;
-    // }
+    #reorderSimpleTableRow(fromIndex, toIndex) {
+        if (fromIndex != null && toIndex != null) {
+            this.pConn.getListActions().reorder(parseInt(fromIndex), parseInt(toIndex));
+        } else {
+            console.error("SimpleTableManualComponent", "Cannot reorder row - correct indexes not provided.");
+        }
+    }
 }
 

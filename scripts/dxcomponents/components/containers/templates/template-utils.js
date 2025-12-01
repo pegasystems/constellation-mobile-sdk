@@ -15,7 +15,7 @@ export function getReferenceList(pConn) {
     return resolvePage;
 }
 
-export const buildFieldsForTable = (configFields, pConnect, showDeleteButton, options) => {
+export const buildFieldsForTable = (configFields, pConnect, options) => {
     const { primaryFieldsViewIndex, fields } = options;
 
     // get resolved field labels for primary fields raw config included in configFields
@@ -41,22 +41,6 @@ export const buildFieldsForTable = (configFields, pConnect, showDeleteButton, op
             width: getFieldWidth(field, fields[index].config.label)
         };
     });
-
-    // ONLY add DELETE_ICON to fields when the table is requested as EDITABLE
-    if (showDeleteButton) {
-        fieldDefs.push({
-            type: 'text',
-            label: '',
-            name: DELETE_ICON,
-            id: fieldDefs.length,
-            cellRenderer: DELETE_ICON,
-            sort: false,
-            noContextMenu: true,
-            showMenu: false,
-            // BUG-615253: Workaround for autosize in table with lazy loading components
-            width: 46
-        });
-    }
 
     return fieldDefs;
 };
@@ -157,4 +141,19 @@ export function getFieldLabel(fieldConfig) {
     const fieldMetaData = PCore.getMetadataUtils().getPropertyMetadata(propertyName, classID) ?? {};
     fieldLabel = fieldMetaData.label ?? fieldMetaData.caption ?? propertyName;
     return fieldLabel;
+}
+
+/**
+ * This method evaluates whether a row action is allowed based on the provided conditions.
+ * @param {string|boolean|undefined} rawExpression - The condition for allowing row action.
+ * @param {object} rowData - The data of the row being evaluated.
+ * @returns {boolean} - Returns true if the row action is allowed, false otherwise.
+ */
+export function evaluateAllowRowAction(rawExpression, rowData) {
+    if (rawExpression === undefined || rawExpression === true) return true;
+    if (rawExpression.startsWith?.("@E ")) {
+        const expression = rawExpression.replace("@E ", "");
+        return PCore.getExpressionEngine().evaluate(expression, rowData);
+    }
+    return false;
 }

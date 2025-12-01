@@ -1,6 +1,6 @@
 import { Utils } from "../../../helpers/utils.js";
 import { BaseComponent } from "../../base.component.js";
-import { getReferenceList } from "./template-utils.js";
+import {evaluateAllowRowAction, getReferenceList} from "./template-utils.js";
 
 export class FieldGroupTemplateComponent extends BaseComponent {
     jsComponentPConnectData = {};
@@ -97,7 +97,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                     this.pConn,
                     index,
                     lookForChildInConfig,
-                    this.evaluateAllowRowAction(allowRowEdit, item)
+                    evaluateAllowRowAction(allowRowEdit, item)
                 ).getPConnect();
                 const newComponent = this.componentsManager.upsert(oldComponent, newPConn.meta.type, [newPConn]);
                 updatedItems.push({
@@ -107,7 +107,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                             ? this.getDynamicHeader(item, index)
                             : this.getStaticHeader(this.heading, index),
                     component: newComponent,
-                    allowDelete: this.allowedActions.delete && this.evaluateAllowRowAction(allowRowDelete, item),
+                    allowDelete: this.allowedActions.delete && evaluateAllowRowAction(allowRowDelete, item),
                 });
             });
             this.items = updatedItems;
@@ -144,7 +144,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
             return; // no-op
         }
 
-        if (event.type == "FieldGroupTemplateEvent") {
+        if (event.type === "FieldGroupTemplateEvent") {
             switch (event.eventData?.type) {
                 case "addItem":
                     this.addFieldGroupItem();
@@ -234,15 +234,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         }
 
         return pConnect;
-    }
-
-    evaluateAllowRowAction(rawExpression, rowData) {
-        if (rawExpression === undefined || rawExpression === true) return true;
-        if (rawExpression.startsWith?.("@E ")) {
-            const expression = rawExpression.replace("@E ", "");
-            return PCore.getExpressionEngine().evaluate(expression, rowData);
-        }
-        return false;
     }
 
     destroyItems() {
