@@ -11,7 +11,10 @@ import com.pega.constellation.sdk.kmp.core.components.containers.ListViewCompone
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent.SelectionMode.SINGLE
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
@@ -27,6 +30,8 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
         private set
     var columnNames by mutableStateOf(emptyList<String>())
         private set
+    var columnLabels by mutableStateOf(emptyList<String>())
+        private set
     var items by mutableStateOf(emptyList<Item>())
         private set
 
@@ -38,11 +43,10 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
         selectionMode = SINGLE
         selectedItemIndex = props.getIntOrNull("selectedItemIndex")
         columnNames = props.getJSONArray("columnNames").map { it.jsonPrimitive.content }
+        columnLabels = props.getJSONArray("columnLabels").map { it.jsonPrimitive.content }
         items = props.getJSONArray("items")
-            .map { item ->
-                item.jsonObject.entries
-                    .associate { it.key to it.value.jsonPrimitive.content }
-                    .let { Item(it) }
+            .map {
+                Item(it.toFoldedItemContent(emptyMap(), ""))
             }
     }
 
@@ -63,6 +67,25 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
 
     private fun JsonObject.getIntOrNull(key: String): Int? =
         get(key)?.jsonPrimitive?.content?.takeIf { it.isNotBlank() }?.toIntOrNull()
+
+    private fun JsonElement.toFoldedItemContent(
+        initialResult: Map<String, String>,
+        currentPath: String
+    ): Map<String, String> =
+        when (this) {
+            is JsonObject -> jsonObject.entries.fold(initialResult) { accumulator, element ->
+                val nextPath = if (currentPath.isNotEmpty()) {
+                    "$currentPath.${element.key}"
+                } else {
+                    element.key
+                }
+                element.value.toFoldedItemContent(accumulator, nextPath)
+            }
+            is JsonArray -> jsonArray.foldIndexed(initialResult) { index, accumulator, element ->
+                element.toFoldedItemContent(accumulator, "$currentPath[$index]")
+            }
+            else -> initialResult + mapOf(currentPath to jsonPrimitive.content)
+        }
 
     private fun String.toSelectionMode() =
         when (this.uppercase()) {
