@@ -62,28 +62,49 @@ class SimpleTableManualComponent(context: ComponentContext) : BaseComponent(cont
             )
         }
 
-    fun addRow() = context.sendComponentEvent(ComponentEvent.simpleTableManualAddRow())
+    fun addRow() = context.sendComponentEvent(simpleTableManualAddRowEvent())
 
     fun deleteRow(rowId: Int) =
-        context.sendComponentEvent(ComponentEvent.simpleTableManualDeleteRow(rowId))
+        context.sendComponentEvent(simpleTableManualDeleteRowEvent(rowId))
 
     fun reorderRow(fromIndex: Int, toIndex: Int) =
-        context.sendComponentEvent(ComponentEvent.simpleTableManualReorderRow(fromIndex, toIndex))
+        context.sendComponentEvent(simpleTableManualReorderRowEvent(fromIndex, toIndex))
 
-    private fun ComponentEvent.Companion.simpleTableManualAddRow() =
+    fun editRowInModal(rowId: Int) =
+        context.sendComponentEvent(simpleTableManualEditRowInModalEvent(rowId))
+
+    fun addRowInModal() =
+        context.sendComponentEvent(simpleTableManualAddRowInModalEvent())
+
+    private fun simpleTableManualAddRowEvent() =
         ComponentEvent("SimpleTableManualEvent", eventData = mapOf("type" to "addRow"))
 
-    private fun ComponentEvent.Companion.simpleTableManualDeleteRow(itemId: Int) =
+    private fun simpleTableManualDeleteRowEvent(itemId: Int) =
         ComponentEvent(
             "SimpleTableManualEvent",
             eventData = mapOf("type" to "deleteRow", "rowId" to itemId.toString())
         )
 
-    private fun ComponentEvent.Companion.simpleTableManualReorderRow(fromIndex: Int, toIndex: Int) =
+    private fun simpleTableManualReorderRowEvent(fromIndex: Int, toIndex: Int) =
         ComponentEvent(
             "SimpleTableManualEvent", eventData = mapOf(
                 "type" to "reorderRow",
                 "fromIndex" to fromIndex.toString(), "toIndex" to toIndex.toString()
+            )
+        )
+
+    private fun simpleTableManualEditRowInModalEvent(rowId: Int) =
+        ComponentEvent(
+            "SimpleTableManualEvent", eventData = mapOf(
+                "type" to "editRowInModal",
+                "rowId" to rowId.toString()
+            )
+        )
+
+    private fun simpleTableManualAddRowInModalEvent() =
+        ComponentEvent(
+            "SimpleTableManualEvent", eventData = mapOf(
+                "type" to "addRowInModal"
             )
         )
 

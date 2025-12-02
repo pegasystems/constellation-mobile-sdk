@@ -225,6 +225,12 @@ export class SimpleTableManualComponent extends BaseComponent {
                 case "reorderRow":
                     this.#reorderSimpleTableRow(event.eventData?.fromIndex, event.eventData?.toIndex);
                     break;
+                case "editRowInModal":
+                    this.#editRowInModal(event.eventData?.rowId);
+                    break;
+                case "addRowInModal":
+                    this.#addRowInModal();
+                    break;
                 default:
                     console.warn("SimpleTableManualComponent", "Unexpected event: ", event.eventData?.type);
             }
@@ -349,6 +355,28 @@ export class SimpleTableManualComponent extends BaseComponent {
         } else {
             console.error("SimpleTableManualComponent", "Cannot reorder row - correct indexes not provided.");
         }
+    }
+
+    #editRowInModal(index) {
+        this.pConn.getActionsApi().openEmbeddedDataModal(
+            this.bUseSeparateViewForEdit ? this.editView : this.defaultView,
+            this.pConn,
+            this.referenceListStr,
+            index,
+            PCore.getConstants().RESOURCE_STATUS.UPDATE,
+            this.targetClassLabel
+        );
+    }
+
+    #addRowInModal() {
+        this.pConn.getActionsApi().openEmbeddedDataModal(
+            this.defaultView,
+            this.pConn,
+            this.referenceListStr,
+            this.referenceList.length,
+            PCore.getConstants().RESOURCE_STATUS.CREATE,
+            this.targetClassLabel
+        );
     }
 }
 

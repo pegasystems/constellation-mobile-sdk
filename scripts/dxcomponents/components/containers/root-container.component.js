@@ -1,11 +1,12 @@
-import { Utils } from "../../helpers/utils.js";
-import { BaseComponent } from "../base.component.js";
+import {Utils} from "../../helpers/utils.js";
+import {BaseComponent} from "../base.component.js";
 
-const options = { context: "app" };
+const options = {context: "app"};
 const TAG = "[RootContainerComponent]";
 
 export class RootContainerComponent extends BaseComponent {
     #viewContainerComponent;
+    #modalViewContainerComponent;
 
     jsComponentPConnectData = {};
     props = {
@@ -14,9 +15,10 @@ export class RootContainerComponent extends BaseComponent {
     };
 
     init() {
-        const { containers } = PCore.getStore().getState();
+        const {containers} = PCore.getStore().getState();
         const items = Object.keys(containers).filter((item) => item.includes("root"));
         PCore.getContainerUtils().getContainerAPI().addContainerItems(items);
+        this.#configureModalContainer();
         Utils.setHasViewContainer("false");
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
@@ -38,6 +40,7 @@ export class RootContainerComponent extends BaseComponent {
         const httpMessages = this.jsComponentPConnectData.httpMessages || [];
         this.props = {
             viewContainer: this.#viewContainerComponent.compId,
+            modalViewContainer: this.#modalViewContainerComponent.compId,
             httpMessages: httpMessages,
         };
         this.componentsManager.onComponentPropsUpdate(this);
@@ -67,12 +70,17 @@ export class RootContainerComponent extends BaseComponent {
 
     #updateSelf() {
         const myProps = this.jsComponentPConnect.getCurrentCompleteProps(this);
-        const { renderingMode } = myProps;
+        const {renderingMode} = myProps;
         if (renderingMode === "noPortal") {
             this.#generateViewContainerForNoPortal();
         } else {
             console.error(TAG, "'noPortal' rendering mode supported only.");
         }
+        if (this.compId !== "1") {
+            console.error(TAG, "RootComponent id must be '1' to match root container on consumer side");
+            return;
+        }
+        this.#sendPropsUpdate();
     }
 
     #generateViewContainerForNoPortal() {
@@ -100,11 +108,28 @@ export class RootContainerComponent extends BaseComponent {
             viewContainerPConn.meta.type,
             [viewContainerPConn]
         );
+    }
 
+    #configureModalContainer() {
+        const configObjModal = PCore.createPConnect({
+            meta: {
+                type: 'ModalViewContainer',
+                config: {
+                    name: 'modal'
+                }
+            },
+            options
+        });
+
+        const modalViewContainerPConn = configObjModal.getPConnect();
+        this.#modalViewContainerComponent = this.componentsManager.upsert(
+            this.#modalViewContainerComponent,
+            modalViewContainerPConn.meta.type,
+            [modalViewContainerPConn]
+        );
         if (this.compId !== "1") {
             console.error(TAG, "RootComponent id must be '1' to match root container on consumer side");
             return;
         }
-        this.#sendPropsUpdate();
     }
 }
