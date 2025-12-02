@@ -6,7 +6,7 @@ import { AssignmentComponent } from "../components/containers/assignment.compone
 // import { DeferLoadComponent } from './_components/infra/defer-load/defer-load.component';
 // import { ErrorBoundaryComponent } from '../components/containers/error-boundary.component.js';
 import { FlowContainerComponent } from "../components/containers/flow-container.component.js";
-// import { ModalViewContainerComponent } from './_components/infra/Containers/modal-view-container/modal-view-container.component';
+import { ModalViewContainerComponent } from '../components/containers/modal-view-container.component.js';
 // import { MultiStepComponent } from './_components/infra/multi-step/multi-step.component';
 // import { NavbarComponent } from './_components/infra/navbar/navbar.component';
 import { ReferenceComponent } from "../components/containers/reference.component.js";
@@ -185,7 +185,7 @@ const pegaSdkComponentMap = {
     // ListViewActionButtons: ListViewActionButtonsComponent,
     // MaterialDetails: MaterialDetailsComponent,
     // MaterialUtility: MaterialUtilityComponent,
-    // ModalViewContainer: ModalViewContainerComponent,
+    ModalViewContainer: ModalViewContainerComponent,
     // MultiReferenceReadOnly: MultiReferenceReadonlyComponent,
     // Multiselect: MultiselectComponent,
     // MultiStep: MultiStepComponent,

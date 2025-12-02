@@ -69,7 +69,7 @@ class SimpleTableManualRenderer : ComponentRenderer<SimpleTableManualComponent> 
                                 showEditButton = row.showEditButton,
                                 showDeleteButton = row.showDeleteButton,
                                 showReorderButtons = allowReorderRows,
-                                onEditClick = {},
+                                onEditClick = { editRowInModal(i) },
                                 onDeleteClick = { deleteRow(i) },
                                 onReorderClick = {
                                     val toIndex = when (it) {
@@ -79,6 +79,17 @@ class SimpleTableManualRenderer : ComponentRenderer<SimpleTableManualComponent> 
                                     reorderRow(i, toIndex)
                                 }
                             )
+                        }
+                        if (allowAddRows) {
+                            val focusManager = LocalFocusManager.current
+                            OutlinedButton(
+                                onClick = {
+                                    focusManager.clearFocus()
+                                    addRowInModal()
+                                }, modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(addButtonLabel)
+                            }
                         }
                     }
 
@@ -99,17 +110,17 @@ class SimpleTableManualRenderer : ComponentRenderer<SimpleTableManualComponent> 
                                     reorderRow(i, toIndex)
                                 })
                         }
-                    }
-                }
-                if (allowAddRows) {
-                    val focusManager = LocalFocusManager.current
-                    OutlinedButton(
-                        onClick = {
-                            focusManager.clearFocus()
-                            addRow()
-                        }, modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(addButtonLabel)
+                        if (allowAddRows) {
+                            val focusManager = LocalFocusManager.current
+                            OutlinedButton(
+                                onClick = {
+                                    focusManager.clearFocus()
+                                    addRow()
+                                }, modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(addButtonLabel)
+                            }
+                        }
                     }
                 }
             }

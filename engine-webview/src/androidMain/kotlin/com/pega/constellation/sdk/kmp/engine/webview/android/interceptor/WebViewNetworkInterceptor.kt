@@ -41,10 +41,14 @@ internal class WebViewNetworkInterceptor(
         }
 
     fun setRequestBody(body: String) {
+        Log.e("DEBUG", "Setting request body: $body")
         requestBody.set(body)
     }
 
     private fun OkHttpClient.execute(request: WebResourceRequest): Response {
+        if (request.method == "POST" || request.method == "PATCH") {
+            Log.e("DEBUG", "OkHttpClient.execute for: ${request.method} to ${request.url}, requestBody: $requestBody")
+        }
         val body = requestBody.takeIf { request.method in listOf("POST", "PATCH") }
             ?.getAndSet(null)
             ?.toRequestBody()
