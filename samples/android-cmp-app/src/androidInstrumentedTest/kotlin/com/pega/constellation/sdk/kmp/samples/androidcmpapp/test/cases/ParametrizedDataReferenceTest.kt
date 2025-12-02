@@ -17,7 +17,7 @@ import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
 class ParametrizedDataReferenceTest : ComposeTest(PegaVersion.v24_2_2) {
-    private val columns = listOf("KeyName", "KeyLength", "Algorithm")
+    private val columns = listOf("Key Name", "Key Length", "Algorithm")
 
     private val unfilteredKeys = listOf(
         "AeroCrypt",
