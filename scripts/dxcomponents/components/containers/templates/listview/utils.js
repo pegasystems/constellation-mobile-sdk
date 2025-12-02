@@ -539,6 +539,27 @@ function prepareExtraFields(metaFields, configFields, configFieldSet, reportColu
 
 const AssignDashObjects = ["Assign-Worklist", "Assign-WorkBasket"];
 
+function isFLProperty(label) {
+    return label?.startsWith("@FL");
+}
+
+function getFieldLabel(fieldConfig) {
+    const { label, classID, caption } = fieldConfig;
+    let fieldLabel = (label ?? caption)?.substring(4);
+    const labelSplit = fieldLabel?.split(".");
+    const propertyName = labelSplit?.pop();
+    const fieldMetaData = PCore.getMetadataUtils().getPropertyMetadata(propertyName, classID) ?? {};
+    fieldLabel = fieldMetaData.label ?? fieldMetaData.caption ?? propertyName;
+    const definedOnClassID = fieldMetaData.definedOnClassID;
+    const localeValue = PCore.getLocaleUtils().getLocaleValue(
+        fieldLabel,
+        `${definedOnClassID ?? fieldMetaData.classID ?? classID}.${propertyName}`,
+        PCore.getLocaleUtils().FIELD_LABELS_BUNDLE_KEY,
+        null
+    );
+    return localeValue || fieldLabel;
+}
+
 function populateRenderingOptions(name, config, field) {
     const shouldDisplayAsSemanticLink = "displayAsLink" in field.config && field.config.displayAsLink;
     if (shouldDisplayAsSemanticLink) {
@@ -565,7 +586,10 @@ export function initializeColumns(fields = [], getMappedProperty = null) {
 
         let label = field.config.label || field.config.caption;
         const { show = true, displayAs } = field.config;
-        if (label.startsWith("@")) {
+
+        if (isFLProperty(label)) {
+            label = getFieldLabel(field.config);
+        } else if (label.startsWith("@")) {
             label = label.substring(3);
         }
 

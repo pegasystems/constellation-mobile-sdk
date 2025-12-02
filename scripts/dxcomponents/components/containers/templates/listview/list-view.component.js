@@ -194,11 +194,6 @@ export class ListViewComponent extends BaseComponent {
 
                     const tableDataResults = !this.bInForm$ ? workListData.data.data : workListData.data;
 
-                    // update resolved labels
-                    this.fieldDefs.forEach((field, i) => {
-                       field.label = this.fields$[i].config.label;
-                    });
-
                     const columns = this.#getHeaderCells(columnFields, this.fieldDefs);
                     this.fields$ = this.#updateFields(this.fields$, fieldsMetaData.data.fields, columns);
                     this.displayedColumns$ = columns.map((c) => c.id);
