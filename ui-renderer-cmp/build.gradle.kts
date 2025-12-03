@@ -38,6 +38,8 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.ksoup.http.parser)
+                implementation(libs.table.m3)
+                implementation("com.mohamedrejeb.dnd:compose-dnd:0.3.0")
             }
         }
     }
