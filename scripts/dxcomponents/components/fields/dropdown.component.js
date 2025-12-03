@@ -85,7 +85,6 @@ export class DropdownComponent extends PicklistBaseComponent {
                         const displayFieldMeta = getDisplayFieldsMetaData(dataConfig.columns);
                         this.listItems = populateItems(response, displayFieldMeta, dataApiObj);
                         this.updateOptions(
-                            configProps,
                             fieldMetadata,
                             className,
                             isDeferredDatasource,
