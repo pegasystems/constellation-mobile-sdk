@@ -157,3 +157,22 @@ export function evaluateAllowRowAction(rawExpression, rowData) {
     }
     return false;
 }
+
+export function getContext(thePConn) {
+    const contextName = thePConn.getContextName();
+    const pageReference = thePConn.getPageReference();
+    const {
+        readonlyContextList,
+        referenceList = readonlyContextList
+    } = thePConn.getStateProps()?.config || thePConn.getStateProps();
+
+    const pageReferenceForRows = referenceList.startsWith('.') ? `${pageReference}.${referenceList.substring(1)}` : referenceList;
+    const viewName = thePConn.viewName;
+
+    return {
+        contextName,
+        referenceListStr: referenceList,
+        pageReferenceForRows,
+        viewName
+    };
+}
