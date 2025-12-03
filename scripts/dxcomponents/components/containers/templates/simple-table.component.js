@@ -1,5 +1,6 @@
 import {Utils} from "../../../helpers/utils.js";
 import {BaseComponent} from "../../base.component.js";
+import {getContext} from "./template-utils.js";
 
 const TAG = "[SimpleTableComponent]";
 
@@ -114,7 +115,7 @@ export class SimpleTableComponent extends BaseComponent {
             // @ts-ignore - PCore.getMetadataUtils().getPropertyMetadata - An argument for 'currentClassID' was not provided.
             metaForPConnect.config.parameters = rawParams ?? PCore.getMetadataUtils().getPropertyMetadata(name)?.datasource?.parameters;
 
-            const {referenceListStr: referenceList} = this.#getContext(this.pConn);
+            const {referenceListStr: referenceList} = getContext(this.pConn);
             let requiredContextForQueryInDisplayMode = {};
             if (isDisplayModeEnabled) {
                 requiredContextForQueryInDisplayMode = {
@@ -163,27 +164,4 @@ export class SimpleTableComponent extends BaseComponent {
         };
         this.componentsManager.onComponentPropsUpdate(this);
     }
-
-    #getContext(thePConn) {
-        const contextName = thePConn.getContextName();
-        const pageReference = thePConn.getPageReference();
-        const {
-            readonlyContextList,
-            referenceList = readonlyContextList
-        } = thePConn.getStateProps()?.config || thePConn.getStateProps();
-
-        const pageReferenceForRows = referenceList.startsWith('.') ? `${pageReference}.${referenceList.substring(1)}` : referenceList;
-        const viewName = thePConn.viewName;
-
-        // removing "caseInfo.content" prefix to avoid setting it as a target while preparing pageInstructions
-        // skipping the removal as StateMachine itself is removing this case info prefix while preparing pageInstructions
-        // referenceList = pageReferenceForRows.replace(PCore.getConstants().CASE_INFO.CASE_INFO_CONTENT, '');
-
-        return {
-            contextName,
-            referenceListStr: referenceList,
-            pageReferenceForRows,
-            viewName
-        };
-    };
 }
