@@ -13,7 +13,7 @@ export class AlertBannerComponent {
         this.componentsManager = componentsManager;
         this.variant = variant;
         this.messages = messages;
-        this.alive = false
+        this.alive = true
     }
 
     init() {
