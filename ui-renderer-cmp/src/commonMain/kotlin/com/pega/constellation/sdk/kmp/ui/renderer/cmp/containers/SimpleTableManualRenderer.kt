@@ -18,8 +18,12 @@ class SimpleTableManualRenderer : ComponentRenderer<SimpleTableManualComponent> 
                 columns = columnNames,
                 rows = rows.mapIndexed { rowId, row ->
                     EditableTableRow(
-                        onEditButtonClick = if (row.showEditButton) { { editRowInModal(rowId) } } else null,
-                        onDeleteButtonClick = if (row.showDeleteButton) { { deleteRow(rowId) } } else null,
+                        onEditButtonClick = if (row.showEditButton) {
+                            { editRowInModal(rowId) }
+                        } else null,
+                        onDeleteButtonClick = if (row.showDeleteButton) {
+                            { deleteRow(rowId) }
+                        } else null,
                         cells = row.cells.map { { it.component.Render() } }
                     )
                 },
@@ -28,6 +32,11 @@ class SimpleTableManualRenderer : ComponentRenderer<SimpleTableManualComponent> 
                         label = addButtonLabel,
                         onClick = { addRow() }
                     )
+                } else {
+                    null
+                },
+                onReorder = if (allowReorderRows) {
+                    { from, to -> reorderRow(from, to) }
                 } else {
                     null
                 }

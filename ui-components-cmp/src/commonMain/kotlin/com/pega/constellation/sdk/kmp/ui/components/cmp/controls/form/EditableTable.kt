@@ -18,8 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mohamedrejeb.compose.dnd.reorder.ReorderContainer
+import com.mohamedrejeb.compose.dnd.reorder.ReorderableItem
+import com.mohamedrejeb.compose.dnd.reorder.rememberReorderState
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.Res
+import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.icon_drag_48
 import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.icon_edit_48
 import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.outline_delete_48
 import io.github.windedge.table.DataTable
@@ -42,6 +46,7 @@ fun EditableTable(
     columns: List<String>,
     rows: List<EditableTableRow>,
     addRowButton: EditableTableAddRowButton?,
+    onReorder: ((Int, Int) -> Unit)?
 ) {
     Column {
         Heading(label)
@@ -49,57 +54,90 @@ fun EditableTable(
         val focusManager = LocalFocusManager.current
         val haveEditColumn = rows.any { it.onEditButtonClick != null }
         val haveDeleteColumn = rows.any { it.onDeleteButtonClick != null }
+        val reorderState = rememberReorderState<Int>()
 
-        DataTable(
-            modifier = Modifier.horizontalScroll(rememberScrollState()),
-            columns = {
-                headerBackground { TableHeaderBackground() }
-                if (haveEditColumn) {
-                    column { } // for edit button
-                }
-                if (haveDeleteColumn) {
-                    column {  } // for delete button
-                }
-                columns.forEach { column { Text(it.uppercase(), fontWeight = FontWeight.Bold) } }
-            }
+        ReorderContainer(
+            state = reorderState
         ) {
-            rows.forEachIndexed { rowId, rowObject ->
-                row {
+            DataTable(
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
+                columns = {
+                    headerBackground { TableHeaderBackground() }
+                    if (onReorder != null) {
+                        column { } // for reorder icon
+                    }
                     if (haveEditColumn) {
-                        cell {
-                            if (rowObject.onEditButtonClick != null) {
-                                IconButton(onClick = {
-                                    focusManager.clearFocus()
-                                    rowObject.onEditButtonClick()
-                                }) {
-                                    Icon(
-                                        painterResource(Res.drawable.icon_edit_48),
-                                        "Delete item ${rowId + 1}",
-                                        Modifier.size(24.dp)
-                                    )
-                                }
-                            }
-                        }
+                        column { } // for edit button
                     }
                     if (haveDeleteColumn) {
-                        cell {
-                            if (rowObject.onDeleteButtonClick != null) {
-                                IconButton(onClick = {
-                                    focusManager.clearFocus()
-                                    rowObject.onDeleteButtonClick()
-                                }) {
+                        column { } // for delete button
+                    }
+                    columns.forEach {
+                        column {
+                            Text(
+                                it.uppercase(),
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
+            ) {
+                rows.forEachIndexed { rowId, rowObject ->
+                    row {
+                        if (onReorder != null) {
+                            cell {
+                                ReorderableItem(
+                                    state = reorderState,
+                                    key = rowId,
+                                    data = rowId,
+                                    onDrop = { state ->
+                                        onReorder(state.data, rowId)
+                                    }
+                                ) {
                                     Icon(
-                                        painterResource(Res.drawable.outline_delete_48),
+                                        painterResource(Res.drawable.icon_drag_48),
                                         "Delete item ${rowId + 1}",
                                         Modifier.size(24.dp)
                                     )
                                 }
                             }
                         }
-                    }
-                    rowObject.cells.forEach { composableCell ->
-                        cell {
-                            composableCell()
+                        if (haveEditColumn) {
+                            cell {
+                                if (rowObject.onEditButtonClick != null) {
+                                    IconButton(onClick = {
+                                        focusManager.clearFocus()
+                                        rowObject.onEditButtonClick()
+                                    }) {
+                                        Icon(
+                                            painterResource(Res.drawable.icon_edit_48),
+                                            "Delete item ${rowId + 1}",
+                                            Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        if (haveDeleteColumn) {
+                            cell {
+                                if (rowObject.onDeleteButtonClick != null) {
+                                    IconButton(onClick = {
+                                        focusManager.clearFocus()
+                                        rowObject.onDeleteButtonClick()
+                                    }) {
+                                        Icon(
+                                            painterResource(Res.drawable.outline_delete_48),
+                                            "Delete item ${rowId + 1}",
+                                            Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        rowObject.cells.forEach { composableCell ->
+                            cell {
+                                composableCell()
+                            }
                         }
                     }
                 }
