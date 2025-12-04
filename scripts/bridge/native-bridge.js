@@ -83,7 +83,7 @@ class NativeBridge {
             console.error(TAG, `Cannot update component #${id} - missing props.`);
             return;
         }
-        if (component.alive === false) {
+        if (component.alive != null && component.alive === false) {
             console.debug(TAG, `Skipping component update #${id} - component is destroyed.`);
             return;
         }
