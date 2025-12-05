@@ -23,13 +23,13 @@ import com.mohamedrejeb.compose.dnd.reorder.ReorderableItem
 import com.mohamedrejeb.compose.dnd.reorder.rememberReorderState
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.Res
+import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.icon_delete_48
 import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.icon_drag_48
 import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.icon_edit_48
-import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.outline_delete_48
 import io.github.windedge.table.DataTable
 import org.jetbrains.compose.resources.painterResource
 
-data class EditableTableRow (
+data class EditableTableRow(
     val onEditButtonClick: (() -> Unit)?,
     val onDeleteButtonClick: (() -> Unit)?,
     val cells: List<@Composable () -> Unit>
@@ -96,7 +96,7 @@ fun EditableTable(
                                 ) {
                                     Icon(
                                         painterResource(Res.drawable.icon_drag_48),
-                                        "Delete item ${rowId + 1}",
+                                        "Reorder item ${rowId + 1}",
                                         Modifier.size(24.dp)
                                     )
                                 }
@@ -111,7 +111,7 @@ fun EditableTable(
                                     }) {
                                         Icon(
                                             painterResource(Res.drawable.icon_edit_48),
-                                            "Delete item ${rowId + 1}",
+                                            "Edit item ${rowId + 1}",
                                             Modifier.size(24.dp)
                                         )
                                     }
@@ -126,7 +126,7 @@ fun EditableTable(
                                         rowObject.onDeleteButtonClick()
                                     }) {
                                         Icon(
-                                            painterResource(Res.drawable.outline_delete_48),
+                                            painterResource(Res.drawable.icon_delete_48),
                                             "Delete item ${rowId + 1}",
                                             Modifier.size(24.dp)
                                         )

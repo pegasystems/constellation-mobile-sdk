@@ -4,7 +4,9 @@ import EditableTable
 import EditableTableAddRowButton
 import EditableTableRow
 import androidx.compose.runtime.Composable
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableManualComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableManualComponent.DisplayMode
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithVisibility
@@ -30,7 +32,13 @@ class SimpleTableManualRenderer : ComponentRenderer<SimpleTableManualComponent> 
                 addRowButton = if (allowAddRows) {
                     EditableTableAddRowButton(
                         label = addButtonLabel,
-                        onClick = { addRow() }
+                        onClick = {
+                            when (displayMode) {
+                                DisplayMode.EDITABLE_IN_ROW -> addRow()
+                                DisplayMode.EDITABLE_IN_MODAL -> addRowInModal()
+                                else -> Log.e(TAG, "Can not add row in $displayMode mode")
+                            }
+                        }
                     )
                 } else {
                     null
@@ -42,5 +50,9 @@ class SimpleTableManualRenderer : ComponentRenderer<SimpleTableManualComponent> 
                 }
             )
         }
+    }
+
+    companion object {
+        private const val TAG = "SimpleTableManualRenderer"
     }
 }
