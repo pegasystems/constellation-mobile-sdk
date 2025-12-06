@@ -10,8 +10,8 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 import com.pega.constellation.sdk.kmp.core.api.HideableComponent
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes
-import com.pega.constellation.sdk.kmp.core.components.getBoolean
-import com.pega.constellation.sdk.kmp.core.components.getString
+import com.pega.constellation.sdk.kmp.core.components.optBoolean
+import com.pega.constellation.sdk.kmp.core.components.optString
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.MISSING_JAVASCRIPT_IMPLEMENTATION
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent.Cause.UNKNOWN_CAUSE
 import kotlinx.serialization.json.JsonObject
@@ -30,9 +30,9 @@ class UnsupportedComponent(
         private set
 
     override fun applyProps(props: JsonObject) {
-        type = ComponentType(props.getString("type"))
+        type = ComponentType(props.optString("type", this.type.type))
         cause = MISSING_JAVASCRIPT_IMPLEMENTATION
-        visible = props.getBoolean("visible")
+        visible = props.optBoolean("visible", visible)
     }
 
     enum class Cause {

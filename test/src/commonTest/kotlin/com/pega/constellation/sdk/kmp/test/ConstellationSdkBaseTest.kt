@@ -74,37 +74,38 @@ abstract class ConstellationSdkBaseTest {
         assertEquals(
             """
                 RootContainer#1
-                -ViewContainer#2
-                --View#3
-                ---OneColumn#4
-                ----Region#5
-                -----View#6
-                ------Region#7
-                -------View#8
-                --------FlowContainer#9
-                ---------Assignment#10
-                ----------AssignmentCard#11
-                -----------View#12
-                ------------DefaultForm#13
-                -------------Region#14
-                --------------TextInput#15
+                -ModalViewContainer#2
+                -ViewContainer#3
+                --View#4
+                ---OneColumn#5
+                ----Region#6
+                -----View#7
+                ------Region#8
+                -------View#9
+                --------FlowContainer#10
+                ---------Assignment#11
+                ----------AssignmentCard#12
+                -----------View#13
+                ------------DefaultForm#14
+                -------------Region#15
                 --------------TextInput#16
                 --------------TextInput#17
-                --------------Date#18
-                --------------URL#19
-                --------------TextArea#20
-                --------------View#21
-                ---------------DefaultForm#23
-                ----------------Region#24
-                -----------------Checkbox#25
-                -----------------TextArea#26
-                --------------Email#22
+                --------------TextInput#18
+                --------------Date#19
+                --------------URL#20
+                --------------TextArea#21
+                --------------View#22
+                ---------------DefaultForm#24
+                ----------------Region#25
+                -----------------Checkbox#26
+                -----------------TextArea#27
+                --------------Email#23
                 
                 """.trimIndent(),
             root.structure()
         )
 
-        val viewContainer = root.children()[0] as? ViewContainerComponent
+        val viewContainer = root.children()[1] as? ViewContainerComponent
         val view = viewContainer?.children[0] as? ViewComponent
         val oneColumn = view?.children[0] as? OneColumnComponent
         val region = oneColumn?.children[0] as? RegionComponent
@@ -151,7 +152,7 @@ abstract class ConstellationSdkBaseTest {
 
         private fun Component.children() = when (this) {
             is ContainerComponent -> children
-            is RootContainerComponent -> listOfNotNull(viewContainer)
+            is RootContainerComponent -> listOfNotNull(modalViewContainer, viewContainer)
             is FlowContainerComponent -> listOfNotNull(assignment) + alertBanners
             else -> emptyList()
         }

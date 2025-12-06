@@ -6,6 +6,7 @@ export class ActionButtonsComponent {
     compId;
     type;
     props;
+    alive = false;
 
     constructor(componentsManager, mainButtons, secondaryButtons, actionButtonClick) {
         this.compId = componentsManager.getNextComponentId();
@@ -14,6 +15,7 @@ export class ActionButtonsComponent {
         this.arMainButtons$ = mainButtons;
         this.arSecondaryButtons$ = secondaryButtons;
         this.actionButtonClick = actionButtonClick;
+        this.alive = true;
     }
 
     init() {
@@ -22,6 +24,7 @@ export class ActionButtonsComponent {
     }
 
     destroy() {
+        this.alive = false;
         this.componentsManager.onComponentRemoved(this);
     }
 

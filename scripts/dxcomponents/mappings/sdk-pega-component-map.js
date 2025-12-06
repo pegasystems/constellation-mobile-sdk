@@ -6,7 +6,7 @@ import { AssignmentComponent } from "../components/containers/assignment.compone
 // import { DeferLoadComponent } from './_components/infra/defer-load/defer-load.component';
 // import { ErrorBoundaryComponent } from '../components/containers/error-boundary.component.js';
 import { FlowContainerComponent } from "../components/containers/flow-container.component.js";
-// import { ModalViewContainerComponent } from './_components/infra/Containers/modal-view-container/modal-view-container.component';
+import { ModalViewContainerComponent } from '../components/containers/modal-view-container.component.js';
 // import { MultiStepComponent } from './_components/infra/multi-step/multi-step.component';
 // import { NavbarComponent } from './_components/infra/navbar/navbar.component';
 import { ReferenceComponent } from "../components/containers/reference.component.js";
@@ -77,7 +77,7 @@ import { OneColumnComponent } from "../components/containers/one-column.componen
 // import { PageComponent } from './_components/template/page/page.component';
 // import { PromotedFiltersComponent } from './_components/template/promoted-filters/promoted-filters.component';
 import { SimpleTableComponent } from "../components/containers/templates/simple-table.component.js";
-// import { SimpleTableManualComponent } from './_components/template/simple-table-manual/simple-table-manual.component';
+import { SimpleTableManualComponent } from "../components/containers/templates/simple-table-manual.component.js";
 import { SimpleTableSelectComponent } from "../components/containers/templates/simple-table-select.component.js";
 // import { SingleReferenceReadonlyComponent } from './_components/template/single-reference-readonly/single-reference-readonly.component';
 // import { ThreeColumnComponent } from './_components/template/three-column/three-column.component';
@@ -185,7 +185,7 @@ const pegaSdkComponentMap = {
     // ListViewActionButtons: ListViewActionButtonsComponent,
     // MaterialDetails: MaterialDetailsComponent,
     // MaterialUtility: MaterialUtilityComponent,
-    // ModalViewContainer: ModalViewContainerComponent,
+    ModalViewContainer: ModalViewContainerComponent,
     // MultiReferenceReadOnly: MultiReferenceReadonlyComponent,
     // Multiselect: MultiselectComponent,
     // MultiStep: MultiStepComponent,
@@ -213,7 +213,7 @@ const pegaSdkComponentMap = {
     // ScalarList: ScalarListComponent,
     // SemanticLink: SemanticLinkComponent,
     SimpleTable: SimpleTableComponent,
-    // SimpleTableManual: SimpleTableManualComponent,
+    SimpleTableManual: SimpleTableManualComponent,
     SimpleTableSelect: SimpleTableSelectComponent,
     // SingleReferenceReadOnly: SingleReferenceReadonlyComponent,
     // Stages: StagesComponent,

@@ -71,8 +71,9 @@ export class AssignmentComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.jsComponentPConnectData.unsubscribeFn?.();
-        this.assignmentCardComponent.destroy();
+        this.assignmentCardComponent?.destroy();
         this.componentsManager.onComponentRemoved(this);
     }
 
@@ -94,12 +95,16 @@ export class AssignmentComponent extends BaseComponent {
                 focused: "false",
             },
         };
-        this.assignmentCardComponent.onEvent(event);
+        this.assignmentCardComponent?.onEvent(event);
     }
 
     sendPropsUpdate() {
+        let children = [];
+        if (this.assignmentCardComponent != null) {
+            children = [this.assignmentCardComponent.compId];
+        }
         this.props = {
-            children: [this.assignmentCardComponent.compId],
+            children: children,
             loading: this.loading,
         };
         this.componentsManager.onComponentPropsUpdate(this);
@@ -266,7 +271,7 @@ export class AssignmentComponent extends BaseComponent {
     }
 
     cleanAssignmentCard() {
-        this.assignmentCardComponent.destroy();
+        this.assignmentCardComponent?.destroy();
         this.assignmentCardComponent = undefined;
     }
 
