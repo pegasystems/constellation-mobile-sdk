@@ -79,7 +79,7 @@ export class ViewComponent extends ContainerBaseComponent {
         const showLabel = configProps.showLabel || this.DETAILS_TEMPLATES.includes(template) || this.props.showLabel;
 
         this.props.label = inheritedProps.label ?? label;
-        this.props.showLabel = inheritedProps.showLabel ?? showLabel;
+        this.props.showLabel = (inheritedProps.showLabel ?? showLabel) && !this.SUPPORTED_TEMPLATES.includes(template);
         this.props.visible = configProps.visibility ?? this.props.visible;
 
         if (this.READ_ONLY_DETAILS_TEMPLATES.includes(template)) {
