@@ -112,17 +112,16 @@ export class SimpleTableManualComponent extends BaseComponent {
         this.referenceListStr = getContext(this.pConn).referenceListStr;
         this.props.label = labelProp || propertyLabel;
         this.targetClassLabel = targetClassLabel;
+        this.props.addButtonLabel =  targetClassLabel ? `+ Add ${targetClassLabel}` : "+ Add";
         this.referenceList = referenceList;
         this.contextClass = this.#getContextClass(configProps);
 
-        const resolvedList = getReferenceList(this.pConn);
-        this.pConn.setReferenceList(resolvedList);
+        this.pConn.setReferenceList(getReferenceList(this.pConn));
 
         this.readOnlyMode = renderMode === 'ReadOnly';
         const editableMode = renderMode === 'Editable';
         this.props.allowAddRows = editableMode && conditions.allowAddRow;
         this.props.allowReorderRows = editableMode && conditions.allowDragDrop;
-
         this.allowEditingInModal =
             (editMode ? editMode === 'modal' : addAndEditRowsWithin === 'modal') && !(renderMode === 'ReadOnly' || displayMode === 'DISPLAY_ONLY');
         if (this.readOnlyMode) {
@@ -132,32 +131,20 @@ export class SimpleTableManualComponent extends BaseComponent {
         } else if (editableMode && !this.allowEditingInModal) {
             this.props.displayMode = this.EDITABLE_IN_ROW;
         }
-
         this.defaultView = editModeConfig ? editModeConfig.defaultView : viewForAddAndEditModal;
         this.bUseSeparateViewForEdit = editModeConfig ? editModeConfig.useSeparateViewForEdit : useSeparateViewForEdit;
         this.editView = editModeConfig ? editModeConfig.editView : viewForEditModal;
-        this.props.addButtonLabel =  targetClassLabel ? `+ Add ${targetClassLabel}` : "+ Add";
 
-        const rawMetadata = this.pConn.getRawMetadata();
-        const rawFields = this.#getRawFields(rawMetadata)
-
+        const rawFields = this.#getRawFields(this.pConn.getRawMetadata())
         const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
-        const primaryFieldsViewIndex = resolvedFields.findIndex(field => field.config.value === 'pyPrimaryFields');
-        const fieldDefs = this.#buildFieldDefs(rawFields, primaryFieldsViewIndex, resolvedFields)
+        const fieldDefs = this.#buildFieldDefs(rawFields, resolvedFields)
         this.#initializeDefaultPageInstructions(fieldDefs);
-        const displayedColumns = fieldDefs?.map(field => field.name);
-        const labelsMap = fieldDefs.reduce((acc, curr) => {
-            return {...acc, [curr.name]: curr.label};
-        }, {});
-        this.props.columnLabels = resolvedFields.map((field, i) => {
-            const name = displayedColumns[i];
-            return labelsMap[name] || field.config.label;
-        });
+
+        this.props.columnLabels = this.#getColumnLabels(fieldDefs, resolvedFields);
 
         if((!this.#listsEqual(this.prevReferenceList, this.referenceList))) {
             this.#buildRows(rawFields, editableMode, conditions.allowDeleteRow, allowRowDelete, conditions.allowEditRow, allowRowEdit);
         }
-
         this.prevReferenceList = this.referenceList;
         this.componentsManager.onComponentPropsUpdate(this)
     }
@@ -235,8 +222,7 @@ export class SimpleTableManualComponent extends BaseComponent {
                         }
                     };
                     const referenceListData = getReferenceList(this.pConn);
-                    const isDatapage = referenceListData.startsWith('D_');
-                    const pageReferenceValue = isDatapage
+                    const pageReferenceValue = referenceListData.startsWith('D_')
                         ? `${referenceListData}[${rowIndex}]`
                         : `${this.pConn.getPageReference()}${referenceListData}[${rowIndex}]`;
                     const config = {
@@ -333,13 +319,14 @@ export class SimpleTableManualComponent extends BaseComponent {
         return rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
     }
 
-    #buildFieldDefs(rawFields, primaryFieldsViewIndex, resolvedFields) {
+    #buildFieldDefs(rawFields, resolvedFields) {
         // fieldDefs will be an array where each entry will have a "name" which will be the
         //  "resolved" property name (that we can use as the colId) though it's not really
         //  resolved. The buildFieldsForTable helper just removes the "@P " (which is what
         //  Nebula does). It will also have the "label", and "meta" contains the original,
         //  unchanged config info. For now, much of the info here is carried over from
         //  Nebula and we may not end up using it all.
+        const primaryFieldsViewIndex = resolvedFields.findIndex(field => field.config.value === 'pyPrimaryFields');
         const fieldDefs = buildFieldsForTable(rawFields, this.pConn, {
             primaryFieldsViewIndex,
             fields: resolvedFields
@@ -362,6 +349,17 @@ export class SimpleTableManualComponent extends BaseComponent {
         return true;
     }
 
+    #getColumnLabels(fieldDefs, resolvedFields) {
+        const displayedColumns = fieldDefs?.map(field => field.name);
+        const labelsMap = fieldDefs.reduce((acc, curr) => {
+            return {...acc, [curr.name]: curr.label};
+        }, {});
+        return resolvedFields.map((field, i) => {
+            const name = displayedColumns[i];
+            return labelsMap[name] || field.config.label;
+        });
+    }
+
     #calculateConditions(editMode, allowActions, allowTableEdit) {
         const conditions = {
             allowAddRow: true,
@@ -382,4 +380,3 @@ export class SimpleTableManualComponent extends BaseComponent {
         return conditions;
     }
 }
-
