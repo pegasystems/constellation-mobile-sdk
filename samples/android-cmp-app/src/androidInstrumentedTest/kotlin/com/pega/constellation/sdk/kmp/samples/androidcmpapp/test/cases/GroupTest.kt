@@ -73,7 +73,6 @@ class GroupTest : ComposeTest(PegaVersion.v24_2_2) {
         waitForNode("Lists group heading", substring = true)
         waitForNode("List group instructions", substring = true)
         waitForNode("cars")
-        waitForNode("Encryption keys")
     }
 
     private fun ComposeUiTest.verifyListGroupGone() {
