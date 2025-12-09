@@ -41,6 +41,7 @@ class ModalViewContainerRenderer : ComponentRenderer<ModalViewContainerComponent
                         if (title.isNotEmpty()) {
                             Heading(title)
                         }
+                        alertBanners.forEach { it.Render() }
                         children.forEach { it.Render() }
                         Row(modifier = Modifier.fillMaxWidth()) {
                             Button(
