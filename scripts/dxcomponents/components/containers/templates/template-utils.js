@@ -1,5 +1,4 @@
 export const TABLE_CELL = 'SdkRenderer';
-export const DELETE_ICON = 'DeleteIcon';
 const PRIMARY_FIELDS = 'pyPrimaryFields';
 
 export function getReferenceList(pConn) {

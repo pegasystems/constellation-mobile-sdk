@@ -15,6 +15,7 @@ import kotlinx.serialization.json.JsonObject
 
 class ModalViewContainerComponent(context: ComponentContext) : ContainerComponent(context) {
     var visible by mutableStateOf(false)
+        private set
     var title by mutableStateOf("")
         private set
     var cancelButtonLabel by mutableStateOf("")

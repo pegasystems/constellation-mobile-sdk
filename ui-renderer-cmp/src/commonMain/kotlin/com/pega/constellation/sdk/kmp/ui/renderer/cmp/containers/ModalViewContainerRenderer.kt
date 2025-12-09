@@ -33,7 +33,7 @@ class ModalViewContainerRenderer : ComponentRenderer<ModalViewContainerComponent
                 onDismissRequest = {
                     onCancelClick()
                 }
-                ) {
+            ) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
