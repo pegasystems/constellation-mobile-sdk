@@ -7,10 +7,12 @@ import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.BaseComponent
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ActionButtons
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent.SelectionMode.MULTI
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent.SelectionMode.SINGLE
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
+import com.pega.constellation.sdk.kmp.core.components.widgets.ActionButtonsComponent
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -34,6 +36,9 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
         private set
     var items by mutableStateOf(emptyList<Item>())
         private set
+    private var selectedItemIndexToSubmit: Int? = null
+    var updateIndex by mutableStateOf(0L)
+        private set
 
     override fun applyProps(props: JsonObject) {
         label = props.getString("label")
@@ -48,11 +53,27 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
             .map {
                 Item(it.toFoldedItemContent(emptyMap(), ""))
             }
+        ++updateIndex
     }
 
     fun onItemSelected(itemIndex: Int) {
         selectedItemIndex = itemIndex
         context.sendComponentEvent(itemSelectedEvent(itemIndex))
+    }
+
+    fun setValueToAutoSubmit(selectedItemIndex: Int) {
+        selectedItemIndexToSubmit = selectedItemIndex
+    }
+
+    fun checkAutoSubmit() {
+        if (selectedItemIndexToSubmit != null && selectedItemIndex == selectedItemIndexToSubmit) {
+            selectedItemIndexToSubmit = null
+            val actionButtons = context.componentManager.getComponents()
+                .first { it.context.type == ActionButtons } as? ActionButtonsComponent
+            actionButtons?.primaryButtons?.firstOrNull()?.let {
+                actionButtons.onClick(it)
+            }
+        }
     }
 
     private fun itemSelectedEvent(itemIndex: Int) =

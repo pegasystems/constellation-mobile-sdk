@@ -1,6 +1,7 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent.SelectionMode
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Table
@@ -19,8 +20,14 @@ class ListViewRenderer : ComponentRenderer<ListViewComponent> {
             columnsLabels = columnLabels,
             items = items.map { TableItem(it.data) },
             selectedItem = selectedItem?.let { TableItem(it.data) },
-            onItemClick = ::onItemSelected
+            onItemClick = {
+                setValueToAutoSubmit(it)
+                onItemSelected(it)
+            }
         )
+        LaunchedEffect(updateIndex) {
+            checkAutoSubmit()
+        }
     }
 
     private fun SelectionMode.toTableSelectionMode() = when (this) {

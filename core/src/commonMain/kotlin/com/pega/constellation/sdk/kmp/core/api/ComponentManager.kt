@@ -30,6 +30,13 @@ interface ComponentManager {
     fun getComponent(id: ComponentId): Component?
 
     /**
+     * Retrieves all components.
+     *
+     * @return A list of all components.
+     */
+    fun getComponents(): List<Component>
+
+    /**
      * Retrieves multiple components by their unique identifiers.
      *
      * @param ids A list of unique identifiers for the components.
