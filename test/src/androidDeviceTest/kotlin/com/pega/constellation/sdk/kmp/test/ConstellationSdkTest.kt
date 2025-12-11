@@ -19,7 +19,7 @@ class ConstellationSdkTest : ConstellationSdkBaseTest() {
     fun setup() {
         engine = AndroidWebViewEngine(
             context = appContext,
-            lifecycleScope = scope,
+            scope = scope,
             okHttpClient = MockHttpClient(appContext, PegaVersion.v24_1_0),
             nonDxOkHttpClient = MockHttpClient(appContext, PegaVersion.v24_1_0)
         )
