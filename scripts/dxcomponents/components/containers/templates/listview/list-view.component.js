@@ -16,7 +16,7 @@ export class ListViewComponent extends BaseComponent {
     singleSelectionMode;
     multiSelectionMode;
     rowID;
-    response;
+    listViewItems;
     compositeKeys;
     showDynamicFields;
     filterPayload;
@@ -28,6 +28,7 @@ export class ListViewComponent extends BaseComponent {
     fieldDefs;
     label = "";
     componentValue;
+    contextPage;
 
     props = {
         label: "",
@@ -53,50 +54,66 @@ export class ListViewComponent extends BaseComponent {
     }
 
     update(pConn, payload) {
-        if (this.pConn === pConn && this.payload === payload) {
+        const pConnChanged = this.pConn !== pConn;
+        if (!pConnChanged && this.payload === payload) {
             return;
         }
         this.pConn = pConn;
+
+        const shouldReloadData = this.#shouldReloadData(this.payload, payload) || pConnChanged;
         this.payload = payload;
-        this.#updateSelf();
+
+        this.#updateSelf(shouldReloadData);
     }
 
     onEvent(event) {
         if (event.type === "SelectSingleItem") {
-            const index = Number(event.componentData.selectedItemIndex);
-            this.#fieldOnChange(index);
+            const selectedItemIndex = Number(event.componentData.selectedItemIndex);
+            this.#fieldOnChange(selectedItemIndex);
         } else {
             console.log(TAG, `onEvent received unsupported event type ${event.type}`);
         }
     }
 
+    #shouldReloadData(oldPayload, newPayload) {
+        const filterPayload = (payload) => {
+            // Fields to exclude from comparison (they contain selection values, not data config).
+            const { value, selectionKey, contextPage, primaryField, ...rest } = payload;
+            return rest;
+        };
+        return JSON.stringify(filterPayload(oldPayload)) !== JSON.stringify(filterPayload(newPayload));
+    }
+
     #fieldOnChange(selectedItemIndex) {
-        if (!this.response || selectedItemIndex < 0 || selectedItemIndex >= this.response.length) {
+        if (!this.listViewItems || selectedItemIndex < 0 || selectedItemIndex >= this.listViewItems.length) {
             console.warn(TAG, "Unexpected state when updating selected item index");
             return;
         }
 
-        const reqObj = {};
+        const selectedObject = {};
         if (this.compositeKeys?.length > 1) {
-            const selectedRow = this.response[selectedItemIndex];
-            this.compositeKeys.forEach((element) => {
-                reqObj[element] = selectedRow[element];
+            const selectedRow = this.listViewItems[selectedItemIndex];
+            this.compositeKeys.forEach((compositeKey) => {
+                selectedObject[compositeKey] = selectedRow[compositeKey];
             });
         } else {
-            reqObj[this.rowID] = this.response[selectedItemIndex][this.rowID];
+            selectedObject[this.rowID] = this.listViewItems[selectedItemIndex][this.rowID];
         }
+
         this.selectedItemIndex = selectedItemIndex;
-        this.pConn?.getListActions?.()?.setSelectedRows([reqObj]);
+        this.pConn?.getListActions?.()?.setSelectedRows([selectedObject]);
     }
 
-    #updateSelf() {
+    #updateSelf(shouldReloadData = true) {
         this.configProps$ = this.pConn.getConfigProps();
 
         // By default, pyGUID is used for Data classes and pyID is for Work classes as row-id/key
         const defaultRowID = this.configProps$?.referenceType === "Case" ? "pyID" : "pyGUID";
         this.compositeKeys = this.configProps$?.compositeKeys ?? this.payload.compositeKeys;
         this.rowID = this.compositeKeys && this.compositeKeys?.length === 1 ? this.compositeKeys[0] : defaultRowID;
+
         this.componentValue = this.configProps$?.value;
+        this.contextPage = this.configProps$?.contextPage;
 
         this.showDynamicFields = this.configProps$?.showDynamicFields;
         this.selectionMode = this.configProps$.selectionMode;
@@ -115,37 +132,79 @@ export class ListViewComponent extends BaseComponent {
 
         this.label = title;
 
-        if (this.configProps$) {
-            if (!this.payload) {
-                this.payload = { referenceList: this.configProps$.referenceList };
-            }
-            getListContextResponse({
-                pConn: this.pConn,
-                bInForm$: this.bInForm$,
-                ...this.payload,
-                listContext: this.listContext,
-                ref: this.ref,
-                showDynamicFields: this.showDynamicFields,
-                cosmosTableRef: this.cosmosTableRef,
-                selectionMode: this.selectionMode,
-            }).then((response) => {
-                this.listContext = response;
-                this.#getListData(() => {
-                    this.#updateSelectedItemIndex();
-                    this.#sendPropsUpdate();
-                });
-            });
+        if (!shouldReloadData) {
+            this.#updateSelectedItemIndex();
+            this.#sendPropsUpdate();
+            return;
         }
+
+        console.log(TAG, `ListView update requires data reload.`);
+
+        if (!this.configProps$) {
+            console.warn(TAG, `No config props found for ListView component.`);
+            return;
+        }
+
+        if (!this.payload) {
+            this.payload = { referenceList: this.configProps$.referenceList };
+        }
+        getListContextResponse({
+            pConn: this.pConn,
+            bInForm$: this.bInForm$,
+            ...this.payload,
+            listContext: this.listContext,
+            ref: this.ref,
+            showDynamicFields: this.showDynamicFields,
+            cosmosTableRef: this.cosmosTableRef,
+            selectionMode: this.selectionMode,
+        }).then((response) => {
+            this.listContext = response;
+            this.#getListData(() => {
+                this.#updateSelectedItemIndex();
+                this.#sendPropsUpdate();
+            });
+        });
     }
 
     #updateSelectedItemIndex() {
-        const index = this.response.findIndex((item) => {
+        if (this.compositeKeys && this.compositeKeys.length > 1) {
+            this.#updateSelectedItemIndexForCompositeKeys();
+        } else {
+            this.#updateSelectedItemIndexForSingleKey();
+        }
+    }
+
+    #updateSelectedItemIndexForCompositeKeys() {
+        if (!this.listViewItems || this.listViewItems.length === 0) {
+            this.selectedItemIndex = null;
+            return;
+        }
+
+        const index = this.listViewItems.findIndex((item) => {
+            return this.compositeKeys.every((key) => {
+                const left = item[key];
+                const right = this.contextPage?.[key];
+                return left != null && right != null && left === right;
+            });
+        });
+        if (index == -1) {
+            console.log(TAG, `No matching item found.`);
+        }
+        this.selectedItemIndex = index === -1 ? null : index;
+    }
+
+    #updateSelectedItemIndexForSingleKey() {
+        if (!this.listViewItems || this.listViewItems.length === 0) {
+            this.selectedItemIndex = null;
+            return;
+        }
+        const index = this.listViewItems.findIndex((item) => {
             const left = item[this.rowID];
             const right = this.componentValue;
             return left != null && right != null && left === right;
         });
         if (index == -1) {
-            console.log(TAG, `No matching item found for componentValue.`);
+            console.log(TAG, `No matching item found.`);
         }
         this.selectedItemIndex = index === -1 ? null : index;
     }
@@ -157,7 +216,7 @@ export class ListViewComponent extends BaseComponent {
             selectedItemIndex: String(this.selectedItemIndex),
             columnNames: this.displayedColumns$,
             columnLabels: this.displayedColumnsLabels$,
-            items: this.response,
+            items: this.listViewItems,
         };
         this.componentsManager.onComponentPropsUpdate(this);
     }
@@ -198,7 +257,7 @@ export class ListViewComponent extends BaseComponent {
                     this.fields$ = this.#updateFields(this.fields$, fieldsMetaData.data.fields, columns);
                     this.displayedColumns$ = columns.map((c) => c.id);
                     this.displayedColumnsLabels$ = columns.map((c) => c.label);
-                    this.response = tableDataResults;
+                    this.listViewItems = tableDataResults;
 
                     // disabling parsing for now parsing data according to field types like date/date-time/currency
                     // this.updatedRefList = this.updateData(tableDataResults, this.fields$);
