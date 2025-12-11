@@ -45,9 +45,9 @@ import java.util.concurrent.TimeUnit
 
 class AndroidWebViewEngine(
     private val context: Context,
+    private val lifecycleScope: CoroutineScope,
     private val okHttpClient: OkHttpClient,
-    private val nonDxOkHttpClient: OkHttpClient = defaultHttpClient(),
-    private val lifecycleScope: CoroutineScope
+    private val nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
 ) : ConstellationSdkEngine {
 
     private lateinit var config: ConstellationSdkConfig

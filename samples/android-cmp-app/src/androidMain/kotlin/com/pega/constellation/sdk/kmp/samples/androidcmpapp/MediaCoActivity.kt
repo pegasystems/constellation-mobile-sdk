@@ -30,8 +30,8 @@ class MediaCoActivity : ComponentActivity() {
 
         val engine = AndroidWebViewEngine(
             context = this,
-            okHttpClient = buildHttpClient(authManager),
-            lifecycleScope = this.lifecycleScope
+            lifecycleScope = this.lifecycleScope,
+            okHttpClient = buildHttpClient(authManager)
         )
         Injector.init(authManager, engine)
         AppContext.init(this)

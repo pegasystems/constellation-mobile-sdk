@@ -78,8 +78,8 @@ class AndroidComposeActivity : ComponentActivity() {
         val caseClassName = AndroidSDKConfig.PEGA_CASE_CLASS_NAME
         val engine = AndroidWebViewEngine(
             context = this,
-            okHttpClient = buildHttpClient(),
-            lifecycleScope = this.lifecycleScope
+            lifecycleScope = this.lifecycleScope,
+            okHttpClient = buildHttpClient()
         )
         sdk = ConstellationSdk.create(config, engine)
         sdk.createCase(caseClassName)
