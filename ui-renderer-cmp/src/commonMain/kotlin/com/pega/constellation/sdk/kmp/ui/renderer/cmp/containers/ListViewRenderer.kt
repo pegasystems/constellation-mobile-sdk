@@ -25,9 +25,6 @@ class ListViewRenderer : ComponentRenderer<ListViewComponent> {
                 onItemSelected(it)
             }
         )
-        LaunchedEffect(updateIndex) {
-            checkAutoSubmit()
-        }
     }
 
     private fun SelectionMode.toTableSelectionMode() = when (this) {

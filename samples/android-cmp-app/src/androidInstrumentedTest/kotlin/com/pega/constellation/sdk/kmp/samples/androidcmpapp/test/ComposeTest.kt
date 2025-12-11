@@ -42,7 +42,7 @@ abstract class ComposeTest(
     private val context = instrumentation.targetContext
     private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
     private val httpClient = buildHttpClient(authManager)
-    private val engine = AndroidWebViewEngine(context, httpClient, httpClient)
+    private val engine = AndroidWebViewEngine(context, httpClient, httpClient, scope)
 
     @BeforeTest
     fun setUp() {

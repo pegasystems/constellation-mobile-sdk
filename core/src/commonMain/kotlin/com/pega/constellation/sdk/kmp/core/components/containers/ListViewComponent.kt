@@ -37,8 +37,6 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
     var items by mutableStateOf(emptyList<Item>())
         private set
     private var selectedItemIndexToSubmit: Int? = null
-    var updateIndex by mutableStateOf(0L)
-        private set
 
     override fun applyProps(props: JsonObject) {
         label = props.getString("label")
@@ -53,7 +51,7 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
             .map {
                 Item(it.toFoldedItemContent(emptyMap(), ""))
             }
-        ++updateIndex
+        checkAutoSubmit()
     }
 
     fun onItemSelected(itemIndex: Int) {
