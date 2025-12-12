@@ -25,6 +25,8 @@ internal class ComponentManagerImpl(
     override fun getComponent(id: ComponentId) =
         components[id] ?: Log.w(TAG, "Cannot find component $id").let { null }
 
+    override fun getComponents(): List<Component> = components.map { it.value }
+
     override fun getComponents(ids: List<ComponentId>) =
         ids.mapNotNull { getComponent(it) }
 

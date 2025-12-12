@@ -36,6 +36,9 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebView
 import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 import okhttp3.OkHttpClient
 import org.json.JSONObject
@@ -43,6 +46,7 @@ import java.util.concurrent.TimeUnit
 
 class AndroidWebViewEngine(
     private val context: Context,
+    private val scope: CoroutineScope,
     private val okHttpClient: OkHttpClient,
     private val nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
 ) : ConstellationSdkEngine {
@@ -133,7 +137,9 @@ class AndroidWebViewEngine(
             put("eventData", JSONObject(event.eventData))
         }
         val script = "window.sendEventToComponent('${id.id}', '$eventJson')"
-        webView.evaluateJavascript(script, null)
+        this.scope.launch(Dispatchers.Main.immediate) {
+            webView.evaluateJavascript(script, null)
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")

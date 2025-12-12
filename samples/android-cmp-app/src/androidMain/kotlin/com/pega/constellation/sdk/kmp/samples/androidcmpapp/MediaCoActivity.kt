@@ -28,7 +28,11 @@ class MediaCoActivity : ComponentActivity() {
         val authFlowFactory = AndroidCodeAuthFlowFactory().also { it.registerActivity(this) }
         val authManager = createAuthManager(authFlowFactory)
 
-        val engine = AndroidWebViewEngine(this, buildHttpClient(authManager))
+        val engine = AndroidWebViewEngine(
+            context = this,
+            scope = this.lifecycleScope,
+            okHttpClient = buildHttpClient(authManager)
+        )
         Injector.init(authManager, engine)
         AppContext.init(this)
 

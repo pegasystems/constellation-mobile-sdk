@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State.Cancelled
@@ -75,7 +76,11 @@ class AndroidComposeActivity : ComponentActivity() {
             debuggable = true
         )
         val caseClassName = AndroidSDKConfig.PEGA_CASE_CLASS_NAME
-        val engine = AndroidWebViewEngine(this, buildHttpClient())
+        val engine = AndroidWebViewEngine(
+            context = this,
+            scope = this.lifecycleScope,
+            okHttpClient = buildHttpClient()
+        )
         sdk = ConstellationSdk.create(config, engine)
         sdk.createCase(caseClassName)
     }

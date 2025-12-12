@@ -38,11 +38,12 @@ abstract class ComposeTest(
     val mode: ComposeTestMode = MockServer,
 ) {
     private val scope = CoroutineScope(Dispatchers.Default)
+    private val webViewScope = CoroutineScope(Dispatchers.Main)
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context = instrumentation.targetContext
     private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
     private val httpClient = buildHttpClient(authManager)
-    private val engine = AndroidWebViewEngine(context, httpClient, httpClient)
+    private val engine = AndroidWebViewEngine(context, webViewScope, httpClient, httpClient)
 
     @BeforeTest
     fun setUp() {
