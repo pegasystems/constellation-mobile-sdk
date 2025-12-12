@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.HideableComponent
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
@@ -13,8 +14,8 @@ import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerCompone
 import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Companion.getComponentTyped
 import kotlinx.serialization.json.JsonObject
 
-class ModalViewContainerComponent(context: ComponentContext) : ContainerComponent(context) {
-    var visible by mutableStateOf(false)
+class ModalViewContainerComponent(context: ComponentContext) : ContainerComponent(context), HideableComponent {
+    override var visible by mutableStateOf(false)
         private set
     var title by mutableStateOf("")
         private set

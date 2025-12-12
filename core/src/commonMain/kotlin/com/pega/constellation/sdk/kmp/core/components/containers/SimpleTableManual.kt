@@ -8,14 +8,15 @@ import com.pega.constellation.sdk.kmp.core.api.Component
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.HideableComponent
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 
-class SimpleTableManualComponent(context: ComponentContext) : BaseComponent(context) {
-    var visible by mutableStateOf(false)
+class SimpleTableManualComponent(context: ComponentContext) : BaseComponent(context), HideableComponent {
+    override var visible by mutableStateOf(false)
         private set
     var label: String by mutableStateOf("")
         private set
@@ -47,7 +48,6 @@ class SimpleTableManualComponent(context: ComponentContext) : BaseComponent(cont
         val columnsJsonArray = props.getJSONArray("columnLabels")
         return columnsJsonArray.mapWithIndex { getString(it) }
     }
-
 
     private fun getRows(props: JsonObject): List<Row> =
         props.getJSONArray("rows").map { jsonElement ->

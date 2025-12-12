@@ -1,5 +1,5 @@
-import {Utils} from "../../helpers/utils.js";
-import {BaseComponent} from "../base.component.js";
+import { Utils } from "../../helpers/utils.js";
+import { BaseComponent } from "../base.component.js";
 
 const options = {context: "app"};
 const TAG = "[RootContainerComponent]";

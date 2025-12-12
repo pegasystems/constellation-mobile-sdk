@@ -71,7 +71,7 @@ export function getContext(thePConn) {
     };
 }
 
-function updateFieldLabels (fields, configFields, primaryFieldsViewIndex, pConnect, options) {
+function updateFieldLabels(fields, configFields, primaryFieldsViewIndex, pConnect, options) {
     const labelsOfFields = [];
     const { columnsRawConfig = [] } = options;
     fields.forEach((field, idx) => {

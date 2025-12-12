@@ -1,5 +1,4 @@
-import {BaseComponent} from "../../base.component.js";
-import {Utils} from "../../../helpers/utils.js";
+import { BaseComponent } from "../../base.component.js";
 import {
     buildFieldsForTable,
     evaluateAllowRowAction,
@@ -40,7 +39,6 @@ export class SimpleTableManualComponent extends BaseComponent {
     constructor(componentsManager, pConn) {
         super(componentsManager, pConn);
         this.type = "SimpleTableManual";
-        this.utils = new Utils();
     }
 
     init() {
@@ -112,7 +110,7 @@ export class SimpleTableManualComponent extends BaseComponent {
         this.referenceListStr = getContext(this.pConn).referenceListStr;
         this.props.label = labelProp || propertyLabel;
         this.targetClassLabel = targetClassLabel;
-        this.props.addButtonLabel =  targetClassLabel ? `+ Add ${targetClassLabel}` : "+ Add";
+        this.props.addButtonLabel = targetClassLabel ? `+ Add ${targetClassLabel}` : "+ Add";
         this.referenceList = referenceList;
         this.contextClass = this.#getContextClass(configProps);
 
@@ -142,7 +140,7 @@ export class SimpleTableManualComponent extends BaseComponent {
 
         this.props.columnLabels = this.#getColumnLabels(fieldDefs, resolvedFields);
 
-        if((!this.#listsEqual(this.prevReferenceList, this.referenceList))) {
+        if ((!this.#listsEqual(this.prevReferenceList, this.referenceList))) {
             this.#buildRows(rawFields, editableMode, conditions.allowDeleteRow, allowRowDelete, conditions.allowEditRow, allowRowEdit);
         }
         this.prevReferenceList = this.referenceList;

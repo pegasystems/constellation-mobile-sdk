@@ -1,6 +1,6 @@
 import { Utils } from "../../../helpers/utils.js";
 import { BaseComponent } from "../../base.component.js";
-import {evaluateAllowRowAction, getReferenceList} from "./template-utils.js";
+import { evaluateAllowRowAction, getReferenceList } from "./template-utils.js";
 
 export class FieldGroupTemplateComponent extends BaseComponent {
     jsComponentPConnectData = {};

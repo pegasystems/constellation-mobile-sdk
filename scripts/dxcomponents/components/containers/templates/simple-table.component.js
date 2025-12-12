@@ -1,6 +1,5 @@
-import {Utils} from "../../../helpers/utils.js";
-import {BaseComponent} from "../../base.component.js";
-import {getContext} from "./template-utils.js";
+import { Utils } from "../../../helpers/utils.js";
+import { BaseComponent } from "../../base.component.js";
 
 const TAG = "[SimpleTableComponent]";
 
