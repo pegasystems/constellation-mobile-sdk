@@ -30,6 +30,7 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.destroyChildren();
         this.sendPropsUpdate();
         this.componentsManager.onComponentRemoved(this);

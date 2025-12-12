@@ -23,6 +23,7 @@ export class UnsupportedComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} destroyed`);
         this.componentsManager.onComponentRemoved(this);
     }
@@ -44,11 +45,6 @@ export class UnsupportedComponent extends BaseComponent {
         console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} inited`);
         this.componentsManager.onComponentAdded(this);
         this.componentsManager.onComponentPropsUpdate(this);
-    }
-
-    destroy() {
-        console.log(TAG, `Unsupported component ${this.type} for property ${this.propName} destroyed`);
-        this.componentsManager.onComponentRemoved(this);
     }
 
     onEvent(event) {}

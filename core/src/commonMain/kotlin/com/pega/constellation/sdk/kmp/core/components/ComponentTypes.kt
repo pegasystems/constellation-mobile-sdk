@@ -14,6 +14,7 @@ object ComponentTypes {
     val FlowContainer = ComponentType("FlowContainer")
     val Group = ComponentType("Group")
     val ListView = ComponentType("ListView")
+    val ModalViewContainer = ComponentType("ModalViewContainer")
     val OneColumn = ComponentType("OneColumn")
     val Region = ComponentType("Region")
     val RootContainer = ComponentType("RootContainer")
@@ -22,6 +23,7 @@ object ComponentTypes {
 
     // templates
     val SimpleTable = ComponentType("SimpleTable")
+    val SimpleTableManual = ComponentType("SimpleTableManual")
     val SimpleTableSelect = ComponentType("SimpleTableSelect")
     val FieldGroupTemplate = ComponentType("FieldGroupTemplate")
 

@@ -20,6 +20,8 @@ class RootContainerComponent(context: ComponentContext) : BaseComponent(context)
         private set
     var dialogConfig: Dialog.Config? by mutableStateOf(null)
         private set
+    var modalViewContainer: ModalViewContainerComponent? by mutableStateOf(null)
+        private set
 
     fun presentDialog(config: Dialog.Config) {
         dialogConfig = config
@@ -33,8 +35,10 @@ class RootContainerComponent(context: ComponentContext) : BaseComponent(context)
 
     override fun applyProps(props: JsonObject) {
         val viewContainerId = ComponentId(props.getString("viewContainer").toInt())
-        val httpMessagesArray = props.getJSONArray("httpMessages")
         viewContainer = context.componentManager.getComponentTyped(viewContainerId)
+        val modalViewContainerId = ComponentId(props.getString("modalViewContainer").toInt())
+        modalViewContainer = context.componentManager.getComponentTyped(modalViewContainerId)
+        val httpMessagesArray = props.getJSONArray("httpMessages")
         httpMessages = httpMessagesArray.mapWithIndex {
             val httpMessage = getJsonObject(it)
             val type = httpMessage.getString("type")

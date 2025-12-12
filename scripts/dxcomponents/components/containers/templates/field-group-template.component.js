@@ -1,5 +1,6 @@
 import { Utils } from "../../../helpers/utils.js";
 import { BaseComponent } from "../../base.component.js";
+import { evaluateAllowRowAction, getReferenceList } from "./template-utils.js";
 
 export class FieldGroupTemplateComponent extends BaseComponent {
     jsComponentPConnectData = {};
@@ -44,6 +45,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.destroyItems();
         this.props.items = [];
         this.componentsManager.onComponentPropsUpdate(this);
@@ -75,7 +77,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         const lookForChildInConfig = this.configProps.lookForChildInConfig;
         this.heading = this.configProps.heading ?? "Row";
         this.fieldHeader = this.configProps.fieldHeader;
-        const resolvedList = this.getReferenceList(this.pConn);
+        const resolvedList = getReferenceList(this.pConn);
         this.pConn.setReferenceList(resolvedList);
         const newReferenceList = this.configProps.referenceList ?? [];
         if (
@@ -95,7 +97,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                     this.pConn,
                     index,
                     lookForChildInConfig,
-                    this.evaluateAllowRowAction(allowRowEdit, item)
+                    evaluateAllowRowAction(allowRowEdit, item)
                 ).getPConnect();
                 const newComponent = this.componentsManager.upsert(oldComponent, newPConn.meta.type, [newPConn]);
                 updatedItems.push({
@@ -105,7 +107,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                             ? this.getDynamicHeader(item, index)
                             : this.getStaticHeader(this.heading, index),
                     component: newComponent,
-                    allowDelete: this.allowedActions.delete && this.evaluateAllowRowAction(allowRowDelete, item),
+                    allowDelete: this.allowedActions.delete && evaluateAllowRowAction(allowRowDelete, item),
                 });
             });
             this.items = updatedItems;
@@ -142,7 +144,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
             return; // no-op
         }
 
-        if (event.type == "FieldGroupTemplateEvent") {
+        if (event.type === "FieldGroupTemplateEvent") {
             switch (event.eventData?.type) {
                 case "addItem":
                     this.addFieldGroupItem();
@@ -207,7 +209,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
 
     buildItemPConnect(pConn, index, viewConfigPath, allowEdit) {
         const context = pConn.getContextName();
-        const referenceList = this.getReferenceList(pConn);
+        const referenceList = getReferenceList(pConn);
 
         const isDatapage = referenceList.startsWith("D_");
         const pageReference = isDatapage
@@ -232,28 +234,6 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         }
 
         return pConnect;
-    }
-
-    evaluateAllowRowAction(rawExpression, rowData) {
-        if (rawExpression === undefined || rawExpression === true) return true;
-        if (rawExpression.startsWith?.("@E ")) {
-            const expression = rawExpression.replace("@E ", "");
-            return PCore.getExpressionEngine().evaluate(expression, rowData);
-        }
-        return false;
-    }
-
-    getReferenceList(pConn) {
-        let resolvePage = pConn.getComponentConfig().referenceList.replace("@P ", "");
-        if (resolvePage.includes("D_")) {
-            resolvePage = pConn.resolveDatasourceReference(resolvePage);
-            if (resolvePage?.pxResults) {
-                resolvePage = resolvePage?.pxResults;
-            } else if (resolvePage.startsWith("D_") && !resolvePage.endsWith(".pxResults")) {
-                resolvePage = `${resolvePage}.pxResults`;
-            }
-        }
-        return resolvePage;
     }
 
     destroyItems() {

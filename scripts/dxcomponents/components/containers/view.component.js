@@ -36,6 +36,7 @@ export class ViewComponent extends ContainerBaseComponent {
     }
 
     destroy() {
+        super.destroy();
         this.jsComponentPConnectData.unsubscribeFn?.();
         this.destroyChildren();
         this.props.children = [];

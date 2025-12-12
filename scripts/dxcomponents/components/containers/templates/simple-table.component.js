@@ -17,26 +17,34 @@ export class SimpleTableComponent extends BaseComponent {
     }
 
     init() {
+        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
+            this,
+            this.checkAndUpdate
+        );
         this.componentsManager.onComponentAdded(this);
         this.checkAndUpdate();
     }
 
     destroy() {
+        super.destroy();
+        this.jsComponentPConnectData.unsubscribeFn?.();
         this.childComponent?.destroy?.();
-        this.props.child = undefined;
-        this.componentsManager.onComponentPropsUpdate(this);
+        this.childComponent = null
+        this.#sendPropsUpdate();
         this.componentsManager.onComponentRemoved(this);
     }
 
     update(pConn) {
         if (this.pConn !== pConn) {
             this.pConn = pConn;
+            this.checkAndUpdate();
         }
-        this.checkAndUpdate();
     }
 
     checkAndUpdate() {
-        this.#updateSelf();
+        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
+            this.#updateSelf();
+        }
     }
 
     #updateSelf() {
@@ -51,7 +59,8 @@ export class SimpleTableComponent extends BaseComponent {
             this.props.visible = this.utils.getBooleanValue(configProps.visibility);
         }
 
-        const { multiRecordDisplayAs } = configProps;
+        const { multiRecordDisplayAs, fieldMetadata } = configProps;
+
         let { contextClass } = configProps;
         if (!contextClass) {
             let listName = this.pConn.getComponentConfig().referenceList;
@@ -65,22 +74,22 @@ export class SimpleTableComponent extends BaseComponent {
                 fieldGroupProps,
             ]);
             this.#sendPropsUpdate();
+        } else if (fieldMetadata && fieldMetadata.type === 'Page List' && fieldMetadata.dataRetrievalType === 'refer') {
+            console.warn(TAG, 'Displaying ListView in SimpleTable is not supported yet.');
         } else {
-            console.log(
-                TAG,
-                `Unsupported display mode: ${multiRecordDisplayAs}. ListView and SimpleTableManual are not supported yet.`
-            );
+            this.childComponent = this.componentsManager.upsert(this.childComponent, "SimpleTableManual", [this.pConn]);
+            this.#sendPropsUpdate();
         }
     }
 
     onEvent(event) {
-        // TODO: remove optional call when other modes are implemented so that child component is always defined
+        // TODO: remove optional call when all other modes are implemented so that child component is always defined
         this.childComponent?.onEvent(event);
     }
 
     #sendPropsUpdate() {
         this.props = {
-            child: this.childComponent.compId,
+            child: this.childComponent?.compId ?? "-1",
         };
         this.componentsManager.onComponentPropsUpdate(this);
     }

@@ -18,12 +18,14 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FlowContain
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Group
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Integer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ListView
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ModalViewContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RootContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTable
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableManual
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableSelect
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextArea
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.TextInput
@@ -40,10 +42,12 @@ import com.pega.constellation.sdk.kmp.core.components.containers.FieldGroupTempl
 import com.pega.constellation.sdk.kmp.core.components.containers.FlowContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.GroupComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.ModalViewContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.OneColumnComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RegionComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableManualComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableSelectComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewContainerComponent
@@ -92,12 +96,14 @@ object ComponentRegistry {
         Def(Group) { GroupComponent(it) },
         Def(Integer) { IntegerComponent(it) },
         Def(ListView) { ListViewComponent(it) },
+        Def(ModalViewContainer) { ModalViewContainerComponent(it) },
         Def(OneColumn) { OneColumnComponent(it) },
         Def(Phone) { PhoneComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },
         Def(Region) { RegionComponent(it) },
         Def(RootContainer) { RootContainerComponent(it) },
         Def(SimpleTable) { SimpleTableComponent(it) },
+        Def(SimpleTableManual) { SimpleTableManualComponent(it) },
         Def(SimpleTableSelect) { SimpleTableSelectComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
         Def(TextInput) { TextInputComponent(it) },

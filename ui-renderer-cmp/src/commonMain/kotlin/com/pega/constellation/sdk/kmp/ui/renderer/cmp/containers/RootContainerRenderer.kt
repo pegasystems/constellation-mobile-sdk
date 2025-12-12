@@ -24,6 +24,7 @@ class RootContainerRenderer : ComponentRenderer<RootContainerComponent> {
     override fun RootContainerComponent.Render() {
         Box(Modifier.clearFocusOnTap()) {
             viewContainer?.Render()
+            modalViewContainer?.Render()
             Snackbar(
                 messages = httpMessages,
                 onSnackbarClose = { clearMessages() },

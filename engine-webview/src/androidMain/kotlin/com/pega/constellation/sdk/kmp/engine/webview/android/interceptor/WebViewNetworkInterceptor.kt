@@ -9,15 +9,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import java.io.ByteArrayInputStream
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.ConcurrentLinkedQueue
 
 internal class WebViewNetworkInterceptor(
     private val pegaUrl: String,
     private val okHttpClient: OkHttpClient,
     private val nonDxOkHttpClient: OkHttpClient
 ) : WebViewInterceptor {
-    private var requestBody = AtomicReference<String?>(null)
+    private val requestBodyQueue = ConcurrentLinkedQueue<String>()
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
         runCatching {
@@ -41,12 +40,12 @@ internal class WebViewNetworkInterceptor(
         }
 
     fun setRequestBody(body: String) {
-        requestBody.set(body)
+        requestBodyQueue.add(body)
     }
 
     private fun OkHttpClient.execute(request: WebResourceRequest): Response {
-        val body = requestBody.takeIf { request.method in listOf("POST", "PATCH") }
-            ?.getAndSet(null)
+        val body = requestBodyQueue.takeIf { request.method in listOf("POST", "PATCH") }
+            ?.poll()
             ?.toRequestBody()
         val filteredHeaders = request.requestHeaders.filterNot {
             isAuthorizationHeaderUndefined(it.key, it.value) || isHeaderDisallowed(it.key)

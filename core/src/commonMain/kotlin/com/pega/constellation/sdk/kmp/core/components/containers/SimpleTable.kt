@@ -18,6 +18,6 @@ class SimpleTableComponent(context: ComponentContext) : BaseComponent(context) {
 
     override fun applyProps(props: JsonObject) {
         val childId = props.getString("child").toInt()
-        child = context.componentManager.getComponent(ComponentId(childId))
+        child = if (childId == -1) null else context.componentManager.getComponent(ComponentId(childId))
     }
 }
