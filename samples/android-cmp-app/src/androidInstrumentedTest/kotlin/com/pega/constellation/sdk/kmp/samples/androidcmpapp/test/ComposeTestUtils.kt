@@ -4,6 +4,8 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isRoot
+import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.waitUntilExactlyOneExists
 import androidx.compose.ui.test.waitUntilNodeCount
 
@@ -28,3 +30,6 @@ fun ComposeUiTest.waitForNodes(text: String, count: Int, substring: Boolean = fa
         onAllNodes(hasText(text, substring)).assertCountEquals(count)
     }
 }
+
+@OptIn(ExperimentalTestApi::class)
+fun ComposeUiTest.printAllFormNodes() = onAllNodes(isRoot())[1].printToLog("FORM NODES")

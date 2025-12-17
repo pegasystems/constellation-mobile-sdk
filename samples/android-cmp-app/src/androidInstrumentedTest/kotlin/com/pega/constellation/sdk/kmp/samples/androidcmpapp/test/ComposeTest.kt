@@ -26,6 +26,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaVie
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -49,6 +50,7 @@ abstract class ComposeTest(
     fun setUp() {
         hideKeyboard()
         Injector.init(authManager, engine)
+        AppContext.init(context)
     }
 
     @OptIn(ExperimentalTestApi::class)

@@ -29,6 +29,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
             assignmentId.contains("K-10048") -> handleKeysAndCiphers(request, actionId)
             assignmentId.contains("G-3025") -> handleGroupTest(actionId)
+            assignmentId.contains("E-22056") -> handleEmbeddedDataTest(actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -41,6 +42,13 @@ class DxAssignmentsHandler : MockHandler {
         return when (actionId) {
             "SingleDisplayAsTable" -> Asset("responses/dx/assignments/DataReferenceTest-1-Review.json")
             "Create/refresh" -> Asset("responses/dx/assignments/refresh/DataReferenceTest-Refresh-$carId.json")
+            else -> Error(404, "Invalid actionId: $actionId")
+        }
+    }
+
+    private fun handleEmbeddedDataTest(actionId: String): MockResponse {
+        return when (actionId) {
+            "EDRepeatingViewEditable" -> Asset("responses/dx/assignments/EmbeddedDataTest-1-RepeatingViewReadonly.json")
             else -> Error(404, "Invalid actionId: $actionId")
         }
     }

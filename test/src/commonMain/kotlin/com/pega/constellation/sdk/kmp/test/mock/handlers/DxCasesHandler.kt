@@ -25,7 +25,7 @@ class DxCasesHandler : MockHandler {
         return when (caseTypeId) {
             "DIXL-MediaCo-Work-SDKTesting" -> Asset("responses/dx/cases/SDKTesting-POST.json")
             "DIXL-MediaCo-Work-NewService" -> Asset("responses/dx/cases/NewService-POST.json")
-            "DIXL-MediaCo-Work-EmbeddedData" -> Asset("responses/dx/cases/EmbeddedData-POST.json")
+            "O40M3A-MarekCo-Work-EmbeddedDataTest" -> Asset("responses/dx/cases/EmbeddedDataTest-RepeatingViewEditable-POST.json")
             "O40M3A-MarekCo-Work-DataReferenceTest2" -> Asset("responses/dx/cases/DataReferenceTest-POST.json")
             "O40M3A-MarekCo-Work-KeysAndCiphers" -> Asset("responses/dx/cases/KeysAndCiphers-POST.json")
             "O40M3A-MarekCo-Work-GroupTest" -> Asset("responses/dx/cases/GroupTest-POST.json")
