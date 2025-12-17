@@ -2,9 +2,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mohamedrejeb.compose.dnd.reorder.ReorderContainer
 import com.mohamedrejeb.compose.dnd.reorder.ReorderableItem
 import com.mohamedrejeb.compose.dnd.reorder.rememberReorderState
@@ -49,8 +49,7 @@ fun EditableTable(
     onReorder: ((Int, Int) -> Unit)?
 ) {
     Column {
-        Heading(label)
-        Spacer(Modifier.height(8.dp))
+        Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
         val focusManager = LocalFocusManager.current
         val haveEditColumn = rows.any { it.onEditButtonClick != null }
         val haveDeleteColumn = rows.any { it.onDeleteButtonClick != null }
