@@ -19,6 +19,7 @@ export class ViewComponent extends ContainerBaseComponent {
     UNSUPPORTED_FORM_TEMPLATES = ["TwoColumn", "ThreeColumn", "WideNarrow"];
 
     SUPPORTED_TEMPLATES = [...this.SUPPORTED_FORM_TEMPLATES, "SimpleTable", "DataReference"];
+    NO_HEADER_TEMPLATES = ['SimpleTable'];
 
     jsComponentPConnectData = {};
     props = {
@@ -79,7 +80,7 @@ export class ViewComponent extends ContainerBaseComponent {
         const showLabel = configProps.showLabel || this.DETAILS_TEMPLATES.includes(template) || this.props.showLabel;
 
         this.props.label = inheritedProps.label ?? label;
-        this.props.showLabel = inheritedProps.showLabel ?? showLabel;
+        this.props.showLabel = (inheritedProps.showLabel ?? showLabel) && !this.NO_HEADER_TEMPLATES.includes(template);
         this.props.visible = configProps.visibility ?? this.props.visible;
 
         if (this.READ_ONLY_DETAILS_TEMPLATES.includes(template)) {
