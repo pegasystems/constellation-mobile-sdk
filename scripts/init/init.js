@@ -50,7 +50,8 @@ async function onPCoreReady(renderObj) {
 }
 
 function sendEventToComponent(id, event) {
-    bridge.onEvent(id, JSON.parse(event));
+    const escapedEvent = event.replace(/\n/g, '\\n').replace(/\t/g, '\\t');
+    bridge.onEvent(id, JSON.parse(escapedEvent));
 }
 
 window.sendEventToComponent = sendEventToComponent;
