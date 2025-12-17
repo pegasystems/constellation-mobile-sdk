@@ -3,8 +3,11 @@ package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 import androidx.compose.runtime.Composable
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.fields.TimeComponent
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.FieldValue
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Time
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.ClockFormat.Companion.is24Hour
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.parse
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
 import kotlinx.datetime.LocalTime
@@ -18,21 +21,27 @@ class TimeRenderer : ComponentRenderer<TimeComponent> {
 
     @Composable
     override fun TimeComponent.Render() {
-        WithFieldHelpers {
-            Time(
-                value = value.asLocalTimeOrNull(),
-                label = label,
-                helperText = helperText,
-                validateMessage = validateMessage,
-                placeholder = placeholder,
-                required = required,
-                disabled = disabled,
-                readOnly = readOnly,
-                clockFormat = ClockFormat.from(clockFormat),
-                onValueChange = { updateValue(it.format(formatter)) },
-                onFocusChange = { updateFocus(it) }
-            )
-        }
+        WithFieldHelpers(
+            displayOnly = {
+                val is24Hour = ClockFormat.from(clockFormat).is24Hour()
+                FieldValue(label, value.asLocalTimeOrNull()?.parse(is24Hour).orEmpty())
+            },
+            editable = {
+                Time(
+                    value = value.asLocalTimeOrNull(),
+                    label = label,
+                    helperText = helperText,
+                    validateMessage = validateMessage,
+                    placeholder = placeholder,
+                    required = required,
+                    disabled = disabled,
+                    readOnly = readOnly,
+                    clockFormat = ClockFormat.from(clockFormat),
+                    onValueChange = { updateValue(it.format(formatter)) },
+                    onFocusChange = { updateFocus(it) }
+                )
+            }
+        )
     }
 
     private fun String.asLocalTimeOrNull() = takeIf { isNotEmpty() }
