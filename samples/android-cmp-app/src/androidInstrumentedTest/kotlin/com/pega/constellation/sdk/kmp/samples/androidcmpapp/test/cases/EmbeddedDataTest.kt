@@ -17,6 +17,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.waitUntilExactlyOneExists
 import androidx.compose.ui.test.waitUntilNodeCount
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
@@ -44,6 +45,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         waitForNode("Cars repeating view readonly")
 
         // remove and verify empty list
+        waitUntilExactlyOneExists(hasContentDescription("Delete item 1"))
         onNodeWithContentDescription("Delete item 1").performClick()
         waitForNodes("No items", count = 2)
         waitUntilNodeCount(hasContentDescription("No items"), count = 2)
@@ -59,11 +61,11 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
             it.findFirstWithText("model").performTextInput("A5")
             it.findFirstWithText("Price").performTextInput("123000")
             it.findFirstWithText("IsFirstOwner").onSiblings().onFirst().performClick()
-            it.findFirstWithText("interior").performClick()
+            it.findFirstWithText("interior").performScrollTo().performClick()
             onNodeWithText("comfort").performClick()
-            it.findFirstWithText("Insurance").performClick()
+            it.findFirstWithText("Insurance").performScrollTo().performClick()
             onNodeWithText("gold").performClick()
-            it.findFirstWithText("client meeting date").performClick()
+            it.findFirstWithText("client meeting date").performScrollTo().performClick()
             onNodeWithText("Today, ", substring = true).performClick()
             onNodeWithText("OK").performClick()
             it.findFirstWithText("Client meeting time").performScrollTo().performClick()
@@ -94,7 +96,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         }
 
         // adding row 2
-        onNodeWithText("Add", substring = true).performClick()
+        onNodeWithText("Add", substring = true).performScrollTo().performClick()
 
         // enter data in row 2
         waitForNodes("cars 2", count = 2)
@@ -108,7 +110,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         // verify data in row 2 propagated to duplicated
         onAllNodes(hasAnyAncestor(hasTestTag("field_group_template_[Cars repeating view readonly]"))).let { nodes ->
             nodes.filter(hasAnyAncestor(hasTestTag("field_group_item_2"))).let {
-                it.findFirstWithText("Ford").assertExists()
+                waitUntilAtLeastOneExists(it, hasText("Ford"), timeoutMillis = 5000L)
             }
         }
 
