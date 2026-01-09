@@ -18,6 +18,10 @@ import kotlinx.serialization.json.JsonObject
 class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(context) {
     var items by mutableStateOf(emptyList<Item>())
         private set
+    var label by mutableStateOf("")
+        private set
+    var showLabel by mutableStateOf(true)
+        private set
     var allowAddItems by mutableStateOf(false)
         private set
     var addButtonLabel by mutableStateOf("")
@@ -38,6 +42,8 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
                         )
                     }
             }
+        label = props.getString("label")
+        showLabel = props.getString("showLabel").toBoolean()
         allowAddItems = props.getBoolean("allowAddItems")
         addButtonLabel = props.getString("addButtonLabel")
     }

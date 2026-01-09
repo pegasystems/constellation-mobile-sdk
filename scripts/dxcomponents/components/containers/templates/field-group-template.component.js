@@ -12,8 +12,8 @@ export class FieldGroupTemplateComponent extends BaseComponent {
     };
 
     inheritedProps$;
-    showLabel$ = true;
-    label$;
+    showLabel = true;
+    label;
     contextClass;
     referenceList;
     referenceListLength;
@@ -71,8 +71,8 @@ export class FieldGroupTemplateComponent extends BaseComponent {
         const label = this.configProps.label;
         const showLabel = this.configProps.showLabel;
         // label & showLabel within inheritedProps takes precedence over configProps
-        this.label$ = this.inheritedProps$.label !== undefined ? this.inheritedProps$.label : label;
-        this.showLabel$ = this.inheritedProps$.showLabel !== undefined ? this.inheritedProps$.showLabel : showLabel;
+        this.label = this.inheritedProps$.label !== undefined ? this.inheritedProps$.label : label;
+        this.showLabel = this.inheritedProps$.showLabel !== undefined ? this.inheritedProps$.showLabel : showLabel;
         this.contextClass = this.configProps.contextClass;
         const lookForChildInConfig = this.configProps.lookForChildInConfig;
         this.heading = this.configProps.heading ?? "Row";
@@ -173,6 +173,8 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                     allowDelete: child.allowDelete,
                 };
             }),
+            label: this.label,
+            showLabel: this.showLabel,
             allowAddItems: this.allowedActions.add,
             addButtonLabel: this.getAddButtonLabel(),
         };

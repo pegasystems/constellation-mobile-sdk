@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -37,7 +38,7 @@ class ModalViewContainerRenderer : ComponentRenderer<ModalViewContainerComponent
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Column(Modifier.padding(16.dp)) {
+                    Column(Modifier.verticalScroll(rememberScrollState()).padding(16.dp)) {
                         if (title.isNotEmpty()) {
                             Heading(title)
                         }

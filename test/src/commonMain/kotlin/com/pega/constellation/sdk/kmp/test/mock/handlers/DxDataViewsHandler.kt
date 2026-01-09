@@ -23,6 +23,7 @@ class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
             "D_SampleCaseTypeList" -> Asset("responses/dx/data_views/D_SampleCaseTypeList.json")
             "D_ListOfFilteredEncryptionKeys" -> handleEncryptionKeysList(request.body ?: "")
             "D_EncryptionKeysList" -> Asset("responses/dx/data_views/D_EncryptionKeysList-all.json")
+            "D_InsuranceList" -> Asset("responses/dx/data_views/D_InsuranceList.json")
             else -> Error(404, "Missing response for data page $dataViewId")
         }
     }

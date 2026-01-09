@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.core.components.containers.FieldGroupTemplateComponent
@@ -31,9 +33,12 @@ class FieldGroupTemplateRenderer : ComponentRenderer<FieldGroupTemplateComponent
     @Composable
     override fun FieldGroupTemplateComponent.Render() {
         val focusManager = LocalFocusManager.current
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.fillMaxWidth().testTag("field_group_template_[$label]")) {
+            if (showLabel && label.isNotEmpty()) {
+                Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
+            }
             items.forEachIndexed { index, item ->
-                Column {
+                Column(Modifier.testTag("field_group_item_${index + 1}")) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,

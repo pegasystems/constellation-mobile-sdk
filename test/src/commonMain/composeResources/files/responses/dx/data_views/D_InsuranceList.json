@@ -1,0 +1,25 @@
+{
+  "fetchDateTime": "2025-12-15T12:40:05.981Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 3,
+  "data": [{
+    "pxObjClass": "O40M3A-MarekCo-Data-Insurance",
+    "pyGUID": "8b42e334-5541-4658-86b5-1871e7b2133e",
+    "Name": "gold"
+  }, {
+    "pxObjClass": "O40M3A-MarekCo-Data-Insurance",
+    "pyGUID": "cb7ce872-04a9-4f36-9bbc-641ba024d479",
+    "Name": "advanced"
+  }, {
+    "pxObjClass": "O40M3A-MarekCo-Data-Insurance",
+    "pyGUID": "da13e004-094c-4450-8262-e765294d1dbc",
+    "Name": "basic"
+  }],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS",
+    "sourceExecutionTime": "1.133 ms"
+  },
+  "pageSize": 3
+}
