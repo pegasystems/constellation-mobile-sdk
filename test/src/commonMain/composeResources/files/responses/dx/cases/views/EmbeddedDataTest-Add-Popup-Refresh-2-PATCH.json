@@ -1,0 +1,305 @@
+{
+  "data": {
+    "caseInfo": {
+      "content": {
+        "EmbeddedDataListOfRecords": [{}, {
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "Price": "",
+          "IsFirstOwner": false,
+          "Insurance": "",
+          "Model": "Astra",
+          "Interior": "",
+          "ClientMeetingDate": "",
+          "ClientMeetingTime": "",
+          "Notes": "",
+          "Brand": "Opel",
+          "TransactionDateTime": ""
+        }]
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "Create2": [{
+          "name": "Create2",
+          "type": "View",
+          "config": {
+            "mode": "editable",
+            "ruleClass": "O40M3A-MarekCo-Data-Cars",
+            "template": "DefaultForm",
+            "localeReference": "@LR O40M3A-MAREKCO-DATA-CARS!VIEW!CREATE2"
+          },
+          "children": [{
+            "name": "Fields",
+            "type": "Region",
+            "children": [{
+              "type": "TextInput",
+              "config": {
+                "value": "@P .Brand",
+                "label": "@FL .Brand",
+                "labelOption": "default",
+                "required": true
+              }
+            }, {
+              "type": "TextInput",
+              "config": {
+                "value": "@P .Model",
+                "label": "@FL .Model",
+                "labelOption": "default"
+              }
+            }, {
+              "type": "Currency",
+              "config": {
+                "value": "@P .Price",
+                "label": "@FL .Price",
+                "labelOption": "default",
+                "isoCodeSelection": "constant",
+                "currencyISOCode": "USD",
+                "allowDecimals": true
+              }
+            }, {
+              "type": "Checkbox",
+              "config": {
+                "caption": "@FL .IsFirstOwner",
+                "value": "@P .IsFirstOwner",
+                "labelOption": "default",
+                "captionOption": "default",
+                "trueLabel": "@L Yes",
+                "falseLabel": "@L No"
+              }
+            }, {
+              "type": "Dropdown",
+              "config": {
+                "value": "@P .Interior",
+                "label": "@FL .Interior",
+                "labelOption": "default",
+                "placeholder": "@L Select...",
+                "listType": "associated",
+                "datasource": "@ASSOCIATED .Interior",
+                "deferDatasource": true
+              }
+            }, {
+              "type": "Dropdown",
+              "config": {
+                "value": "@P .Insurance",
+                "label": "@FL .Insurance",
+                "labelOption": "default",
+                "placeholder": "@L Select...",
+                "listType": "associated",
+                "datasource": "@ASSOCIATED .Insurance",
+                "deferDatasource": true
+              }
+            }, {
+              "type": "Date",
+              "config": {
+                "value": "@P .ClientMeetingDate",
+                "label": "@FL .ClientMeetingDate",
+                "labelOption": "default"
+              }
+            }, {
+              "type": "Time",
+              "config": {
+                "value": "@P .ClientMeetingTime",
+                "label": "@FL .ClientMeetingTime",
+                "labelOption": "default"
+              }
+            }, {
+              "type": "DateTime",
+              "config": {
+                "value": "@P .TransactionDateTime",
+                "label": "@FL .TransactionDateTime",
+                "labelOption": "default"
+              }
+            }, {
+              "type": "TextArea",
+              "config": {
+                "value": "@P .Notes",
+                "label": "@FL .Notes",
+                "labelOption": "default"
+              }
+            }]
+          }],
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }]
+      },
+      "paragraphs": {
+        "Price_additionalInfo": [{
+          "content": "",
+          "name": "Price_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "IsFirstOwner_additionalInfo": [{
+          "content": "",
+          "name": "IsFirstOwner_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "Insurance_additionalInfo": [{
+          "content": "",
+          "name": "Insurance_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "Model_additionalInfo": [{
+          "content": "",
+          "name": "Model_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "Interior_additionalInfo": [{
+          "content": "",
+          "name": "Interior_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "ClientMeetingDate_additionalInfo": [{
+          "content": "",
+          "name": "ClientMeetingDate_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "ClientMeetingTime_additionalInfo": [{
+          "content": "",
+          "name": "ClientMeetingTime_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "Notes_additionalInfo": [{
+          "content": "",
+          "name": "Notes_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "Brand_additionalInfo": [{
+          "content": "",
+          "name": "Brand_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }],
+        "TransactionDateTime_additionalInfo": [{
+          "content": "",
+          "name": "TransactionDateTime_additionalInfo",
+          "classID": "O40M3A-MarekCo-Data-Cars"
+        }]
+      },
+      "datapages": {
+        "D_InsuranceList": {
+          "classID": "O40M3A-MarekCo-Data-Insurance",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": true,
+          "structure": "list",
+          "isWorkObject": false,
+          "isDataObject": true
+        }
+      },
+      "fields": {
+        "Price": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Decimal",
+          "displayAs": "pxCurrency",
+          "additionalInformation": "@PARAGRAPH Price_additionalInfo",
+          "label": "Price"
+        }],
+        "IsFirstOwner": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "True-False",
+          "displayAs": "pxCheckbox",
+          "additionalInformation": "@PARAGRAPH IsFirstOwner_additionalInfo",
+          "label": "IsFirstOwner"
+        }],
+        "Insurance": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Text",
+          "displayAs": "pxDropdown",
+          "additionalInformation": "@PARAGRAPH Insurance_additionalInfo",
+          "label": "Insurance",
+          "datasource": {
+            "tableType": "DataPage",
+            "tableClass": "O40M3A-MarekCo-Data-Insurance",
+            "name": "D_InsuranceList",
+            "propertyForDisplayText": "@P .Name",
+            "propertyForValue": "@P .pyGUID",
+            "parameters": []
+          }
+        }],
+        "Model": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxTextInput",
+          "additionalInformation": "@PARAGRAPH Model_additionalInfo",
+          "label": "model"
+        }],
+        "Interior": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Text",
+          "displayAs": "pxDropdown",
+          "additionalInformation": "@PARAGRAPH Interior_additionalInfo",
+          "label": "interior",
+          "datasource": {
+            "tableType": "PromptList",
+            "records": [{
+              "key": "basic",
+              "value": "basic"
+            }, {
+              "key": "comfort",
+              "value": "comfort"
+            }, {
+              "key": "elite",
+              "value": "elite"
+            }]
+          }
+        }],
+        "ClientMeetingDate": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Date",
+          "displayAs": "pxDateTime",
+          "additionalInformation": "@PARAGRAPH ClientMeetingDate_additionalInfo",
+          "label": "client meeting date"
+        }],
+        "ClientMeetingTime": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "TimeOfDay",
+          "displayAs": "pxDateTime",
+          "additionalInformation": "@PARAGRAPH ClientMeetingTime_additionalInfo",
+          "label": "Client meeting time"
+        }],
+        "Notes": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Text",
+          "displayAs": "pxTextArea",
+          "additionalInformation": "@PARAGRAPH Notes_additionalInfo",
+          "label": "Notes"
+        }],
+        "Brand": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Text",
+          "maxLength": 256,
+          "displayAs": "pxTextInput",
+          "additionalInformation": "@PARAGRAPH Brand_additionalInfo",
+          "label": "brand"
+        }],
+        "TransactionDateTime": [{
+          "classID": "O40M3A-MarekCo-Data-Cars",
+          "type": "Date Time",
+          "displayAs": "pxDateTime",
+          "additionalInformation": "@PARAGRAPH TransactionDateTime_additionalInfo",
+          "label": "Transaction date time"
+        }]
+      }
+    },
+    "components": ["DefaultForm", "TextArea", "Checkbox", "Currency", "Dropdown", "Region", "Time", "TextInput", "View", "Date", "DateTime"],
+    "localeReferences": ["O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!MODEL_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!INSURANCE_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!CLIENTMEETINGTIME_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!BRAND_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!NOTES_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!ASSOCIATED!INTERIOR", "O40M3A-MAREKCO-DATA-CARS!VIEW!CREATE2", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!PRICE_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!CLIENTMEETINGDATE_ADDITIONALINFO", "@BASECLASS!DATAPAGE!D_INSURANCELIST", "O40M3A-MAREKCO-WORK-EMBEDDEDDATATEST!CASE!EMBEDDEDDATATEST", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!INTERIOR_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!ISFIRSTOWNER_ADDITIONALINFO", "O40M3A-MAREKCO-DATA-CARS!PARAGRAPH!TRANSACTIONDATETIME_ADDITIONALINFO"],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "Create2",
+        "context": "caseInfo.content.EmbeddedDataListOfRecords[1]"
+      }
+    },
+    "context_data": {
+      "caseInfo": {
+        "content": {
+          "EmbeddedDataListOfRecords": [{}, {
+            "summary_of_associated_lists__": {}
+          }]
+        }
+      }
+    }
+  }
+}

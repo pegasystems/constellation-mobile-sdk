@@ -7,6 +7,7 @@ import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
@@ -29,7 +30,9 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
             assignmentId.contains("K-10048") -> handleKeysAndCiphers(request, actionId)
             assignmentId.contains("G-3025") -> handleGroupTest(actionId)
-            assignmentId.contains("E-22056") -> handleEmbeddedDataTest(actionId)
+            assignmentId.contains("E-22056") -> handleEmbeddedDataRepeatingViewTest(actionId)
+            assignmentId.contains("E-24003") -> handleEmbeddedDataTableSimpleTableTest(request, actionId)
+            assignmentId.contains("E-26028") -> handleEmbeddedDataConditionsTest(actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -46,9 +49,35 @@ class DxAssignmentsHandler : MockHandler {
         }
     }
 
-    private fun handleEmbeddedDataTest(actionId: String): MockResponse {
+    private fun handleEmbeddedDataRepeatingViewTest(actionId: String): MockResponse {
         return when (actionId) {
             "EDRepeatingViewEditable" -> Asset("responses/dx/assignments/EmbeddedDataTest-1-RepeatingViewReadonly.json")
+            else -> Error(404, "Invalid actionId: $actionId")
+        }
+    }
+
+    private fun handleEmbeddedDataTableSimpleTableTest(request: MockRequest, actionId: String): MockResponse {
+        return when (actionId) {
+            "EmbeddedDataDisplayAsRepeatingViewEdit" -> Asset("responses/dx/assignments/EmbeddedDataTest-EditableTablePopup.json")
+            "EDTableEditablePopup/refresh" -> {
+                val body = request.body ?: return Error(400, "Missing request body")
+                val bodyJson = Json.parseToJsonElement(body).jsonObject
+                val pageInstructions = bodyJson.getValue("pageInstructions").jsonArray
+                return when (pageInstructions.size) {
+                    2 -> Asset("responses/dx/assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-1.json")
+                    4 -> Asset("responses/dx/assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-2.json")
+                    else -> Error(404, "No data for given pageInstructions size: ${pageInstructions.size} for actionId: $actionId")
+                }
+            }
+            "EDTableEditablePopup" -> Asset("responses/dx/assignments/EmbeddedDataTest-ReadonlySimpleTable.json")
+            "EDSimpleTableReadonly" -> Asset("responses/dx/assignments/EmbeddedDataTest-ReadonlyTable.json")
+            else -> Error(404, "Invalid actionId: $actionId")
+        }
+    }
+
+    private fun handleEmbeddedDataConditionsTest(actionId: String): MockResponse {
+        return when (actionId) {
+            "EDCheckAddeditremoveConditions" -> Asset("responses/dx/assignments/EmbeddedDataTest-Conditions.json")
             else -> Error(404, "Invalid actionId: $actionId")
         }
     }

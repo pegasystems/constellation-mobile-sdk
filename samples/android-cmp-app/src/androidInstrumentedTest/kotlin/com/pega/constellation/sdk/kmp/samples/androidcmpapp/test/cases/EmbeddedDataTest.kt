@@ -6,7 +6,9 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.filter
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onFirst
@@ -16,7 +18,10 @@ import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.waitUntilAtLeastOneExists
+import androidx.compose.ui.test.waitUntilDoesNotExist
 import androidx.compose.ui.test.waitUntilExactlyOneExists
 import androidx.compose.ui.test.waitUntilNodeCount
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
@@ -31,13 +36,13 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
 
     @Test
     fun test_embedded_data_repeating_view() = runComposeUiTest {
-        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest")
+        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable")
 
         // create case
         onNodeWithText("New Service").performClick()
 
         // verify form title and instruction
-        waitForNode("ED repeating view editable (", substring = true)
+        waitForNode("ED repeating view editable", substring = true)
         waitForNode("ED repeating view editable & readonly instruction")
 
         // verify repeating views presence
@@ -116,7 +121,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
 
         // 2nd step
         onNodeWithText("Next").performClick()
-        waitForNode("ED repeating view readonly (", substring = true)
+        waitForNode("ED repeating view readonly", substring = true)
 
         // verify row 1 on second step
         onAllNodes(hasAnyAncestor(hasTestTag("field_group_template_[Cars repeating view readonly]"))).let {
@@ -124,7 +129,188 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         }
     }
 
-    fun ComposeUiTest.verifyEmbeddedDataRecord(
+    @Test
+    fun test_embedded_data_table_simple_table() = runComposeUiTest {
+        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable")
+
+        val columnValues = mutableMapOf(
+            "brand" to "Ford",
+            "model" to "Focus",
+            "Price" to "123456",
+            "IsFirstOwner" to "Yes",
+            "interior" to "comfort",
+            "Insurance" to "gold",
+            "client meeting date" to "2026-01-08",
+            "Client meeting time" to "12:00 AM",
+            "Transaction date time" to "2026-01-08 12:00 AM",
+            "Notes" to "This is a note"
+        )
+        val edContext = "caseInfo.content.EmbeddedDataListOfRecords"
+        // create case
+        onNodeWithText("New Service").performClick()
+
+        // Step 1 - editable table
+        // verify form title
+        waitForNode("ED table editable", substring = true)
+        // verify table title
+        waitForNode("Cars editable table")
+        // verify columns
+        columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) } // despite there is only one table with column names, test sees two of them
+        // verify add and delete records
+        onNodeWithText("+ Add cars").performClick()
+        waitUntilAtLeastOneExists(hasContentDescription("Delete item 1"))
+        waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
+        onAllNodes(hasContentDescription("Delete item 1")).onFirst().performClick()
+        waitUntilDoesNotExist(hasContentDescription("Delete item 1"))
+        waitUntilDoesNotExist(hasContentDescription("Reorder item 1"))
+        // verify adding record with data
+        onNodeWithText("+ Add cars").performClick()
+        performTextInput("$edContext[0].Brand", "Ford")
+        performTextInput("$edContext[0].Model", "Focus")
+        performTextInput("$edContext[0].Price", "123456")
+        performClick("$edContext[0].IsFirstOwner")
+        performClick("$edContext[0].Interior")
+        onNodeWithText("comfort").performClick()
+        performClick("$edContext[0].Insurance")
+        onNodeWithText("gold").performClick()
+        performClick("$edContext[0].ClientMeetingDate")
+        onNodeWithText("Today, ", substring = true).performClick()
+        onNodeWithText("OK").performClick()
+        performClick("$edContext[0].ClientMeetingTime")
+        onNodeWithText("OK").performClick()
+        performClick("$edContext[0].TransactionDateTime")
+        onNodeWithText("Today, ", substring = true).performClick()
+        onNodeWithText("OK").performClick()
+        onNodeWithText("OK").performClick()
+        performTextInput("$edContext[0].Notes", "This is a note")
+
+        // Step 2 - editable table with popup
+        waitForNode("Next")
+        onNodeWithText("Next").performClick()
+        // verify form title
+        waitForNode("ED table editable popup", substring = true)
+        // verify table title
+        waitForNode("Cars editable table with popup")
+        // verify columns
+        columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) } // despite there is only one table with column names, test sees two of them
+        // verify table data
+        columnValues.values.forEach {
+            waitForNodes(it, count = 2)
+        }
+        // verify reorder icon exists
+        waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
+        // verify edit record popup
+        onAllNodes(hasContentDescription("Edit item 1")).onFirst().performScrollTo().performClick()
+        waitForNode("Edit Record")
+
+        onAllNodes(hasAnyAncestor(hasTestTag("ModalViewContainer"))).let { nodes ->
+            columnValues.forEach {
+                nodes.findFirstWithText(it.key).assertExists()
+                if (it.key != "IsFirstOwner") { // not able to check checkbox state
+                    nodes.findFirstWithText(it.value).assertExists()
+                }
+            }
+            nodes.findFirstWithText("model").performTextReplacement("Fiesta")
+            nodes.findFirstWithText("Submit").performClick()
+        }
+        // verify updated record in table
+        waitForNodes("Fiesta", count = 2)
+
+        // adding new record via popup
+        onNodeWithText("+ Add cars").performScrollTo().performClick()
+        waitForNode("Add Record")
+        onAllNodes(hasAnyAncestor(hasTestTag("ModalViewContainer"))).let { nodes ->
+            nodes.findFirstWithText("Submit").performClick()
+            waitUntilAtLeastOneExists(nodes, hasText("brand: Cannot be blank"), timeoutMillis = 5000L)
+            nodes.findFirstWithText("brand").performTextReplacement("Opel")
+            nodes.findFirstWithText("model").performTextReplacement("Astra")
+            nodes.findFirstWithText("Submit").performScrollTo().performClick()
+        }
+        // verify new record in table
+        waitForNodes("Opel", count = 2)
+        waitForNodes("Astra", count = 2)
+
+        // Step 3 - readonly simple table
+        onNodeWithText("Next").performClick()
+        // verify form title
+        waitForNode("ED simple table readonly", substring = true)
+        // verify table title
+        waitForNode("Cars readonly simple table")
+        verifyReadonlyTable(columnValues)
+
+        // Step 4 - readonly table
+        onNodeWithText("Next").performClick()
+        // verify form title
+        waitForNode("ED table readonly", substring = true)
+        // verify table title
+        waitForNode("Cars readonly table")
+        verifyReadonlyTable(columnValues)
+    }
+
+    @Test
+    fun test_embedded_data_add_edit_remove_conditions() = runComposeUiTest {
+        // Step 1 - Editable table
+        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions")
+        // create case
+        onNodeWithText("New Service").performClick()
+        // verify form title
+        waitForNode("ED table editable conditions", substring = true)
+        // verify table title
+        waitForNode("Cars editable table")
+
+        waitForNode("+ Add cars")
+        onNodeWithText("+ Add cars").performClick()
+        // verify add/edit/remove/reorder
+        waitForNode("+ Add cars")
+        val edContext = "caseInfo.content.EmbeddedDataListOfRecords"
+        performTextInput("$edContext[0].Brand", "Ford")
+        waitUntilAtLeastOneExists(hasContentDescription("Delete item 1"))
+        waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
+
+        onNodeWithText("disable add/edit/remove/reorder").onSiblings().onFirst().performClick()
+
+        waitUntilDoesNotExist(hasText("+ Add cars"))
+        waitUntilDoesNotExist(hasSetTextAction())
+        waitUntilDoesNotExist(hasContentDescription("Delete item 1"))
+        waitUntilDoesNotExist(hasContentDescription("Reorder item 1"))
+
+        onNodeWithText("disable add/edit/remove/reorder").onSiblings().onFirst().performClick()
+
+        // Step 2 - Editable popup table
+        onNodeWithText("Next").performClick()
+        // verify form title
+        waitForNode("ED table editable popup conditions", substring = true)
+        // verify table title
+        waitForNode("Cars editable table with popup", substring = true)
+        // verify add/edit/remove/reorder
+        waitForNode("+ Add cars")
+        waitUntilAtLeastOneExists(hasContentDescription("Edit item 1"))
+        waitUntilAtLeastOneExists(hasContentDescription("Delete item 1"))
+        waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
+
+        onNodeWithText("disable add/edit/remove/reorder").onSiblings().onFirst().performClick()
+
+        waitUntilDoesNotExist(hasText("+ Add cars"))
+        waitUntilDoesNotExist(hasContentDescription("Edit item 1"))
+        waitUntilDoesNotExist(hasContentDescription("Delete item 1"))
+        waitUntilDoesNotExist(hasContentDescription("Reorder item 1"))
+    }
+
+    private fun ComposeUiTest.performTextInput(testTag: String, inputText: String) {
+        waitUntilAtLeastOneExists(hasTestTag(testTag))
+        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
+            .filter(hasSetTextAction())
+            .onFirst().performTextInput(inputText)
+    }
+
+    private fun ComposeUiTest.performClick(testTag: String) {
+        waitUntilAtLeastOneExists(hasTestTag(testTag))
+        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
+            .filter(hasClickAction())
+            .onFirst().performScrollTo().performClick()
+    }
+
+    private fun ComposeUiTest.verifyEmbeddedDataRecord(
         nodes: SemanticsNodeInteractionCollection,
         expectedDate: String,
         isEditable: Boolean
@@ -146,10 +332,10 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         }
     }
 
-    fun SemanticsNodeInteractionCollection.findFirstWithText(text: String) =
+    private fun SemanticsNodeInteractionCollection.findFirstWithText(text: String) =
         this.filter(hasText(text)).onFirst()
 
-    fun ComposeUiTest.waitUntilAtLeastOneExists(
+    private fun ComposeUiTest.waitUntilAtLeastOneExists(
         nodes: SemanticsNodeInteractionCollection,
         matcher: SemanticsMatcher,
         timeoutMillis: Long = 5000L
@@ -157,5 +343,22 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         waitUntil("exactly 1 nodes match (${matcher.description})", timeoutMillis) {
             nodes.filter(matcher).fetchSemanticsNodes().size == 1
         }
+    }
+
+    private fun ComposeUiTest.verifyReadonlyTable(columnValues: MutableMap<String, String>) {
+        // verify columns
+        columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) }
+        // verify table data
+        columnValues["model"] = "Fiesta" // updated model name
+        columnValues.values.forEach {
+            waitForNodes(it, count = 2)
+        }
+        waitForNodes("Opel", count = 2)
+        waitForNodes("Astra", count = 2)
+        // verify absence of add/edit/delete actions
+        waitUntilDoesNotExist(hasText("+ Add cars"))
+        waitUntilDoesNotExist(hasContentDescription("Edit item 1"))
+        waitUntilDoesNotExist(hasContentDescription("Delete item 1"))
+        waitUntilDoesNotExist(hasContentDescription("Reorder item 1"))
     }
 }
