@@ -108,7 +108,7 @@ export class SimpleTableManualComponent extends BaseComponent {
         const conditions = this.#calculateConditions(editMode, allowActions, allowTableEdit)
 
         this.referenceListStr = getContext(this.pConn).referenceListStr;
-        this.props.label = this.pConn.getInheritedProps().label ?? labelProp ?? propertyLabel;
+        this.props.label = this.pConn.getInheritedProps().label || labelProp || propertyLabel;
         this.targetClassLabel = targetClassLabel;
         this.props.addButtonLabel = targetClassLabel ? `+ Add ${targetClassLabel}` : "+ Add";
         this.referenceList = referenceList.map((element) => {

@@ -42,7 +42,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         onNodeWithText("New Service").performClick()
 
         // verify form title and instruction
-        waitForNode("ED repeating view editable", substring = true)
+        waitForNode("ED repeating view editable (", substring = true)
         waitForNode("ED repeating view editable & readonly instruction")
 
         // verify repeating views presence
@@ -53,7 +53,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         waitUntilExactlyOneExists(hasContentDescription("Delete item 1"))
         onNodeWithContentDescription("Delete item 1").performClick()
         waitForNodes("No items", count = 2)
-        waitUntilNodeCount(hasContentDescription("No items"), count = 2)
+        waitUntilNodeCount(hasContentDescription("No items icon"), count = 2)
         onNodeWithText("Add", substring = true).performClick()
 
         // verify error banner
