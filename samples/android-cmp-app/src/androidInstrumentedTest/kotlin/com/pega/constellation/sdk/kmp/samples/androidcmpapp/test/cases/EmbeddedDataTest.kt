@@ -211,8 +211,9 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
                 }
             }
             nodes.findFirstWithText("model").performTextReplacement("Fiesta")
-            nodes.findFirstWithText("Submit").performClick()
+            nodes.findFirstWithText("Submit").performScrollTo().performClick()
         }
+        waitUntilDoesNotExist(hasText("Edit Record"), timeoutMillis = 3000)
         // verify updated record in table
         waitForNodes("Fiesta", count = 2)
 
@@ -220,12 +221,13 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         onNodeWithText("+ Add cars").performScrollTo().performClick()
         waitForNode("Add Record")
         onAllNodes(hasAnyAncestor(hasTestTag("ModalViewContainer"))).let { nodes ->
-            nodes.findFirstWithText("Submit").performClick()
+            nodes.findFirstWithText("Submit").performScrollTo().performClick()
             waitUntilAtLeastOneExists(nodes, hasText("brand: Cannot be blank"), timeoutMillis = 5000L)
             nodes.findFirstWithText("brand").performTextReplacement("Opel")
             nodes.findFirstWithText("model").performTextReplacement("Astra")
             nodes.findFirstWithText("Submit").performScrollTo().performClick()
         }
+        waitUntilDoesNotExist(hasText("Add Record"))
         // verify new record in table
         waitForNodes("Opel", count = 2)
         waitForNodes("Astra", count = 2)
