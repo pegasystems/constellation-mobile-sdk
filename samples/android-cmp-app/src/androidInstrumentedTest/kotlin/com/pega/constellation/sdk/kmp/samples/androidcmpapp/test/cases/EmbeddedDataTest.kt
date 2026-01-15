@@ -61,7 +61,8 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         waitForNode("brand: Cannot be blank", substring = true)
 
         // enter data in row 1 and verify
-        onAllNodes(hasAnyAncestor(hasTestTag("field_group_template_[Cars repeating view editable]"))).let {
+        val carsEditableFieldGroup = "field_group_template_[Cars repeating view editable]"
+        allDescendantsOf(carsEditableFieldGroup).let {
             it.findFirstWithText("brand").performTextInput("Audi")
             it.findFirstWithText("model").performTextInput("A5")
             it.findFirstWithText("Price").performTextInput("123000")
@@ -85,38 +86,34 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
             onNodeWithText("Cars repeating view readonly").performScrollTo().performClick()
 
             // verify editable data
-            verifyEmbeddedDataRecord(
+            verifyFieldGroupItem(
                 nodes = it,
                 expectedDate = LocalDateTime.now().toString().substring(0, 10),
                 isEditable = true
             )
         }
         // verify if row 1 data propagated to readonly duplicated view
-        onAllNodes(hasAnyAncestor(hasTestTag("field_group_template_[Cars repeating view readonly]"))).let {
-            verifyEmbeddedDataRecord(
-                nodes = it,
-                expectedDate = LocalDateTime.now().toString().substring(0, 10),
-                isEditable = false
-            )
-        }
+        val carsReadonlyFieldGroup = "field_group_template_[Cars repeating view readonly]"
+        verifyFieldGroupItem(
+            nodes = allDescendantsOf(carsReadonlyFieldGroup),
+            expectedDate = LocalDateTime.now().toString().substring(0, 10),
+            isEditable = false
+        )
 
         // adding row 2
         onNodeWithText("Add", substring = true).performScrollTo().performClick()
-
         // enter data in row 2
         waitForNodes("cars 2", count = 2)
-        onAllNodes(hasAnyAncestor(hasTestTag("field_group_template_[Cars repeating view editable]"))).let { nodes ->
-            nodes.filter(hasAnyAncestor(hasTestTag("field_group_item_2"))).let {
+        allDescendantsOf(carsEditableFieldGroup).let { nodes ->
+            nodes.filterDescendantsOf("field_group_item_2").let {
                 it.findFirstWithText("brand").performTextInput("Ford")
                 nodes.findFirstWithText("cars 2").performClick() // remove focus to propagate data
                 it.findFirstWithText("Ford").assertExists()
             }
         }
         // verify data in row 2 propagated to duplicated
-        onAllNodes(hasAnyAncestor(hasTestTag("field_group_template_[Cars repeating view readonly]"))).let { nodes ->
-            nodes.filter(hasAnyAncestor(hasTestTag("field_group_item_2"))).let {
-                waitUntilAtLeastOneExists(it, hasText("Ford"), timeoutMillis = 5000L)
-            }
+        allDescendantsOf(carsReadonlyFieldGroup).filterDescendantsOf("field_group_item_2").let {
+            waitUntilAtLeastOneExists(it, hasText("Ford"), timeoutMillis = 5000L)
         }
 
         // 2nd step
@@ -124,9 +121,11 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         waitForNode("ED repeating view readonly", substring = true)
 
         // verify row 1 on second step
-        onAllNodes(hasAnyAncestor(hasTestTag("field_group_template_[Cars repeating view readonly]"))).let {
-            verifyEmbeddedDataRecord(it, expectedDate = "2025-12-16", isEditable = false)
-        }
+        verifyFieldGroupItem(
+            allDescendantsOf(carsReadonlyFieldGroup),
+            expectedDate = "2025-12-16",
+            isEditable = false
+        )
     }
 
     @Test
@@ -146,6 +145,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
             "Notes" to "This is a note"
         )
         val edContext = "caseInfo.content.EmbeddedDataListOfRecords"
+
         // create case
         onNodeWithText("New Service").performClick()
 
@@ -155,7 +155,10 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         // verify table title
         waitForNode("Cars editable table")
         // verify columns
-        columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) } // despite there is only one table with column names, test sees two of them
+        columnValues.keys.forEach {
+            waitForNodes(it.uppercase(), count = 2)
+        } // despite there is only one table with column names, test sees two of them
+
         // verify add and delete records
         onNodeWithText("+ Add cars").performClick()
         waitUntilAtLeastOneExists(hasContentDescription("Delete item 1"))
@@ -194,16 +197,14 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         // verify columns
         columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) } // despite there is only one table with column names, test sees two of them
         // verify table data
-        columnValues.values.forEach {
-            waitForNodes(it, count = 2)
-        }
+        columnValues.values.forEach { waitForNodes(it, count = 2) }
         // verify reorder icon exists
         waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
         // verify edit record popup
         onAllNodes(hasContentDescription("Edit item 1")).onFirst().performScrollTo().performClick()
         waitForNode("Edit Record")
 
-        onAllNodes(hasAnyAncestor(hasTestTag("ModalViewContainer"))).let { nodes ->
+        allDescendantsOf("ModalViewContainer").let { nodes ->
             columnValues.forEach {
                 nodes.findFirstWithText(it.key).assertExists()
                 if (it.key != "IsFirstOwner") { // not able to check checkbox state
@@ -220,9 +221,10 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         // adding new record via popup
         onNodeWithText("+ Add cars").performScrollTo().performClick()
         waitForNode("Add Record")
-        onAllNodes(hasAnyAncestor(hasTestTag("ModalViewContainer"))).let { nodes ->
+        allDescendantsOf("ModalViewContainer").let { nodes ->
             nodes.findFirstWithText("Submit").performScrollTo().performClick()
-            waitUntilAtLeastOneExists(nodes, hasText("brand: Cannot be blank"), timeoutMillis = 5000L)
+            waitUntilAtLeastOneExists(nodes, hasText("brand: Cannot be blank"))
+
             nodes.findFirstWithText("brand").performTextReplacement("Opel")
             nodes.findFirstWithText("model").performTextReplacement("Astra")
             nodes.findFirstWithText("Submit").performScrollTo().performClick()
@@ -298,21 +300,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         waitUntilDoesNotExist(hasContentDescription("Reorder item 1"))
     }
 
-    private fun ComposeUiTest.performTextInput(testTag: String, inputText: String) {
-        waitUntilAtLeastOneExists(hasTestTag(testTag))
-        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
-            .filter(hasSetTextAction())
-            .onFirst().performTextInput(inputText)
-    }
-
-    private fun ComposeUiTest.performClick(testTag: String) {
-        waitUntilAtLeastOneExists(hasTestTag(testTag))
-        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
-            .filter(hasClickAction())
-            .onFirst().performScrollTo().performClick()
-    }
-
-    private fun ComposeUiTest.verifyEmbeddedDataRecord(
+    private fun ComposeUiTest.verifyFieldGroupItem(
         nodes: SemanticsNodeInteractionCollection,
         expectedDate: String,
         isEditable: Boolean
@@ -334,19 +322,6 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         }
     }
 
-    private fun SemanticsNodeInteractionCollection.findFirstWithText(text: String) =
-        this.filter(hasText(text)).onFirst()
-
-    private fun ComposeUiTest.waitUntilAtLeastOneExists(
-        nodes: SemanticsNodeInteractionCollection,
-        matcher: SemanticsMatcher,
-        timeoutMillis: Long = 5000L
-    ) {
-        waitUntil("exactly 1 nodes match (${matcher.description})", timeoutMillis) {
-            nodes.filter(matcher).fetchSemanticsNodes().size == 1
-        }
-    }
-
     private fun ComposeUiTest.verifyReadonlyTable(columnValues: MutableMap<String, String>) {
         // verify columns
         columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) }
@@ -363,4 +338,37 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         waitUntilDoesNotExist(hasContentDescription("Delete item 1"))
         waitUntilDoesNotExist(hasContentDescription("Reorder item 1"))
     }
+
+    private fun ComposeUiTest.performTextInput(testTag: String, inputText: String) {
+        waitUntilAtLeastOneExists(hasTestTag(testTag))
+        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
+            .filter(hasSetTextAction())
+            .onFirst().performTextInput(inputText)
+    }
+
+    private fun ComposeUiTest.performClick(testTag: String) {
+        waitUntilAtLeastOneExists(hasTestTag(testTag))
+        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
+            .filter(hasClickAction())
+            .onFirst().performScrollTo().performClick()
+    }
+
+    private fun SemanticsNodeInteractionCollection.findFirstWithText(text: String) =
+        this.filter(hasText(text)).onFirst()
+
+    private fun ComposeUiTest.waitUntilAtLeastOneExists(
+        nodes: SemanticsNodeInteractionCollection,
+        matcher: SemanticsMatcher,
+        timeoutMillis: Long = 5000L
+    ) {
+        waitUntil("exactly 1 nodes match (${matcher.description})", timeoutMillis) {
+            nodes.filter(matcher).fetchSemanticsNodes().size == 1
+        }
+    }
+
+    private fun ComposeUiTest.allDescendantsOf(testTag: String) =
+        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
+
+    private fun SemanticsNodeInteractionCollection.filterDescendantsOf(testTag: String) =
+        filter(hasAnyAncestor(hasTestTag(testTag)))
 }
