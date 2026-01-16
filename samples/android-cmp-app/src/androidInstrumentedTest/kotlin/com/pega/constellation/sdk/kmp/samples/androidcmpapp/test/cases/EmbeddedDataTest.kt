@@ -4,6 +4,7 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
+import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.filter
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
@@ -62,26 +63,26 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
 
         // enter data in row 1 and verify
         val carsEditableFieldGroup = "field_group_template_[Cars repeating view editable]"
-        allDescendantsOf(carsEditableFieldGroup).let {
-            it.findFirstWithText("brand").performTextInput("Audi")
-            it.findFirstWithText("model").performTextInput("A5")
-            it.findFirstWithText("Price").performTextInput("123000")
-            it.findFirstWithText("IsFirstOwner").onSiblings().onFirst().performClick()
-            it.findFirstWithText("interior").performScrollTo().performClick()
+        onAllDescendantsOf(carsEditableFieldGroup).let {
+            it.find("brand").performTextInput("Audi")
+            it.find("model").performTextInput("A5")
+            it.find("Price").performTextInput("123000")
+            it.find("IsFirstOwner").onSiblings().onFirst().performClick()
+            it.find("interior").performScrollTo().performClick()
             onNodeWithText("comfort").performClick()
-            it.findFirstWithText("Insurance").performScrollTo().performClick()
+            it.find("Insurance").performScrollTo().performClick()
             onNodeWithText("gold").performClick()
-            it.findFirstWithText("client meeting date").performScrollTo().performClick()
+            it.find("client meeting date").performScrollTo().performClick()
             onNodeWithText("Today, ", substring = true).performClick()
             onNodeWithText("OK").performClick()
-            it.findFirstWithText("Client meeting time").performScrollTo().performClick()
+            it.find("Client meeting time").performScrollTo().performClick()
             onNodeWithText("OK").performClick()
-            it.findFirstWithText("Transaction date time").performScrollTo().performScrollTo()
+            it.find("Transaction date time").performScrollTo().performScrollTo()
                 .performClick()
             onNodeWithText("Today, ", substring = true).performClick()
             onNodeWithText("OK").performClick()
             onNodeWithText("OK").performClick()
-            it.findFirstWithText("Notes").performScrollTo().performTextInput("This is a note")
+            it.find("Notes").performScrollTo().performTextInput("This is a note")
             // remove focus to propagate data
             onNodeWithText("Cars repeating view readonly").performScrollTo().performClick()
 
@@ -95,7 +96,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         // verify if row 1 data propagated to readonly duplicated view
         val carsReadonlyFieldGroup = "field_group_template_[Cars repeating view readonly]"
         verifyFieldGroupItem(
-            nodes = allDescendantsOf(carsReadonlyFieldGroup),
+            nodes = onAllDescendantsOf(carsReadonlyFieldGroup),
             expectedDate = LocalDateTime.now().toString().substring(0, 10),
             isEditable = false
         )
@@ -104,16 +105,16 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         onNodeWithText("Add", substring = true).performScrollTo().performClick()
         // enter data in row 2
         waitForNodes("cars 2", count = 2)
-        allDescendantsOf(carsEditableFieldGroup).let { nodes ->
+        onAllDescendantsOf(carsEditableFieldGroup).let { nodes ->
             nodes.filterDescendantsOf("field_group_item_2").let {
-                it.findFirstWithText("brand").performTextInput("Ford")
-                nodes.findFirstWithText("cars 2").performClick() // remove focus to propagate data
-                it.findFirstWithText("Ford").assertExists()
+                it.find("brand").performTextInput("Ford")
+                nodes.find("cars 2").performClick() // remove focus to propagate data
+                it.find("Ford").assertExists()
             }
         }
         // verify data in row 2 propagated to duplicated
-        allDescendantsOf(carsReadonlyFieldGroup).filterDescendantsOf("field_group_item_2").let {
-            waitUntilAtLeastOneExists(it, hasText("Ford"), timeoutMillis = 5000L)
+        onAllDescendantsOf(carsReadonlyFieldGroup).filterDescendantsOf("field_group_item_2").let {
+            waitUntilExactlyOneExists(it, hasText("Ford"), timeoutMillis = 5000L)
         }
 
         // 2nd step
@@ -122,7 +123,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
 
         // verify row 1 on second step
         verifyFieldGroupItem(
-            allDescendantsOf(carsReadonlyFieldGroup),
+            onAllDescendantsOf(carsReadonlyFieldGroup),
             expectedDate = "2025-12-16",
             isEditable = false
         )
@@ -155,9 +156,7 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         // verify table title
         waitForNode("Cars editable table")
         // verify columns
-        columnValues.keys.forEach {
-            waitForNodes(it.uppercase(), count = 2)
-        } // despite there is only one table with column names, test sees two of them
+        columnValues.keys.forEach { waitForTableNode(it.uppercase()) }
 
         // verify add and delete records
         onNodeWithText("+ Add cars").performClick()
@@ -195,44 +194,44 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         // verify table title
         waitForNode("Cars editable table with popup")
         // verify columns
-        columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) } // despite there is only one table with column names, test sees two of them
+        columnValues.keys.forEach { waitForTableNode(it.uppercase()) }
         // verify table data
-        columnValues.values.forEach { waitForNodes(it, count = 2) }
+        columnValues.values.forEach { waitForTableNode(it) }
         // verify reorder icon exists
         waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
         // verify edit record popup
         onAllNodes(hasContentDescription("Edit item 1")).onFirst().performScrollTo().performClick()
         waitForNode("Edit Record")
 
-        allDescendantsOf("ModalViewContainer").let { nodes ->
+        onAllDescendantsOf("ModalViewContainer").let { modal ->
             columnValues.forEach {
-                nodes.findFirstWithText(it.key).assertExists()
+                modal.find(it.key).assertExists()
                 if (it.key != "IsFirstOwner") { // not able to check checkbox state
-                    nodes.findFirstWithText(it.value).assertExists()
+                    modal.find(it.value).assertExists()
                 }
             }
-            nodes.findFirstWithText("model").performTextReplacement("Fiesta")
-            nodes.findFirstWithText("Submit").performScrollTo().performClick()
+            modal.find("model").performTextReplacement("Fiesta")
+            modal.find("Submit").performScrollTo().performClick()
         }
         waitUntilDoesNotExist(hasText("Edit Record"), timeoutMillis = 3000)
         // verify updated record in table
-        waitForNodes("Fiesta", count = 2)
+        waitForTableNode("Fiesta")
 
         // adding new record via popup
         onNodeWithText("+ Add cars").performScrollTo().performClick()
         waitForNode("Add Record")
-        allDescendantsOf("ModalViewContainer").let { nodes ->
-            nodes.findFirstWithText("Submit").performScrollTo().performClick()
-            waitUntilAtLeastOneExists(nodes, hasText("brand: Cannot be blank"))
+        onAllDescendantsOf("ModalViewContainer").let { modal ->
+            modal.find("Submit").performScrollTo().performClick()
+            waitUntilExactlyOneExists(modal, hasText("brand: Cannot be blank"))
 
-            nodes.findFirstWithText("brand").performTextReplacement("Opel")
-            nodes.findFirstWithText("model").performTextReplacement("Astra")
-            nodes.findFirstWithText("Submit").performScrollTo().performClick()
+            modal.find("brand").performTextReplacement("Opel")
+            modal.find("model").performTextReplacement("Astra")
+            modal.find("Submit").performScrollTo().performClick()
         }
-        waitUntilDoesNotExist(hasText("Add Record"))
+        waitUntilDoesNotExist(hasText("Add Record"), timeoutMillis = 3000)
         // verify new record in table
-        waitForNodes("Opel", count = 2)
-        waitForNodes("Astra", count = 2)
+        waitForTableNode("Opel")
+        waitForTableNode("Astra")
 
         // Step 3 - readonly simple table
         onNodeWithText("Next").performClick()
@@ -306,32 +305,32 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         isEditable: Boolean
     ) {
         with(nodes) {
-            findFirstWithText("Audi").assertExists()
-            findFirstWithText("A5").assertExists()
-            findFirstWithText("123000").assertExists()
+            find("Audi").assertExists()
+            find("A5").assertExists()
+            find("123000").assertExists()
             if (!isEditable) {
-                findFirstWithText("Yes").assertExists()
+                find("Yes").assertExists()
             }
-            findFirstWithText("comfort").assertExists()
-            findFirstWithText("gold").assertExists()
-            findFirstWithText(expectedDate).assertExists()
-            findFirstWithText("12:00 AM").assertExists()
-            findFirstWithText("$expectedDate 12:00 AM").assertExists()
-            findFirstWithText("Notes").performScrollTo()
-            waitUntilAtLeastOneExists(nodes, hasText("This is a note"), timeoutMillis = 5000L)
+            find("comfort").assertExists()
+            find("gold").assertExists()
+            find(expectedDate).assertExists()
+            find("12:00 AM").assertExists()
+            find("$expectedDate 12:00 AM").assertExists()
+            find("Notes").performScrollTo()
+            waitUntilExactlyOneExists(nodes, hasText("This is a note"), timeoutMillis = 5000L)
         }
     }
 
     private fun ComposeUiTest.verifyReadonlyTable(columnValues: MutableMap<String, String>) {
         // verify columns
-        columnValues.keys.forEach { waitForNodes(it.uppercase(), count = 2) }
+        columnValues.keys.forEach { waitForTableNode(it.uppercase()) }
         // verify table data
         columnValues["model"] = "Fiesta" // updated model name
         columnValues.values.forEach {
-            waitForNodes(it, count = 2)
+            waitForTableNode(it)
         }
-        waitForNodes("Opel", count = 2)
-        waitForNodes("Astra", count = 2)
+        waitForTableNode("Opel")
+        waitForTableNode("Astra")
         // verify absence of add/edit/delete actions
         waitUntilDoesNotExist(hasText("+ Add cars"))
         waitUntilDoesNotExist(hasContentDescription("Edit item 1"))
@@ -341,22 +340,19 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
 
     private fun ComposeUiTest.performTextInput(testTag: String, inputText: String) {
         waitUntilAtLeastOneExists(hasTestTag(testTag))
-        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
-            .filter(hasSetTextAction())
-            .onFirst().performTextInput(inputText)
+        onAllDescendantsOf(testTag).filter(hasSetTextAction()).onFirst().performTextInput(inputText)
     }
 
     private fun ComposeUiTest.performClick(testTag: String) {
         waitUntilAtLeastOneExists(hasTestTag(testTag))
-        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
-            .filter(hasClickAction())
-            .onFirst().performScrollTo().performClick()
+        onAllDescendantsOf(testTag)
+            .filter(hasClickAction()).onFirst().performScrollTo().performClick()
     }
 
-    private fun SemanticsNodeInteractionCollection.findFirstWithText(text: String) =
+    private fun SemanticsNodeInteractionCollection.find(text: String) =
         this.filter(hasText(text)).onFirst()
 
-    private fun ComposeUiTest.waitUntilAtLeastOneExists(
+    private fun ComposeUiTest.waitUntilExactlyOneExists(
         nodes: SemanticsNodeInteractionCollection,
         matcher: SemanticsMatcher,
         timeoutMillis: Long = 5000L
@@ -366,9 +362,13 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
         }
     }
 
-    private fun ComposeUiTest.allDescendantsOf(testTag: String) =
+    private fun SemanticsNodeInteractionsProvider.onAllDescendantsOf(testTag: String) =
         onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
 
     private fun SemanticsNodeInteractionCollection.filterDescendantsOf(testTag: String) =
         filter(hasAnyAncestor(hasTestTag(testTag)))
+
+    // Only one table node with the given text is visible,
+    // but for some reason the test framework detects two.
+    private fun ComposeUiTest.waitForTableNode(text: String) = waitForNodes(text, count = 2)
 }
