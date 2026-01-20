@@ -70,7 +70,7 @@ class FieldGroupTemplateRenderer : ComponentRenderer<FieldGroupTemplateComponent
                     Spacer(modifier = Modifier.size(32.dp))
                     Icon(
                         painterResource(Res.drawable.icon_empty_list_48),
-                        "No items",
+                        "No items icon",
                         Modifier.size(48.dp)
                     )
                     Text(stringResource(Res.string.no_items))

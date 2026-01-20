@@ -91,8 +91,8 @@ export class SimpleTableManualComponent extends BaseComponent {
             presets,
             allowActions,
             allowTableEdit,
-            allowRowDelete,
-            allowRowEdit,
+            allowRowDelete: allowRowDeleteExpression,
+            allowRowEdit: allowRowEditExpression,
             label: labelProp,
             propertyLabel,
             editMode,
@@ -108,10 +108,13 @@ export class SimpleTableManualComponent extends BaseComponent {
         const conditions = this.#calculateConditions(editMode, allowActions, allowTableEdit)
 
         this.referenceListStr = getContext(this.pConn).referenceListStr;
-        this.props.label = this.pConn.getInheritedProps().label ?? labelProp ?? propertyLabel;
+        this.props.label = this.pConn.getInheritedProps().label || labelProp || propertyLabel;
         this.targetClassLabel = targetClassLabel;
         this.props.addButtonLabel = targetClassLabel ? `+ Add ${targetClassLabel}` : "+ Add";
-        this.referenceList = referenceList;
+        this.referenceList = referenceList.map((element) => {
+            element.allowEdit = conditions.allowEditRow && evaluateAllowRowAction(allowRowEditExpression, element)
+            return element;
+        });
         this.contextClass = this.#getContextClass(configProps);
 
         this.pConn.setReferenceList(getReferenceList(this.pConn));
@@ -141,8 +144,18 @@ export class SimpleTableManualComponent extends BaseComponent {
         this.props.columnLabels = this.#getColumnLabels(fieldDefs, resolvedFields);
 
         if ((!this.#listsEqual(this.prevReferenceList, this.referenceList))) {
-            this.#buildRows(rawFields, editableMode, conditions.allowDeleteRow, allowRowDelete, conditions.allowEditRow, allowRowEdit);
+            this.#buildRows(rawFields);
         }
+        this.props.rows = this.editableRows.map((row, rowIndex) => {
+            const allowDelete = conditions.allowDeleteRow && evaluateAllowRowAction(allowRowDeleteExpression, this.referenceList[rowIndex])
+            const showEditButton = editableMode && this.allowEditingInModal && this.referenceList[rowIndex].allowEdit
+            const showDeleteButton = editableMode && allowDelete
+            return {
+                cellComponentIds: row.cells.map((cell) => cell.component.compId),
+                showEditButton: showEditButton,
+                showDeleteButton:  showDeleteButton
+            }
+        });
         this.prevReferenceList = this.referenceList;
         this.componentsManager.onComponentPropsUpdate(this)
     }
@@ -200,13 +213,10 @@ export class SimpleTableManualComponent extends BaseComponent {
         }
     }
 
-    #buildRows(rawFields, editableMode, allowDelete, allowRowDeleteExpression, allowEdit, allowRowEditExpression) {
+    #buildRows(rawFields) {
         const context = this.pConn.getContextName();
         const newEditableRows = [];
         this.referenceList.forEach((element, rowIndex) => {
-            const showDeleteButton = editableMode && allowDelete && evaluateAllowRowAction(allowRowDeleteExpression, element);
-            const showEditButton = editableMode && allowEdit && evaluateAllowRowAction(allowRowEditExpression, element) && this.allowEditingInModal;
-
             const editableRow = this.editableRows[rowIndex];
             const newEditableCells = [];
             rawFields?.forEach((item, cellIndex) => {
@@ -216,7 +226,7 @@ export class SimpleTableManualComponent extends BaseComponent {
                         config: {
                             ...item.config,
                             label: '',
-                            displayMode: this.readOnlyMode || this.allowEditingInModal ? 'DISPLAY_ONLY' : undefined
+                            displayMode: this.readOnlyMode || this.allowEditingInModal || !element.allowEdit ? 'DISPLAY_ONLY' : undefined
                         }
                     };
                     const referenceListData = getReferenceList(this.pConn);
@@ -238,20 +248,9 @@ export class SimpleTableManualComponent extends BaseComponent {
                     newEditableCells.push({ component: newComponent })
                 }
             });
-            newEditableRows.push({
-                cells: newEditableCells,
-                showEditButton: showEditButton,
-                showDeleteButton: showDeleteButton
-            });
+            newEditableRows.push({ cells: newEditableCells});
         });
         this.editableRows = newEditableRows;
-        this.props.rows = newEditableRows.map((row) => {
-            return {
-                cellComponentIds: row.cells.map((cell) => cell.component.compId),
-                showEditButton: row.showEditButton,
-                showDeleteButton: row.showDeleteButton
-            }
-        });
     }
 
     #addSimpleTableRow() {

@@ -15,6 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.core.components.containers.ModalViewContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.FieldComponent
@@ -36,7 +37,7 @@ class ModalViewContainerRenderer : ComponentRenderer<ModalViewContainerComponent
                 }
             ) {
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag("ModalViewContainer"),
                 ) {
                     Column(Modifier.verticalScroll(rememberScrollState()).padding(16.dp)) {
                         if (title.isNotEmpty()) {

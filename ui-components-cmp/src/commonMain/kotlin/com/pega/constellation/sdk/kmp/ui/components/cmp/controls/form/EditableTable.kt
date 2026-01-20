@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -120,10 +121,11 @@ fun EditableTable(
                         if (haveDeleteColumn) {
                             cell {
                                 if (rowObject.onDeleteButtonClick != null) {
-                                    IconButton(onClick = {
-                                        focusManager.clearFocus()
-                                        rowObject.onDeleteButtonClick()
-                                    }) {
+                                    IconButton(
+                                        onClick = {
+                                            focusManager.clearFocus()
+                                            rowObject.onDeleteButtonClick()
+                                        }, modifier = Modifier.testTag("delete_button_$rowId")) {
                                         Icon(
                                             painterResource(Res.drawable.icon_delete_48),
                                             "Delete item ${rowId + 1}",
