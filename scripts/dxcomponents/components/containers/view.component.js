@@ -77,7 +77,7 @@ export class ViewComponent extends ContainerBaseComponent {
 
         const template = this.#resolveTemplateType(configProps);
         const label = configProps.label ?? "";
-        const showLabel = (configProps.showLabel || this.DETAILS_TEMPLATES.includes(template)) ?? this.props.showLabel;
+        const showLabel = configProps.showLabel || this.DETAILS_TEMPLATES.includes(template);
         const isTemplateWithHeader = !this.NO_HEADER_TEMPLATES.includes(template);
         this.props.label = inheritedProps.label ?? label;
         this.props.showLabel = (inheritedProps.showLabel || showLabel) && isTemplateWithHeader;
