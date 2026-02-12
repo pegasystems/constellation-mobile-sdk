@@ -38,6 +38,7 @@ object ComponentTypes {
     val Integer = ComponentType("Integer")
     val Phone = ComponentType("Phone")
     val RadioButtons = ComponentType("RadioButtons")
+    val RichText = ComponentType("RichText")
     val TextArea = ComponentType("TextArea")
     val TextInput = ComponentType("TextInput")
     val Time = ComponentType("Time")

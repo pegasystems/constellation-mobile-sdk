@@ -13,6 +13,7 @@ androidx-test-junit = "1.3.0"
 compose-hot-reload = "1.0.0"
 compose-multiplatform = "1.9.0" # warning: update bumps kotlinx-datetime, which breaks iOS
 compose-navigation = "2.9.1"
+htmlconverter = "1.1.0"
 kotlin = "2.2.21"
 kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.6.2" # warning: update breaks iOS compilation
@@ -43,6 +44,7 @@ androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-te
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
+htmlconverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlconverter" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
