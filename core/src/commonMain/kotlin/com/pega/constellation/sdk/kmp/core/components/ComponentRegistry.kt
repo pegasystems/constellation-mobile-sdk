@@ -23,6 +23,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RichText
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RootContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTable
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableManual
@@ -61,6 +62,7 @@ import com.pega.constellation.sdk.kmp.core.components.fields.EmailComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.IntegerComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.PhoneComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.RadioButtonsComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.RichTextComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.TextAreaComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.TextInputComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.TimeComponent
@@ -106,6 +108,7 @@ object ComponentRegistry {
         Def(SimpleTableManual) { SimpleTableManualComponent(it) },
         Def(SimpleTableSelect) { SimpleTableSelectComponent(it) },
         Def(TextArea) { TextAreaComponent(it) },
+        Def(RichText) { RichTextComponent(it) },
         Def(TextInput) { TextInputComponent(it) },
         Def(Time) { TimeComponent(it) },
         Def(URL) { UrlComponent(it) },

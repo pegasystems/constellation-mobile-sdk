@@ -42,7 +42,7 @@ import { TimeComponent } from "../components/fields/time.component.js";
 import { UrlComponent } from "../components/fields/url.component.js";
 // import { UserReferenceComponent } from './_components/field/user-reference/user-reference.component';
 // import { ScalarListComponent } from './_components/field/scalar-list/scalar-list.component';
-// import { RichTextComponent } from './_components/field/rich-text/rich-text.component';
+import { RichTextComponent } from "../components/fields/rich-text.component.js";
 import { UnsupportedComponent } from "../components/widgets/unsupported.component.js";
 
 // Template components
@@ -207,7 +207,7 @@ const pegaSdkComponentMap = {
     reference: ReferenceComponent,
     RadioButtons: RadioButtonsComponent,
     Region: RegionComponent,
-    // RichText: RichTextComponent,
+    RichText: RichTextComponent,
     // RichTextEditor: RichTextEditorComponent,
     RootContainer: RootContainerComponent,
     // ScalarList: ScalarListComponent,
