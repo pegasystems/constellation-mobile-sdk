@@ -30,18 +30,23 @@ export class ComponentsManager {
 
     /**
      * Creates a component.
+     *
+     * Warning: We cannot init() component here because it may cause infinite loop.
+     * If we init() child before adding it to parent the following flow may occur:
+     * 1. Parent creates child (but does not add it to its children list yet)
+     * 2. Child init() is called
+     * 3. Parent is updated (because of redux store update)
+     * 4. Parent creates child again because its children list is empty.
+     * 5. Child init() is called again - and loops occurs.
+     *
      * @param type - type of component to create
      * @param args - arguments to pass to the component's constructor
      * @param init - if true, calls the component's init() method after creation
      * @returns the created component
      */
-    create(type, args = [], init = true) {
+    create(type, args = []) {
         const ComponentClass = getComponentFromMap(type);
-        const component = new ComponentClass(this, ...args);
-        if (init) {
-            component.init();
-        }
-        return component;
+        return new ComponentClass(this, ...args);
     }
 
     /**
@@ -52,12 +57,12 @@ export class ComponentsManager {
      * @param init - if true, calls the component's init() method after creation
      * @returns created or updated component
      */
-    upsert(component, type, args = [], init = true) {
+    upsert(component, type, args = []) {
         if (component) {
             component.update(...args);
             return component;
         } else {
-            return this.create(type, args, init);
+            return this.create(type, args);
         }
     }
 }

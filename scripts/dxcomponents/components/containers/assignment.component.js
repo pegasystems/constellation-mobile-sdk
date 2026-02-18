@@ -132,6 +132,7 @@ export class AssignmentComponent extends BaseComponent {
             "AssignmentCard",
             assignmentCardArgs
         );
+        this.assignmentCardComponent.init();
         this.loading = this.newPConn.getLoadingStatus();
         this.sendPropsUpdate();
     }

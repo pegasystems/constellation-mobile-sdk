@@ -108,6 +108,7 @@ export class RootContainerComponent extends BaseComponent {
             viewContainerPConn.meta.type,
             [viewContainerPConn]
         );
+        this.#viewContainerComponent.init();
     }
 
     #configureModalContainer() {
@@ -127,6 +128,7 @@ export class RootContainerComponent extends BaseComponent {
             modalViewContainerPConn.meta.type,
             [modalViewContainerPConn]
         );
+        this.#modalViewContainerComponent.init();
         if (this.compId !== "1") {
             console.error(TAG, "RootComponent id must be '1' to match root container on consumer side");
             return;

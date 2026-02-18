@@ -117,6 +117,7 @@ export class ViewComponent extends ContainerBaseComponent {
         }
 
         this.childrenComponents[0] = this.componentsManager.upsert(this.childrenComponents[0], template, [this.pConn]);
+        this.childrenComponents[0].init();
     }
 
     #evaluateVisibility(pConn, referenceContext) {

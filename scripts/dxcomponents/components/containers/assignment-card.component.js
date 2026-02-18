@@ -26,6 +26,7 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
             this.arSecondaryButtons$,
             this.actionButtonClick,
         ]);
+        this.actionButtonsComponent.init();
         this.sendPropsUpdate();
     }
 
