@@ -100,6 +100,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                     evaluateAllowRowAction(allowRowEdit, item)
                 ).getPConnect();
                 const newComponent = this.componentsManager.upsert(oldComponent, newPConn.meta.type, [newPConn]);
+                newComponent.init();
                 updatedItems.push({
                     id: index,
                     name:

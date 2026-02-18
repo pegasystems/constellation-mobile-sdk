@@ -73,11 +73,13 @@ export class SimpleTableComponent extends BaseComponent {
                 this.pConn,
                 fieldGroupProps,
             ]);
+            this.childComponent.init();
             this.#sendPropsUpdate();
         } else if (fieldMetadata && fieldMetadata.type === 'Page List' && fieldMetadata.dataRetrievalType === 'refer') {
             console.warn(TAG, 'Displaying ListView in SimpleTable is not supported yet.');
         } else {
             this.childComponent = this.componentsManager.upsert(this.childComponent, "SimpleTableManual", [this.pConn]);
+            this.childComponent.init();
             this.#sendPropsUpdate();
         }
     }

@@ -16,5 +16,7 @@ export function initialRender(renderObj) {
         (component) => bridge.updateNativeComponent(component)
     );
 
-    return componentsManager.create("RootContainer", [pconn]);
+    const root =  componentsManager.create("RootContainer", [pconn]);
+    root.init();
+    return root;
 }

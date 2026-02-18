@@ -256,9 +256,11 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
                 ]
                 : [];
 
-        this.alertBannerComponents = banners.map((b) =>
-            this.componentsManager.create("AlertBanner", [b.variant, b.messages], true)
-        );
+        this.alertBannerComponents = banners.map((b) => {
+            const component = this.componentsManager.create("AlertBanner", [b.variant, b.messages]);
+            component.init();
+            return component;
+        });
     }
 
     #getBannerMessages() {

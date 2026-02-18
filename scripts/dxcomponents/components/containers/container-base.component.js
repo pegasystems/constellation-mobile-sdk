@@ -48,7 +48,7 @@ export class ContainerBaseComponent extends BaseComponent {
                 oldChildrenComponents.splice(oldChildrenComponents.indexOf(oldComponentToReuse), 1);
             } else {
                 const newPConn = newChild.getPConnect();
-                const newChildComponent = this.componentsManager.create(newPConn.meta.type, [newPConn], false);
+                const newChildComponent = this.componentsManager.create(newPConn.meta.type, [newPConn]);
                 reconciledComponents.push(newChildComponent);
                 uninitializedComponents.push(newChildComponent);
             }

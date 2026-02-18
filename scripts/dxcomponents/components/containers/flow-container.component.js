@@ -134,9 +134,11 @@ export class FlowContainerComponent extends BaseComponent {
                   ]
                 : [];
 
-        this.alertBannerComponents = banners.map((b) =>
-            this.componentsManager.create("AlertBanner", [b.variant, b.messages], true)
-        );
+        this.alertBannerComponents = banners.map((b) => {
+            const component = this.componentsManager.create("AlertBanner", [b.variant, b.messages]);
+            component.init();
+            return component;
+        });
     }
 
     #destroyBanners() {
@@ -171,6 +173,7 @@ export class FlowContainerComponent extends BaseComponent {
             this.childrenPConns,
             this.containerContextKey,
         ]);
+        this.assignmentComponent.init();
     }
 
     #updateSelf() {
