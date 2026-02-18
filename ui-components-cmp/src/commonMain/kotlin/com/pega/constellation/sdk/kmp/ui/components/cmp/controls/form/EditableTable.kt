@@ -51,6 +51,8 @@ fun EditableTable(
 ) {
     Column {
         Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
+
+        if (columns.isEmpty()) return
         val focusManager = LocalFocusManager.current
         val haveEditColumn = rows.any { it.onEditButtonClick != null }
         val haveDeleteColumn = rows.any { it.onDeleteButtonClick != null }
