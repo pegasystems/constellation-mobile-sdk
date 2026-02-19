@@ -48,21 +48,4 @@ export class ComponentsManager {
         const ComponentClass = getComponentFromMap(type);
         return new ComponentClass(this, ...args);
     }
-
-    /**
-     * Creates or updates a component.
-     * @param component - component to update, or null/undefined to create a new one
-     * @param type - type of component to create
-     * @param args - arguments to pass to the component's constructor
-     * @param init - if true, calls the component's init() method after creation
-     * @returns created or updated component
-     */
-    upsert(component, type, args = []) {
-        if (component) {
-            component.update(...args);
-            return component;
-        } else {
-            return this.create(type, args);
-        }
-    }
 }

@@ -69,17 +69,22 @@ export class SimpleTableComponent extends BaseComponent {
         }
         if (multiRecordDisplayAs === "fieldGroup") {
             const fieldGroupProps = { ...configProps, contextClass };
-            this.childComponent = this.componentsManager.upsert(this.childComponent, "FieldGroupTemplate", [
-                this.pConn,
-                fieldGroupProps,
-            ]);
-            this.childComponent.init();
+            if (this.childComponent) {
+                this.childComponent.update(this.pConn, fieldGroupProps)
+            } else {
+                this.childComponent = this.componentsManager.create("FieldGroupTemplate", [this.pConn, fieldGroupProps]);
+                this.childComponent.init();
+            }
             this.#sendPropsUpdate();
         } else if (fieldMetadata && fieldMetadata.type === 'Page List' && fieldMetadata.dataRetrievalType === 'refer') {
             console.warn(TAG, 'Displaying ListView in SimpleTable is not supported yet.');
         } else {
-            this.childComponent = this.componentsManager.upsert(this.childComponent, "SimpleTableManual", [this.pConn]);
-            this.childComponent.init();
+            if (this.childComponent) {
+                this.childComponent.update(this.pConn);
+            } else {
+                this.childComponent = this.componentsManager.create("SimpleTableManual", [this.pConn]);
+                this.childComponent.init();
+            }
             this.#sendPropsUpdate();
         }
     }

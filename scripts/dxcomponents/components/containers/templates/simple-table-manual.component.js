@@ -244,7 +244,14 @@ export class SimpleTableManualComponent extends BaseComponent {
                     };
                     const cellPConn = PCore.createPConnect(config).getPConnect();
                     const oldComponent = editableRow?.cells?.[cellIndex]?.component;
-                    const newComponent = this.componentsManager.upsert(oldComponent, cellPConn.meta.type, [cellPConn]);
+                    let newComponent;
+                    if (oldComponent) {
+                        oldComponent.update(cellPConn)
+                        newComponent = oldComponent
+                    } else {
+                        newComponent = this.componentsManager.create(cellPConn.meta.type, [cellPConn])
+                        newComponent.init();
+                    }
                     newEditableCells.push({ component: newComponent })
                 }
             });
