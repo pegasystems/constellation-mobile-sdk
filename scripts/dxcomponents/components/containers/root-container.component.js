@@ -103,12 +103,12 @@ export class RootContainerComponent extends BaseComponent {
             options,
         };
         const viewContainerPConn = PCore.createPConnect(viewContConfig).getPConnect();
-        this.#viewContainerComponent = this.componentsManager.upsert(
-            this.#viewContainerComponent,
-            viewContainerPConn.meta.type,
-            [viewContainerPConn]
-        );
-        this.#viewContainerComponent.init();
+        if (this.#viewContainerComponent) {
+            this.#viewContainerComponent.update(viewContainerPConn)
+        } else {
+            this.#viewContainerComponent = this.componentsManager.create(viewContainerPConn.meta.type, [viewContainerPConn])
+            this.#viewContainerComponent.init();
+        }
     }
 
     #configureModalContainer() {
@@ -123,12 +123,12 @@ export class RootContainerComponent extends BaseComponent {
         });
 
         const modalViewContainerPConn = configObjModal.getPConnect();
-        this.#modalViewContainerComponent = this.componentsManager.upsert(
-            this.#modalViewContainerComponent,
-            modalViewContainerPConn.meta.type,
-            [modalViewContainerPConn]
-        );
-        this.#modalViewContainerComponent.init();
+        if (this.#modalViewContainerComponent) {
+            this.#modalViewContainerComponent.update(modalViewContainerPConn)
+        } else {
+            this.#modalViewContainerComponent = this.componentsManager.create(modalViewContainerPConn.meta.type, [modalViewContainerPConn])
+            this.#modalViewContainerComponent.init();
+        }
         if (this.compId !== "1") {
             console.error(TAG, "RootComponent id must be '1' to match root container on consumer side");
             return;

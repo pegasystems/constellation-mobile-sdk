@@ -99,8 +99,14 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                     lookForChildInConfig,
                     evaluateAllowRowAction(allowRowEdit, item)
                 ).getPConnect();
-                const newComponent = this.componentsManager.upsert(oldComponent, newPConn.meta.type, [newPConn]);
-                newComponent.init();
+                let newComponent;
+                if (oldComponent) {
+                    oldComponent.update(newPConn)
+                    newComponent = oldComponent;
+                } else {
+                    newComponent = this.componentsManager.create(newPConn.meta.type, [newPConn]);
+                    newComponent.init();
+                }
                 updatedItems.push({
                     id: index,
                     name:
