@@ -14,6 +14,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.RegionComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewContainerComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.RichTextComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.TextInputComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -94,32 +95,36 @@ abstract class ConstellationSdkBaseTest {
                 --------------Date#19
                 --------------URL#20
                 --------------TextArea#21
-                --------------View#22
-                ---------------DefaultForm#24
-                ----------------Region#25
-                -----------------Checkbox#26
-                -----------------TextArea#27
-                --------------Email#23
+                --------------RichText#22
+                --------------View#23
+                ---------------DefaultForm#25
+                ----------------Region#26
+                -----------------Checkbox#27
+                -----------------TextArea#28
+                --------------Email#24
                 
                 """.trimIndent(),
             root.structure()
         )
+        val defaultForm = root.getDefaultForm()
+        val region3 = defaultForm.children[0] as RegionComponent
+        val textInput = region3.children[0] as TextInputComponent
+        assertEquals("caseInfo.content.Name", textInput.pConnectPropertyReference)
+    }
 
-        val viewContainer = root.children()[1] as? ViewContainerComponent
-        val view = viewContainer?.children[0] as? ViewComponent
-        val oneColumn = view?.children[0] as? OneColumnComponent
-        val region = oneColumn?.children[0] as? RegionComponent
-        val view2 = region?.children[0] as? ViewComponent
-        val region2 = view2?.children[0] as? RegionComponent
-        val view3 = region2?.children[0] as? ViewComponent
-        val flowContainer = view3?.children[0] as? FlowContainerComponent
-        val assignment = flowContainer?.assignment
-        val assignmentCard = assignment?.children[0] as? AssignmentCardComponent
-        val view4 = assignmentCard?.children[0] as? ViewComponent
-        val defaultForm = view4?.children[0] as? DefaultFormComponent
-        val region3 = defaultForm?.children[0] as? RegionComponent
-        val textInput = region3?.children[0] as? TextInputComponent
-        assertEquals("caseInfo.content.Name", textInput?.pConnectPropertyReference)
+    @Test
+    fun test_rich_text() = runTest {
+        val sdk = ConstellationSdk.create(config, engine)
+        sdk.createCase(CASE_CLASS)
+
+        val defaultForm = sdk.assertState<State.Ready>().root.getDefaultForm()
+        val region3 = defaultForm.children[0] as RegionComponent
+        val richText = region3.children[6] as RichTextComponent
+        assertEquals(
+            "<p><strong>Description</strong></p>\n<p><em>This is a description</em></p>\n<ul>\n<li><em>one</em></li>\n<li><em>two</em></li>\n<li><em>three</em></li>\n</ul>",
+            richText.value
+        )
+        assertEquals("caseInfo.content.RichDescription", richText.pConnectPropertyReference)
     }
 
     companion object {
@@ -155,6 +160,21 @@ abstract class ConstellationSdkBaseTest {
             is RootContainerComponent -> listOfNotNull(modalViewContainer, viewContainer)
             is FlowContainerComponent -> listOfNotNull(assignment) + alertBanners
             else -> emptyList()
+        }
+
+        private fun RootContainerComponent.getDefaultForm(): DefaultFormComponent {
+            val viewContainer = children()[1] as ViewContainerComponent
+            val view = viewContainer?.children[0] as ViewComponent
+            val oneColumn = view.children[0] as OneColumnComponent
+            val region = oneColumn.children[0] as RegionComponent
+            val view2 = region.children[0] as ViewComponent
+            val region2 = view2.children[0] as RegionComponent
+            val view3 = region2.children[0] as ViewComponent
+            val flowContainer = view3.children[0] as FlowContainerComponent
+            val assignment = flowContainer.assignment
+            val assignmentCard = assignment?.children[0] as AssignmentCardComponent
+            val view4 = assignmentCard.children[0] as ViewComponent
+            return view4.children[0] as DefaultFormComponent
         }
     }
 }
