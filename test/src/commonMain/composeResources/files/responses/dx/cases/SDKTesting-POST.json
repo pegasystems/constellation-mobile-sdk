@@ -11,6 +11,7 @@
         "Surname": "",
         "Name": "",
         "Description": "",
+        "RichDescription": "<p><strong>Description</strong></p>\n<p><em>This is a description</em></p>\n<ul>\n<li><em>one</em></li>\n<li><em>two</em></li>\n<li><em>three</em></li>\n</ul>",
         "Url": "",
         "DateOfBirth": "",
         "Adult": false,
@@ -316,6 +317,16 @@
                     }
                   },
                   {
+                    "type": "RichText",
+                    "config": {
+                      "label": "@L Rich description",
+                      "value": "@P .RichDescription",
+                      "labelOption": "custom",
+                      "placeholder": "",
+                      "helperText": "Rich description helper text"
+                    }
+                  },
+                  {
                     "type": "reference",
                     "config": {
                       "name": "MyView",
@@ -528,6 +539,15 @@
             "type": "Text",
             "displayAs": "pxTextArea",
             "label": "description"
+          }
+        ],
+        "RichDescription": [
+          {
+            "classID": "DIXL-MediaCo-Work-SDKTesting",
+            "type": "Text",
+            "displayAs": "pxRichTextEditor",
+            "additionalInformation": "",
+            "label": "Rich description"
           }
         ],
         "Url": [
