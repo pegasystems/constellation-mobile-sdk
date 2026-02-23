@@ -70,7 +70,7 @@ export class SimpleTableComponent extends BaseComponent {
         if (multiRecordDisplayAs === "fieldGroup") {
             const fieldGroupProps = { ...configProps, contextClass };
             if (this.childComponent) {
-                this.childComponent.update(this.pConn, fieldGroupProps)
+                this.childComponent.update(this.pConn, fieldGroupProps);
             } else {
                 this.childComponent = this.componentsManager.create("FieldGroupTemplate", [this.pConn, fieldGroupProps]);
                 this.childComponent.init();

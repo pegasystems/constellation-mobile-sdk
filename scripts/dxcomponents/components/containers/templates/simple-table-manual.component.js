@@ -246,10 +246,10 @@ export class SimpleTableManualComponent extends BaseComponent {
                     const oldComponent = editableRow?.cells?.[cellIndex]?.component;
                     let newComponent;
                     if (oldComponent) {
-                        oldComponent.update(cellPConn)
-                        newComponent = oldComponent
+                        oldComponent.update(cellPConn);
+                        newComponent = oldComponent;
                     } else {
-                        newComponent = this.componentsManager.create(cellPConn.meta.type, [cellPConn])
+                        newComponent = this.componentsManager.create(cellPConn.meta.type, [cellPConn]);
                         newComponent.init();
                     }
                     newEditableCells.push({ component: newComponent })

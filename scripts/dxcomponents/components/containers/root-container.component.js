@@ -104,9 +104,9 @@ export class RootContainerComponent extends BaseComponent {
         };
         const viewContainerPConn = PCore.createPConnect(viewContConfig).getPConnect();
         if (this.#viewContainerComponent) {
-            this.#viewContainerComponent.update(viewContainerPConn)
+            this.#viewContainerComponent.update(viewContainerPConn);
         } else {
-            this.#viewContainerComponent = this.componentsManager.create(viewContainerPConn.meta.type, [viewContainerPConn])
+            this.#viewContainerComponent = this.componentsManager.create(viewContainerPConn.meta.type, [viewContainerPConn]);
             this.#viewContainerComponent.init();
         }
     }
@@ -124,9 +124,9 @@ export class RootContainerComponent extends BaseComponent {
 
         const modalViewContainerPConn = configObjModal.getPConnect();
         if (this.#modalViewContainerComponent) {
-            this.#modalViewContainerComponent.update(modalViewContainerPConn)
+            this.#modalViewContainerComponent.update(modalViewContainerPConn);
         } else {
-            this.#modalViewContainerComponent = this.componentsManager.create(modalViewContainerPConn.meta.type, [modalViewContainerPConn])
+            this.#modalViewContainerComponent = this.componentsManager.create(modalViewContainerPConn.meta.type, [modalViewContainerPConn]);
             this.#modalViewContainerComponent.init();
         }
         if (this.compId !== "1") {
