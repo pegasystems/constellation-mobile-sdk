@@ -97,7 +97,7 @@ export class ViewComponent extends ContainerBaseComponent {
          * component is able to handle it.
          */
         if (!configProps.visibility && this.pConn.getPageReference().length > "caseInfo.content".length) {
-            this.props.visible = this.#evaluateVisibility(this.pConn, configProps.referenceContext);
+            this.props.visible = this.#evaluateVisibility(this.pConn, configProps);
         }
 
         if (this.SUPPORTED_TEMPLATES.includes(template)) {
@@ -124,21 +124,22 @@ export class ViewComponent extends ContainerBaseComponent {
         }
     }
 
-    #evaluateVisibility(pConn, referenceContext) {
+    #evaluateVisibility(pConn, configProps) {
         const visibilityExpression = pConn.meta.config.visibility;
         if (!visibilityExpression || visibilityExpression.length === 0) return true;
         const contextName = pConn.getContextName();
         if (visibilityExpression.startsWith("@E ")) {
-            return this.#evaluateExpressionVisibility(contextName, referenceContext, visibilityExpression);
-        } else if(visibilityExpression.startsWith("@W ")) {
-            return this.#evaluateWhenVisibility(contextName, visibilityExpression);
+            return this.#evaluateVisibilityExpression(contextName, configProps.referenceContext, visibilityExpression);
+        } else if (visibilityExpression.startsWith("@W ")) {
+            // when rules does not need special handling
+            return configProps.visibility
         } else {
             console.warn(TAG, `Unsupported visibility expression: ${visibilityExpression}. Defaulting to visible.`);
             return true;
         }
     }
 
-    #evaluateExpressionVisibility(contextName, referenceContext, visibilityExpression) {
+    #evaluateVisibilityExpression(contextName, referenceContext, visibilityExpression) {
         let dataPage = this.#getDataPage(contextName, referenceContext);
         if (!dataPage) return false;
 
@@ -150,38 +151,6 @@ export class ViewComponent extends ContainerBaseComponent {
                 },
             },
         });
-    }
-
-    #evaluateWhenVisibility(contextName, visibilityExpression) {
-        let bVisibility = true;
-        // e.g. "@E .EmbeddedData_SelectedTestName == 'Readonly' && .EmbeddedData_SelectedSubCategory == 'Mode'"
-        const aVisibility = visibilityExpression.split('&&');
-        // e.g. ["EmbeddedData_SelectedTestName": "Readonly", "EmbeddedData_SelectedSubCategory": "Mode"]
-        // Reading values from the Store to evaluate the visibility expressions
-        const storeData = PCore.getStore().getState()?.data[contextName].caseInfo.content;
-
-        const initialVal = {};
-        const oProperties = aVisibility.reduce((properties, property) => {
-            const keyStartIndex = property.indexOf('.');
-            const keyEndIndex = property.indexOf('=') - 1;
-            const valueStartIndex = property.indexOf("'");
-            const valueEndIndex = property.lastIndexOf("'") - 1;
-            return {
-                ...properties,
-                [property.substr(keyStartIndex + 1, keyEndIndex - keyStartIndex - 1)]: property.substr(valueStartIndex + 1, valueEndIndex - valueStartIndex)
-            };
-        }, initialVal);
-
-        const propertyKeys = Object.keys(oProperties);
-        const propertyValues = Object.values(oProperties);
-
-        for (let propertyIndex = 0; propertyIndex < propertyKeys.length; propertyIndex++) {
-            if (storeData[propertyKeys[propertyIndex]] !== propertyValues[propertyIndex]) {
-                bVisibility = false;
-            }
-        }
-
-        return bVisibility;
     }
 
     #getDataPage(context, referenceContext) {
