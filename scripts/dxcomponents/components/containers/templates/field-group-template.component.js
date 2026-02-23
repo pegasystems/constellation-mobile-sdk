@@ -101,7 +101,7 @@ export class FieldGroupTemplateComponent extends BaseComponent {
                 ).getPConnect();
                 let newComponent;
                 if (oldComponent) {
-                    oldComponent.update(newPConn)
+                    oldComponent.update(newPConn);
                     newComponent = oldComponent;
                 } else {
                     newComponent = this.componentsManager.create(newPConn.meta.type, [newPConn]);

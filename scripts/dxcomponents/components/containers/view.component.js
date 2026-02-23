@@ -132,7 +132,7 @@ export class ViewComponent extends ContainerBaseComponent {
             return this.#evaluateVisibilityExpression(contextName, configProps.referenceContext, visibilityExpression);
         } else if (visibilityExpression.startsWith("@W ")) {
             // when rules does not need special handling
-            return configProps.visibility
+            return configProps.visibility;
         } else {
             console.warn(TAG, `Unsupported visibility expression: ${visibilityExpression}. Defaulting to visible.`);
             return true;

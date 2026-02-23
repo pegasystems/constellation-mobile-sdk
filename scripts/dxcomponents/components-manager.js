@@ -41,7 +41,6 @@ export class ComponentsManager {
      *
      * @param type - type of component to create
      * @param args - arguments to pass to the component's constructor
-     * @param init - if true, calls the component's init() method after creation
      * @returns the created component
      */
     create(type, args = []) {
