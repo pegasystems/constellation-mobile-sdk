@@ -40,6 +40,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.navigation.compose)
+                implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.client.auth)

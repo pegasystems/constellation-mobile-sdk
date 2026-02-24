@@ -40,6 +40,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.table.m3)
                 implementation(libs.compose.dnd)
+                implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.htmlconverter)
             }
         }

@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.DatePickerModal
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.Input
@@ -17,7 +18,6 @@ import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.Res
 import com.pega.constellation.sdk.kmp.ui_components_cmp.generated.resources.icon_calendar_range
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Date(
