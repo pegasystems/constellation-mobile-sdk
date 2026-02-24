@@ -21,7 +21,7 @@ abstract class FieldComponent(context: ComponentContext) : BaseComponent(context
         private set
     var label: String by mutableStateOf("")
         private set
-    override var visible: Boolean by mutableStateOf(false)
+    final override var visible: Boolean by mutableStateOf(false)
         private set
     var required: Boolean by mutableStateOf(false)
         private set

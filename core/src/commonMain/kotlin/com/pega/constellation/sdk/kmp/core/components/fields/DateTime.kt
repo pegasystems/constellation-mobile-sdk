@@ -6,10 +6,10 @@ import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.getString
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.offsetAt
 import kotlinx.serialization.json.JsonObject
+import kotlin.time.Clock
 
 class DateTimeComponent(context: ComponentContext) : FieldComponent(context) {
     var clockFormat: String by mutableStateOf("")
