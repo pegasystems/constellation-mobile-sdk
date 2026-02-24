@@ -15,7 +15,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
-import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
+import org.publicvalue.multiplatform.oidc.flows.CodeAuthFlowFactory
 import org.publicvalue.multiplatform.oidc.tokenstore.AndroidSettingsTokenStore
 
 class MediaCoActivity : ComponentActivity() {

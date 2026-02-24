@@ -45,8 +45,7 @@ fun <C : Component> C.Render() {
 @Composable
 @Suppress("unchecked_cast")
 private fun <C : Component> ComponentRenderer<*>.Render(component: C) {
-    (this as ComponentRenderer<C>).runCatching { component.Render() }
-        .onFailure { Log.e(TAG, "Component rendering failed: $component", it) }
+    with(this as ComponentRenderer<C>) { component.Render() }
 }
 
 /**
