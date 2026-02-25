@@ -20,7 +20,7 @@ Currently, the SDK supports creating cases of a specified type, opening and proc
 ## Supported components
 The SDK provides following components out-of-the-box:
 - **Simple fields**: 
-  - Checkbox, Currency, Date, DateTime, Decimal, Dropdown, Email, Integer, Phone, RadioButtons, TextArea, TextInput, Time, Url
+  - Checkbox, Currency, Date, DateTime, Decimal, Dropdown, Email, Integer, Phone, RadioButtons, TextArea, Richtext (readonly), TextInput, Time, Url
 - **Advanced fields**:
   - EmbeddedData
     - Single record - not supported
