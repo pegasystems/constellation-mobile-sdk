@@ -2,9 +2,15 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsNodeInteractionCollection
+import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.filter
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isRoot
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.waitUntilExactlyOneExists
 import androidx.compose.ui.test.waitUntilNodeCount
@@ -33,3 +39,10 @@ fun ComposeUiTest.waitForNodes(text: String, count: Int, substring: Boolean = fa
 
 @OptIn(ExperimentalTestApi::class)
 fun ComposeUiTest.printAllFormNodes() = onAllNodes(isRoot())[1].printToLog("FORM NODES")
+
+
+fun SemanticsNodeInteractionCollection.find(text: String) =
+    this.filter(hasText(text)).onFirst()
+
+fun SemanticsNodeInteractionsProvider.onAllDescendantsOf(testTag: String) =
+    onAllNodes(hasAnyAncestor(hasTestTag(testTag)))

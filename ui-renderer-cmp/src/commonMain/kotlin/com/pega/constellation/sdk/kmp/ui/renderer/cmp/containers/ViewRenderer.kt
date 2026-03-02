@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
@@ -16,7 +17,7 @@ class ViewRenderer : ComponentRenderer<ViewComponent> {
     @Composable
     override fun ViewComponent.Render() {
         WithVisibility(visible) {
-            Column(Modifier.padding(bottom = 8.dp)) {
+            Column(Modifier.padding(bottom = 8.dp).testTag("view_[$label]")) {
                 if (showLabel && label.isNotEmpty()) {
                     Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
                 }
