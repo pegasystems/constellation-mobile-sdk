@@ -26,6 +26,8 @@ import androidx.compose.ui.test.waitUntilDoesNotExist
 import androidx.compose.ui.test.waitUntilExactlyOneExists
 import androidx.compose.ui.test.waitUntilNodeCount
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.find
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.onAllDescendantsOf
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -33,7 +35,7 @@ import java.time.LocalDateTime
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
+class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
 
     @Test
     fun test_embedded_data_repeating_view() = runComposeUiTest {
@@ -349,9 +351,6 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
             .filter(hasClickAction()).onFirst().performScrollTo().performClick()
     }
 
-    private fun SemanticsNodeInteractionCollection.find(text: String) =
-        this.filter(hasText(text)).onFirst()
-
     private fun ComposeUiTest.waitUntilExactlyOneExists(
         nodes: SemanticsNodeInteractionCollection,
         matcher: SemanticsMatcher,
@@ -361,9 +360,6 @@ class EmbeddedDataTest : ComposeTest(PegaVersion.v24_2_2) {
             nodes.filter(matcher).fetchSemanticsNodes().size == 1
         }
     }
-
-    private fun SemanticsNodeInteractionsProvider.onAllDescendantsOf(testTag: String) =
-        onAllNodes(hasAnyAncestor(hasTestTag(testTag)))
 
     private fun SemanticsNodeInteractionCollection.filterDescendantsOf(testTag: String) =
         filter(hasAnyAncestor(hasTestTag(testTag)))

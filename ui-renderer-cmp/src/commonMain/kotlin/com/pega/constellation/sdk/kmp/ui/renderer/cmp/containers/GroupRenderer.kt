@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,9 +39,9 @@ class GroupRenderer : ComponentRenderer<GroupComponent> {
         WithVisibility(visible) {
             if (showHeading) {
                 if (collapsible) {
-                    CollapsibleGroup(heading, instructionsText, children)
+                    CollapsibleGroup(heading, instructionsText, children, Modifier.testTag("group_[$heading]"))
                 } else {
-                    NonCollapsibleGroup(heading, instructionsText, children)
+                    NonCollapsibleGroup(heading, instructionsText, children, Modifier.testTag("group_[$heading]"))
                 }
             } else {
                 Column {
@@ -52,13 +53,13 @@ class GroupRenderer : ComponentRenderer<GroupComponent> {
 }
 
 @Composable
-fun CollapsibleGroup(heading: String, instructions: String, children: List<Component>) {
+fun CollapsibleGroup(heading: String, instructions: String, children: List<Component>, modifier: Modifier = Modifier) {
     var collapsed by remember { mutableStateOf(false) }
     val rotationAngle by animateFloatAsState(
         targetValue = if (collapsed) 0f else 90f,
         label = "RotationAnimation"
     )
-    Column {
+    Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
@@ -88,8 +89,8 @@ fun CollapsibleGroup(heading: String, instructions: String, children: List<Compo
 }
 
 @Composable
-fun NonCollapsibleGroup(heading: String, instructions: String, children: List<Component>) {
-    Column {
+fun NonCollapsibleGroup(heading: String, instructions: String, children: List<Component>, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         Heading(heading, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
         if (instructions.isNotEmpty()) {
             Heading(
