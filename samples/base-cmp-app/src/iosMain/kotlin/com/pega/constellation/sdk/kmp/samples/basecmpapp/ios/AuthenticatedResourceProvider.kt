@@ -2,6 +2,14 @@ package com.pega.constellation.sdk.kmp.samples.basecmpapp.ios
 
 import com.pega.constellation.sdk.kmp.engine.webview.ios.ResourceProvider
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
+import kotlinx.io.Buffer
+import kotlinx.io.asSource
+import kotlinx.io.buffered
+import kotlinx.io.bytestring.decodeToString
+import kotlinx.io.bytestring.toByteString
+import kotlinx.io.readByteString
+import platform.Foundation.HTTPBody
+import platform.Foundation.HTTPBodyStream
 import platform.Foundation.NSHTTPURLResponse
 import platform.Foundation.NSMutableURLRequest
 import platform.Foundation.NSURLRequest
@@ -25,6 +33,21 @@ class AuthenticatedResourceProvider(val authManager: AuthManager) : ResourceProv
 
     private suspend fun performNetworkRequest(request: NSURLRequest) =
         suspendCoroutine { continuation ->
+
+            (request as? NSMutableURLRequest)?.let { mutableRequest ->
+                mutableRequest.HTTPBody?.let { nativeData ->
+                    val byteString = nativeData.toByteString()
+                    val stringBody = byteString.decodeToString()
+                    println("TEST :: HTTP Body as String: $stringBody")
+                }
+                mutableRequest.HTTPBodyStream?.let { nativeStream ->
+                    val kotlinSource = nativeStream.asSource().buffered()
+                    val byteString = kotlinSource.readByteString()
+                    val stringBody = byteString.decodeToString()
+                    println("TEST :: HTTP Body as String: $stringBody")
+                }
+            }
+
             NSURLSession.sharedSession.dataTaskWithRequest(request) { data, response, error ->
                 if (response.isUnauthorized()) {
                     authManager.onTokenExpired()
