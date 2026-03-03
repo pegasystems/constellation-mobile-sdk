@@ -23,8 +23,6 @@ The SDK provides following components out-of-the-box:
   - Checkbox, Currency, Date, DateTime, Decimal, Dropdown, Email, Integer, Phone, RadioButtons, TextArea, Richtext (readonly), TextInput, Time, Url
 - **Advanced fields**:
   - EmbeddedData
-    - Single record - not supported
-    - List of records - supported
   - DataReference
     - Single record
       - Displayed as “SimpleTable”, “Table”, “Dropdown” - supported
