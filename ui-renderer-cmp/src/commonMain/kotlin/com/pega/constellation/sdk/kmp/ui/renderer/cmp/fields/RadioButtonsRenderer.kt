@@ -1,15 +1,15 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 
 import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.components.fields.SelectableComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.RadioButtonsComponent
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.RadioButtons
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.SelectableOption
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
 
-class RadioButtonsRenderer : ComponentRenderer<SelectableComponent> {
+class RadioButtonsRenderer : ComponentRenderer<RadioButtonsComponent> {
     @Composable
-    override fun SelectableComponent.Render() {
+    override fun RadioButtonsComponent.Render() {
         WithFieldHelpers {
             RadioButtons(
                 value = value,
