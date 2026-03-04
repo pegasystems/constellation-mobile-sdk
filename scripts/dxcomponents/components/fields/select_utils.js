@@ -10,7 +10,7 @@ const AT = "@";
 const SQUARE_BRACKET_START = "[";
 export const SQUARE_BRACKET_END = "]";
 
-export const useDropdownInitialProcessing = (
+export const initializeListSourceConfig = (
     deferDatasource,
     isTableTypeDataPage,
     isReferenceField,
@@ -303,7 +303,7 @@ export const populateItems = (response, displayFieldMeta, dataApiObj) => {
             }
         });
         return {
-            key: entry[displayFieldMeta.key],
+            key: entry[displayFieldMeta.key] || entry.pyGUID,
             text: entry[displayFieldMeta.primary],
             secondaryFieldValues,
         };
