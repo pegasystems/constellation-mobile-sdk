@@ -19,6 +19,7 @@ import { ViewContainerComponent } from "../components/containers/view-container.
 
 // Field components
 // import { AutoCompleteComponent } from './_components/field/auto-complete/auto-complete.component';
+import { AutoCompleteComponent } from "../components/fields/auto-complete.component.js";
 // import { CancelAlertComponent } from './_components/field/cancel-alert/cancel-alert.component';
 import { CheckBoxComponent } from "../components/fields/check-box.component.js";
 import { CurrencyComponent } from "../components/fields/currency.component.js";
@@ -137,6 +138,7 @@ const pegaSdkComponentMap = {
     AssignmentCard: AssignmentCardComponent,
     // Attachment: AttachmentComponent,
     // AutoComplete: AutoCompleteComponent,
+    AutoComplete: AutoCompleteComponent,
     // Banner: BannerComponent,
     // BannerPage: BannerPageComponent,
     // CancelAlert: CancelAlertComponent,
