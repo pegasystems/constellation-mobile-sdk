@@ -5,6 +5,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ActionButto
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AlertBanner
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Assignment
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AssignmentCard
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AutoComplete
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Checkbox
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Currency
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DataReference
@@ -70,6 +71,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TextInputRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TimeRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.UrlRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.widgets.ActionButtonsRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.AutoCompleteRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.widgets.UnsupportedRenderer
 
 
@@ -86,6 +88,7 @@ object ComponentRenderers {
         AlertBanner to AlertBannerRenderer(),
         Assignment to AssignmentRenderer(),
         AssignmentCard to AssignmentCardRenderer(),
+        AutoComplete to AutoCompleteRenderer(),
         Checkbox to CheckboxRenderer(),
         Currency to CurrencyRenderer(),
         DataReference to DataReferenceRenderer(),

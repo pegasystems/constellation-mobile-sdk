@@ -1,22 +1,22 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 
 import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.components.fields.DropdownComponent
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Dropdown
+import com.pega.constellation.sdk.kmp.core.components.widgets.AutoCompleteComponent
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.AutoComplete
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.FieldValue
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.SelectableOption
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
 
-class DropdownRenderer : ComponentRenderer<DropdownComponent> {
+class AutoCompleteRenderer : ComponentRenderer<AutoCompleteComponent> {
     @Composable
-    override fun DropdownComponent.Render() {
+    override fun AutoCompleteComponent.Render() {
         WithFieldHelpers(
             displayOnly = {
                 FieldValue(label, options.firstOrNull { it.key == value }?.label ?: "")
             },
             editable = {
-                Dropdown(
+                AutoComplete(
                     value = value,
                     label = label,
                     helperText = helperText,

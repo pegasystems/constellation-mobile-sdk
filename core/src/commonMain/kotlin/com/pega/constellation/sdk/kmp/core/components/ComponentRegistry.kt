@@ -4,6 +4,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ActionButto
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AlertBanner
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Assignment
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AssignmentCard
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.AutoComplete
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Checkbox
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Currency
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DataReference
@@ -69,6 +70,7 @@ import com.pega.constellation.sdk.kmp.core.components.fields.TimeComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.UrlComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.ActionButtonsComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerComponent
+import com.pega.constellation.sdk.kmp.core.components.widgets.AutoCompleteComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition as Def
 
@@ -84,6 +86,7 @@ object ComponentRegistry {
         Def(AlertBanner) { AlertBannerComponent(it) },
         Def(Assignment) { AssignmentComponent(it) },
         Def(AssignmentCard) { AssignmentCardComponent(it) },
+        Def(AutoComplete) { AutoCompleteComponent(it) },
         Def(Checkbox) { CheckboxComponent(it) },
         Def(Currency) { CurrencyComponent(it) },
         Def(Date) { DateComponent(it) },
