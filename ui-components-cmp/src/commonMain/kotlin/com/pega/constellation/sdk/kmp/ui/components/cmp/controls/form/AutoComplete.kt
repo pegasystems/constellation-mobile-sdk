@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,7 +41,7 @@ fun AutoComplete(
     var expanded by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
-    LaunchedEffect(value) {
+    LaunchedEffect(value, options) {
         searchText = options.find { it.key == value }?.let {
             TextFieldValue(it.label, TextRange(it.label.length))
         } ?: TextFieldValue("")
@@ -68,6 +69,26 @@ fun AutoComplete(
                     searchText = it
                     expanded = true
                 },
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
+                    .fillMaxWidth()
+                    .onFocusChanged { isFocused ->
+                        when {
+                            isFocused.isFocused -> return@onFocusChanged
+                            searchText.text.isEmpty() -> onValueChange("")
+                            else -> {
+                                options.firstOrNull { it.label.contains(searchText.text) }?.let {
+                                    onValueChange(it.key)
+                                    searchText =
+                                        TextFieldValue(it.label, TextRange(it.label.length))
+                                } ?: run {
+                                    onValueChange("")
+                                    searchText = TextFieldValue("")
+                                    expanded = false
+                                }
+                            }
+                        }
+                    },
                 enabled = !disabled,
                 readOnly = readOnly,
                 label = {
@@ -81,9 +102,7 @@ fun AutoComplete(
                 },
                 placeholder = { Text(placeholder) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                modifier = Modifier
-                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
-                    .fillMaxWidth()
+                singleLine = true
             )
 
             if (filteredOptions.isNotEmpty()) {
