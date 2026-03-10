@@ -16,10 +16,10 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import org.junit.Test
 
 @OptIn(ExperimentalTestApi::class)
-class GroupTest : ComposeTest(PegaVersion.v24_2_2) {
+class GroupTest : ComposeTest() {
     @Test
     fun test_group_component() = runComposeUiTest {
-        setupApp(caseClassName = "O40M3A-MarekCo-Work-GroupTest")
+        setupApp(PegaVersion.v24_2_2, caseClassName = "O40M3A-MarekCo-Work-GroupTest")
 
         onNodeWithText("New Service").performClick()
         waitForNode("GroupTest - Create", substring = true)
@@ -40,7 +40,7 @@ class GroupTest : ComposeTest(PegaVersion.v24_2_2) {
         onNodeWithTag("checkbox_[Show lists group]").performClick()
         verifyListGroupShown()
         onNodeWithTag("checkbox_[Show lists group]").performClick()
-        verifyListGroupGone();
+        verifyListGroupGone()
 
         // Step 2
         onNodeWithText("Next").performClick()

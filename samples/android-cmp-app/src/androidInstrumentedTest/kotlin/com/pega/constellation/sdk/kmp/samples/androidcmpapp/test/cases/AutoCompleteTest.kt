@@ -12,10 +12,10 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class AutoCompleteTest : ComposeTest(PegaVersion.v25_1_1) {
+class AutoCompleteTest : ComposeTest() {
     @Test
     fun test_auto_complete() = runComposeUiTest {
-        setupApp("OFV0MW-Marco-Work-AutoCompleteTest")
+        setupApp(PegaVersion.v25_1_1, "OFV0MW-Marco-Work-AutoCompleteTest")
 
         onNodeWithText("New Service").performClick()
 
