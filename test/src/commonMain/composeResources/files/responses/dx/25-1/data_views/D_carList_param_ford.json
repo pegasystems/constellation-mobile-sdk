@@ -1,0 +1,21 @@
+{
+  "fetchDateTime": "2026-03-09T17:49:17.671Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 2,
+  "data": [{
+    "pxObjClass": "OI1OYV-Marco2-Data-Car",
+    "Model": "Focus",
+    "pyGUID": "909106bf-f108-4751-9357-8a628a01dc3f"
+  }, {
+    "pxObjClass": "OI1OYV-Marco2-Data-Car",
+    "Model": "Mondeo",
+    "pyGUID": "e77620fb-6fb5-455b-b0ef-cc78689092dc"
+  }],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS - Pega (Local)",
+    "sourceExecutionTime": "1.009 ms"
+  },
+  "pageSize": 2
+}
