@@ -16,7 +16,7 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class ParametrizedDataReferenceTest : ComposeTest(PegaVersion.v24_2_2) {
+class ParametrizedDataReferenceTest : ComposeTest() {
     private val columns = listOf("Key Name", "Key Length", "Algorithm")
 
     private val unfilteredKeys = listOf(
@@ -39,7 +39,7 @@ class ParametrizedDataReferenceTest : ComposeTest(PegaVersion.v24_2_2) {
 
     @Test
     fun test_datareference_with_parametrized_dp() = runComposeUiTest {
-        setupApp("O40M3A-MarekCo-Work-KeysAndCiphers")
+        setupApp(PegaVersion.v24_2_2, "O40M3A-MarekCo-Work-KeysAndCiphers")
 
         // create case
         onNodeWithText("New Service").performClick()

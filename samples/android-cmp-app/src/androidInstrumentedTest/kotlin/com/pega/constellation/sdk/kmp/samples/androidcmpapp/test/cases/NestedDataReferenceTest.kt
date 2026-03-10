@@ -11,11 +11,11 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class NestedDataReferenceTest : ComposeTest(PegaVersion.v24_2_2) {
+class NestedDataReferenceTest : ComposeTest() {
 
     @Test
     fun test_nested_json() = runComposeUiTest {
-        setupApp("O40M3A-MarekCo-Work-NestedJSON")
+        setupApp(PegaVersion.v24_2_2, "O40M3A-MarekCo-Work-NestedJSON")
 
         // create case
         onNodeWithText("New Service").performClick()

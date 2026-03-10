@@ -1,0 +1,378 @@
+{
+  "data": {
+    "caseInfo": {
+      "caseTypeID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+      "owner": "user@marco",
+      "availableActions": [{
+        "name": "Edit details",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/OI1OYV-MARCO2-WORK A-22/actions/pyUpdateCaseDetails",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyUpdateCaseDetails",
+        "type": "Case"
+      }, {
+        "name": "Change stage",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/OI1OYV-MARCO2-WORK A-22/actions/pyChangeStage",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyChangeStage",
+        "type": "Case"
+      }],
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "user@marco",
+      "assignments": [{
+        "instructions": "",
+        "canPerform": "true",
+        "assigneeInfo": {
+          "name": "Administrator",
+          "ID": "user@marco",
+          "type": "worklist"
+        },
+        "processID": "CreateForm_Default",
+        "createTime": "2026-03-09T18:01:20.273Z",
+        "urgency": 10,
+        "processName": "Create",
+        "isMultiStep": "true",
+        "name": "AutoComplete",
+        "context": "",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK A-22!CREATEFORM_DEFAULT",
+            "type": "GET",
+            "title": "Get assignment details"
+          }
+        },
+        "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK A-22!CREATEFORM_DEFAULT",
+        "actions": [{
+          "name": "Create",
+          "links": {
+            "submit": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK A-22!CREATEFORM_DEFAULT/actions/Create",
+              "type": "PATCH",
+              "title": "Submit assignment action "
+            },
+            "save": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK A-22!CREATEFORM_DEFAULT/actions/Create/save",
+              "type": "PATCH",
+              "title": "Save assignment action "
+            },
+            "open": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK A-22!CREATEFORM_DEFAULT/actions/Create",
+              "type": "GET",
+              "title": "Get assignment action details"
+            }
+          },
+          "ID": "Create",
+          "type": "FlowAction"
+        }]
+      }],
+      "hasNewAttachments": false,
+      "businessID": "A-22",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "WidgetsToRefresh": ["TaskList"],
+      "caseTypeName": "AutoCompleteTest",
+      "urgency": 10,
+      "createTime": "2026-03-09T18:01:20.268Z",
+      "createdBy": "user@marco",
+      "name": "AutoCompleteTest",
+      "stages": [{
+        "entryTime": "2026-03-09T18:01:20.272Z",
+        "name": "Create",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/OI1OYV-MARCO2-WORK A-22/stages/PRIM0",
+            "type": "PUT",
+            "title": "Jump to this stage"
+          }
+        },
+        "visited_status": "active",
+        "ID": "PRIM0",
+        "type": "Primary",
+        "transitionType": "create"
+      }],
+      "ID": "OI1OYV-MARCO2-WORK A-22",
+      "caseTypeIcon": "cmicons/pycase.svg",
+      "status": "New",
+      "stageID": "PRIM0",
+      "stageLabel": "Create",
+      "lastUpdateTime": "2026-03-09T18:01:20.275Z",
+      "content": {
+        "classID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+        "pxObjClass": "OI1OYV-Marco2-Work-AutoCompleteTest",
+        "pyLabel": "AutoCompleteTest",
+        "pyID": "A-22",
+        "pyViewName": "Create",
+        "pyViewContext": "",
+        "Brand": "",
+        "CarsAutocomplete": ""
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "pyEmbedAssignment": [{
+          "name": "pyEmbedAssignment",
+          "type": "View",
+          "config": {
+            "ruleClass": "Work-",
+            "localeReference": "@LR WORK-!VIEW!PYEMBEDASSIGNMENT"
+          },
+          "children": [{
+            "name": "A",
+            "type": "Region",
+            "children": [{
+              "type": "reference",
+              "config": {
+                "type": "view",
+                "name": "pyCaseWorkarea"
+              }
+            }]
+          }],
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest"
+        }],
+        "pyCaseWorkarea": [{
+          "name": "pyCaseWorkarea",
+          "type": "View",
+          "config": {
+            "ruleClass": "Work-",
+            "localeReference": "@LR WORK-!VIEW!PYCASEWORKAREA"
+          },
+          "children": [{
+            "name": "A",
+            "type": "Region",
+            "children": [{
+              "type": "reference",
+              "config": {
+                "type": "view",
+                "name": "pzFlowContainer"
+              }
+            }]
+          }],
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest"
+        }],
+        "pzFlowContainer": [{
+          "name": "pzFlowContainer",
+          "type": "View",
+          "config": {
+            "ruleClass": "@baseclass",
+            "localeReference": "@LR @BASECLASS!VIEW!PZFLOWCONTAINER"
+          },
+          "children": [{
+            "type": "FlowContainer",
+            "config": {
+              "name": "workarea",
+              "routingInfo": "@ROUTING_INFO"
+            },
+            "children": [{
+              "type": "reference",
+              "config": {
+                "type": "view",
+                "name": "@P .pyViewName",
+                "context": "@P .pyViewContext"
+              }
+            }]
+          }],
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest"
+        }],
+        "Create": [{
+          "children": [{
+            "children": [{
+              "config": {
+                "datasource": "@ASSOCIATED .Brand",
+                "deferDatasource": true,
+                "label": "@L Car brand",
+                "labelOption": "custom",
+                "listType": "associated",
+                "placeholder": "@L Select...",
+                "value": "@P .Brand"
+              },
+              "type": "AutoComplete"
+            }, {
+              "config": {
+                "datasource": "@ASSOCIATED .CarsAutocomplete",
+                "deferDatasource": true,
+                "label": "@L Car Model",
+                "labelOption": "custom",
+                "listType": "associated",
+                "placeholder": "@L Select...",
+                "value": "@P .CarsAutocomplete"
+              },
+              "type": "AutoComplete"
+            }],
+            "name": "Fields",
+            "type": "Region"
+          }],
+          "config": {
+            "NumCols": "1",
+            "localeReference": "@LR OI1OYV-MARCO2-WORK-AUTOCOMPLETETEST!VIEW!CREATE",
+            "ruleClass": "OI1OYV-Marco2-Work-AutoCompleteTest",
+            "template": "DefaultForm"
+          },
+          "name": "Create",
+          "type": "View",
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest"
+        }]
+      },
+      "datapages": {
+        "D_carList": {
+          "parameters": [{
+            "name": "brand",
+            "defaultValue": ""
+          }],
+          "classID": "OI1OYV-Marco2-Data-Car",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": true,
+          "structure": "list",
+          "isWorkObject": false,
+          "isDataObject": true
+        }
+      },
+      "fields": {
+        "pyLabel": [{
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+          "type": "Text",
+          "maxLength": 64,
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "expectedLength": 60,
+          "label": "Label"
+        }],
+        "pyID": [{
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "pxDisplayText",
+          "definedOnClassID": "Work-Cover-",
+          "expectedLength": 22,
+          "label": "Case ID",
+          "isClassKey": true
+        }],
+        "pyViewName": [{
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+          "type": "Text",
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "label": "pyViewName"
+        }],
+        "pyViewContext": [{
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+          "type": "Text",
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "label": "pyViewContext"
+        }],
+        "CarsAutocomplete": [{
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+          "type": "Text",
+          "displayAs": "pxAutoComplete",
+          "label": "CarsAutocomplete",
+          "datasource": {
+            "tableType": "DataPage",
+            "tableClass": "OI1OYV-Marco2-Data-Car",
+            "name": "D_carList",
+            "propertyForDisplayText": "@P .Model",
+            "propertyForValue": "@P .pyGUID",
+            "parameters": [{
+              "name": "brand",
+              "value": "@P .Brand"
+            }]
+          }
+        }],
+        "Brand": [{
+          "classID": "OI1OYV-Marco2-Work-AutoCompleteTest",
+          "type": "Text",
+          "displayAs": "pxAutoComplete",
+          "label": "Brand",
+          "datasource": {
+            "tableType": "PromptList",
+            "records": [{
+              "key": "Ford",
+              "value": "Ford"
+            }, {
+              "key": "Audi",
+              "value": "Audi"
+            }, {
+              "key": "Fiat",
+              "value": "Fiat"
+            }]
+          }
+        }]
+      }
+    },
+    "components": ["DefaultForm", "FlowContainer", "Region", "AutoComplete", "View"],
+    "localeReferences": ["@BASECLASS!DATAPAGE!D_CARLIST", "OI1OYV-MARCO2-WORK-AUTOCOMPLETETEST!CASE!AUTOCOMPLETETEST"],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "pyEmbedAssignment",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {
+      "caseInfo": {
+        "content": {
+          "summary_of_associated_lists__": {}
+        }
+      }
+    },
+    "navigation": {
+      "template": "Horizontal",
+      "steps": [{
+        "allow_jump": true,
+        "name": "AutoComplete",
+        "actionID": "Create",
+        "visited_status": "current",
+        "ID": "AssignmentSF1"
+      }]
+    },
+    "actionButtons": {
+      "secondary": [{
+        "jsAction": "cancelAssignment",
+        "name": "Cancel",
+        "actionID": "cancel"
+      }],
+      "main": [{
+        "jsAction": "finishAssignment",
+        "name": "Submit",
+        "actionID": "submit"
+      }]
+    }
+  },
+  "ID": "OI1OYV-MARCO2-WORK A-22",
+  "nextAssignmentInfo": {
+    "context": "self",
+    "className": "OI1OYV-Marco2-Work-AutoCompleteTest",
+    "links": {
+      "open": {
+        "rel": "self",
+        "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK A-22!CREATEFORM_DEFAULT",
+        "type": "GET",
+        "title": "Get assignment details"
+      }
+    },
+    "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK A-22!CREATEFORM_DEFAULT"
+  }
+}

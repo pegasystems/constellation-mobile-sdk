@@ -34,39 +34,38 @@ import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import kotlin.test.BeforeTest
 
 @OptIn(ExperimentalOpenIdConnect::class)
-abstract class ComposeTest(
-    private val pegaVersion: PegaVersion,
-    val mode: ComposeTestMode = MockServer,
-) {
+abstract class ComposeTest(val mode: ComposeTestMode = MockServer) {
     private val scope = CoroutineScope(Dispatchers.Default)
     private val webViewScope = CoroutineScope(Dispatchers.Main)
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context = instrumentation.targetContext
-    private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
-    private val httpClient = buildHttpClient(authManager)
-    private val engine = AndroidWebViewEngine(context, webViewScope, httpClient, httpClient)
 
     @BeforeTest
     fun setUp() {
         hideKeyboard()
-        Injector.init(authManager, engine)
         AppContext.init(context)
     }
 
     @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String) {
+    protected fun ComposeUiTest.setupApp(pegaVersion: PegaVersion, caseClassName: String) {
+        val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
+        val httpClient = buildHttpClient(pegaVersion, authManager)
+        val engine = AndroidWebViewEngine(context, webViewScope, httpClient, httpClient)
+        Injector.init(authManager, engine)
+
         setContent {
             MediaCoApp(
                 appViewModel = viewModel { MediaCoAppViewModel(authManager) },
-                pegaViewModel = viewModel { PegaViewModel(buildSdk(), caseClassName) },
+                pegaViewModel = viewModel { PegaViewModel(buildSdk(pegaVersion, engine), caseClassName) },
                 servicesViewModel = viewModel { ServicesViewModel(FakeAssignmentsRepository()) }
             )
         }
     }
 
-    private fun buildSdk() = ConstellationSdk.create(buildSdkConfig(), engine)
+    private fun buildSdk(pegaVersion: PegaVersion, engine: AndroidWebViewEngine) =
+        ConstellationSdk.create(buildSdkConfig(pegaVersion), engine)
 
-    private fun buildSdkConfig() = ConstellationSdkConfig(
+    private fun buildSdkConfig(pegaVersion: PegaVersion) = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
         pegaVersion = pegaVersion.versionString,
         componentManager = buildComponentManager(),
@@ -75,7 +74,7 @@ abstract class ComposeTest(
 
     private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
-    private fun buildHttpClient(authManager: AuthManager) = when (mode) {
+    private fun buildHttpClient(pegaVersion: PegaVersion, authManager: AuthManager) = when (mode) {
         is MockServer -> MockHttpClient(context, pegaVersion)
         is RealServer -> OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(authManager))

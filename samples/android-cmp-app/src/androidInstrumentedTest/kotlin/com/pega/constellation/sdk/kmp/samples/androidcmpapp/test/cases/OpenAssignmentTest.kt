@@ -16,11 +16,11 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class OpenAssignmentTest : ComposeTest(PegaVersion.v24_1_0) {
+class OpenAssignmentTest : ComposeTest() {
 
     @Test
     fun test_open_assignment() = runComposeUiTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
+        setupApp(PegaVersion.v24_1_0, caseClassName = "DIXL-MediaCo-Work-SDKTesting")
         onNodeWithText("Services").performClick()
 
         // verify loaded assignments

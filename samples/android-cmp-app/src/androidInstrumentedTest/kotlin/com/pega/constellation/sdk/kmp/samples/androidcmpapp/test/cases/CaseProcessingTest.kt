@@ -16,10 +16,10 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
+class CaseProcessingTest : ComposeTest() {
     @Test
     fun test_case_processing_sdk_testing() = runComposeUiTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
+        setupApp(PegaVersion.v24_1_0, caseClassName = "DIXL-MediaCo-Work-SDKTesting")
 
         onNodeWithText("New Service").performClick()
         waitForNode("Create (S-", substring = true)
@@ -41,7 +41,7 @@ class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
 
     @Test
     fun test_case_processing_service() = runComposeUiTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
+        setupApp(PegaVersion.v24_1_0, caseClassName = "DIXL-MediaCo-Work-NewService")
 
         onNodeWithText("New Service").performClick()
         waitForNode("Customer (N-", substring = true)
