@@ -20,12 +20,12 @@ class DxAssignmentsHandler : MockHandler {
         val match = regex.find(request.url) ?: return Error(400, "Invalid request")
         val assignmentId = match.groupValues[1]
         val actionId = match.groupValues[2]
-
         return when {
             assignmentId.contains("K-11018") && actionId.isEmpty() -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11018.json")
             assignmentId.contains("K-11019") && actionId.isEmpty() -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11019.json")
             assignmentId.contains("S-17098") && actionId == "Create" -> Asset("responses/dx/assignments/SDKTesting-1-Create.json")
             assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
+            assignmentId.contains("A-22") -> Asset("responses/dx/assignments/AutoCompleteTest-DataRef.json")
             assignmentId.contains("N-16042") -> handleNewService(actionId)
             assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
             assignmentId.contains("K-10048") -> handleKeysAndCiphers(request, actionId)
