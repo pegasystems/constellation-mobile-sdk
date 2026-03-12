@@ -235,12 +235,12 @@
         }]
       },
       "datapages": {
-        "D_carList": {
+        "D_CarsList": {
           "parameters": [{
             "name": "brand",
             "defaultValue": ""
           }],
-          "classID": "OI1OYV-Marco2-Data-Car",
+          "classID": "O40M3A-MarekCo-Data-Cars",
           "mode": "readonly",
           "isSearchable": false,
           "isQueryable": true,
@@ -291,9 +291,9 @@
           "datasource": {
             "tableType": "DataPage",
             "tableClass": "OI1OYV-Marco2-Data-Car",
-            "name": "D_carList",
+            "name": "D_CarsList",
             "propertyForDisplayText": "@P .Model",
-            "propertyForValue": "@P .pyGUID",
+            "propertyForValue": "@P .Id",
             "parameters": [{
               "name": "brand",
               "value": "@P .Brand"
@@ -322,7 +322,7 @@
       }
     },
     "components": ["DefaultForm", "FlowContainer", "Region", "AutoComplete", "View"],
-    "localeReferences": ["@BASECLASS!DATAPAGE!D_CARLIST", "OI1OYV-MARCO2-WORK-AUTOCOMPLETETEST!CASE!AUTOCOMPLETETEST"],
+    "localeReferences": ["@BASECLASS!DATAPAGE!D_CARSLIST", "OI1OYV-MARCO2-WORK-AUTOCOMPLETETEST!CASE!AUTOCOMPLETETEST"],
     "root": {
       "type": "reference",
       "config": {

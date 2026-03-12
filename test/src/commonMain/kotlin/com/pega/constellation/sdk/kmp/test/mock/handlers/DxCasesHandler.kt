@@ -27,7 +27,7 @@ class DxCasesHandler : MockHandler {
         return when (caseTypeId) {
             "DIXL-MediaCo-Work-SDKTesting" -> Asset("responses/dx/cases/SDKTesting-POST.json")
             "DIXL-MediaCo-Work-NewService" -> Asset("responses/dx/cases/NewService-POST.json")
-            "OFV0MW-Marco-Work-AutoCompleteTest" -> Asset("responses/dx/25-1/cases/AutoCompleteTest-POST.json")
+            "OFV0MW-Marco-Work-AutoCompleteTest" -> Asset("responses/dx/cases/AutoCompleteTest-POST.json")
             "O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable" -> Asset("responses/dx/cases/EmbeddedDataTest-RepeatingViewEditable-POST.json")
             "O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable" -> Asset("responses/dx/cases/EmbeddedDataTest-EditableTable-POST.json")
             "O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions" -> Asset("responses/dx/cases/EmbeddedDataTest-Conditions-POST.json")
@@ -35,7 +35,7 @@ class DxCasesHandler : MockHandler {
             "O40M3A-MarekCo-Work-KeysAndCiphers" -> Asset("responses/dx/cases/KeysAndCiphers-POST.json")
             "O40M3A-MarekCo-Work-GroupTest" -> Asset("responses/dx/cases/GroupTest-POST.json")
             "O40M3A-MarekCo-Work-NestedJSON" -> Asset("responses/dx/cases/NestedJSON-POST.json")
-            "OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord" -> Asset("responses/dx/25-1/cases/EmbeddedDataTest-SingleRecord.json")
+            "OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord" -> Asset("responses/dx/cases/EmbeddedDataTest-SingleRecord.json")
             else -> Error(500, "Missing response for case $caseTypeId")
         }
     }

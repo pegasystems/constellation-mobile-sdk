@@ -28,10 +28,10 @@ class AutoCompleteTest : ComposeTest(PegaVersion.v25_1_1) {
         onNodeWithText("Car brand").performClick() // closing dropdown
 
         onNodeWithText("Car Model").performClick()
-        waitForNode("A4")
         waitForNode("Focus")
-        waitForNode("Panda")
-        waitForNode("Mondeo")
+        waitForNode("Corolla")
+        waitForNode("126p")
+        waitForNode("Octavia")
         onNodeWithText("Car Model").performClick() // closing dropdown
 
         onNodeWithText("Car brand").performClick()
@@ -44,12 +44,10 @@ class AutoCompleteTest : ComposeTest(PegaVersion.v25_1_1) {
 
         onNodeWithText("Car Model").performClick()
         waitForNode("Focus")
-        waitForNode("Mondeo")
-        onNodeWithText("A4").assertDoesNotExist()
-        onNodeWithText("Panda").assertDoesNotExist()
+        onNodeWithText("Corolla").assertDoesNotExist()
+        onNodeWithText("Octavia").assertDoesNotExist()
 
-        onNode(isFocused()).performTextInput("Foc")
-        waitForNode("Focus")
-        onNodeWithText("Mondeo").assertDoesNotExist()
+        onNode(isFocused()).performTextInput("Audi")
+        onNodeWithText("Focus").assertDoesNotExist()
     }
 }

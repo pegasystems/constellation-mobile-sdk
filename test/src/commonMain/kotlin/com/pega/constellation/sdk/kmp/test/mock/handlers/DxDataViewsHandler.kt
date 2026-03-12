@@ -8,7 +8,6 @@ import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -21,8 +20,7 @@ class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
         val dataViewId = request.url.substringAfter(DX_API_PATH + "data_views/")
         return when (dataViewId) {
             "D_pxBootstrapConfig" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-${pegaVersion.coreJsVersionString}.json")
-            "D_CarsList" -> Asset("responses/dx/data_views/D_CarsList.json")
-            "D_carList" -> handleCarList(request.body ?: "")
+            "D_CarsList" -> handleCarsList(request.body ?: "")
             "D_SampleCaseTypeList" -> Asset("responses/dx/data_views/D_SampleCaseTypeList.json")
             "D_ListOfFilteredEncryptionKeys" -> handleEncryptionKeysList(request.body ?: "")
             "D_EncryptionKeysList" -> Asset("responses/dx/data_views/D_EncryptionKeysList-all.json")
@@ -47,14 +45,14 @@ class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
         }
     }
 
-    private fun handleCarList(body: String): MockResponse {
+    private fun handleCarsList(body: String): MockResponse {
         val params = runCatching {
             Json.parseToJsonElement(body).jsonObject["dataViewParameters"]?.jsonObject
         }.getOrElse { JsonObject(emptyMap()) }
         return if (params?.get("brand")?.jsonPrimitive?.content == "Ford") {
-            Asset("responses/dx/25-1/data_views/D_carList_param_ford.json")
+            Asset("responses/dx/data_views/D_CarsList-Ford.json")
         } else {
-            Asset("responses/dx/25-1/data_views/D_carList.json")
+            Asset("responses/dx/data_views/D_CarsList.json")
         }
     }
 }
