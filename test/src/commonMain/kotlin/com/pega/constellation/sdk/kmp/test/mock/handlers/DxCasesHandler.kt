@@ -27,6 +27,7 @@ class DxCasesHandler : MockHandler {
         return when (caseTypeId) {
             "DIXL-MediaCo-Work-SDKTesting" -> Asset("responses/dx/cases/SDKTesting-POST.json")
             "DIXL-MediaCo-Work-NewService" -> Asset("responses/dx/cases/NewService-POST.json")
+            "OFV0MW-Marco-Work-AutoCompleteTest" -> Asset("responses/dx/cases/AutoCompleteTest-POST.json")
             "O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable" -> Asset("responses/dx/cases/EmbeddedDataTest-RepeatingViewEditable-POST.json")
             "O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable" -> Asset("responses/dx/cases/EmbeddedDataTest-EditableTable-POST.json")
             "O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions" -> Asset("responses/dx/cases/EmbeddedDataTest-Conditions-POST.json")
@@ -66,6 +67,3 @@ class DxCasesHandler : MockHandler {
             else -> Error(500, "Missing response for ${request.url}")
         }
 }
-
-
-

@@ -1,0 +1,21 @@
+{
+  "fetchDateTime": "2025-11-04T19:30:45.454Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 1,
+  "data": [
+    {
+      "Brand": "Ford",
+      "pxObjClass": "O40M3A-MarekCo-Data-Cars",
+      "Color": "Silver",
+      "Model": "Focus",
+      "Id": 1
+    }
+  ],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS",
+    "sourceExecutionTime": "927.3 μs"
+  },
+  "pageSize": 5
+}
