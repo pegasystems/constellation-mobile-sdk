@@ -32,6 +32,8 @@ import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import java.time.LocalDateTime
+import java.util.Date
+import java.util.TimeZone
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
@@ -92,6 +94,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
             verifyFieldGroupItem(
                 nodes = it,
                 expectedDate = LocalDateTime.now().toString().substring(0, 10),
+                expectedTime = "12:00 AM",
                 isEditable = true
             )
         }
@@ -100,6 +103,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
         verifyFieldGroupItem(
             nodes = onAllDescendantsOf(carsReadonlyFieldGroup),
             expectedDate = LocalDateTime.now().toString().substring(0, 10),
+            expectedTime = "12:00 AM",
             isEditable = false
         )
 
@@ -127,6 +131,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
         verifyFieldGroupItem(
             onAllDescendantsOf(carsReadonlyFieldGroup),
             expectedDate = "2025-12-16",
+            expectedTime = getExpectedTime(),
             isEditable = false
         )
     }
@@ -198,6 +203,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
         // verify columns
         columnValues.keys.forEach { waitForTableNode(it.uppercase()) }
         // verify table data
+        columnValues.updateTransactionDateTime() // needs to update Date-Time due to summer/winter time change
         columnValues.values.forEach { waitForTableNode(it) }
         // verify reorder icon exists
         waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
@@ -304,6 +310,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
     private fun ComposeUiTest.verifyFieldGroupItem(
         nodes: SemanticsNodeInteractionCollection,
         expectedDate: String,
+        expectedTime: String,
         isEditable: Boolean
     ) {
         with(nodes) {
@@ -317,7 +324,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
             find("gold").assertExists()
             find(expectedDate).assertExists()
             find("12:00 AM").assertExists()
-            find("$expectedDate 12:00 AM").assertExists()
+            find("$expectedDate $expectedTime").assertExists()
             find("Notes").performScrollTo()
             waitUntilExactlyOneExists(nodes, hasText("This is a note"), timeoutMillis = 5000L)
         }
@@ -367,4 +374,14 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
     // Only one table node with the given text is visible,
     // but for some reason the test framework detects two.
     private fun ComposeUiTest.waitForTableNode(text: String) = waitForNodes(text, count = 2)
+
+    // Calculates time based on summer/winter time change
+    private fun getExpectedTime(): String {
+        val isSummerTime = TimeZone.getTimeZone("America/New_York").inDaylightTime(Date())
+        return if (isSummerTime) "01:00 AM" else "12:00 AM"
+    }
+
+    private fun MutableMap<String, String>.updateTransactionDateTime() {
+        this["Transaction date time"] = "2026-01-08 ${getExpectedTime()}"
+    }
 }
