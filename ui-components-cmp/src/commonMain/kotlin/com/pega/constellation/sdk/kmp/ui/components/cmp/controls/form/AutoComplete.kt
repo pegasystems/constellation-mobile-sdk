@@ -42,9 +42,7 @@ fun AutoComplete(
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
     LaunchedEffect(value, options) {
-        searchText = options.find { it.key == value }?.let {
-            TextFieldValue(it.label, TextRange(it.label.length))
-        } ?: TextFieldValue("")
+        searchText = options.getSelectedLabel(value)
     }
 
     val filteredOptions = remember(searchText.text, options) {
@@ -74,19 +72,9 @@ fun AutoComplete(
                     .fillMaxWidth()
                     .onFocusChanged { isFocused ->
                         when {
-                            isFocused.isFocused -> return@onFocusChanged
+                            isFocused.isFocused -> {}
                             searchText.text.isEmpty() -> onValueChange("")
-                            else -> {
-                                options.firstOrNull { it.label.contains(searchText.text) }?.let {
-                                    onValueChange(it.key)
-                                    searchText =
-                                        TextFieldValue(it.label, TextRange(it.label.length))
-                                } ?: run {
-                                    onValueChange("")
-                                    searchText = TextFieldValue("")
-                                    expanded = false
-                                }
-                            }
+                            !isFocused.isFocused -> searchText = options.getSelectedLabel(value)
                         }
                     },
                 enabled = !disabled,
@@ -133,6 +121,11 @@ fun AutoComplete(
         )
     }
 }
+
+private fun List<SelectableOption>.getSelectedLabel(value: String) =
+    find { it.key == value }?.let {
+        TextFieldValue(it.label, TextRange(it.label.length))
+    } ?: TextFieldValue("")
 
 @Preview(showBackground = true)
 @Composable
