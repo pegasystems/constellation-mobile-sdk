@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,10 +41,8 @@ fun AutoComplete(
     var expanded by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
-    LaunchedEffect(value) {
-        searchText = options.find { it.key == value }?.let {
-            TextFieldValue(it.label, TextRange(it.label.length))
-        } ?: TextFieldValue("")
+    LaunchedEffect(value, options) {
+        searchText = options.getSelectedLabel(value)
     }
 
     val filteredOptions = remember(searchText.text, options) {
@@ -68,6 +67,16 @@ fun AutoComplete(
                     searchText = it
                     expanded = true
                 },
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
+                    .fillMaxWidth()
+                    .onFocusChanged { isFocused ->
+                        when {
+                            isFocused.isFocused -> {}
+                            searchText.text.isEmpty() -> onValueChange("")
+                            !isFocused.isFocused -> searchText = options.getSelectedLabel(value)
+                        }
+                    },
                 enabled = !disabled,
                 readOnly = readOnly,
                 label = {
@@ -81,9 +90,7 @@ fun AutoComplete(
                 },
                 placeholder = { Text(placeholder) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                modifier = Modifier
-                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
-                    .fillMaxWidth()
+                singleLine = true
             )
 
             if (filteredOptions.isNotEmpty()) {
@@ -114,6 +121,11 @@ fun AutoComplete(
         )
     }
 }
+
+private fun List<SelectableOption>.getSelectedLabel(value: String) =
+    find { it.key == value }?.let {
+        TextFieldValue(it.label, TextRange(it.label.length))
+    } ?: TextFieldValue("")
 
 @Preview(showBackground = true)
 @Composable
