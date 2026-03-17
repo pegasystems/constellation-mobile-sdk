@@ -23,8 +23,6 @@
 	</dict>
 	<key>PegaSystemURL</key>
 	<string>https://insert-url-here.example/prweb</string>
-	<key>PegaVersion</key>
-	<string>24.1.0</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
