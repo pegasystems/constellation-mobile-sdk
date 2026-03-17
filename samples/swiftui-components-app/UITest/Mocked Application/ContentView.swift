@@ -48,7 +48,6 @@ struct ContentView: View {
             // over custom handler unless the base URL matches. By setting the base URL to the CDN,
             // we guarantee that CDN requests are routed through the mock instead of the network.
             pegaUrl: "https://release.constellation.pega.io",
-            pegaVersion: "24.1.0",
             componentManager: ComponentManagerCompanion().create(customDefinitions: []),
             debuggable: true
         )

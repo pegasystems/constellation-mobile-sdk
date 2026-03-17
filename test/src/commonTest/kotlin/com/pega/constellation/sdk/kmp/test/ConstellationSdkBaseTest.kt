@@ -119,7 +119,6 @@ abstract class ConstellationSdkBaseTest {
 
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
-        private const val PEGA_VERSION = "24.1.0"
         private const val CASE_CLASS = "DIXL-MediaCo-Work-SDKTesting"
 
         private fun buildSdkConfig() = ConstellationSdkConfig(
@@ -131,7 +130,7 @@ abstract class ConstellationSdkBaseTest {
 
         private suspend fun ConstellationSdk.assertError(condition: (String) -> Boolean) {
             val errorMessage = assertState<State.Error>().error.message
-            assertTrue(condition(errorMessage.orEmpty()))
+            assertTrue(condition(errorMessage))
         }
 
         private suspend inline fun <reified S : State> ConstellationSdk.assertState() =
@@ -153,7 +152,7 @@ abstract class ConstellationSdkBaseTest {
 
         private fun RootContainerComponent.getDefaultForm(): DefaultFormComponent {
             val viewContainer = children()[1] as ViewContainerComponent
-            val view = viewContainer?.children[0] as ViewComponent
+            val view = viewContainer.children[0] as ViewComponent
             val oneColumn = view.children[0] as OneColumnComponent
             val region = oneColumn.children[0] as RegionComponent
             val view2 = region.children[0] as ViewComponent

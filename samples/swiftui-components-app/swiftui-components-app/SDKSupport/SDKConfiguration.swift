@@ -15,13 +15,6 @@ class SDKConfiguration {
         return url
     }()
 
-    static var environmentVersion: String = {
-        guard let version = Bundle.main.infoDictionary?["PegaVersion"] as? String else {
-            fatalError("Cannot retrieve Pega System Version.")
-        }
-        return version
-    }()
-
     static var oauth2Configuration: [String: Any] = {
         guard let oauth2Config = Bundle.main.infoDictionary?["PegaAuthConfiguration"] as? [String: Any] else {
             fatalError("Cannot retrieve OAuth2 configuration.")

@@ -14,7 +14,6 @@ To run the sample application, you need to provide necessary configuration: [SDK
 object SDKConfig {
     ...
     const val PEGA_URL = "https://insert-url-here.example/prweb"
-    const val PEGA_VERSION = "24.1.0" // replace with correct Pega version if necessary
     const val PEGA_CASE_CLASS_NAME = "DIXL-MediaCo-Work-NewService" // replace with correct case type name if necessary
     const val AUTH_CLIENT_ID = "13225896606129931937" // replace with correct client id if necessary
     const val AUTH_REDIRECT_URI = "com.pega.mobile.constellation.sample://redirect" // replace with correct redirect uri if necessary
