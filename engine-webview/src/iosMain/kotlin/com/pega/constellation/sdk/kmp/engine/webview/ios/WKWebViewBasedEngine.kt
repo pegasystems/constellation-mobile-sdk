@@ -93,7 +93,6 @@ class WKWebViewBasedEngine(
 
         val engineConfig = EngineConfiguration(
             url = config.pegaUrl,
-            version = config.pegaVersion,
             action = action,
             debuggable = config.debuggable
         )

@@ -63,7 +63,6 @@ class AndroidComposeActivity : ComponentActivity() {
     private fun initConstellation() {
         val config = ConstellationSdkConfig(
             pegaUrl = AndroidSDKConfig.PEGA_URL,
-            pegaVersion = AndroidSDKConfig.PEGA_VERSION,
             componentManager = ComponentManager.create(
                 listOf(
                     ComponentDefinition(
@@ -122,7 +121,7 @@ fun PegaForm(state: State) {
         is Ready -> ShowForm(state)
         is Finished -> ShowAlert("Thanks for registration")
         is Cancelled -> ShowAlert("Cancelled")
-        is Error -> ShowAlert(state.error.message ?: "Error")
+        is Error -> ShowAlert(state.error.message)
     }
 }
 

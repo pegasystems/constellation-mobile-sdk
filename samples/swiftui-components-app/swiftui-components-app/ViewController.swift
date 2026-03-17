@@ -59,7 +59,6 @@ class ViewController: UIViewController {
         // Create configuration which will be used in SDK
         let configuration = ConstellationSdkConfig(
             pegaUrl: SDKConfiguration.environmentURL.absoluteString,
-            pegaVersion: SDKConfiguration.environmentVersion,
             componentManager: ComponentManagerCompanion().create(customDefinitions: []),
             debuggable: SDKConfiguration.debuggable
         )
