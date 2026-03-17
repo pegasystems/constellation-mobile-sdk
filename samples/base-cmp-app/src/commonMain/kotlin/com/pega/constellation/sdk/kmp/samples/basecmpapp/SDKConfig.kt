@@ -13,11 +13,6 @@ object SDKConfig {
     const val PEGA_URL = "https://insert-url-here.example/prweb"
 
     /**
-     * The version of the Pega Platform being used. Determines the Constellation Core JS library version used by the SDK.
-     */
-    const val PEGA_VERSION = "24.1.0"
-
-    /**
      * The name of the Pega case class to be created.
      */
     const val PEGA_CASE_CLASS_NAME = "DIXL-MediaCo-Work-NewService"
