@@ -1,13 +1,12 @@
 const TAG = "[Bootstrap]";
-const importBootstrapShell = (staticContentServerUrl) => import(`${staticContentServerUrl}bootstrap-shell.js`);
 
 const getStaticContentServerUrl = async (url) => {
     const response = await fetch(`${url}/api/application/v2/data_views/D_pxBootstrapConfig`);
     if (!response.ok) {
         throw new Error(`Failed to fetch bootstrap config: ${response.status} ${response.statusText}`);
     }
-    const data = await response.json();
     try {
+        const data = await response.json();
         const config = JSON.parse(data.pyConfigJSON);
         return config?.serviceConfig?.staticContentServer;
     } catch (e) {
@@ -17,8 +16,9 @@ const getStaticContentServerUrl = async (url) => {
 
 export async function bootstrap(url, onPCoreReady) {
     const staticContentServerUrl = await getStaticContentServerUrl(url);
-    console.log(TAG, `Importing bootstrap shell: ${staticContentServerUrl}bootstrap-shell.js`);
-    const shell = await importBootstrapShell(staticContentServerUrl);
+    const boostrapShellUrl = `${staticContentServerUrl}bootstrap-shell.js`;
+    console.log(TAG, `Importing bootstrap shell: ${boostrapShellUrl}`);
+    const shell = await import(boostrapShellUrl);
     const bootConfig = {
         restServerUrl: url,
         customRendering: true,
