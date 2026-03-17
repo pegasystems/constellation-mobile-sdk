@@ -51,16 +51,6 @@ abstract class ConstellationSdkBaseTest {
     }
 
     @Test
-    fun test_initialization_with_invalid_version() = runTest {
-        val invalidConfig = config.copy(pegaVersion = "1.2.3")
-        val sdk = ConstellationSdk.create(invalidConfig, engine)
-        assertEquals(State.Initial, sdk.state.value)
-        sdk.createCase(CASE_CLASS)
-        sdk.assertState<State.Loading>()
-        sdk.assertError { it.contains("Unsupported Pega version: 1.2.3. Supported version is between 23.1.0 and") }
-    }
-
-    @Test
     fun test_initialization_invalid_case_id() = runTest {
         val sdk = ConstellationSdk.create(config, engine)
         sdk.createCase("DIXL-MediaCo-Work-Invalid-Case-Id")
@@ -134,7 +124,6 @@ abstract class ConstellationSdkBaseTest {
 
         private fun buildSdkConfig() = ConstellationSdkConfig(
             pegaUrl = PEGA_URL,
-            pegaVersion = PEGA_VERSION,
             debuggable = true
         )
 

@@ -82,7 +82,6 @@ class AndroidWebViewEngine(
     private fun onPageLoad(action: ConstellationSdkAction) {
         val configuration = EngineConfiguration(
             url = config.pegaUrl,
-            version = config.pegaVersion,
             action = action,
             debuggable = config.debuggable
         )

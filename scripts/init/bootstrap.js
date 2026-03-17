@@ -1,27 +1,24 @@
 const TAG = "[Bootstrap]";
-const importBootstrapShell = (version) =>
-    import(`https://release.constellation.pega.io/${version}/react/prod/bootstrap-shell.js`);
+const importBootstrapShell = (staticContentServerUrl) => import(`${staticContentServerUrl}bootstrap-shell.js`);
 
-const awaitBoostrapShell = async (version) => {
-    const splitVersion = version.split(".");
-    if (splitVersion.length < 3) {
-        throw new Error(`Invalid Pega version format: ${version}. Expected format is 'major.minor.patch'`);
+const getStaticContentServerUrl = async (url) => {
+    const response = await fetch(`${url}/api/application/v2/data_views/D_pxBootstrapConfig`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch bootstrap config: ${response.status} ${response.statusText}`);
     }
-    const majorVersion = parseInt(splitVersion[0]);
-    switch (majorVersion) {
-        case 23:
-        case 24:
-            return await importBootstrapShell(`8.${majorVersion}.${splitVersion[1]}`);
-        case 25:
-            return await importBootstrapShell(`8.24.2`); // fallback to last released version of boostrap-shell
-        default:
-            throw new Error(`Unsupported Pega version: ${version}. Supported version is between 23.1.0 and 25.1.0`);
+    const data = await response.json();
+    try {
+        const config = JSON.parse(data.pyConfigJSON);
+        return config?.serviceConfig?.staticContentServer;
+    } catch (e) {
+        throw new Error(`Failed to parse pyConfigJSON: ${e}`);
     }
 };
 
-export async function bootstrap(url, version, onPCoreReady) {
-    console.log(TAG, `Importing bootstrap shell '${version}'`);
-    let shell = await awaitBoostrapShell(version);
+export async function bootstrap(url, onPCoreReady) {
+    const staticContentServerUrl = await getStaticContentServerUrl(url);
+    console.log(TAG, `Importing bootstrap shell: ${staticContentServerUrl}bootstrap-shell.js`);
+    const shell = await importBootstrapShell(staticContentServerUrl);
     const bootConfig = {
         restServerUrl: url,
         customRendering: true,

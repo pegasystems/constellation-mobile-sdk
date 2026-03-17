@@ -90,8 +90,7 @@
 2. Create SDK configuration
     ```kotlin
     val config = ConstellationSdkConfig(
-        pegaUrl = "https://insert-url-here.example/prweb",
-        pegaVersion = "24.1.0"
+        pegaUrl = "https://insert-url-here.example/prweb"
     )
     ```
    

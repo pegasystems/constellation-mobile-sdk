@@ -68,7 +68,6 @@ abstract class ComposeTest(
 
     private fun buildSdkConfig() = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
-        pegaVersion = pegaVersion.versionString,
         componentManager = buildComponentManager(),
         debuggable = true
     )
