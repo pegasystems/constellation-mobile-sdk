@@ -7,7 +7,6 @@ import kotlinx.serialization.json.Json
 @Serializable
 internal data class EngineConfiguration(
     val url: String,
-    val version: String,
     val action: ConstellationSdkAction,
     val debuggable: Boolean
 ) {

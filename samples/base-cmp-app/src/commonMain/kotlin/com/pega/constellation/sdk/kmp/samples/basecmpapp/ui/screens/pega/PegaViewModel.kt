@@ -45,7 +45,6 @@ class PegaViewModel(
 
         private fun buildConfig() = ConstellationSdkConfig(
             pegaUrl = SDKConfig.PEGA_URL,
-            pegaVersion = SDKConfig.PEGA_VERSION,
             componentManager = ComponentManager.create(CustomDefinitions),
             debuggable = true
         )

@@ -17,7 +17,7 @@ async function init(sdkConfig, componentsOverridesStr) {
         initErrorHandling();
         initPlatforms(componentsOverridesStr);
         const config = JSON.parse(sdkConfig);
-        await bootstrap(config.url, config.version, onPCoreReady);
+        await bootstrap(config.url, onPCoreReady);
 
         if (config.action.type === "CreateCase") {
             await createCase(config.action.caseClassName, config.action.startingFields);
