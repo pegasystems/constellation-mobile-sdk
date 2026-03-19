@@ -27,19 +27,16 @@
 		B583B07B2E8FCF6500A50A67 /* UITest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UITest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B583B0882E8FCF6800A50A67 /* UITestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B583B0922E8FCF6800A50A67 /* UITestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5B0ED8F2F69A2B900C6878B /* UITest.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITest.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B583B3352E8FDDD900A50A67 /* Exceptions for "Mocked Application" folder in "UITest" target */ = {
+		B5AFB0812F69AA56009808CD /* Exceptions for "responses" folder in "UITest" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				responses/cdn/.gitkeep,
-				responses/cdn/8.24.2/99.4989502c.js,
-				"responses/cdn/8.24.2/bootstrap-shell.js",
-				"responses/cdn/8.24.2/constellation-core.js",
-				responses/cdn/8.24.2/lib_asset.json,
-				responses/download_js_files.sh,
-				responses/README.md,
+				"cdn/8.24.2/bootstrap-shell.js",
+				"cdn/8.24.2/constellation-core.js",
+				cdn/8.24.2/lib_asset.json,
 			);
 			target = B583B07A2E8FCF6500A50A67 /* UITest */;
 		};
@@ -48,9 +45,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B583B07D2E8FCF6500A50A67 /* Mocked Application */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				B583B3352E8FDDD900A50A67 /* Exceptions for "Mocked Application" folder in "UITest" target */,
-			);
 			path = "Mocked Application";
 			sourceTree = "<group>";
 		};
@@ -63,6 +57,27 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "UI Tests";
 			sourceTree = "<group>";
+		};
+		B5AFB03B2F69AA2C009808CD /* responses */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B5AFB0812F69AA56009808CD /* Exceptions for "responses" folder in "UITest" target */,
+			);
+			name = responses;
+			path = ../../../test/src/commonMain/composeResources/files/responses;
+			sourceTree = SOURCE_ROOT;
+		};
+		B5B0ED5D2F69A02400C6878B /* UI */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = UI;
+			path = "../swiftui-components-app/SDKSupport/UI";
+			sourceTree = SOURCE_ROOT;
+		};
+		B5B0ED642F69A02400C6878B /* Utils */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = Utils;
+			path = "../swiftui-components-app/SDKSupport/Utils";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -94,9 +109,11 @@
 		B583B0722E8FCF6500A50A67 = {
 			isa = PBXGroup;
 			children = (
+				B5B0ED8F2F69A2B900C6878B /* UITest.xctestplan */,
 				B583B07D2E8FCF6500A50A67 /* Mocked Application */,
 				B583B08B2E8FCF6800A50A67 /* Unit Tests */,
 				B583B0952E8FCF6800A50A67 /* UI Tests */,
+				B5B0ECB32F699FBA00C6878B /* Dependencies */,
 				B583B07C2E8FCF6500A50A67 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +126,16 @@
 				B583B0922E8FCF6800A50A67 /* UITestUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B5B0ECB32F699FBA00C6878B /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				B5AFB03B2F69AA2C009808CD /* responses */,
+				B5B0ED5D2F69A02400C6878B /* UI */,
+				B5B0ED642F69A02400C6878B /* Utils */,
+			);
+			path = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,6 +156,9 @@
 			);
 			fileSystemSynchronizedGroups = (
 				B583B07D2E8FCF6500A50A67 /* Mocked Application */,
+				B5AFB03B2F69AA2C009808CD /* responses */,
+				B5B0ED5D2F69A02400C6878B /* UI */,
+				B5B0ED642F69A02400C6878B /* Utils */,
 			);
 			name = UITest;
 			packageProductDependencies = (
