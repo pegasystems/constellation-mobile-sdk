@@ -10,7 +10,7 @@ runs:
       id: globals
       shell: bash
       run: |
-        echo "XCODE_DIR=/Applications/Xcode_16.4.app" >> "${GITHUB_OUTPUT}"
+        echo "XCODE_DIR=/Applications/Xcode_26.3.app" >> "${GITHUB_OUTPUT}"
         echo "SDK_MAVEN_DIR=~/.m2/repository/com/pega/constellation/sdk" >> "${GITHUB_OUTPUT}"
 
     - name: Checkout repo

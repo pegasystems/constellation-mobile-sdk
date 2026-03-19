@@ -71,7 +71,7 @@ jobs:
           retention-days: 3
 
   validate-ios:
-    runs-on: 'macos-15'
+    runs-on: 'macos-26'
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -101,7 +101,7 @@ jobs:
           key: gradle-cache-ios-check
 
       - name: Select specific XCode version
-        run: sudo xcode-select -s "/Applications/Xcode_16.4.app"
+        run: sudo xcode-select -s "/Applications/Xcode_26.3.app"
 
       - name: Create new test simulator
         run: |
@@ -111,7 +111,7 @@ jobs:
           echo "Deleting simulator SDKTestSimulator (if exists)"
           xcrun simctl delete SDKTestSimulator || true
           echo "Creating new SDKTestSimulator"
-          xcrun simctl create SDKTestSimulator com.apple.CoreSimulator.SimDeviceType.iPhone-16 com.apple.CoreSimulator.SimRuntime.iOS-18-5 | tee simulator.id
+          xcrun simctl create SDKTestSimulator com.apple.CoreSimulator.SimDeviceType.iPhone-17 com.apple.CoreSimulator.SimRuntime.iOS-26-1 | tee simulator.id
 
       - name: iOS sample application UI tests
         run: |
