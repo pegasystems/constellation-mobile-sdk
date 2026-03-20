@@ -9,15 +9,13 @@ fi
 
 rm -Rf cdn/*
 
-declare -a RELEASES=("8.24.1" "8.24.2")
+declare -a RELEASES=("8.24.1")
 
 declare -a RELEASE_URLS=(
     "https://release.constellation.pega.io/8.24.1/react/prod"
-    "https://release.constellation.pega.io/8.24.2/react/prod"
 )
 declare -a CDN_URLS=( 
     "https://release.constellation.pega.io/8.24.2-422/react/prod"
-    "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod"
 )
 
 for i in "${!RELEASES[@]}"
@@ -53,13 +51,6 @@ do
     echo "Downloading ${CONSTELLATION_CORE_URL}"
     curl --compressed "${CONSTELLATION_CORE_URL}" -o "${OUTPUT_DIR}/constellation-core.js"
     echo "First 256 chars from downloaded file (for verification)"
-    head -c 256 "${OUTPUT_DIR}/bootstrap-shell.js"
-
-    # Replace pxBootstrapConfig name in downloaded files, so it will be distinguishable between versions
-    sed -i.bak -e "s/D_pxBootstrapConfig/D_pxBootstrapConfig-${RELEASE}/g" "${OUTPUT_DIR}"/*
-    rm "${OUTPUT_DIR}"/*.bak
+    head -c 256 "${OUTPUT_DIR}/constellation-core.js"
 
 done
-
-# Required for 8.24.2
-curl "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod/prerequisite/js/99.4989502c.js" -o "cdn/8.24.2/99.4989502c.js"

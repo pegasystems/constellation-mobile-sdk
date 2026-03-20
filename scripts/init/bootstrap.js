@@ -5,13 +5,18 @@ const getStaticContentServerUrl = async (url) => {
     if (!response.ok) {
         throw new Error(`Failed to fetch bootstrap config: ${response.status} ${response.statusText}`);
     }
+    let config;
     try {
         const data = await response.json();
-        const config = JSON.parse(data.pyConfigJSON);
-        return config?.serviceConfig?.staticContentServer;
+        config = JSON.parse(data.pyConfigJSON);
     } catch (e) {
         throw new Error(`Failed to parse pyConfigJSON: ${e}`);
     }
+    const staticContentServerUrl = config?.serviceConfig?.staticContentServer;
+    if (!staticContentServerUrl) {
+        throw new Error("staticContentServer URL not found in config");
+    }
+    return staticContentServerUrl;
 };
 
 export async function bootstrap(url, onPCoreReady) {

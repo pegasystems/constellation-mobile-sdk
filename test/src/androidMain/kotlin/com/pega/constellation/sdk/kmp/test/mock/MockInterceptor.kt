@@ -8,7 +8,6 @@ import com.pega.constellation.sdk.kmp.test.mock.handlers.DxCasesHandler
 import com.pega.constellation.sdk.kmp.test.mock.handlers.DxDataViewsHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
-import com.pega.constellation.sdk.kmp.test.mock.handlers.CdnHandler
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
@@ -26,7 +25,6 @@ class MockInterceptor(private val context: Context, pegaVersion: PegaVersion) : 
     )
 
     private val handlers = listOf(
-        CdnHandler(),
         DxAssignmentsHandler(),
         DxCasesHandler(),
         DxDataViewsHandler(pegaVersion),
