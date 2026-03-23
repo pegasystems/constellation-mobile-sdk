@@ -25,8 +25,8 @@ The SDK provides following components out-of-the-box:
   - EmbeddedData
   - DataReference
     - Single record
-      - Displayed as “SimpleTable”, “Table”, “Dropdown” - supported
-      - Displayed as “Autocomplete”, “Advanced Search" - not supported
+      - Displayed as “SimpleTable”, “Table”, “Dropdown”, “Autocomplete” - supported
+      - Displayed as “Advanced Search" - not supported
     - List of records - not supported
     - Many to many - not supported
 - **Containers**: 
