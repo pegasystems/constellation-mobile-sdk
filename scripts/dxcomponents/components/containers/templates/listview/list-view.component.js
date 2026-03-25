@@ -12,7 +12,6 @@ export class ListViewComponent extends BaseComponent {
     displayedColumnsLabels$ = [];
     configProps$;
     selectionMode;
-    selectedItemIndex = null;
     singleSelectionMode;
     multiSelectionMode;
     rowID;

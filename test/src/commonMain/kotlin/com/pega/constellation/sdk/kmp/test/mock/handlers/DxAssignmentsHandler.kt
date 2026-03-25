@@ -33,6 +33,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("E-22056") -> handleEmbeddedDataRepeatingViewTest(actionId)
             assignmentId.contains("E-24003") -> handleEmbeddedDataTableSimpleTableTest(request, actionId)
             assignmentId.contains("E-26028") -> handleEmbeddedDataConditionsTest(actionId)
+            assignmentId.contains("D-3020") -> handleDataReferenceListOfRecordsTest(actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -45,6 +46,15 @@ class DxAssignmentsHandler : MockHandler {
         return when (actionId) {
             "SingleDisplayAsTable" -> Asset("responses/dx/assignments/DataReferenceTest-1-Review.json")
             "Create/refresh" -> Asset("responses/dx/assignments/refresh/DataReferenceTest-Refresh-$carId.json")
+            else -> Error(404, "Invalid actionId: $actionId")
+        }
+    }
+
+    private fun handleDataReferenceListOfRecordsTest(actionId: String): MockResponse {
+        return when (actionId) {
+            "Create" -> Asset("responses/dx/assignments/DataReferenceListOfRecordsTest-1-SimpleTable.json")
+            "DataReferenceListOfRecordsSimpleTable" -> Asset("responses/dx/assignments/DataReferenceListOfRecordsTest-2-TableReadonly.json")
+            "DataReferenceListOfRecordsTableReadonly" -> Asset("responses/dx/assignments/DataReferenceListOfRecordsTest-3-SimpleTableReadonly.json")
             else -> Error(404, "Invalid actionId: $actionId")
         }
     }

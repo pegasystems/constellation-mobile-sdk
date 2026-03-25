@@ -14,7 +14,7 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class DataReferenceTest : ComposeTest(PegaVersion.v24_1_0) {
+class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v24_1_0) {
     private val columns = listOf("ID", "BRAND", "MODEL", "COLOR")
     private val cars = listOf(
         listOf("1", "Ford", "Focus", "Silver"),
