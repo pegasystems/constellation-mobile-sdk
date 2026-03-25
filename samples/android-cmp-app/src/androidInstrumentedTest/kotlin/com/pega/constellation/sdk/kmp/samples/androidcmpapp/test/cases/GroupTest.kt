@@ -74,7 +74,7 @@ class GroupTest : ComposeTest(PegaVersion.v24_2_2) {
         waitForNode("List group instructions", substring = true)
         waitForNode("cars")
         waitForNode("cars 1")
-        waitForNodes("Encryption keys", 2) // TODO: label displayed twice due to ISSUE-138617
+        waitForNode("Encryption keys")
         waitForNodes("AeroCrypt-AuroraCrypt", 2) // No idea why but test sees it twice even if it's once in UI
     }
 

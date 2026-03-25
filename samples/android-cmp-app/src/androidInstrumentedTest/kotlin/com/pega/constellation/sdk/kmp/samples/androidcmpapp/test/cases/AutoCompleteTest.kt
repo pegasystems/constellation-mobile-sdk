@@ -62,16 +62,16 @@ class AutoCompleteTest : ComposeTest(PegaVersion.v25_1) {
         waitForNode("AutoComplete (", substring = true)
         onNodeWithText("Submit").performClick()
 
-        waitForNodes("Car Reference", count = 2)
+        waitForNode("Car Reference")
 
-        onAllNodesWithText("Car Reference")[1].performClick()
+        onNodeWithText("Car Reference").performClick()
         waitForNode("Ford")
         waitForNode("Fiat")
         waitForNode("Toyota")
         waitForNode("Skoda")
         waitForNode("Audi")
 
-        onAllNodesWithText("Car Reference")[1].performTextInput("F")
+        onNodeWithText("Car Reference").performTextInput("F")
         waitForNode("Ford")
         waitForNode("Fiat")
 
