@@ -68,12 +68,13 @@ export class ListViewComponent extends BaseComponent {
     }
 
     onEvent(event) {
-        if (event.type === "SelectSingleItem") {
-            const selectedItemIndex = Number(event.componentData.selectedItemIndex);
-            this.#fieldOnChange(selectedItemIndex);
-        } else {
+        if (event.type === "ClickItem") {
+            const clickedItemIndex = Number(event.componentData.clickedItemIndex);
+            const isSelected = event.componentData.isSelected === "true";
+            this.#fieldOnChange(clickedItemIndex, isSelected);
+      } else {
             console.log(TAG, `onEvent received unsupported event type ${event.type}`);
-        }
+      }
     }
 
     #shouldReloadData(oldPayload, newPayload) {
@@ -85,23 +86,24 @@ export class ListViewComponent extends BaseComponent {
         return JSON.stringify(filterPayload(oldPayload)) !== JSON.stringify(filterPayload(newPayload));
     }
 
-    #fieldOnChange(selectedItemIndex) {
-        if (!this.listViewItems || selectedItemIndex < 0 || selectedItemIndex >= this.listViewItems.length) {
+    #fieldOnChange(clickedItemIndex, isSelected) {
+        if (!this.listViewItems || clickedItemIndex < 0 || clickedItemIndex >= this.listViewItems.length) {
             console.warn(TAG, "Unexpected state when updating selected item index");
             return;
         }
 
         const selectedObject = {};
         if (this.compositeKeys?.length > 1) {
-            const selectedRow = this.listViewItems[selectedItemIndex];
+            const selectedRow = this.listViewItems[clickedItemIndex];
             this.compositeKeys.forEach((compositeKey) => {
                 selectedObject[compositeKey] = selectedRow[compositeKey];
             });
         } else {
-            selectedObject[this.rowID] = this.listViewItems[selectedItemIndex][this.rowID];
+            selectedObject[this.rowID] = this.listViewItems[clickedItemIndex][this.rowID];
         }
-
-        this.selectedItemIndex = selectedItemIndex;
+        if (this.multiSelectionMode) {
+            selectedObject.$selected = isSelected;
+        }
         this.pConn?.getListActions?.()?.setSelectedRows([selectedObject]);
     }
 
@@ -134,7 +136,7 @@ export class ListViewComponent extends BaseComponent {
         this.label = title;
 
         if (!shouldReloadData) {
-            this.#updateSelectedItemIndex();
+            this.#updateSelection();
             this.#sendPropsUpdate();
             return;
         }
@@ -161,60 +163,64 @@ export class ListViewComponent extends BaseComponent {
         }).then((response) => {
             this.listContext = response;
             this.#getListData(() => {
-                this.#updateSelectedItemIndex();
+                this.#updateSelection();
                 this.#sendPropsUpdate();
             });
         });
     }
 
-    #updateSelectedItemIndex() {
+    #updateSelection() {
+      if (this.singleSelectionMode) {
+        this.#updateSelectedItemSingle();
+      } else if (this.multiSelectionMode) {
+        this.#updateSelectedItemsMulti();
+      }
+    }
+
+    #updateSelectedItemSingle() {
         if (this.compositeKeys && this.compositeKeys.length > 1) {
-            this.#updateSelectedItemIndexForCompositeKeys();
+            this.#updateSelectedSingleItemForCompositeKeys();
         } else {
-            this.#updateSelectedItemIndexForSingleKey();
+            this.#updateSelectedSingleItemForSingleKey();
         }
     }
 
-    #updateSelectedItemIndexForCompositeKeys() {
+    #updateSelectedItemsMulti() {
+        const readonlyIds = new Set(this.configProps$.readonlyContextList.map(element => element[this.rowID]));
+        this.listViewItems.forEach((item) => {
+            item.selected = readonlyIds.has(item[this.rowID]);
+        });
+    }
+
+    #updateSelectedSingleItemForCompositeKeys() {
         if (!this.listViewItems || this.listViewItems.length === 0) {
-            this.selectedItemIndex = null;
             return;
         }
 
-        const index = this.listViewItems.findIndex((item) => {
-            return this.compositeKeys.every((key) => {
+        this.listViewItems.forEach((item) => {
+            item.selected = this.compositeKeys.every((key) => {
                 const left = item[key];
                 const right = this.contextPage?.[key];
                 return left != null && right != null && left === right;
             });
         });
-        if (index == -1) {
-            console.log(TAG, `No matching item found.`);
-        }
-        this.selectedItemIndex = index === -1 ? null : index;
     }
 
-    #updateSelectedItemIndexForSingleKey() {
+    #updateSelectedSingleItemForSingleKey() {
         if (!this.listViewItems || this.listViewItems.length === 0) {
-            this.selectedItemIndex = null;
             return;
         }
-        const index = this.listViewItems.findIndex((item) => {
+        this.listViewItems.forEach((item) => {
             const left = item[this.rowID];
             const right = this.componentValue;
-            return left != null && right != null && left === right;
+            item.selected = left != null && right != null && left === right;
         });
-        if (index == -1) {
-            console.log(TAG, `No matching item found.`);
-        }
-        this.selectedItemIndex = index === -1 ? null : index;
     }
 
     #sendPropsUpdate() {
         this.props = {
             label: this.label,
             selectionMode: this.selectionMode,
-            selectedItemIndex: String(this.selectedItemIndex),
             columnNames: this.displayedColumns$,
             columnLabels: this.displayedColumnsLabels$,
             items: this.listViewItems,
