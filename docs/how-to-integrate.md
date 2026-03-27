@@ -14,6 +14,8 @@
 
 - Xcode 16.4
    - In order to work with Xcode 26 you need to upgrade (gradle/libs.versions.toml) Kotlin to pre-release `2.2.21-RC2` version. Please bear in mind that this is an RC version — some features may not work as expected.
+- AGP restrictions
+   - For projects using Android Gradle Plugin 9.x there needs to be a flag ```android.uniquePackageNames=false``` added to gradle.properties due to issues with one of the SDK external library (will be resolved in the future)
   
 ### 2. Setup Gradle dependencies
 
