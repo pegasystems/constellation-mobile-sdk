@@ -358,10 +358,12 @@ export class SimpleTableManualComponent extends BaseComponent {
         const labelsMap = fieldDefs.reduce((acc, curr) => {
             return {...acc, [curr.name]: curr.label};
         }, {});
-        return resolvedFields.map((field, i) => {
-            const name = displayedColumns[i];
-            return labelsMap[name] || field.config.label;
-        });
+        return resolvedFields
+            .filter(field => this.utils.getBooleanValue(field.config.hide) !== true)
+            .map((field, i) => {
+                const name = displayedColumns[i];
+                return labelsMap[name] || field.config.label;
+            });
     }
 
     #calculateConditions(editMode, allowActions, allowTableEdit) {
