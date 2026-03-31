@@ -49,17 +49,8 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
     }
 
     fun onItemClick(itemIndex: Int, isSelected: Boolean) {
-        context.sendComponentEvent(clickItemEvent(itemIndex, isSelected))
+        context.sendComponentEvent(ComponentEvent.forItemClick(itemIndex, isSelected))
     }
-
-    private fun clickItemEvent(itemIndex: Int, isSelected: Boolean) =
-        ComponentEvent(
-            type = CLICK_ITEM_EVENT,
-            componentData = mapOf(
-                "clickedItemIndex" to itemIndex.toString(),
-                "isSelected" to isSelected.toString()
-            )
-        )
 
     private fun JsonObject.selectionMode() =
         getString("selectionMode").toSelectionMode()
@@ -77,9 +68,11 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
                 }
                 element.value.toFoldedItemContent(accumulator, nextPath)
             }
+
             is JsonArray -> jsonArray.foldIndexed(initialResult) { index, accumulator, element ->
                 element.toFoldedItemContent(accumulator, "$currentPath[$index]")
             }
+
             else -> initialResult + mapOf(currentPath to jsonPrimitive.content)
         }
 
@@ -95,6 +88,5 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
 
     companion object {
         private const val TAG = "ListViewComponent"
-        private const val CLICK_ITEM_EVENT = "ClickItem"
     }
 }
