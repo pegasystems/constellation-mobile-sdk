@@ -100,6 +100,7 @@ export class ListViewComponent extends BaseComponent {
         } else {
             selectedObject[this.rowID] = this.listViewItems[clickedItemIndex][this.rowID];
         }
+        // When $selected is initialised, core-js treats the component as multi-select (not single-select)
         if (this.multiSelectionMode) {
             selectedObject.$selected = isSelected;
         }
