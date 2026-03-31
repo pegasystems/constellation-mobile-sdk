@@ -11,15 +11,17 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 class ListViewRenderer : ComponentRenderer<ListViewComponent> {
     @Composable
     override fun ListViewComponent.Render() {
-        val selectedItem = selectedItemIndex?.let { items.getOrNull(it) }
+        val selectedItems = items.filter { it.selected }
         Table(
             label = label,
             selectionMode = selectionMode.toTableSelectionMode(),
             columns = columnNames,
             columnsLabels = columnLabels,
             items = items.map { TableItem(it.data) },
-            selectedItem = selectedItem?.let { TableItem(it.data) },
-            onItemClick = ::onItemSelected
+            selectedItem = selectedItems.map { TableItem(it.data) },
+            onItemClick = { id, selected ->
+                onItemClick(id, selected)
+            }
         )
     }
 

@@ -40,8 +40,8 @@ fun Table(
     columns: List<String>,
     columnsLabels: List<String>,
     items: List<TableItem>,
-    selectedItem: TableItem?,
-    onItemClick: (Int) -> Unit
+    selectedItem: List<TableItem>,
+    onItemClick: (Int, Boolean) -> Unit
 ) {
     Column {
         Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
@@ -55,12 +55,15 @@ fun Table(
             }
         ) {
             items.forEachIndexed { i, item ->
-                val checked = item == selectedItem
-                row(Modifier.toggleable(checked) { onItemClick(i) }) {
+                val isChecked = selectedItem.contains(item)
+                row(Modifier.toggleable(isChecked) {
+                    val selected = if (selectionMode == MULTI) !isChecked else true
+                    onItemClick(i, selected)
+                }) {
                     cell {
                         when (selectionMode) {
-                            SINGLE -> RadioButton(checked, onClick = { onItemClick(i) })
-                            MULTI -> Checkbox(checked, onCheckedChange = { onItemClick(i) })
+                            SINGLE -> RadioButton(isChecked, onClick = { onItemClick(i, true) })
+                            MULTI -> Checkbox(isChecked, onCheckedChange = { onItemClick(i, !isChecked) })
                         }
                     }
                     columns.forEach { cell { Text(item.data[it].orEmpty()) } }

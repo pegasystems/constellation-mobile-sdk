@@ -9,6 +9,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent.SelectionMode.MULTI
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent.SelectionMode.SINGLE
+import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
 import kotlinx.serialization.json.JsonArray
@@ -20,13 +21,11 @@ import kotlinx.serialization.json.jsonPrimitive
 
 class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
     enum class SelectionMode { SINGLE, MULTI }
-    data class Item(val data: Map<String, String>)
+    data class Item(val data: Map<String, String>, val selected: Boolean)
 
     var label by mutableStateOf("")
         private set
     var selectionMode by mutableStateOf(SINGLE)
-        private set
-    var selectedItemIndex: Int? by mutableStateOf(null)
         private set
     var columnNames by mutableStateOf(emptyList<String>())
         private set
@@ -37,36 +36,33 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
 
     override fun applyProps(props: JsonObject) {
         label = props.getString("label")
-        if (props.selectionMode() != SINGLE) {
-            Log.w(TAG, "Only SINGLE selection mode is supported. Defaulting to SINGLE.")
-        }
-        selectionMode = SINGLE
-        selectedItemIndex = props.getIntOrNull("selectedItemIndex")
+        selectionMode = props.selectionMode()
         columnNames = props.getJSONArray("columnNames").map { it.jsonPrimitive.content }
         columnLabels = props.getJSONArray("columnLabels").map { it.jsonPrimitive.content }
         items = props.getJSONArray("items")
             .map {
-                Item(it.toFoldedItemContent(emptyMap(), ""))
+                Item(
+                    data = it.toFoldedItemContent(emptyMap(), ""),
+                    selected = it.jsonObject.getBoolean("selected")
+                )
             }
     }
 
-    fun onItemSelected(itemIndex: Int) {
-        selectedItemIndex = itemIndex
-        context.sendComponentEvent(itemSelectedEvent(itemIndex))
+    fun onItemClick(itemIndex: Int, isSelected: Boolean) {
+        context.sendComponentEvent(clickItemEvent(itemIndex, isSelected))
     }
 
-    private fun itemSelectedEvent(itemIndex: Int) =
+    private fun clickItemEvent(itemIndex: Int, isSelected: Boolean) =
         ComponentEvent(
-            type = SELECT_SINGLE_ITEM_EVENT,
-            mapOf("selectedItemIndex" to itemIndex.toString())
+            type = CLICK_ITEM_EVENT,
+            componentData = mapOf(
+                "clickedItemIndex" to itemIndex.toString(),
+                "isSelected" to isSelected.toString()
+            )
         )
-
 
     private fun JsonObject.selectionMode() =
         getString("selectionMode").toSelectionMode()
-
-    private fun JsonObject.getIntOrNull(key: String): Int? =
-        get(key)?.jsonPrimitive?.content?.takeIf { it.isNotBlank() }?.toIntOrNull()
 
     private fun JsonElement.toFoldedItemContent(
         initialResult: Map<String, String>,
@@ -99,6 +95,6 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
 
     companion object {
         private const val TAG = "ListViewComponent"
-        private const val SELECT_SINGLE_ITEM_EVENT = "SelectSingleItem"
+        private const val CLICK_ITEM_EVENT = "ClickItem"
     }
 }

@@ -14,7 +14,7 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class DataReferenceTest : ComposeTest(PegaVersion.v24_1_0) {
+class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v24_1_0) {
     private val columns = listOf("ID", "BRAND", "MODEL", "COLOR")
     private val cars = listOf(
         listOf("1", "Ford", "Focus", "Silver"),
@@ -33,7 +33,7 @@ class DataReferenceTest : ComposeTest(PegaVersion.v24_1_0) {
 
         // verify form title
         waitForNode("Rent a car (D-", substring = true)
-        waitForNodes("Select your car", count = 2)
+        waitForNode("Select your car")
 
         // verify columns
         columns.forEach { waitForNodes(it, count = 2) }
@@ -57,7 +57,7 @@ class DataReferenceTest : ComposeTest(PegaVersion.v24_1_0) {
         onNodeWithText("Next").performClick()
 
         // verify selected car
-        waitForNodes("Car for rent", count = 2)
+        waitForNode("Car for rent")
         waitForNode("A5")
         waitForNode("Car details")
         waitForNode("Brand", substring = true)

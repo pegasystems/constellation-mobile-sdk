@@ -16,8 +16,9 @@ export function getReferenceList(pConn) {
 export const buildFieldsForTable = (configFields, pConnect, options) => {
     const { primaryFieldsViewIndex, fields } = options;
     // get resolved field labels for primary fields raw config included in configFields
+    const rawConfigProps = pConnect.getRawConfigProps()
     const fieldsLabels = updateFieldLabels(fields, configFields, primaryFieldsViewIndex, pConnect, {
-        columnsRawConfig: pConnect.getRawConfigProps()?.children?.find(item => item?.name === 'Columns')?.children
+        columnsRawConfig: getColumnsRawConfig(rawConfigProps) || getColumnsRawConfig(rawConfigProps?.presets[0])
     });
 
     return configFields?.map((field, index) => {
@@ -36,6 +37,10 @@ export const buildFieldsForTable = (configFields, pConnect, options) => {
         };
     });
 };
+
+function getColumnsRawConfig(configProps) {
+    return configProps?.children?.find(item => item?.name === 'Columns')?.children
+}
 
 /**
  * This method evaluates whether a row action is allowed based on the provided conditions.
