@@ -42,9 +42,12 @@ export class DataReferenceComponent extends ContainerBaseComponent {
         this.children = this.pConn.getChildren();
         this.#updateSelf();
 
-        if ((['Dropdown', 'Checkbox'].includes(this.firstChildMeta?.type)) &&
+        const shouldPreloadOptions = 
+            (['Dropdown', 'Checkbox'].includes(this.firstChildMeta?.type)) &&
             this.rawViewMetadata.config?.parameters &&
-            !this.firstChildMeta.config.deferDatasource) {
+            !this.firstChildMeta.config.deferDatasource;
+
+        if (shouldPreloadOptions) {
             const { value, key, text } = this.firstChildMeta.config.datasource.fields;
             PCore.getDataApiUtils()
                 .getData(this.refList, { dataViewParameters: this.parameters }, "")
@@ -119,7 +122,6 @@ export class DataReferenceComponent extends ContainerBaseComponent {
                 delete this.firstChildMeta.config.readOnly;
             }
 
-            // todo pelcm add readonly handling
             this.#setChildDatasource();
 
             if (this.firstChildMeta?.type === "Dropdown" && !this.firstChildMeta.config.deferDatasource) {
@@ -192,16 +194,33 @@ export class DataReferenceComponent extends ContainerBaseComponent {
 
     #setChildDatasource() {
         const { type, config } = this.firstChildMeta;
-
-        if (['Dropdown', 'Checkbox'].includes(type) && !config.deferDatasource && config.datasource) {
-            const hasParameters = this.rawViewMetadata.config?.parameters;
-            config.datasource.source = hasParameters ? this.dropDownDataSource : `@DATASOURCE ${this.refList}.pxResults`;
-        } else if (type === 'AutoComplete') {
+        
+        // Early exit: AutoComplete has its own simple datasource logic
+        if (type === 'AutoComplete') {
             config.datasource = this.refList;
-            if (this.rawViewMetadata.config?.parameters) {
+            
+            const hasParameters = this.rawViewMetadata.config?.parameters;
+            if (hasParameters) {
                 config.parameters = this.parameters;
             }
+            return;
         }
+        
+        // Early exit: Only handle Dropdown and Checkbox with non-deferred datasources
+        const isDropdownOrCheckbox = ['Dropdown', 'Checkbox'].includes(type);
+        const hasDatasource = config.datasource;
+        const shouldLoadImmediately = !config.deferDatasource;
+        
+        if (!isDropdownOrCheckbox || !hasDatasource || !shouldLoadImmediately) {
+            return;
+        }
+        
+        // Set datasource based on whether parameters are configured
+        const hasParameters = this.rawViewMetadata.config?.parameters;
+        const preloadedDataSource = this.dropDownDataSource;
+        const dynamicDataSourcePath = `@DATASOURCE ${this.refList}.pxResults`;
+        
+        config.datasource.source = hasParameters ? preloadedDataSource : dynamicDataSourcePath;
     }
 
     // Re-create first child with overridden props
@@ -217,17 +236,6 @@ export class DataReferenceComponent extends ContainerBaseComponent {
             });
 
             this.#setReadOnlyDisplayFlags();
-            // if (
-            //     !this.canBeChangedInReviewMode &&
-            //     this.isDisplayModeEnabled &&
-            //     this.selectionMode === SELECTION_MODE.SINGLE
-            // ) {
-            //     this.displaySingleRef = true;
-            // }
-            //
-            // if (this.isDisplayModeEnabled && this.selectionMode === SELECTION_MODE.MULTI) {
-            //     this.displayMultiRef = true;
-            // }
 
             // In the case of a datasource with parameters you cannot load the dropdown before the parameters
             if (type === "Dropdown" && this.rawViewMetadata.config?.parameters && this.dropDownDataSource === null) {
@@ -262,11 +270,18 @@ export class DataReferenceComponent extends ContainerBaseComponent {
         const isSingleMode = this.selectionMode === SELECTION_MODE.SINGLE;
         const isMultiMode = this.selectionMode === SELECTION_MODE.MULTI;
 
-        if (isSingleMode && (this.displayAs === 'readonly' || this.isDisplayModeEnabled) && !this.canBeChangedInReviewMode) {
+        const shouldDisplayOnlySingle = isSingleMode && 
+            (this.displayAs === 'readonly' || this.isDisplayModeEnabled) && 
+            !this.canBeChangedInReviewMode;
+
+        if (shouldDisplayOnlySingle) {
             this.props.displayOnlySingle = true;
         }
 
-        if (isMultiMode && (['readonly', 'readonlyMulti', 'map'].includes(this.displayAs) || this.isDisplayModeEnabled)) {
+        const shouldDisplayOnlyMulti = isMultiMode && 
+            (['readonly', 'readonlyMulti', 'map'].includes(this.displayAs) || this.isDisplayModeEnabled);
+
+        if (shouldDisplayOnlyMulti) {
             this.props.displayOnlyMulti = true;
         }
     }

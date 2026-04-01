@@ -38,29 +38,39 @@ export class CheckBoxComponent extends FieldBaseComponent {
 
         this.selectionMode = configProps.selectionMode;
         this.props.selectionMode = this.selectionMode;
-        if (this.selectionMode === MULTI_MODE) {
-            this.referenceList = configProps.referenceList;
-            this.selectionList = configProps.selectionList;
-            this.selectedValues = configProps.readonlyContextList;
-            this.primaryField = configProps.primaryField;
-            this.props.readOnly = configProps.renderMode === 'ReadOnly' || configProps.displayMode === 'DISPLAY_ONLY' || configProps.readOnly;
 
-            this.datasource = configProps.datasource;
-            this.selectionKey = configProps.selectionKey;
-            this.checkboxGroupItems = this.datasource?.source || [];
-            const dataField = this.selectionKey?.split?.('.')[1] ?? '';
-            this.checkboxGroupItems.forEach(element => {
-                element.selected = this.selectedValues?.some?.(data => data[dataField] === element.key);
-            });
-            this.props.items = this.checkboxGroupItems;
+        if (this.selectionMode === MULTI_MODE) {
+            this.#updateMultiModeProps(configProps);
         } else {
-            this.props.hideLabel = configProps.hideLabel ?? false;
-            this.props.caption = configProps.caption ?? "";
-            this.props.trueLabel = configProps.trueLabel ?? "Yes";
-            this.props.falseLabel = configProps.falseLabel ?? "No";
-            this.propName = this.pConn.getStateProps().value;
+            this.#updateSingleModeProps(configProps);
         }
+
         this.componentsManager.onComponentPropsUpdate(this);
+    }
+
+    #updateMultiModeProps(configProps) {
+        this.referenceList = configProps.referenceList;
+        this.selectionList = configProps.selectionList;
+        this.selectedValues = configProps.readonlyContextList;
+        this.primaryField = configProps.primaryField;
+        this.props.readOnly = configProps.renderMode === 'ReadOnly' || configProps.displayMode === 'DISPLAY_ONLY' || configProps.readOnly;
+
+        this.datasource = configProps.datasource;
+        this.selectionKey = configProps.selectionKey;
+        this.checkboxGroupItems = this.datasource?.source || [];
+        const dataField = this.selectionKey?.split?.('.')[1] ?? '';
+        this.checkboxGroupItems.forEach(element => {
+            element.selected = this.selectedValues?.some?.(data => data[dataField] === element.key);
+        });
+        this.props.items = this.checkboxGroupItems;
+    }
+
+    #updateSingleModeProps(configProps) {
+        this.props.hideLabel = configProps.hideLabel ?? false;
+        this.props.caption = configProps.caption ?? "";
+        this.props.trueLabel = configProps.trueLabel ?? "Yes";
+        this.props.falseLabel = configProps.falseLabel ?? "No";
+        this.propName = this.pConn.getStateProps().value;
     }
 
     fieldOnChange(value, event) {
@@ -90,10 +100,15 @@ export class CheckBoxComponent extends FieldBaseComponent {
     }
 
     #initMultiMode() {
-        if (this.referenceList?.length > 0 && !this.props.readOnly) {
-            this.pConn.setReferenceList(this.selectionList);
-            updateNewInstructions(this.pConn, this.selectionList);
+        const hasReferenceList = this.referenceList?.length > 0;
+        const isEditable = !this.props.readOnly;
+
+        if (!hasReferenceList || !isEditable) {
+            return;
         }
+
+        this.pConn.setReferenceList(this.selectionList);
+        updateNewInstructions(this.pConn, this.selectionList);
     }
 
     #handleChangeMultiMode(element) {
