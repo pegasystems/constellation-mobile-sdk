@@ -18,39 +18,42 @@ class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
                 FieldValue(label, displayValue)
             },
             editable = {
-                if (selectionMode == CheckboxComponent.SelectionMode.SINGLE) {
-                    Checkbox(
-                        value = value.toBoolean(),
-                        caption = caption,
-                        label = label,
-                        helperText = helperText,
-                        validateMessage = validateMessage,
-                        hideLabel = hideLabel,
-                        required = required,
-                        disabled = disabled,
-                        readOnly = readOnly,
-                        onValueChange = { updateValue(it.toString()) },
-                        testTag = "checkbox_[$caption]"
-                    )
-                } else {
-                    CheckboxGroup(
-                        options = checkboxGroupOptions.map {
-                            MultiSelectOption(
-                                it.key,
-                                it.text,
-                                it.selected
-                            )
-                        },
-                        label = label,
-                        helperText = helperText,
-                        validateMessage = validateMessage,
-                        hideLabel = hideLabel,
-                        required = required,
-                        disabled = disabled,
-                        readOnly = readOnly,
-                        onOptionClick = { id, selected -> onOptionClick(id, selected) },
-                        testTag = "checkbox_group_[$label]"
-                    )
+                when (selectionMode) {
+                    CheckboxComponent.SelectionMode.SINGLE -> {
+                        Checkbox(
+                            value = value.toBoolean(),
+                            caption = caption,
+                            label = label,
+                            helperText = helperText,
+                            validateMessage = validateMessage,
+                            hideLabel = hideLabel,
+                            required = required,
+                            disabled = disabled,
+                            readOnly = readOnly,
+                            onValueChange = { updateValue(it.toString()) },
+                            testTag = "checkbox_[$caption]"
+                        )
+                    }
+                    CheckboxComponent.SelectionMode.MULTI -> {
+                        CheckboxGroup(
+                            options = checkboxGroupOptions.map {
+                                MultiSelectOption(
+                                    it.key,
+                                    it.text,
+                                    it.selected
+                                )
+                            },
+                            label = label,
+                            helperText = helperText,
+                            validateMessage = validateMessage,
+                            hideLabel = hideLabel,
+                            required = required,
+                            disabled = disabled,
+                            readOnly = readOnly,
+                            onOptionClick = { id, selected -> onOptionClick(id, selected) },
+                            testTag = "checkbox_group_[$label]"
+                        )
+                    }
                 }
             }
         )
