@@ -193,34 +193,36 @@ export class DataReferenceComponent extends ContainerBaseComponent {
 
 
     #setChildDatasource() {
-        const { type, config } = this.firstChildMeta;
-        
-        // Early exit: AutoComplete has its own simple datasource logic
+        const { type } = this.firstChildMeta;
+
         if (type === 'AutoComplete') {
-            config.datasource = this.refList;
-            
-            const hasParameters = this.rawViewMetadata.config?.parameters;
-            if (hasParameters) {
-                config.parameters = this.parameters;
-            }
-            return;
+            this.#setAutoCompleteDatasource();
+        } else if (['Dropdown', 'Checkbox'].includes(type)) {
+            this.#setDropdownOrCheckboxDatasource();
         }
-        
-        // Early exit: Only handle Dropdown and Checkbox with non-deferred datasources
-        const isDropdownOrCheckbox = ['Dropdown', 'Checkbox'].includes(type);
-        const hasDatasource = config.datasource;
-        const shouldLoadImmediately = !config.deferDatasource;
-        
-        if (!isDropdownOrCheckbox || !hasDatasource || !shouldLoadImmediately) {
-            return;
-        }
-        
-        // Set datasource based on whether parameters are configured
+    }
+
+    #setAutoCompleteDatasource() {
+        const { config } = this.firstChildMeta;
+        config.datasource = this.refList;
+
         const hasParameters = this.rawViewMetadata.config?.parameters;
-        const preloadedDataSource = this.dropDownDataSource;
-        const dynamicDataSourcePath = `@DATASOURCE ${this.refList}.pxResults`;
-        
-        config.datasource.source = hasParameters ? preloadedDataSource : dynamicDataSourcePath;
+        if (hasParameters) {
+            config.parameters = this.parameters;
+        }
+    }
+
+    #setDropdownOrCheckboxDatasource() {
+        const { config } = this.firstChildMeta;
+
+        if (!config.datasource || config.deferDatasource) {
+            return;
+        }
+
+        const hasParameters = this.rawViewMetadata.config?.parameters;
+        config.datasource.source = hasParameters
+            ? this.dropDownDataSource
+            : `@DATASOURCE ${this.refList}.pxResults`;
     }
 
     // Re-create first child with overridden props

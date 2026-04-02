@@ -100,15 +100,10 @@ export class CheckBoxComponent extends FieldBaseComponent {
     }
 
     #initMultiMode() {
-        const hasReferenceList = this.referenceList?.length > 0;
-        const isEditable = !this.props.readOnly;
-
-        if (!hasReferenceList || !isEditable) {
-            return;
+        if (this.referenceList?.length > 0 && !this.props.readOnly) {
+            this.pConn.setReferenceList(this.selectionList);
+            updateNewInstructions(this.pConn, this.selectionList);
         }
-
-        this.pConn.setReferenceList(this.selectionList);
-        updateNewInstructions(this.pConn, this.selectionList);
     }
 
     #handleChangeMultiMode(element) {
