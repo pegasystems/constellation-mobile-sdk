@@ -21,6 +21,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Group
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Integer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ListView
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ModalViewContainer
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Multiselect
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
@@ -63,6 +64,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.DecimalRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.DropdownRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.EmailRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.IntegerRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.MultiselectRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.PhoneRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.RadioButtonsRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.RichTextRenderer
@@ -104,6 +106,7 @@ object ComponentRenderers {
         Integer to IntegerRenderer(),
         ListView to ListViewRenderer(),
         ModalViewContainer to ModalViewContainerRenderer(),
+        Multiselect to MultiselectRenderer(),
         OneColumn to OneColumnRenderer(),
         Phone to PhoneRenderer(),
         RadioButtons to RadioButtonsRenderer(),

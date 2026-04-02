@@ -34,6 +34,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("E-24003") -> handleEmbeddedDataTableSimpleTableTest(request, actionId)
             assignmentId.contains("E-26028") -> handleEmbeddedDataConditionsTest(actionId)
             assignmentId.contains("D-3020") -> handleDataReferenceListOfRecordsTest(actionId)
+            assignmentId.contains("D-17009") -> handleDataReferenceMultiSelectTest(request, actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -59,6 +60,24 @@ class DxAssignmentsHandler : MockHandler {
         }
     }
 
+    private fun handleDataReferenceMultiSelectTest(request: MockRequest, actionId: String): MockResponse {
+        if (actionId != "Create") return Error(404, "Invalid actionId: $actionId")
+
+        val pageInstructions = request.getPageInstructions()
+            ?: return Error(400, "Missing request body or pageInstructions")
+
+        // Verify at least 2 valid INSERT instructions targeting .CarsSelection with Id
+        val validInsertCount = pageInstructions.count {
+            val obj = it.jsonObject
+            obj["instruction"]?.jsonPrimitive?.content == "INSERT" &&
+                obj["target"]?.jsonPrimitive?.content == ".CarsSelection" &&
+                obj["content"]?.jsonObject?.containsKey("Id") == true
+        }
+        if (validInsertCount < 2) return Error(400, "Expected at least 2 valid INSERT instructions for .CarsSelection, got $validInsertCount")
+
+        return Asset("responses/dx/assignments/DataReferenceMultiSelectTest-1-Create.json")
+    }
+
     private fun handleEmbeddedDataRepeatingViewTest(actionId: String): MockResponse {
         return when (actionId) {
             "EDRepeatingViewEditable" -> Asset("responses/dx/assignments/EmbeddedDataTest-1-RepeatingViewReadonly.json")
@@ -70,10 +89,9 @@ class DxAssignmentsHandler : MockHandler {
         return when (actionId) {
             "EmbeddedDataDisplayAsRepeatingViewEdit" -> Asset("responses/dx/assignments/EmbeddedDataTest-EditableTablePopup.json")
             "EDTableEditablePopup/refresh" -> {
-                val body = request.body ?: return Error(400, "Missing request body")
-                val bodyJson = Json.parseToJsonElement(body).jsonObject
-                val pageInstructions = bodyJson.getValue("pageInstructions").jsonArray
-                return when (pageInstructions.size) {
+                val pageInstructions = request.getPageInstructions()
+                    ?: return Error(400, "Missing request body or pageInstructions")
+                when (pageInstructions.size) {
                     2 -> Asset("responses/dx/assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-1.json")
                     4 -> Asset("responses/dx/assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-2.json")
                     else -> Error(404, "No data for given pageInstructions size: ${pageInstructions.size} for actionId: $actionId")
@@ -118,6 +136,10 @@ class DxAssignmentsHandler : MockHandler {
         "OtherNotes" -> Asset("responses/dx/assignments/NewService-4-OtherNotes.json")
         else -> Error(404, "Invalid actionId: $actionId")
     }
+}
+
+private fun MockRequest.getPageInstructions() = body?.let {
+    Json.parseToJsonElement(it).jsonObject["pageInstructions"]?.jsonArray
 }
 
 private fun MockRequest.getContentPageKey(page: String, key: String) = body?.let {

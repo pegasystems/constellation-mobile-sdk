@@ -1,0 +1,74 @@
+{
+  "data": {
+    "caseInfo": {
+      "caseTypeID": "OI1OYV-Marco2-Work-DataReferenceMultiSelectTest2",
+      "owner": "user@marco",
+      "availableActions": [{
+        "name": "Edit details",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/OI1OYV-MARCO2-WORK D-6024/actions/pyUpdateCaseDetails",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyUpdateCaseDetails",
+        "type": "Case"
+      }, {
+        "name": "Change stage",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/OI1OYV-MARCO2-WORK D-6024/actions/pyChangeStage",
+            "type": "GET",
+            "title": "Get case action details"
+          }
+        },
+        "ID": "pyChangeStage",
+        "type": "Case"
+      }],
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "user@marco",
+      "assignments": [],
+      "hasNewAttachments": false,
+      "businessID": "D-6024",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "WidgetsToRefresh": ["TaskList"],
+      "caseTypeName": "DataReferenceMultiSelectTest2",
+      "urgency": 10,
+      "createTime": "2026-04-02T09:33:35.200Z",
+      "createdBy": "user@marco",
+      "name": "DataReferenceMultiSelectTest2",
+      "stages": [{
+        "entryTime": "2026-04-02T09:33:35.205Z",
+        "name": "Stage1",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "/cases/OI1OYV-MARCO2-WORK D-6024/stages/PRIM0",
+            "type": "PUT",
+            "title": "Jump to this stage"
+          }
+        },
+        "visited_status": "completed",
+        "ID": "PRIM0",
+        "type": "Primary",
+        "transitionType": "create"
+      }],
+      "ID": "OI1OYV-MARCO2-WORK D-6024",
+      "caseTypeIcon": "cmicons/pycase.svg",
+      "status": "New",
+      "stageID": "PRIM0",
+      "stageLabel": "Stage1",
+      "lastUpdateTime": "2026-04-02T09:33:41.000Z",
+      "content": {}
+    }
+  },
+  "confirmationNote": "Thanks for registration"
+}
