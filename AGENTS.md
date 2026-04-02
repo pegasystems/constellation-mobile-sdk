@@ -1,5 +1,9 @@
 # AGENTS.md — Constellation Mobile SDK
 
+## General most important rules
+1. Do not hallucinate. If you don't know something please ask.
+2. Do not change the logic of the code while doing migrations or refactoring, unless explicitly asked for.
+
 ## Project Overview
 
 Kotlin Multiplatform (KMP) SDK for embedding Pega Constellation forms into mobile apps.
@@ -151,7 +155,7 @@ All components extend `BaseComponent`. Required methods in order:
 - `try/catch` only at system boundaries (bridge calls, JSON parsing)
 - String interpolation with template literals: `` `@P .${context}` ``
 
-### TS → JS Migration Rules
+### Angular TS → JS Migration Rules
 
 When migrating `.ts` (Angular) components to `.js`:
 1. Remove all Angular imports, decorators (`@Component`, `@Input`), and TypeScript types
@@ -168,3 +172,20 @@ When migrating `.ts` (Angular) components to `.js`:
 12. Replace `this.pConn$` → `this.pConn`; remove all `as any` casts 
 13. Normalize quotes to double quotes
 14. If there is some external dependency try to look in additional provided ts files and copy its content to migrated js. If nothing is found try to find existing equivalent in js files or create mocked implementation.
+15. When migrating parts of code prefer copy-paste over code modification.
+16. Never change logic of migrated components.
+
+### Writing Unit-tests for JS components
+1. this.pConn should be mocked
+2. PCore should be mocked if needed
+3. please test the following methods:
+  - init()
+  - update(pConn)
+  - updateSelf()
+  - fieldOnChange(value, event)
+  - fieldOnBlur(value,event)
+  - onEvent(event)
+4. test interactions with this.componentManager
+5. test interactions with this.pConn
+6. test interactions with PCore (if needed)
+7. evaluate props sent in onComponentPropsUpdate() method of componentManager in one test if resonable
