@@ -113,7 +113,10 @@ export class ListViewComponent extends BaseComponent {
         // By default, pyGUID is used for Data classes and pyID is for Work classes as row-id/key
         const defaultRowID = this.configProps$?.referenceType === "Case" ? "pyID" : "pyGUID";
         this.compositeKeys = this.configProps$?.compositeKeys ?? this.payload.compositeKeys;
+        console.debug(TAG, `Using compositeKeys: ${JSON.stringify(this.compositeKeys)}`);
+
         this.rowID = this.compositeKeys && this.compositeKeys?.length === 1 ? this.compositeKeys[0] : defaultRowID;
+        console.debug(TAG, `Using rowID: ${this.rowID}`);
 
         this.componentValue = this.configProps$?.value;
         this.contextPage = this.configProps$?.contextPage;
@@ -186,7 +189,11 @@ export class ListViewComponent extends BaseComponent {
     }
 
     #updateSelectedItemsMulti() {
-        const readonlyIds = new Set(this.configProps$.readonlyContextList.map(element => element[this.rowID]));
+        const readonlyIds = new Set(
+            this.configProps$.readonlyContextList
+                .map(element => element[this.rowID])
+                .filter(id => id !== "" && id != null)
+        );
         this.listViewItems.forEach((item) => {
             item.selected = readonlyIds.has(item[this.rowID]);
         });
