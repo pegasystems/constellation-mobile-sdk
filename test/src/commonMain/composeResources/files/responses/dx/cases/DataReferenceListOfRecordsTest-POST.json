@@ -8,7 +8,7 @@
         "links": {
           "open": {
             "rel": "self",
-            "href": "/cases/OI1OYV-MARCO2-WORK D-3020/actions/pyUpdateCaseDetails",
+            "href": "/cases/OI1OYV-MARCO2-WORK D-7004/actions/pyUpdateCaseDetails",
             "type": "GET",
             "title": "Get case action details"
           }
@@ -20,7 +20,7 @@
         "links": {
           "open": {
             "rel": "self",
-            "href": "/cases/OI1OYV-MARCO2-WORK D-3020/actions/pyChangeStage",
+            "href": "/cases/OI1OYV-MARCO2-WORK D-7004/actions/pyChangeStage",
             "type": "GET",
             "title": "Get case action details"
           }
@@ -41,7 +41,7 @@
           "type": "worklist"
         },
         "processID": "CreateForm_Default",
-        "createTime": "2026-03-25T12:37:17.712Z",
+        "createTime": "2026-04-07T10:11:19.748Z",
         "urgency": 10,
         "processName": "Create",
         "isMultiStep": "true",
@@ -50,30 +50,30 @@
         "links": {
           "open": {
             "rel": "self",
-            "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT",
+            "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT",
             "type": "GET",
             "title": "Get assignment details"
           }
         },
-        "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT",
+        "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT",
         "actions": [{
           "name": "Create",
           "links": {
             "submit": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT/actions/Create",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT/actions/Create",
               "type": "PATCH",
               "title": "Submit assignment action "
             },
             "save": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT/actions/Create/save",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT/actions/Create/save",
               "type": "PATCH",
               "title": "Save assignment action "
             },
             "open": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT/actions/Create",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT/actions/Create",
               "type": "GET",
               "title": "Get assignment action details"
             }
@@ -83,7 +83,7 @@
         }]
       }],
       "hasNewAttachments": false,
-      "businessID": "D-3020",
+      "businessID": "D-7004",
       "sla": {
         "goal": "",
         "deadline": ""
@@ -91,16 +91,16 @@
       "WidgetsToRefresh": ["TaskList"],
       "caseTypeName": "DataReferenceListOfRecordsTest",
       "urgency": 10,
-      "createTime": "2026-03-25T12:37:17.707Z",
+      "createTime": "2026-04-07T10:11:19.739Z",
       "createdBy": "user@marco",
       "name": "DataReferenceListOfRecordsTest",
       "stages": [{
-        "entryTime": "2026-03-25T12:37:17.711Z",
+        "entryTime": "2026-04-07T10:11:19.746Z",
         "name": "Create",
         "links": {
           "open": {
             "rel": "self",
-            "href": "/cases/OI1OYV-MARCO2-WORK D-3020/stages/PRIM0",
+            "href": "/cases/OI1OYV-MARCO2-WORK D-7004/stages/PRIM0",
             "type": "PUT",
             "title": "Jump to this stage"
           }
@@ -110,17 +110,17 @@
         "type": "Primary",
         "transitionType": "create"
       }],
-      "ID": "OI1OYV-MARCO2-WORK D-3020",
+      "ID": "OI1OYV-MARCO2-WORK D-7004",
       "caseTypeIcon": "cmicons/pycase.svg",
       "status": "New",
       "stageID": "PRIM0",
       "stageLabel": "Create",
-      "lastUpdateTime": "2026-03-25T12:37:17.714Z",
+      "lastUpdateTime": "2026-04-07T10:11:19.751Z",
       "content": {
         "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsTest",
         "pxObjClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsTest",
         "pyLabel": "DataReferenceListOfRecordsTest",
-        "pyID": "D-3020",
+        "pyID": "D-7004",
         "pyViewName": "Create",
         "pyViewContext": "",
         "DataReferenceListOfRecordsCars": []
@@ -252,6 +252,16 @@
                       "value": "@P .Model"
                     },
                     "type": "TextInput"
+                  }, {
+                    "config": {
+                      "allowDecimals": true,
+                      "isoCodeSelection": "constant",
+                      "label": "@FL .Price",
+                      "labelOption": "default",
+                      "readOnly": true,
+                      "value": "@P .Price"
+                    },
+                    "type": "Currency"
                   }],
                   "name": "Columns",
                   "type": "Region"
@@ -264,7 +274,7 @@
               }],
               "primaryField": ".Brand",
               "readonlyContextList": "@P .DataReferenceListOfRecordsCars",
-              "referenceList": "D_CarsList",
+              "referenceList": "D_CarsList2",
               "referenceType": "Data",
               "selectionKey": ".pyGUID",
               "selectionList": ".DataReferenceListOfRecordsCars",
@@ -289,7 +299,7 @@
               "brand": ""
             },
             "parentContextClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsTest",
-            "referenceList": "D_CarsList",
+            "referenceList": "D_CarsList2",
             "ruleClass": "OI1OYV-Marco2-Data-Car",
             "selectionMode": "multi",
             "template": "DataReference"
@@ -313,7 +323,7 @@
           "isAlternateKeyStorage": true,
           "structure": "page"
         },
-        "D_CarsList": {
+        "D_CarsList2": {
           "parameters": [{
             "name": "brand",
             "defaultValue": ""
@@ -422,10 +432,16 @@
           "maxLength": 256,
           "displayAs": "pxTextInput",
           "label": "model"
+        }],
+        "Price": [{
+          "classID": "OI1OYV-Marco2-Data-Car",
+          "type": "Decimal",
+          "displayAs": "pxCurrency",
+          "label": "price"
         }]
       }
     },
-    "components": ["DefaultForm", "FlowContainer", "Region", "SimpleTableSelect", "TextInput", "View", "DataReference"],
+    "components": ["DefaultForm", "FlowContainer", "Currency", "Region", "SimpleTableSelect", "TextInput", "View", "DataReference"],
     "localeReferences": ["OI1OYV-MARCO2-WORK-DATAREFERENCELISTOFRECORDSTEST!CASE!DATAREFERENCELISTOFRECORDSTEST"],
     "root": {
       "type": "reference",
@@ -452,7 +468,7 @@
         "links": {
           "open": {
             "rel": "self",
-            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF2",
+            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF2",
             "type": "PATCH",
             "title": "Go to DataReference ListOfRecords - SimpleTable"
           }
@@ -466,7 +482,7 @@
         "links": {
           "open": {
             "rel": "self",
-            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF3",
+            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF3",
             "type": "PATCH",
             "title": "Go to DataReference ListOfRecords - Table readonly"
           }
@@ -480,12 +496,26 @@
         "links": {
           "open": {
             "rel": "self",
-            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF4",
+            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF4",
             "type": "PATCH",
             "title": "Go to DataReference ListOfRecords - SimpleTable readonly"
           }
         },
         "ID": "AssignmentSF4"
+      }, {
+        "allow_jump": true,
+        "name": "DataReference ListOfRecords Checkbox group",
+        "actionID": "DataReferenceListOfRecordsCheckbox",
+        "visited_status": "future",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF5",
+            "type": "PATCH",
+            "title": "Go to DataReference ListOfRecords Checkbox group"
+          }
+        },
+        "ID": "AssignmentSF5"
       }]
     },
     "actionButtons": {
@@ -501,18 +531,18 @@
       }]
     }
   },
-  "ID": "OI1OYV-MARCO2-WORK D-3020",
+  "ID": "OI1OYV-MARCO2-WORK D-7004",
   "nextAssignmentInfo": {
     "context": "self",
     "className": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsTest",
     "links": {
       "open": {
         "rel": "self",
-        "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT",
+        "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT",
         "type": "GET",
         "title": "Get assignment details"
       }
     },
-    "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-3020!CREATEFORM_DEFAULT"
+    "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-7004!CREATEFORM_DEFAULT"
   }
 }

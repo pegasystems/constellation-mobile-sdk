@@ -33,7 +33,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("E-22056") -> handleEmbeddedDataRepeatingViewTest(actionId)
             assignmentId.contains("E-24003") -> handleEmbeddedDataTableSimpleTableTest(request, actionId)
             assignmentId.contains("E-26028") -> handleEmbeddedDataConditionsTest(actionId)
-            assignmentId.contains("D-3020") -> handleDataReferenceListOfRecordsTest(actionId)
+            assignmentId.contains("D-7004") -> handleDataReferenceListOfRecordsTest(actionId)
             assignmentId.contains("D-17009") -> handleDataReferenceMultiSelectTest(request, actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")

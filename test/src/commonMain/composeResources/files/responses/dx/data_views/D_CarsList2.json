@@ -1,0 +1,37 @@
+{
+  "fetchDateTime": "2026-04-07T10:11:20.236Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 4,
+  "data": [{
+    "Brand": "Audi",
+    "pxObjClass": "OI1OYV-Marco2-Data-Car",
+    "Price": 30000.000000000,
+    "Model": "A4",
+    "pyGUID": "1d6b041c-2751-4da7-9be7-f36c35c9404e"
+  }, {
+    "Brand": "Ford",
+    "pxObjClass": "OI1OYV-Marco2-Data-Car",
+    "Price": 25000.000000000,
+    "Model": "Focus",
+    "pyGUID": "909106bf-f108-4751-9357-8a628a01dc3f"
+  }, {
+    "Brand": "Fiat",
+    "pxObjClass": "OI1OYV-Marco2-Data-Car",
+    "Price": 10000.000000000,
+    "Model": "Panda",
+    "pyGUID": "ddbe3b2a-1ffa-4685-8c14-356349906617"
+  }, {
+    "Brand": "Skoda",
+    "pxObjClass": "OI1OYV-Marco2-Data-Car",
+    "Price": 35000.000000000,
+    "Model": "Octavia",
+    "pyGUID": "e77620fb-6fb5-455b-b0ef-cc78689092dc"
+  }],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS - Pega (Local)",
+    "sourceExecutionTime": "2.893 ms"
+  },
+  "pageSize": 4
+}
