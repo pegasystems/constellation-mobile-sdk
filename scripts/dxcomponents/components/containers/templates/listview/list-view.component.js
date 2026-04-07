@@ -71,9 +71,9 @@ export class ListViewComponent extends BaseComponent {
             const clickedItemIndex = Number(event.componentData.clickedItemIndex);
             const isSelected = event.componentData.isSelected === "true";
             this.#fieldOnChange(clickedItemIndex, isSelected);
-      } else {
+        } else {
             console.log(TAG, `onEvent received unsupported event type ${event.type}`);
-      }
+        }
     }
 
     #shouldReloadData(oldPayload, newPayload) {
@@ -173,11 +173,11 @@ export class ListViewComponent extends BaseComponent {
     }
 
     #updateSelection() {
-      if (this.singleSelectionMode) {
-        this.#updateSelectedItemSingle();
-      } else if (this.multiSelectionMode) {
-        this.#updateSelectedItemsMulti();
-      }
+        if (this.singleSelectionMode) {
+            this.#updateSelectedItemSingle();
+        } else if (this.multiSelectionMode) {
+            this.#updateSelectedItemsMulti();
+        }
     }
 
     #updateSelectedItemSingle() {
@@ -189,13 +189,38 @@ export class ListViewComponent extends BaseComponent {
     }
 
     #updateSelectedItemsMulti() {
-        const readonlyIds = new Set(
+        if (this.compositeKeys && this.compositeKeys.length > 1) {
+            this.#updateSelectedItemsMultiForCompositeKeys();
+        } else {
+            this.#updateSelectedItemsMultiForSingleKey()
+        }
+    }
+
+
+    #updateSelectedItemsMultiForCompositeKeys() {
+        if (!this.listViewItems || this.listViewItems.length === 0) {
+            return;
+        }
+        const selectedCompositeIds = this.configProps$?.readonlyContextList || [];
+        this.listViewItems.forEach((item) => {
+            item.selected = selectedCompositeIds.some((context) => {
+                return this.compositeKeys.every((key) => {
+                    const left = item[key];
+                    const right = context[key];
+                    return left != null && right != null && left === right;
+                });
+            });
+        });
+    }
+
+    #updateSelectedItemsMultiForSingleKey() {
+        const selectedIds = new Set(
             this.configProps$.readonlyContextList
                 .map(element => element[this.rowID])
                 .filter(id => id !== "" && id != null)
         );
         this.listViewItems.forEach((item) => {
-            item.selected = readonlyIds.has(item[this.rowID]);
+            item.selected = selectedIds.has(item[this.rowID]);
         });
     }
 
@@ -203,7 +228,6 @@ export class ListViewComponent extends BaseComponent {
         if (!this.listViewItems || this.listViewItems.length === 0) {
             return;
         }
-
         this.listViewItems.forEach((item) => {
             item.selected = this.compositeKeys.every((key) => {
                 const left = item[key];
@@ -252,12 +276,12 @@ export class ListViewComponent extends BaseComponent {
             const workListDataPromise = !this.bInForm$
                 ? PCore.getDataApiUtils().getData(refList, payload)
                 : PCore.getDataPageUtils().getDataAsync(
-                      refList,
-                      this.pConn.getContextName(),
-                      payload.dataViewParameters ? payload.dataViewParameters : dataViewParameters,
-                      this.paging,
-                      this.query
-                  );
+                    refList,
+                    this.pConn.getContextName(),
+                    payload.dataViewParameters ? payload.dataViewParameters : dataViewParameters,
+                    this.paging,
+                    this.query
+                );
 
             Promise.all([fieldsMetaDataPromise, workListDataPromise])
                 .then(([fieldsMetaData, workListData]) => {
