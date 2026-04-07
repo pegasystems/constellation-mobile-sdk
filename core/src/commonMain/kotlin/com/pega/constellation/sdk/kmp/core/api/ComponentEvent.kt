@@ -50,8 +50,18 @@ data class ComponentEvent(
                 )
             )
 
+        fun forItemClick(itemIndex: Int, isSelected: Boolean) =
+            ComponentEvent(
+                type = CLICK_ITEM_EVENT,
+                componentData = mapOf(
+                    "clickedItemIndex" to itemIndex.toString(),
+                    "isSelected" to isSelected.toString()
+                )
+            )
+
         private const val FIELD_CHANGE = "FieldChange"
         private const val FIELD_CHANGE_WITH_FOCUS = "FieldChangeWithFocus"
         private const val ACTION_BUTTON_CLICK = "ActionButtonClick"
+        private const val CLICK_ITEM_EVENT = "ClickItem"
     }
 }
