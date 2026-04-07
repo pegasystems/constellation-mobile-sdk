@@ -21,6 +21,7 @@ class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
         return when (dataViewId) {
             "D_pxBootstrapConfig" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-${pegaVersion.coreJsVersionString}.json")
             "D_CarsList" -> handleCarsList(request.body ?: "")
+            "D_CarsList2" -> Asset("responses/dx/data_views/D_CarsList2.json")
             "D_SampleCaseTypeList" -> Asset("responses/dx/data_views/D_SampleCaseTypeList.json")
             "D_ListOfFilteredEncryptionKeys" -> handleEncryptionKeysList(request.body ?: "")
             "D_EncryptionKeysList" -> Asset("responses/dx/data_views/D_EncryptionKeysList-all.json")

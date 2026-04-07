@@ -71,6 +71,8 @@ export class FieldBaseComponent extends BaseComponent {
     }
 
     onEvent(event) {
+        if (this.props.readOnly) return;
+
         const value = event.componentData !== undefined ? event.componentData.value : undefined;
         const focused = event.eventData !== undefined ? event.eventData.focused : undefined;
         switch (event.type) {
@@ -99,7 +101,7 @@ export class FieldBaseComponent extends BaseComponent {
         const submittedValue = this.pConn.resolveConfigProps(this.pConn.getConfigProps()).value ?? "";
         // Preventing 'changeNblur' events for unchanged field values.
         // Sending it for field which is a dropdown param causes dropdown value to be cleared
-        if (submittedValue !== this.props.value) {
+        if (submittedValue.toString() !== this.props.value) {
             handleEvent(this.pConn.getActionsApi(), "changeNblur", this.propName, this.props.value);
         }
         this.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
