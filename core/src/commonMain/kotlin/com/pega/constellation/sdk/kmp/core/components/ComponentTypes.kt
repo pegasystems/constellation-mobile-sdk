@@ -48,6 +48,7 @@ object ComponentTypes {
     val ActionButtons = ComponentType("ActionButtons")
     val AlertBanner = ComponentType("AlertBanner")
     val AutoComplete = ComponentType("AutoComplete")
+    val Multiselect = ComponentType("Multiselect")
 
     // unsupported
     val Unsupported = ComponentType("Unsupported")

@@ -33,6 +33,7 @@ class DxCasesHandler : MockHandler {
             "O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions" -> Asset("responses/dx/cases/EmbeddedDataTest-Conditions-POST.json")
             "O40M3A-MarekCo-Work-DataReferenceTest2" -> Asset("responses/dx/cases/DataReferenceTest-POST.json")
             "O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest" -> Asset("responses/dx/cases/DataReferenceListOfRecordsTest-POST.json")
+            "O40M3A-MarekCo-Work-DataReferenceMultiSelectTest" -> Asset("responses/dx/cases/DataReferenceMultiSelectTest-POST.json")
             "O40M3A-MarekCo-Work-KeysAndCiphers" -> Asset("responses/dx/cases/KeysAndCiphers-POST.json")
             "O40M3A-MarekCo-Work-GroupTest" -> Asset("responses/dx/cases/GroupTest-POST.json")
             "O40M3A-MarekCo-Work-NestedJSON" -> Asset("responses/dx/cases/NestedJSON-POST.json")

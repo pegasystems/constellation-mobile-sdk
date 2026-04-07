@@ -71,6 +71,7 @@ import { FieldGroupTemplateComponent } from "../components/containers/templates/
 import { ListViewComponent } from "../components/containers/templates/listview/list-view.component.js";
 // import { MultiReferenceReadonlyComponent } from './_components/template/multi-reference-readonly/multi-reference-readonly.component';
 // import { MultiselectComponent } from './_components/field/multiselect/multiselect.component';
+import { MultiselectComponent } from "../components/fields/multiselect.component.js";
 // import { NarrowWideFormComponent } from './_components/template/narrow-wide-form/narrow-wide-form.component';
 import { OneColumnComponent } from "../components/containers/one-column.component.js";
 // import { OneColumnPageComponent } from './_components/template/one-column-page/one-column-page.component';
@@ -189,7 +190,7 @@ const pegaSdkComponentMap = {
     // MaterialUtility: MaterialUtilityComponent,
     ModalViewContainer: ModalViewContainerComponent,
     // MultiReferenceReadOnly: MultiReferenceReadonlyComponent,
-    // Multiselect: MultiselectComponent,
+    Multiselect: MultiselectComponent,
     // MultiStep: MultiStepComponent,
     // //   'NarrowWide': NarrowWideFormComponent,
     // NarrowWideDetails: DetailsNarrowWideComponent,
