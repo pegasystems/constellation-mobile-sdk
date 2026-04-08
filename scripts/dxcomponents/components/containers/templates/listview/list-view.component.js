@@ -192,15 +192,13 @@ export class ListViewComponent extends BaseComponent {
         if (this.compositeKeys && this.compositeKeys.length > 1) {
             this.#updateSelectedItemsMultiForCompositeKeys();
         } else {
-            this.#updateSelectedItemsMultiForSingleKey()
+            this.#updateSelectedItemsMultiForSingleKey();
         }
     }
 
 
     #updateSelectedItemsMultiForCompositeKeys() {
-        if (!this.listViewItems || this.listViewItems.length === 0) {
-            return;
-        }
+        if (!this.listViewItems?.length) return;
         const selectedCompositeIds = this.configProps$?.readonlyContextList || [];
         this.listViewItems.forEach((item) => {
             item.selected = selectedCompositeIds.some((context) => {
@@ -225,9 +223,7 @@ export class ListViewComponent extends BaseComponent {
     }
 
     #updateSelectedSingleItemForCompositeKeys() {
-        if (!this.listViewItems || this.listViewItems.length === 0) {
-            return;
-        }
+        if (!this.listViewItems?.length) return;
         this.listViewItems.forEach((item) => {
             item.selected = this.compositeKeys.every((key) => {
                 const left = item[key];
