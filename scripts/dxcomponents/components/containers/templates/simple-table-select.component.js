@@ -89,7 +89,7 @@ export class SimpleTableSelectComponent extends BaseComponent {
                 contextPageReference = pageReference.concat(".").concat(referenceProp);
             }
             const metadata = isMultiSelectMode
-                ? this.pConn.getFieldMetadata(`@P .${referenceProp}`)
+                ? this.pConn.getFieldMetadata(`${referenceProp}`)
                 : this.pConn.getCurrentPageFieldMetadata(contextPageReference);
 
             const { datasource: { parameters: fieldParameters = {} } = {}, pageClass } = metadata;
@@ -148,8 +148,9 @@ export class SimpleTableSelectComponent extends BaseComponent {
     }
 
     #isSelfReferencedProperty(param, referenceProp) {
-        const [, parentPropName] = param.split(".");
-        return parentPropName === referenceProp;
+        const [, parentPropName] = param.split('.');
+        const referencePropParent = referenceProp?.split('.').pop();
+        return parentPropName === referencePropParent;
     }
 
     #processFilters(theConfigProps, compositeKeys) {
