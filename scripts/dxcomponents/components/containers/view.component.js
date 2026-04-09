@@ -18,7 +18,7 @@ export class ViewComponent extends ContainerBaseComponent {
     SUPPORTED_FORM_TEMPLATES = ["DefaultForm", "OneColumn"];
     UNSUPPORTED_FORM_TEMPLATES = ["TwoColumn", "ThreeColumn", "WideNarrow"];
 
-    SUPPORTED_TEMPLATES = [...this.SUPPORTED_FORM_TEMPLATES, "SimpleTable", "DataReference"];
+    SUPPORTED_TEMPLATES = [...this.SUPPORTED_FORM_TEMPLATES, "SimpleTable", "DataReference", "Details"];
     NO_HEADER_TEMPLATES = ['SimpleTable', 'DataReference'];
 
     jsComponentPConnectData = {};

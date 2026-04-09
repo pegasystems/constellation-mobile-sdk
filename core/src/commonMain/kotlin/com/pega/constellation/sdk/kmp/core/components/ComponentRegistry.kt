@@ -12,6 +12,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Date
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DateTime
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Decimal
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DefaultForm
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Details
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Dropdown
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FieldGroupTemplate
@@ -41,6 +42,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.AssignmentCardC
 import com.pega.constellation.sdk.kmp.core.components.containers.AssignmentComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.DataReferenceComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.DefaultFormComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.DetailsComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.FieldGroupTemplateComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.FlowContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.GroupComponent
@@ -71,8 +73,8 @@ import com.pega.constellation.sdk.kmp.core.components.fields.TimeComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.UrlComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.ActionButtonsComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerComponent
-import com.pega.constellation.sdk.kmp.core.components.widgets.AutoCompleteComponent
-import com.pega.constellation.sdk.kmp.core.components.widgets.MultiselectComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.AutoCompleteComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.MultiselectComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.UnsupportedComponent
 import com.pega.constellation.sdk.kmp.core.api.ComponentDefinition as Def
 
@@ -96,6 +98,7 @@ object ComponentRegistry {
         Def(DateTime) { DateTimeComponent(it) },
         Def(Decimal) { DecimalComponent(it) },
         Def(DefaultForm) { DefaultFormComponent(it) },
+        Def(Details) { DetailsComponent(it) },
         Def(Dropdown) { DropdownComponent(it) },
         Def(Email) { EmailComponent(it) },
         Def(FieldGroupTemplate) { FieldGroupTemplateComponent(it) },

@@ -54,7 +54,7 @@ import { UnsupportedComponent } from "../components/widgets/unsupported.componen
 // import { ConfirmationComponent } from './_components/template/confirmation/confirmation.component';
 import { DataReferenceComponent } from "../components/containers/templates/data-reference.component.js";
 import { DefaultFormComponent } from "../components/containers/default-form.component.js";
-// import { DetailsComponent } from './_components/template/details/details.component';
+import { DetailsComponent } from "../components/containers/templates/details.component.js";
 // import { DetailsNarrowWideComponent } from './_components/template/details-narrow-wide/details-narrow-wide.component';
 // import { DetailsOneColumnComponent } from './_components/template/details-one-column/details-one-column.component';
 // import { DetailsSubTabsComponent } from './_components/template/details-sub-tabs/details-sub-tabs.component';
@@ -159,7 +159,7 @@ const pegaSdkComponentMap = {
     Decimal: DecimalComponent,
     DefaultForm: DefaultFormComponent,
     // DeferLoad: DeferLoadComponent,
-    // Details: DetailsComponent,
+    Details: DetailsComponent,
     // DetailsFields: MaterialDetailsFieldsComponent,
     // DetailsOneColumn: DetailsOneColumnComponent,
     // DetailsSubTabs: DetailsSubTabsComponent,

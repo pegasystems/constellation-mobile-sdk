@@ -7,20 +7,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FieldValue(label: String, value: String) {
-    FieldValue(label, AnnotatedString(value))
+fun FieldValue(
+    label: String,
+    value: String,
+    valueFontSize: TextUnit = 14.sp,
+    valueFontWeight: FontWeight = FontWeight.Normal
+) {
+    FieldValue(label, AnnotatedString(value), valueFontSize, valueFontWeight)
 }
 
 @Composable
-fun FieldValue(label: String, value: AnnotatedString) {
+fun FieldValue(
+    label: String,
+    value: AnnotatedString,
+    valueFontSize: TextUnit = 14.sp,
+    valueFontWeight: FontWeight = FontWeight.Normal
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         if (label.trim().isNotEmpty()) {
-            Text(label, fontSize = 14.sp, color = Color.Gray)
+            Text(label, color = Color.Gray)
         }
         val annotated = if (value.trim().isNotEmpty()) value else AnnotatedString("---")
-        Text(annotated, fontSize = 14.sp)
+        Text(annotated, fontSize = valueFontSize, fontWeight = valueFontWeight)
     }
 }
