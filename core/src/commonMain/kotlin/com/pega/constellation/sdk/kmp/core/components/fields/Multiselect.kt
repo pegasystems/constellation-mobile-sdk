@@ -1,11 +1,10 @@
-package com.pega.constellation.sdk.kmp.core.components.widgets
+package com.pega.constellation.sdk.kmp.core.components.fields
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
-import com.pega.constellation.sdk.kmp.core.components.fields.SelectableComponent
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.JsonObject

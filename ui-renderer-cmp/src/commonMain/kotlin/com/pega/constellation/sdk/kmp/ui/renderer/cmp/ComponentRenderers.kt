@@ -13,6 +13,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Date
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DateTime
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Decimal
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DefaultForm
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Details
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Dropdown
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FieldGroupTemplate
@@ -43,6 +44,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AssignmentCardR
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AssignmentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DataReferenceRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DefaultFormRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DetailsRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FieldGroupTemplateRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FlowContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.GroupRenderer
@@ -98,6 +100,7 @@ object ComponentRenderers {
         DateTime to DateTimeRenderer(),
         Decimal to DecimalRenderer(),
         DefaultForm to DefaultFormRenderer(),
+        Details to DetailsRenderer(),
         Dropdown to DropdownRenderer(),
         Email to EmailRenderer(),
         FieldGroupTemplate to FieldGroupTemplateRenderer(),

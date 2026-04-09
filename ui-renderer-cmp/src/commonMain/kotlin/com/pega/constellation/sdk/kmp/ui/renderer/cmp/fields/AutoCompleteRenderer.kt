@@ -1,7 +1,7 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 
 import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.components.widgets.AutoCompleteComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.AutoCompleteComponent
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.AutoComplete
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.FieldValue
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.SelectableOption

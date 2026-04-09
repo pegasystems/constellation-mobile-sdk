@@ -11,6 +11,7 @@ object ComponentTypes {
     val AssignmentCard = ComponentType("AssignmentCard")
     val DataReference = ComponentType("DataReference")
     val DefaultForm = ComponentType("DefaultForm")
+    val Details = ComponentType("Details")
     val FlowContainer = ComponentType("FlowContainer")
     val Group = ComponentType("Group")
     val ListView = ComponentType("ListView")
