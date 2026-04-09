@@ -3,9 +3,12 @@ package com.pega.constellation.sdk.kmp.engine.webview.ios
 import com.pega.constellation.sdk.kmp.core.Log
 import kotlinx.cinterop.ObjCSignatureOverride
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import platform.Foundation.NSData
 import platform.Foundation.NSError
 import platform.Foundation.NSLocalizedDescriptionKey
@@ -28,10 +31,6 @@ class ResourceHandler(
     lateinit var delegate: ResourceHandlerDelegate
     private val tasks = mutableMapOf<NSURLRequest, Job>()
 
-    private suspend fun send(request: NSURLRequest): Pair<NSData, NSURLResponse> {
-        return delegate.performRequest(request)
-    }
-
     @ObjCSignatureOverride
     override fun webView(
         webView: WKWebView,
@@ -40,7 +39,9 @@ class ResourceHandler(
         mainScope().launch {
             try {
                 Log.i(TAG, "Starting WKURLScheme task. <${startURLSchemeTask.request.URL}>")
-                val (data, response) = send(startURLSchemeTask.request)
+                val (data, response) = withContext(Dispatchers.IO) {
+                    delegate.performRequest(startURLSchemeTask.request)
+                }
                 if (!isActive) {
                     Log.i(TAG, "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}>")
                     return@launch
