@@ -9,7 +9,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.core.components.containers.DetailsComponent
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.FieldValue
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 
@@ -20,9 +19,8 @@ class DetailsRenderer : ComponentRenderer<DetailsComponent> {
             if (showHighlightedFields) {
                 highlightedFields.forEach { field ->
                     Column(modifier = Modifier.padding(bottom = 8.dp)) {
-                        FieldValue(
-                            label = field.label,
-                            value = field.value,
+                        HighlightedFieldValue(
+                            field = field,
                             valueFontSize = 20.sp,
                             valueFontWeight = FontWeight.Bold
                         )

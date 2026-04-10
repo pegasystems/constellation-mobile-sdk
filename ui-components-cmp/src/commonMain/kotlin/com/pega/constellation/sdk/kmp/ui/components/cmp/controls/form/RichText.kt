@@ -63,5 +63,5 @@ fun RichTextFieldValue(label: String, value: String) {
 }
 
 @Composable
-private fun rememberAnnotated(value: String) =
+fun rememberAnnotated(value: String) =
     remember(value) { htmlToAnnotatedString(value, compactMode = true) }

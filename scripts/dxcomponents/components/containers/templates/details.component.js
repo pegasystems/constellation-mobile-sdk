@@ -92,9 +92,8 @@ export class DetailsComponent extends DetailsTemplateBase {
     #sendPropsUpdate() {
         this.props = {
             highlightedFields: this.highlightedFields.map((field) => ({
-                label: field.config.label,
-                value: field.config.value,
-                displayAsStatus: field.config.displayAsStatus ?? false,
+                type: field.type,
+                config: field.config
             })),
             showHighlightedFields: this.showHighlightedFields,
             children: this.getChildrenComponentsIds(),

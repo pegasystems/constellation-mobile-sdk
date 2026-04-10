@@ -6,10 +6,11 @@ import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
-import com.pega.constellation.sdk.kmp.core.components.optBoolean
 import com.pega.constellation.sdk.kmp.core.components.optString
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class DetailsComponent(context: ComponentContext) : ContainerComponent(context) {
     var showHighlightedFields: Boolean by mutableStateOf(false)
@@ -23,16 +24,17 @@ class DetailsComponent(context: ComponentContext) : ContainerComponent(context) 
         highlightedFields = props.getJSONArray("highlightedFields").map {
             val field = it.jsonObject
             HighlightedField(
-                label = field.optString("label"),
-                value = field.optString("value"),
-                displayAsStatus = field.optBoolean("displayAsStatus", false),
+                type = field.optString("type"),
+                config = field["config"]?.jsonObject?.entries
+                    ?.filter { entry -> entry.value is JsonPrimitive } // do not try to parse non-primitive props
+                    ?.associate { (k, v) -> k to v.jsonPrimitive.content }
+                    ?: emptyMap(),
             )
         }
     }
 
     data class HighlightedField(
-        val label: String,
-        val value: String,
-        val displayAsStatus: Boolean,
+        val type: String,
+        val config: Map<String, String>,
     )
 }
