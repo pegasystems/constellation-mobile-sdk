@@ -52,12 +52,6 @@ export class ViewComponent extends ContainerBaseComponent {
         }
     }
 
-    onEvent(event) {
-        this.childrenComponents.forEach((component) => {
-            component.onEvent(event);
-        });
-    }
-
     #checkAndUpdate() {
         if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
             this.#updateSelf();

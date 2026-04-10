@@ -48,12 +48,6 @@ export class GroupComponent extends ContainerBaseComponent {
         }
     }
 
-    onEvent(event) {
-        this.childrenComponents.forEach((component) => {
-            component.onEvent(event);
-        });
-    }
-
     #checkAndUpdate() {
         if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
             this.#updateSelf();

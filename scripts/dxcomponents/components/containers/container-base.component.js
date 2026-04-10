@@ -17,6 +17,10 @@ export class ContainerBaseComponent extends BaseComponent {
         return this.childrenComponents.map((component) => component.compId);
     }
 
+    onEvent(event) {
+        this.childrenComponents.forEach((component) => component.onEvent(event));
+    }
+
     /**
      * Reconciliation logic
      * - Iterate all new children pConns.

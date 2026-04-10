@@ -29,10 +29,6 @@ export class OneColumnComponent extends ContainerBaseComponent {
         this.sendPropsUpdate();
     }
 
-    onEvent(event) {
-        this.childrenComponents.forEach((component) => component.onEvent(event));
-    }
-
     sendPropsUpdate() {
         this.props = {
             children: this.getChildrenComponentsIds(),
