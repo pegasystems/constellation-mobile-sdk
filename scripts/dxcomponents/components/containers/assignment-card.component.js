@@ -48,10 +48,6 @@ export class AssignmentCardComponent extends ContainerBaseComponent {
         this.actionButtonsComponent.update(this.arMainButtons$, this.arSecondaryButtons$, this.actionButtonClick);
     }
 
-    onEvent(event) {
-        this.childrenComponents.forEach((component) => component.onEvent(event));
-    }
-
     sendPropsUpdate() {
         this.props = {
             children: this.getChildrenComponentsIds(),
