@@ -15,7 +15,7 @@ class CheckboxRenderer : ComponentRenderer<CheckboxComponent> {
         WithFieldHelpers(
             displayOnly = {
                 val displayValue = if (value.toBoolean()) trueLabel else falseLabel
-                FieldValue(label, displayValue)
+                FieldValue(caption, displayValue)
             },
             editable = {
                 when (selectionMode) {

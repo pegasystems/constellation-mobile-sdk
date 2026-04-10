@@ -1,7 +1,6 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 
 import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.fields.TimeComponent
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.FieldValue
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.Time
@@ -10,6 +9,7 @@ import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.C
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.parse
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.asLocalTimeOrNull
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.format
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
@@ -42,14 +42,5 @@ class TimeRenderer : ComponentRenderer<TimeComponent> {
                 )
             }
         )
-    }
-
-    private fun String.asLocalTimeOrNull() = takeIf { isNotEmpty() }
-        ?.runCatching { LocalTime.parse(this) }
-        ?.onFailure { Log.e(TAG, "Unable to parse value as time", it) }
-        ?.getOrNull()
-
-    companion object {
-        private const val TAG = "TimeRenderer"
     }
 }

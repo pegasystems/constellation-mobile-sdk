@@ -1,7 +1,6 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields
 
 import androidx.compose.runtime.Composable
-import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.components.fields.DateTimeComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.DateTimeComponent.Companion.getTimeZoneOffset
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.DateTime
@@ -12,15 +11,13 @@ import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.p
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.LocalEnv
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.WithFieldHelpers
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.asLocalDateTimeOrNull
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.minusOffset
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.helpers.plusOffset
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
-import kotlin.time.toDuration
 
 @OptIn(FormatStringsInDatetimeFormats::class, ExperimentalTime::class)
 class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
@@ -58,23 +55,5 @@ class DateTimeRenderer : ComponentRenderer<DateTimeComponent> {
                     onFocusChange = { updateFocus(it) }
                 )
             })
-
-    }
-
-    private fun String.asLocalDateTimeOrNull() = takeIf { isNotEmpty() }
-        ?.runCatching { LocalDateTime.parse(this.removeSuffix("Z")) }
-        ?.onFailure { Log.e(TAG, "Unable to parse value as DateTime", it) }
-        ?.getOrNull()
-
-    private fun LocalDateTime.minusOffset(offset: Int) = toInstant(TimeZone.UTC)
-        .minus(offset.toDuration(DurationUnit.MINUTES))
-        .toLocalDateTime(TimeZone.UTC)
-
-    private fun LocalDateTime.plusOffset(offset: Int) = toInstant(TimeZone.UTC)
-        .plus(offset.toDuration(DurationUnit.MINUTES))
-        .toLocalDateTime(TimeZone.UTC)
-
-    companion object {
-        private const val TAG = "DateTimeRenderer"
     }
 }
