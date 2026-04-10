@@ -26,8 +26,8 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
             listOf("Skoda", "Octavia", "35000")
         )
         val cars2 = listOf(
-            listOf("Ford", "Focus", "25000"),
-            listOf("Fiat", "Panda", "10000")
+            listOf("Ford", "Focus", "$ 25000"),
+            listOf("Fiat", "Panda", "$ 10000")
         )
 
         setupApp("O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest")

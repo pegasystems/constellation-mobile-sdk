@@ -43,19 +43,27 @@ class EmbeddedDataSingleRecordTest : ComposeTest(PegaVersion.v25_1) {
 
         // Check if the same values appears inside inputs in view "Embedded Data - Car single fields"
         val singleFieldsView = "group_[Embedded Data - Car single fields]"
-        checkCarDetails(singleFieldsView, expectedDate)
+        checkCarData(singleFieldsView, expectedDate, isDetailsView = false)
 
         // Check if the same values appears inside "Embedded Data - Car Details"
         val carDetailsView = "view_[Embedded Data - Car Details]"
-        checkCarDetails(carDetailsView, expectedDate)
+        checkCarData(carDetailsView, expectedDate, isDetailsView = true)
     }
 
-    private fun ComposeUiTest.checkCarDetails(viewName: String, expectedDate: String) {
+    private fun ComposeUiTest.checkCarData(
+        viewName: String,
+        expectedDate: String,
+        isDetailsView: Boolean
+    ) {
         onAllDescendantsOf(viewName).let {
             it.find("Audi").assertExists()
             it.find("A5").assertExists()
             it.find(expectedDate).assertExists()
-            it.find("123000").assertExists()
+            if (isDetailsView) {
+                it.find("$ 123000").assertExists()
+            } else {
+                it.find("123000").assertExists()
+            }
         }
     }
 }

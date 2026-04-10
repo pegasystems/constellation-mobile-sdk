@@ -4,7 +4,6 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
-import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.filter
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
@@ -95,7 +94,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
                 nodes = it,
                 expectedDate = LocalDateTime.now().toString().substring(0, 10),
                 expectedTime = "12:00 AM",
-                isEditable = true
+                isDetailsView = false
             )
         }
         // verify if row 1 data propagated to readonly duplicated view
@@ -104,7 +103,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
             nodes = onAllDescendantsOf(carsReadonlyFieldGroup),
             expectedDate = LocalDateTime.now().toString().substring(0, 10),
             expectedTime = "12:00 AM",
-            isEditable = false
+            isDetailsView = true
         )
 
         // adding row 2
@@ -132,7 +131,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
             onAllDescendantsOf(carsReadonlyFieldGroup),
             expectedDate = "2025-12-16",
             expectedTime = getExpectedTime(),
-            isEditable = false
+            isDetailsView = true
         )
     }
 
@@ -152,6 +151,10 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
             "Transaction date time" to "2026-01-08 12:00 AM",
             "Notes" to "This is a note"
         )
+        val columnValuesReadonly = columnValues.toMutableMap().apply {
+            this["Transaction date time"] = "2026-01-08 ${getExpectedTime()}"
+            this["Price"] = "$ 123456"
+        }
         val edContext = "caseInfo.content.EmbeddedDataListOfRecords"
 
         // create case
@@ -204,7 +207,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
         columnValues.keys.forEach { waitForTableNode(it.uppercase()) }
         // verify table data
         columnValues.updateTransactionDateTime() // needs to update Date-Time due to summer/winter time change
-        columnValues.values.forEach { waitForTableNode(it) }
+        columnValuesReadonly.values.forEach { waitForTableNode(it) }
         // verify reorder icon exists
         waitUntilAtLeastOneExists(hasContentDescription("Reorder item 1"))
         // verify edit record popup
@@ -247,7 +250,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
         waitForNode("ED simple table readonly", substring = true)
         // verify table title
         waitForNode("Cars readonly simple table")
-        verifyReadonlyTable(columnValues)
+        verifyReadonlyTable(columnValuesReadonly)
 
         // Step 4 - readonly table
         onNodeWithText("Next").performClick()
@@ -255,7 +258,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
         waitForNode("ED table readonly", substring = true)
         // verify table title
         waitForNode("Cars readonly table")
-        verifyReadonlyTable(columnValues)
+        verifyReadonlyTable(columnValuesReadonly)
     }
 
     @Test
@@ -311,14 +314,16 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
         nodes: SemanticsNodeInteractionCollection,
         expectedDate: String,
         expectedTime: String,
-        isEditable: Boolean
+        isDetailsView: Boolean
     ) {
         with(nodes) {
             find("Audi").assertExists()
             find("A5").assertExists()
-            find("123000").assertExists()
-            if (!isEditable) {
+            if (isDetailsView) {
+                find("$ 123000").assertExists()
                 find("Yes").assertExists()
+            } else {
+                find("123000").assertExists()
             }
             find("comfort").assertExists()
             find("gold").assertExists()
