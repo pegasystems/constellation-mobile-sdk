@@ -15,10 +15,11 @@ Tests are run with Compose UI Test against a mock HTTP server backed by fixture 
 ## Checklist — Adding a New Test
 
 ### 1. Register the mock fixture in handlers.
-- For POST related jsons (POST in name, files in test/src/commonMain/composeResources/files/responses/dx/cases/) -> `DxCasesHandler`
-- For Datapages related responses (D_ prefix in name, files in test/src/commonMain/composeResources/files/responses/dx/data_views) -> `DxDataViewsHandler`
-- For assignment procesing PATCH responses (files in test/src/commonMain/composeResources/files/responses/dx/assignments) -> `DxAssignmentsHandler`
+- For assignment processing PATCH responses (files in test/src/commonMain/composeResources/files/responses/dx/assignments) -> `DxAssignmentsHandler`
     - Please use `assignmentId` from response and create `handle` function for each test. Inside `handle` function handle exact request using `actionId`
+- For POST, DELETE, PATCH (not handled by `DxAssignmentsHandler`) related jsons (POST in name, files in test/src/commonMain/composeResources/files/responses/dx/cases/) -> `DxCasesHandler`
+- For Datapages related responses (D_ prefix in name, files in test/src/commonMain/composeResources/files/responses/dx/data_views) -> `DxDataViewsHandler`
+
 
 Handlers inside folder: `test/src/commonMain/kotlin/com/pega/constellation/sdk/kmp/test/mock/handlers/`
 
