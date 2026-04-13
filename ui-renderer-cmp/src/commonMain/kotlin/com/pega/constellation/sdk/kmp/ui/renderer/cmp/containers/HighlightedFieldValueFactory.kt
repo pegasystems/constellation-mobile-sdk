@@ -29,38 +29,43 @@ fun HighlightedFieldValue(
     valueFontWeight: FontWeight,
 ) {
     val config = field.config
-    val (label, value) = when (field.type) {
+    val rawValue = config["value"] ?: ""
+    val rawLabel = config["label"] ?: ""
+    val (displayLabel, displayValue) = when (field.type) {
         ComponentTypes.Currency.type -> {
-            val rawValue = config["value"] ?: ""
             val isoCode = config["currencyISOCode"] ?: "USD"
             val showIsoCode = config["showISOCode"].toBoolean()
             val prefix = if (showIsoCode) isoCode else getCurrencySymbol(isoCode)
             val value = if (prefix.isNotEmpty()) "$prefix $rawValue" else rawValue
-            (config["label"] ?: "") to value
+            rawLabel to value
         }
+
         ComponentTypes.Checkbox.type -> {
             val trueLabel = config["trueLabel"] ?: "True"
             val falseLabel = config["falseLabel"] ?: "False"
-            (config["caption"] ?: "") to if (config["value"].toBoolean()) trueLabel else falseLabel
+            (config["caption"] ?: "") to if (rawValue.toBoolean()) trueLabel else falseLabel
         }
-        ComponentTypes.Date.type ->
-            (config["label"] ?: "") to (config["value"]?.asLocalDateOrNull()?.toString() ?: "")
+
+        ComponentTypes.Date.type -> rawLabel to (rawValue.asLocalDateOrNull()?.toString() ?: "")
+
         ComponentTypes.DateTime.type -> {
             val timeZoneMinutesOffset = getTimeZoneOffset(LocalEnv.current.timeZone)
             val is24Hour = ClockFormat.FROM_LOCALE.is24Hour()
-            (config["label"] ?: "") to (config["value"]?.asLocalDateTimeOrNull()?.plusOffset(timeZoneMinutesOffset)?.parse(is24Hour) ?: "")
+            rawLabel to (rawValue.asLocalDateTimeOrNull()?.plusOffset(timeZoneMinutesOffset)
+                ?.parse(is24Hour) ?: "")
         }
+
         ComponentTypes.Time.type -> {
             val is24Hour = ClockFormat.FROM_LOCALE.is24Hour()
-            (config["label"] ?: "") to (config["value"]?.asLocalTimeOrNull()?.parse(is24Hour) ?: "")
+            rawLabel to (rawValue.asLocalTimeOrNull()?.parse(is24Hour) ?: "")
         }
-        ComponentTypes.RichText.type ->
-            (config["label"] ?: "") to rememberAnnotated(config["value"] ?: "")
-        else ->
-            (config["label"] ?: "") to (config["value"] ?: "")
+
+        ComponentTypes.RichText.type -> rawLabel to rememberAnnotated(rawValue)
+
+        else -> rawLabel to rawValue
     }
-    when (value) {
-        is AnnotatedString -> FieldValue(label, value, valueFontSize, valueFontWeight)
-        is String -> FieldValue(label, value, valueFontSize, valueFontWeight)
+    when (displayValue) {
+        is AnnotatedString -> FieldValue(displayLabel, displayValue, valueFontSize, valueFontWeight)
+        is String -> FieldValue(displayLabel, displayValue, valueFontSize, valueFontWeight)
     }
 }
