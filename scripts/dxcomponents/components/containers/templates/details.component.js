@@ -36,20 +36,28 @@ export class DetailsComponent extends DetailsTemplateBase {
         const rawMetaData = this.pConn.resolveConfigProps(this.pConn.getRawMetadata()?.config);
         this.showHighlightedFields = rawMetaData?.showHighlightedData;
 
-        if (this.showHighlightedFields) {
-            const highlightedData = rawMetaData?.highlightedData;
-            this.highlightedFields = highlightedData.map((field) => {
-                field.config.displayMode = "STACKED_LARGE_VAL";
-
-                if (field.config.value === "@P .pyStatusWork") {
-                    field.type = "TextInput";
-                    field.config.displayAsStatus = true;
-                }
-
-                return field;
-            });
+        if (rawMetaData && this.showHighlightedFields) {
+            this.highlightedFields = this.#buildHighlightedFields(rawMetaData.highlightedData);
         }
 
+        this.reconcileChildren(this.#buildFieldPConns());
+        this.#sendPropsUpdate();
+    }
+
+    #buildHighlightedFields(highlightedData) {
+        return highlightedData.map((field) => {
+            field.config.displayMode = "STACKED_LARGE_VAL";
+
+            if (field.config.value === "@P .pyStatusWork") {
+                field.type = "TextInput";
+                field.config.displayAsStatus = true;
+            }
+
+            return field;
+        });
+    }
+
+    #buildFieldPConns() {
         const kids = this.pConn.getChildren();
         const fieldPConns = [];
         for (const kid of kids) {
@@ -84,9 +92,7 @@ export class DetailsComponent extends DetailsTemplateBase {
                 }
             });
         }
-        this.reconcileChildren(fieldPConns);
-
-        this.#sendPropsUpdate();
+        return fieldPConns;
     }
 
     #sendPropsUpdate() {

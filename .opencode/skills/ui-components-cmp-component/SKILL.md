@@ -9,5 +9,5 @@ Compose Multiplatform UI components are in 'ui-components-cmp' module in commonM
 
 
 1. Create Compose Multiplatform UI component file in appropriate folder.
-    - Container and template renderers -> 'containers' folder
-    - Form fields renderers -> 'controls/form' folder
+    - Containers and templates -> 'containers' folder
+    - Form fields -> 'controls/form' folder
