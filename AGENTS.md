@@ -174,3 +174,7 @@ Load the `ui-renderer-cmp-component` skill for the full guidelines and rules.
 ### Creating Compose Multiplatform UI components in ui-components-cmp
 
 Load the `ui-components-cmp-component` skill for the full guidelines and rules.
+
+### Writing Android instrumented UI tests
+
+Load the `android-instrumented-ui-test` skill for the full guidelines and rules.
