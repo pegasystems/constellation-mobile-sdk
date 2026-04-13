@@ -10,7 +10,7 @@ import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.find
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.onAllDescendantsOf
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
-import org.junit.Test
+import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
 class DetailsTest : ComposeTest(PegaVersion.v25_1) {
