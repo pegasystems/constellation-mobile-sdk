@@ -3,6 +3,8 @@ import { DetailsTemplateBase } from "./details-template-base.js";
 const TAG = "DetailsComponent";
 
 export class DetailsComponent extends DetailsTemplateBase {
+    label = "";
+    showLabel = true;
     highlightedFields = [];
     showHighlightedFields = false;
 
@@ -34,6 +36,8 @@ export class DetailsComponent extends DetailsTemplateBase {
 
     #updateSelf() {
         const rawMetaData = this.pConn.resolveConfigProps(this.pConn.getRawMetadata()?.config);
+        this.label = this.pConn.getInheritedProps().label ?? rawMetaData?.label ?? "";
+        this.showLabel = this.pConn.getInheritedProps().showLabel ?? rawMetaData?.showLabel ?? true;
         this.showHighlightedFields = rawMetaData?.showHighlightedData;
 
         if (rawMetaData && this.showHighlightedFields) {
@@ -97,6 +101,8 @@ export class DetailsComponent extends DetailsTemplateBase {
 
     #sendPropsUpdate() {
         this.props = {
+            label: this.label,
+            showLabel: this.showLabel,
             highlightedFields: this.highlightedFields.map((field) => ({
                 type: field.type,
                 config: field.config

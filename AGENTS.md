@@ -1,7 +1,7 @@
 # AGENTS.md — Constellation Mobile SDK
 
 ## General most important rules
-1. Do not hallucinate. If you don't know something please ask.
+1. Do not hallucinate. When a task requires specific data that is not provided and cannot be reliably inferred from existing code or fixtures, ask the user before proceeding.
 2. Do not change the logic of the code while doing migrations or refactoring, unless explicitly asked for.
 
 ## Project Overview

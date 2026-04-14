@@ -41,11 +41,11 @@
           "type": "worklist"
         },
         "processID": "Stage2_Flow",
-        "createTime": "2026-04-13T09:31:14.603Z",
+        "createTime": "2026-04-14T14:14:20.092Z",
         "urgency": 10,
         "processName": "stage2",
         "isMultiStep": "false",
-        "name": "Details template",
+        "name": "Details template - no heading, no highlighted fields",
         "context": "",
         "links": {
           "open": {
@@ -57,28 +57,28 @@
         },
         "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW",
         "actions": [{
-          "name": "Details template",
+          "name": "Details template - no heading, no highlighted fields",
           "links": {
             "submit": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW/actions/DetailsTemplate2",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW/actions/DetailsTemplateNoHeadingNoHighlightedFields",
               "type": "PATCH",
               "title": "Submit assignment action "
             },
             "save": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW/actions/DetailsTemplate2/save",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW/actions/DetailsTemplateNoHeadingNoHighlightedFields/save",
               "type": "PATCH",
               "title": "Save assignment action "
             },
             "open": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW/actions/DetailsTemplate2",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW/actions/DetailsTemplateNoHeadingNoHighlightedFields",
               "type": "GET",
               "title": "Get assignment action details"
             }
           },
-          "ID": "DetailsTemplate2",
+          "ID": "DetailsTemplateNoHeadingNoHighlightedFields",
           "type": "FlowAction"
         }]
       }],
@@ -88,7 +88,7 @@
         "goal": "",
         "deadline": ""
       },
-      "WidgetsToRefresh": [],
+      "WidgetsToRefresh": ["TaskList"],
       "caseTypeName": "Details template test",
       "urgency": 10,
       "createTime": "2026-04-13T09:20:05.336Z",
@@ -130,14 +130,9 @@
       "status": "New",
       "stageID": "PRIM1",
       "stageLabel": "stage2",
-      "lastUpdateTime": "2026-04-13T09:31:14.608Z",
+      "lastUpdateTime": "2026-04-14T14:14:20.094Z",
       "content": {
         "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
-        "pxObjClass": "OI1OYV-Marco2-Work-DetailsTemplateTest",
-        "pyLabel": "Details template test",
-        "pyID": "D-9001",
-        "pyViewName": "DetailsTemplate2",
-        "pyViewContext": "",
         "Salary": 12345,
         "Name": "John",
         "WorkingStartTime": "02:30:00",
@@ -145,8 +140,11 @@
         "Phone": "+48521521521",
         "RichDescription": "<p><strong>Some</strong></p>\n<p><em>description</em></p>\n<ol>\n<li>about</li>\n<li>this</li>\n<li>person</li>\n</ol>",
         "DateOfBirth": "1987-04-01",
-        "MeetingDateTime": "2026-04-14T18:00:00.000Z",
-        "IsAdult": false
+        "MettingDateTime": "2026-04-14T18:00:00.000Z",
+        "IsAdult": false,
+        "pxObjClass": "OI1OYV-Marco2-Work-DetailsTemplateTest",
+        "pyLabel": "Details template test",
+        "pyID": "D-9001"
       }
     },
     "D_pyCountryCallingCodeList": {
@@ -181,7 +179,7 @@
             "classID": "-",
             "pyCallingCode": "+44"
           }],
-          "loadTime": "2026-04-13T12:52:09.174882670Z"
+          "loadTime": "2026-04-14T14:14:20.195969545Z"
         }
       }
     }
@@ -189,80 +187,16 @@
   "uiResources": {
     "resources": {
       "views": {
-        "pyEmbedAssignment": [{
-          "name": "pyEmbedAssignment",
-          "type": "View",
-          "config": {
-            "ruleClass": "Work-",
-            "localeReference": "@LR WORK-!VIEW!PYEMBEDASSIGNMENT"
-          },
-          "children": [{
-            "name": "A",
-            "type": "Region",
-            "children": [{
-              "type": "reference",
-              "config": {
-                "type": "view",
-                "name": "pyCaseWorkarea"
-              }
-            }]
-          }],
-          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest"
-        }],
-        "pyCaseWorkarea": [{
-          "name": "pyCaseWorkarea",
-          "type": "View",
-          "config": {
-            "ruleClass": "Work-",
-            "localeReference": "@LR WORK-!VIEW!PYCASEWORKAREA"
-          },
-          "children": [{
-            "name": "A",
-            "type": "Region",
-            "children": [{
-              "type": "reference",
-              "config": {
-                "type": "view",
-                "name": "pzFlowContainer"
-              }
-            }]
-          }],
-          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest"
-        }],
-        "pzFlowContainer": [{
-          "name": "pzFlowContainer",
-          "type": "View",
-          "config": {
-            "ruleClass": "@baseclass",
-            "localeReference": "@LR @BASECLASS!VIEW!PZFLOWCONTAINER"
-          },
-          "children": [{
-            "type": "FlowContainer",
-            "config": {
-              "name": "workarea",
-              "routingInfo": "@ROUTING_INFO"
-            },
-            "children": [{
-              "type": "reference",
-              "config": {
-                "type": "view",
-                "name": "@P .pyViewName",
-                "context": "@P .pyViewContext"
-              }
-            }]
-          }],
-          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest"
-        }],
-        "DetailsTemplate2": [{
+        "DetailsTemplateNoHeadingNoHighlightedFields": [{
           "children": [{
             "children": [{
               "config": {
                 "inheritedProps": [{
                   "prop": "label",
-                  "value": "@L Details ref heading"
+                  "value": "@L Details template heading"
                 }, {
                   "prop": "showLabel",
-                  "value": true
+                  "value": false
                 }],
                 "name": "pyReview",
                 "ruleClass": "OI1OYV-Marco2-Work-DetailsTemplateTest",
@@ -275,11 +209,11 @@
           }],
           "config": {
             "NumCols": "2",
-            "localeReference": "@LR OI1OYV-MARCO2-WORK-DETAILSTEMPLATETEST!VIEW!DETAILSTEMPLATE2",
+            "localeReference": "@LR OI1OYV-MARCO2-WORK-DETAILSTEMPLATETEST!VIEW!DETAILSTEMPLATENOHEADINGNOHIGHLIGHTEDFIELDS",
             "ruleClass": "OI1OYV-Marco2-Work-DetailsTemplateTest",
             "template": "DefaultForm"
           },
-          "name": "DetailsTemplate2",
+          "name": "DetailsTemplateNoHeadingNoHighlightedFields",
           "type": "View",
           "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest"
         }],
@@ -330,9 +264,9 @@
               "type": "Time"
             }, {
               "config": {
-                "label": "@FL .MeetingDateTime",
+                "label": "@FL .MettingDateTime",
                 "labelOption": "default",
-                "value": "@P .MeetingDateTime"
+                "value": "@P .MettingDateTime"
               },
               "type": "DateTime"
             }, {
@@ -412,9 +346,9 @@
               "type": "Time"
             }, {
               "config": {
-                "label": "@FL .MeetingDateTime",
+                "label": "@FL .MettingDateTime",
                 "labelOption": "default",
-                "value": "@P .MeetingDateTime"
+                "value": "@P .MettingDateTime"
               },
               "type": "DateTime"
             }, {
@@ -445,10 +379,10 @@
               },
               "type": "RichText"
             }],
-            "label": "@L Details",
+            "label": "@L Details template heading",
             "localeReference": "@LR OI1OYV-MARCO2-WORK-DETAILSTEMPLATETEST!VIEW!PYREVIEW",
             "ruleClass": "OI1OYV-Marco2-Work-DetailsTemplateTest",
-            "showHighlightedData": true,
+            "showHighlightedData": false,
             "showLabel": true,
             "template": "Details"
           },
@@ -468,39 +402,6 @@
         }
       },
       "fields": {
-        "pyLabel": [{
-          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
-          "type": "Text",
-          "maxLength": 64,
-          "displayAs": "pxTextInput",
-          "definedOnClassID": "Work-",
-          "expectedLength": 60,
-          "label": "Label"
-        }],
-        "pyID": [{
-          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
-          "type": "Text",
-          "maxLength": 32,
-          "displayAs": "pxDisplayText",
-          "definedOnClassID": "Work-Cover-",
-          "expectedLength": 22,
-          "label": "Case ID",
-          "isClassKey": true
-        }],
-        "pyViewName": [{
-          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
-          "type": "Text",
-          "displayAs": "pxTextInput",
-          "definedOnClassID": "Work-",
-          "label": "pyViewName"
-        }],
-        "pyViewContext": [{
-          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
-          "type": "Text",
-          "displayAs": "pxTextInput",
-          "definedOnClassID": "Work-",
-          "label": "pyViewContext"
-        }],
         "Salary": [{
           "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
           "type": "Decimal",
@@ -547,11 +448,11 @@
           "displayAs": "pxDateTime",
           "label": "date of birth"
         }],
-        "MeetingDateTime": [{
+        "MettingDateTime": [{
           "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
           "type": "Date Time",
           "displayAs": "pxDateTime",
-          "label": "meeting date time"
+          "label": "metting date time"
         }],
         "IsAdult": [{
           "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
@@ -562,16 +463,35 @@
         "pyCallingCode": [{
           "classID": "-",
           "type": "Unknown"
+        }],
+        "pyLabel": [{
+          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
+          "type": "Text",
+          "maxLength": 64,
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "expectedLength": 60,
+          "label": "Label"
+        }],
+        "pyID": [{
+          "classID": "OI1OYV-Marco2-Work-DetailsTemplateTest",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "pxDisplayText",
+          "definedOnClassID": "Work-Cover-",
+          "expectedLength": 22,
+          "label": "Case ID",
+          "isClassKey": true
         }]
       }
     },
-    "components": ["TextArea", "Time", "View", "Date", "DateTime", "DefaultForm", "Details", "FlowContainer", "Checkbox", "Phone", "RichText", "Currency", "Region", "TextInput"],
+    "components": ["TextArea", "Time", "View", "Date", "DateTime", "DefaultForm", "Details", "Checkbox", "Phone", "RichText", "Currency", "Region", "TextInput"],
     "localeReferences": ["OI1OYV-MARCO2-WORK-DETAILSTEMPLATETEST!CASE!DETAILS TEMPLATE TEST"],
     "root": {
       "type": "reference",
       "config": {
         "type": "view",
-        "name": "pyEmbedAssignment",
+        "name": "DetailsTemplateNoHeadingNoHighlightedFields",
         "context": "caseInfo.content"
       }
     },
@@ -592,5 +512,18 @@
         "actionID": "submit"
       }]
     }
+  },
+  "nextAssignmentInfo": {
+    "context": "self",
+    "className": "OI1OYV-Marco2-Work-DetailsTemplateTest",
+    "links": {
+      "open": {
+        "rel": "self",
+        "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW",
+        "type": "GET",
+        "title": "Get assignment details"
+      }
+    },
+    "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-9001!STAGE2_FLOW"
   }
 }

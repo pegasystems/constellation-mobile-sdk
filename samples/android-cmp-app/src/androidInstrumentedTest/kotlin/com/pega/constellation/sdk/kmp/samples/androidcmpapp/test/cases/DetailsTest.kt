@@ -2,6 +2,8 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
@@ -33,10 +35,16 @@ class DetailsTest : ComposeTest(PegaVersion.v25_1) {
 
         onNodeWithText("New Service").performClick()
         waitForNode("Details template", substring = true)
-        waitForNode("Details")
+        waitForNode("Details ref heading")
 
         verifyExpectedFields("details_highlightedFields")
         verifyExpectedFields("details_children")
+
+        // Checking Details template with no heading and no highlighted fields
+        onNodeWithText("Submit").performClick()
+        waitForNode("Details template - no heading", substring = true)
+        onNode(hasText("Details ref heading")).assertDoesNotExist()
+        onAllDescendantsOf("details_highlightedFields").assertCountEquals(0)
     }
 
     private fun ComposeUiTest.verifyExpectedFields(testTag: String) {

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
+import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.core.components.optString
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -13,6 +14,10 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class DetailsComponent(context: ComponentContext) : ContainerComponent(context) {
+    var label: String by mutableStateOf("")
+        private set
+    var showLabel: Boolean by mutableStateOf(true)
+        private set
     var showHighlightedFields: Boolean by mutableStateOf(false)
         private set
     var highlightedFields: List<HighlightedField> by mutableStateOf(emptyList())
@@ -20,6 +25,8 @@ class DetailsComponent(context: ComponentContext) : ContainerComponent(context) 
 
     override fun applyProps(props: JsonObject) {
         super.applyProps(props)
+        label = props.getString("label")
+        showLabel = props.getString("showLabel").toBoolean()
         showHighlightedFields = props.getBoolean("showHighlightedFields")
         highlightedFields = props.getJSONArray("highlightedFields").map {
             val field = it.jsonObject

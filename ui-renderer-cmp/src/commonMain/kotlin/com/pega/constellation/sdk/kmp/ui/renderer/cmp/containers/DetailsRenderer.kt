@@ -10,12 +10,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.core.components.containers.DetailsComponent
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
 
 class DetailsRenderer : ComponentRenderer<DetailsComponent> {
     @Composable
     override fun DetailsComponent.Render() {
+        if (showLabel && label.isNotEmpty()) {
+            Heading(label, Modifier.padding(vertical = 8.dp))
+        }
         if (showHighlightedFields) {
             Column(
                 modifier = Modifier.padding(bottom = 8.dp).testTag("details_highlightedFields")
