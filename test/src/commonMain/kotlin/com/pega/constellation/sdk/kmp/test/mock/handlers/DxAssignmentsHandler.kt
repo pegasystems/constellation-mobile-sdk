@@ -35,6 +35,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("E-26028") -> handleEmbeddedDataConditionsTest(actionId)
             assignmentId.contains("D-7004") -> handleDataReferenceListOfRecordsTest(actionId)
             assignmentId.contains("D-17009") -> handleDataReferenceMultiSelectTest(request, actionId)
+            assignmentId.contains("D-9001") -> handleDetailsTemplateTest(actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -128,6 +129,11 @@ class DxAssignmentsHandler : MockHandler {
 
             else -> Error(404, "Invalid actionId for K-10048: $actionId")
         }
+
+    private fun handleDetailsTemplateTest(actionId: String) = when (actionId) {
+        "DetailsTemplate2" -> Asset("responses/dx/assignments/DetailsTemplateTest.json")
+        else -> Error(404, "Invalid actionId: $actionId")
+    }
 
     private fun handleNewService(actionId: String) = when (actionId) {
         "Customer" -> Asset("responses/dx/assignments/NewService-1-Customer.json")
