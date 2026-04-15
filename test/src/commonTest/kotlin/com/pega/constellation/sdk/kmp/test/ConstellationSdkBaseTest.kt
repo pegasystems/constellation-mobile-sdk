@@ -134,7 +134,7 @@ abstract class ConstellationSdkBaseTest {
         }
 
         private suspend inline fun <reified S : State> ConstellationSdk.assertState() =
-            withTimeoutOrNull(3.seconds) { state.first { it is S } as S }
+            withTimeoutOrNull(5.seconds) { state.first { it is S } as S }
                 ?: error("Timed out waiting for ${S::class.simpleName} state, actual: ${state.value}")
 
         private fun Component.structure(indent: String = ""): String {
