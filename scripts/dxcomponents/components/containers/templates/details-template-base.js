@@ -20,6 +20,9 @@ export class DetailsTemplateBase extends ContainerBaseComponent {
     destroy() {
         super.destroy();
         this.jsComponentPConnectData.unsubscribeFn?.();
+        this.destroyChildren();
+        this.props.children = [];
+        this.componentsManager.onComponentPropsUpdate(this);
         this.componentsManager.onComponentRemoved(this);
     }
 
