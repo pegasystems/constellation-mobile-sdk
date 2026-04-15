@@ -17,7 +17,7 @@ class ViewRenderer : ComponentRenderer<ViewComponent> {
     @Composable
     override fun ViewComponent.Render() {
         WithVisibility(visible) {
-            Column(Modifier.padding(bottom = 8.dp).testTag("view_[$label]")) {
+            Column(Modifier.testTag("view_[$label]")) {
                 if (showLabel && label.isNotEmpty()) {
                     Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
                 }
