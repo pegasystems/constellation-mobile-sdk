@@ -45,6 +45,26 @@ interface ComponentManager {
     fun getComponents(ids: List<ComponentId>): List<Component>
 
     /**
+     * Retrieves a component by its unique identifier and sets its [ComponentContext.parentId]
+     * to [parentId].
+     *
+     * @param id The unique identifier of the child component.
+     * @param parentId The identifier of the parent component.
+     * @return The component associated with [id] with [ComponentContext.parentId] set, or null if not found.
+     */
+    fun setComponentParentAndGet(id: ComponentId, parentId: ComponentId): Component?
+
+    /**
+     * Retrieves multiple components by their unique identifiers and sets each component's
+     * [ComponentContext.parentId] to [parentId].
+     *
+     * @param ids A list of unique identifiers for the child components.
+     * @param parentId The identifier of the parent component.
+     * @return A list of components associated with the given identifiers with [ComponentContext.parentId] set.
+     */
+    fun setComponentsParentAndGet(ids: List<ComponentId>, parentId: ComponentId): List<Component>
+
+    /**
      * Adds a new component.
      *
      * @param context The context of the component to be added.
@@ -71,6 +91,14 @@ interface ComponentManager {
          * Root container component ID.
          */
         val ROOT_CONTAINER_ID = ComponentId(1)
+
+        /**
+         * Retrieves a child component by its unique identifier, sets its [ComponentContext.parentId]
+         * to [parentId], and casts it to [T]. Returns null if not found or if cast fails.
+         */
+        @Suppress("UNCHECKED_CAST")
+        fun <T : Component> ComponentManager.setComponentParentAndGetTyped(id: ComponentId, parentId: ComponentId) =
+            setComponentParentAndGet(id, parentId) as? T
 
         /**
          * Creates a new instance of `ComponentManager` with optional custom component definitions.

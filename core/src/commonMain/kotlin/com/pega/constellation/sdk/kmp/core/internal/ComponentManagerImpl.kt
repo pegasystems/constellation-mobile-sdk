@@ -30,6 +30,12 @@ internal class ComponentManagerImpl(
     override fun getComponents(ids: List<ComponentId>) =
         ids.mapNotNull { getComponent(it) }
 
+    override fun setComponentParentAndGet(id: ComponentId, parentId: ComponentId) =
+        getComponent(id)?.also { it.context.parentId = parentId }
+
+    override fun setComponentsParentAndGet(ids: List<ComponentId>, parentId: ComponentId) =
+        ids.mapNotNull { setComponentParentAndGet(it, parentId) }
+
     override fun updateComponent(id: ComponentId, props: JsonObject) {
         val component = getComponent(id)
         runCatching { component?.onUpdate(props) }
@@ -49,9 +55,5 @@ internal class ComponentManagerImpl(
 
     companion object {
         private const val TAG = "ComponentManager"
-
-        @Suppress("unchecked_cast")
-        fun <T : Component> ComponentManager.getComponentTyped(id: ComponentId) =
-            getComponent(id) as? T
     }
 }

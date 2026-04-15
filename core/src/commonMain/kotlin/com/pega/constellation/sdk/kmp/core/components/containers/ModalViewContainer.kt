@@ -6,12 +6,12 @@ import androidx.compose.runtime.setValue
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.api.ComponentManager.Companion.setComponentParentAndGetTyped
 import com.pega.constellation.sdk.kmp.core.api.HideableComponent
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerComponent
-import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Companion.getComponentTyped
 import kotlinx.serialization.json.JsonObject
 
 class ModalViewContainerComponent(context: ComponentContext) : ContainerComponent(context), HideableComponent {
@@ -35,7 +35,9 @@ class ModalViewContainerComponent(context: ComponentContext) : ContainerComponen
         val banners = props.getJSONArray("alertBanners")
         val bannersIds = banners.mapWithIndex { getString(it).toInt() }
         alertBanners =
-            bannersIds.mapNotNull { context.componentManager.getComponentTyped(ComponentId(it)) }
+            bannersIds.mapNotNull {
+                context.componentManager.setComponentParentAndGetTyped(ComponentId(it), context.id)
+            }
     }
 
     fun onCancelClick() {

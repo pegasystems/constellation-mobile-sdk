@@ -24,6 +24,6 @@ abstract class ContainerComponent(context: ComponentContext) : BaseComponent(con
     private fun getChildren(props: JsonObject): List<Component> {
         val children = props.getJSONArray("children")
         val ids = children.mapWithIndex { getString(it).toInt() }
-        return context.componentManager.getComponents(ids.map { ComponentId(it) })
+        return context.componentManager.setComponentsParentAndGet(ids.map { ComponentId(it) }, context.id)
     }
 }

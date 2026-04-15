@@ -32,7 +32,7 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
             .mapWithIndex { getJsonObject(it) }
             .mapNotNull { itemJson ->
                 val componentId = itemJson.getString("componentId")
-                context.componentManager.getComponent(ComponentId(componentId.toInt()))
+                context.componentManager.setComponentParentAndGet(ComponentId(componentId.toInt()), context.id)
                     ?.let { component ->
                         Item(
                             id = itemJson.getInt("id"),

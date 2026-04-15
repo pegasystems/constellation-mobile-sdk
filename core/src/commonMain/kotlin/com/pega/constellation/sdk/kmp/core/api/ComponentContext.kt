@@ -10,6 +10,7 @@ package com.pega.constellation.sdk.kmp.core.api
  */
 interface ComponentContext {
     val id: ComponentId
+    var parentId: ComponentId?
     val type: ComponentType
     val componentManager: ComponentManager
 
@@ -26,5 +27,6 @@ class ComponentContextImpl(
     override val componentManager: ComponentManager,
     val onComponentEvent: (ComponentEvent) -> Unit = {},
 ) : ComponentContext {
+    override var parentId: ComponentId? = null
     override fun sendComponentEvent(event: ComponentEvent) = onComponentEvent(event)
 }

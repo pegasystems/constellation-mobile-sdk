@@ -138,7 +138,7 @@ abstract class ConstellationSdkBaseTest {
                 ?: error("Timed out waiting for ${S::class.simpleName} state, actual: ${state.value}")
 
         private fun Component.structure(indent: String = ""): String {
-            val self = indent + this + "\n"
+            val self = indent + this + ", parentId:" + "${this.context.parentId}" + "\n"
             val children = children().joinToString("") { it.structure("$indent-") }
             return self + children
         }
