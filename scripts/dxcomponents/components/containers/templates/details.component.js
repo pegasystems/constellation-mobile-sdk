@@ -38,7 +38,7 @@ export class DetailsComponent extends DetailsTemplateBase {
         const rawMetaData = this.pConn.resolveConfigProps(this.pConn.getRawMetadata()?.config);
         this.label = this.pConn.getInheritedProps().label ?? rawMetaData?.label ?? "";
         this.showLabel = this.pConn.getInheritedProps().showLabel ?? rawMetaData?.showLabel ?? true;
-        this.showHighlightedFields = rawMetaData?.showHighlightedData;
+        this.showHighlightedFields = rawMetaData?.showHighlightedData ?? false;
 
         if (rawMetaData && this.showHighlightedFields) {
             this.highlightedFields = this.#buildHighlightedFields(rawMetaData.highlightedData);
