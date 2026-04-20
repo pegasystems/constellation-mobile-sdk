@@ -225,12 +225,6 @@ export class DataReferenceComponent extends ContainerBaseComponent {
     #recreatedFirstChild() {
         const { type, config } = this.firstChildMeta;
         if (this.firstChildMeta?.type !== "Region") {
-            this.pConn.clearErrorMessages({
-                property: this.propName,
-                category: "",
-                context: "",
-            });
-
             this.#setReadOnlyDisplayFlags();
 
             // In the case of a datasource with parameters you cannot load the dropdown before the parameters
