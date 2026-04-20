@@ -4,12 +4,8 @@ export class DecimalComponent extends FieldBaseComponent {
     updateSelf() {
         this.updateBaseProps();
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
-        if (configProps.decimalPrecision != null) {
-            this.props.decimalPrecision = this.#getPrecision(configProps.decimalPrecision);
-        }
-        if (configProps.showGroupSeparators != null) {
-            this.props.showGroupSeparators = this.utils.getBooleanValue(configProps.showGroupSeparators);
-        }
+        this.props.decimalPrecision = this.#getPrecision(configProps.decimalPrecision) ?? 2;
+        this.props.showGroupSeparators = this.utils.getBooleanValue(configProps.showGroupSeparators) ?? false;
         this.propName = this.pConn.getStateProps().value;
         this.componentsManager.onComponentPropsUpdate(this);
     }
