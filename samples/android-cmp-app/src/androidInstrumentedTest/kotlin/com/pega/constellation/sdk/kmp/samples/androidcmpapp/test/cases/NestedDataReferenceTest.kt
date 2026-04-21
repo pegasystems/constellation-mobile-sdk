@@ -3,8 +3,8 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -14,7 +14,7 @@ import kotlin.test.Test
 class NestedDataReferenceTest : ComposeTest(PegaVersion.v24_2_2) {
 
     @Test
-    fun test_nested_json() = runComposeUiTest {
+    fun test_nested_json() = runAndroidTest {
         setupApp("O40M3A-MarekCo-Work-NestedJSON")
 
         // create case

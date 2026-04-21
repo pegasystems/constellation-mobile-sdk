@@ -30,6 +30,7 @@ import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.A
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
+import org.junit.Rule
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import kotlin.test.BeforeTest
 
@@ -38,6 +39,8 @@ abstract class ComposeTest(
     private val pegaVersion: PegaVersion,
     val mode: ComposeTestMode = MockServer,
 ) {
+    @get:Rule
+    val testName = org.junit.rules.TestName()
     private val scope = CoroutineScope(Dispatchers.Default)
     private val webViewScope = CoroutineScope(Dispatchers.Main)
     private val instrumentation = InstrumentationRegistry.getInstrumentation()

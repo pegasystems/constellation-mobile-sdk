@@ -6,10 +6,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.find
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.onAllDescendantsOf
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForDescendantNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -20,7 +20,7 @@ import kotlin.test.Test
 class EmbeddedDataSingleRecordTest : ComposeTest(PegaVersion.v25_1) {
 
     @Test
-    fun test_embedded_data_single_record() = runComposeUiTest {
+    fun test_embedded_data_single_record() = runAndroidTest {
         setupApp("OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord")
 
         onNodeWithText("New Service").performClick()

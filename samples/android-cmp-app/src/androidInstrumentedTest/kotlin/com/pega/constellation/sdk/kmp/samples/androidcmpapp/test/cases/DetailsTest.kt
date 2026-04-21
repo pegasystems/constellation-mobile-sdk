@@ -6,10 +6,10 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.find
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.onAllDescendantsOf
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
@@ -30,7 +30,7 @@ class DetailsTest : ComposeTest(PegaVersion.v25_1) {
     )
 
     @Test
-    fun test_details_template() = runComposeUiTest {
+    fun test_details_template() = runAndroidTest {
         setupApp(caseClassName = "OI1OYV-Marco2-Work-DetailsTemplateTest")
 
         onNodeWithText("New Service").performClick()

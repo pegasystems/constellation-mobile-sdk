@@ -34,9 +34,14 @@
 		B5AFB0812F69AA56009808CD /* Exceptions for "responses" folder in "UITest" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"cdn/8.24.2/48543.js",
 				"cdn/8.24.2/bootstrap-shell.js",
 				"cdn/8.24.2/constellation-core.js",
-				cdn/8.24.2/lib_asset.json,
+				"cdn/8.24.2/lib_asset.json",
+				"cdn/25.1/bootstrap-shell.js",
+				"cdn/25.1/constellation-core.js",
+				"cdn/25.1/lib_asset.json",
+				"cdn/25.1/libphonenumber.js",
 			);
 			target = B583B07A2E8FCF6500A50A67 /* UITest */;
 		};

@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.invoke
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
@@ -15,6 +17,18 @@ kotlin {
             sourceSetTreeName = "test"
         }.configure {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+            execution = "ANDROIDX_TEST_ORCHESTRATOR"
+            @Suppress("UnstableApiUsage")
+            managedDevices {
+                localDevices {
+                    create("pixel") {
+                        device = "Pixel 8"
+                        apiLevel = 35
+                        systemImageSource = "aosp-atd"
+                    }
+                }
+            }
         }
         androidResources.enable = true
     }
@@ -59,4 +73,8 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    androidTestUtil(libs.androidx.orchestrator)
 }

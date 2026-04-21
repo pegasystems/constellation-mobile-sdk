@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.androidx.ui.test.junit4.android)
             implementation(libs.androidx.uiautomator)
             implementation(libs.kotlin.test)
+            implementation(libs.androidx.test.core)
         }
     }
 }
@@ -49,6 +50,7 @@ android {
         versionName = "1.0"
         manifestPlaceholders["oidcRedirectScheme"] = "com.pega.mobile.constellation.sample"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["useTestStorageService"] = "true"
     }
     packaging {
         resources {
@@ -65,8 +67,24 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+
+        @Suppress("UnstableApiUsage")
+        managedDevices {
+            localDevices {
+                create("pixel") {
+                    device = "Pixel 8"
+                    apiLevel = 35
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
+    }
+
     dependencies {
         debugImplementation(libs.androidx.ui.test.manifest)
         debugImplementation(project(":test"))
+        androidTestUtil(libs.androidx.orchestrator)
     }
 }

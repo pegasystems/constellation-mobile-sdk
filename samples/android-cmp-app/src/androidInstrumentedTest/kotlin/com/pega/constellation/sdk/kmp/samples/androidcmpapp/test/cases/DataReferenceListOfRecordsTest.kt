@@ -2,12 +2,14 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.waitUntilDoesNotExist
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -18,7 +20,7 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
     val columns = listOf("BRAND", "MODEL")
 
     @Test
-    fun test_table_simple_table() = runComposeUiTest {
+    fun test_table_simple_table() = runAndroidTest {
         val cars = listOf(
             listOf("Audi", "A4", "30000"),
             listOf("Ford", "Focus", "25000"),
@@ -67,41 +69,41 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
     }
 
     @Test
-    fun test_combo_box() =
-        runComposeUiTest {
-            setupApp("O40M3A-MarekCo-Work-DataReferenceMultiSelectTest")
+    fun test_combo_box() = runAndroidTest {
+        setupApp("O40M3A-MarekCo-Work-DataReferenceMultiSelectTest")
 
-            // Create case
-            onNodeWithText("New Service").performClick()
+        // Create case
+        onNodeWithText("New Service").performClick()
 
-            // Wait for multiselect to appear
-            waitForNode("Cars Selection")
+        // Wait for multiselect to appear
+        waitForNode("Cars Selection")
 
-            // Open dropdown by clicking on the field
-            onNodeWithText("Cars Selection").performClick()
+        // Open dropdown by clicking on the field
+        onNodeWithText("Cars Selection").performClick()
 
-            // Verify options are loaded from D_carsList
-            waitForNode("Focus")
-            waitForNode("Corolla")
-            waitForNode("126p")
-            waitForNode("Octavia")
+        // Verify options are loaded from D_carsList
+        waitForNode("Focus")
+        waitForNode("Corolla")
+        waitForNode("126p")
+        waitForNode("Octavia")
 
-            // Test search functionality - type to filter, verify only matching option visible
-            onNodeWithText("Cars Selection").performTextInput("oct")
-            waitForNode("Octavia")
+        // Test search functionality - type to filter, verify only matching option visible
+        onNodeWithText("Cars Selection").performTextInput("oct")
+        waitForNode("Octavia")
 
-            // Close dropdown (clears search via onExpandedChange), reopen, then select multiple items
-            onNodeWithText("Cars Selection").performClick()
-            onNodeWithText("Cars Selection").performClick()
-            waitForNode("Focus")
-            onNodeWithText("Focus").performClick()
-            onNodeWithText("Octavia").performClick()
+        // Close dropdown (clears search via onExpandedChange), reopen, then select multiple items
+        onNodeWithText("Cars Selection").performClick()
+        waitUntilDoesNotExist(hasText("Octavia"))
+        onNodeWithText("Cars Selection").performClick()
+        waitForNode("Focus")
+        onNodeWithText("Focus").performClick()
+        onNodeWithText("Octavia").performClick()
 
-            // Close dropdown by clicking on the field again
-            onNodeWithText("Cars Selection").performClick()
-            waitForNode("Focus, Octavia")
+        // Close dropdown by clicking on the field again
+        onNodeWithText("Cars Selection").performClick()
+        waitForNode("Focus, Octavia")
 
-            onNodeWithText("Submit").performClick()
-            waitForNode("Thanks for registration")
-        }
+        onNodeWithText("Submit").performClick()
+        waitForNode("Thanks for registration")
+    }
 }
