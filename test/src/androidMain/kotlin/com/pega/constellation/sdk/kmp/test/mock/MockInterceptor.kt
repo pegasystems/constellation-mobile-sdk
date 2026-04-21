@@ -8,6 +8,7 @@ import com.pega.constellation.sdk.kmp.test.mock.handlers.DxCasesHandler
 import com.pega.constellation.sdk.kmp.test.mock.handlers.DxDataViewsHandler
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
+import com.pega.constellation.sdk.kmp.test.mock.handlers.CdnHandler
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
@@ -19,35 +20,25 @@ import okio.Buffer
 
 class MockInterceptor(private val context: Context, pegaVersion: PegaVersion) : Interceptor {
 
-    private val cdnHosts = listOf(
-        "release.constellation.pega.io",
-        "prod-cdn.constellation.pega.io"
-    )
-
     private val handlers = listOf(
+        CdnHandler(),
         DxAssignmentsHandler(),
         DxCasesHandler(),
         DxDataViewsHandler(pegaVersion),
     )
 
     override fun intercept(chain: Interceptor.Chain) =
-        if (cdnHosts.contains(chain.request().url.host)) {
-            chain.proceed(chain.request())
-        } else {
-            interceptDxRequest(chain.request())
-        }
-
-    private fun interceptDxRequest(request: Request) = request
-        .apply { Log.i(TAG, "request: [$method] $url") }
-        .runCatching {
-            val mockedRequest = MockRequest(method, url.toString(), body?.string())
-            val handler = handlers.firstOrNull { it.canHandle(mockedRequest) }
-            val response = handler?.handle(mockedRequest)
-            requireNotNull(response) { "Missing handler" }
-        }
-        .getOrElse { Error(message = it.message ?: "Unknown error") }
-        .also { Log.i(TAG, " -> response: $it") }
-        .toResponse(request)
+        chain.request()
+            .apply { Log.i(TAG, "request: [$method] $url") }
+            .runCatching {
+                val mockedRequest = MockRequest(method, url.toString(), body?.string())
+                val handler = handlers.firstOrNull { it.canHandle(mockedRequest) }
+                val response = handler?.handle(mockedRequest)
+                requireNotNull(response) { "Missing handler" }
+            }
+            .getOrElse { Error(message = it.message ?: "Unknown error") }
+            .also { Log.i(TAG, " -> response: $it") }
+            .toResponse(chain.request())
 
     private fun MockResponse.toResponse(request: Request): Response = when (this) {
         is Asset -> context.asset(path).toResponseBody().toResponse(request, 200)

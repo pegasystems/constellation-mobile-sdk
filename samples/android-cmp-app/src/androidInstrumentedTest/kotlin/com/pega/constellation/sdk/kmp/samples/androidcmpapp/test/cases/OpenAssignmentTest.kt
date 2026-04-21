@@ -8,8 +8,8 @@ import androidx.compose.ui.test.SemanticsMatcher.Companion.expectValue
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -19,7 +19,7 @@ import kotlin.test.Test
 class OpenAssignmentTest : ComposeTest(PegaVersion.v24_1_0) {
 
     @Test
-    fun test_open_assignment() = runComposeUiTest {
+    fun test_open_assignment() = runAndroidTest {
         setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
         onNodeWithText("Services").performClick()
 

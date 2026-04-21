@@ -6,8 +6,8 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -25,7 +25,7 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v24_1_0) {
     )
 
     @Test
-    fun test_simple_table() = runComposeUiTest {
+    fun test_simple_table() = runAndroidTest {
         setupApp("O40M3A-MarekCo-Work-DataReferenceTest2")
 
         // create case
@@ -43,7 +43,7 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v24_1_0) {
     }
 
     @Test
-    fun test_dropdown() = runComposeUiTest {
+    fun test_dropdown() = runAndroidTest {
         setupApp("O40M3A-MarekCo-Work-DataReferenceTest2")
 
         // create case

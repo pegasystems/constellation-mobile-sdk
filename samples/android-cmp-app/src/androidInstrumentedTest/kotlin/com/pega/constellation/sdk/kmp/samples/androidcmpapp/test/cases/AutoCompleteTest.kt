@@ -2,21 +2,19 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.cases
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.isFocused
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
-import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
 class AutoCompleteTest : ComposeTest(PegaVersion.v25_1) {
     @Test
-    fun test_auto_complete() = runComposeUiTest {
+    fun test_auto_complete() = runAndroidTest {
         setupApp("OFV0MW-Marco-Work-AutoCompleteTest")
 
         onNodeWithText("New Service").performClick()
@@ -54,7 +52,7 @@ class AutoCompleteTest : ComposeTest(PegaVersion.v25_1) {
     }
 
     @Test
-    fun test_auto_complete_data_ref() = runComposeUiTest {
+    fun test_auto_complete_data_ref() = runAndroidTest {
         setupApp("OFV0MW-Marco-Work-AutoCompleteTest")
 
         onNodeWithText("New Service").performClick()

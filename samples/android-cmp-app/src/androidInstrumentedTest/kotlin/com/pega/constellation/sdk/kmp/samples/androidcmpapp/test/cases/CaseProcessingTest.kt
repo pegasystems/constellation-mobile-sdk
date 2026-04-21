@@ -9,8 +9,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.requestFocus
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
@@ -18,7 +18,7 @@ import kotlin.test.Test
 @OptIn(ExperimentalTestApi::class)
 class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
     @Test
-    fun test_case_processing_sdk_testing() = runComposeUiTest {
+    fun test_case_processing_sdk_testing() = runAndroidTest {
         setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
 
         onNodeWithText("New Service").performClick()
@@ -40,7 +40,7 @@ class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
     }
 
     @Test
-    fun test_case_processing_service() = runComposeUiTest {
+    fun test_case_processing_service() = runAndroidTest {
         setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
 
         onNodeWithText("New Service").performClick()

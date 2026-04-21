@@ -8,8 +8,8 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -38,7 +38,7 @@ class ParametrizedDataReferenceTest : ComposeTest(PegaVersion.v24_2_2) {
     )
 
     @Test
-    fun test_datareference_with_parametrized_dp() = runComposeUiTest {
+    fun test_datareference_with_parametrized_dp() = runAndroidTest {
         setupApp("O40M3A-MarekCo-Work-KeysAndCiphers")
 
         // create case

@@ -19,7 +19,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
-import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.waitUntilAtLeastOneExists
 import androidx.compose.ui.test.waitUntilDoesNotExist
 import androidx.compose.ui.test.waitUntilExactlyOneExists
@@ -27,6 +26,7 @@ import androidx.compose.ui.test.waitUntilNodeCount
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.find
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.onAllDescendantsOf
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -39,7 +39,7 @@ import kotlin.test.Test
 class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
 
     @Test
-    fun test_embedded_data_repeating_view() = runComposeUiTest {
+    fun test_embedded_data_repeating_view() = runAndroidTest {
         setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable")
 
         // create case
@@ -136,7 +136,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
     }
 
     @Test
-    fun test_embedded_data_table_simple_table() = runComposeUiTest {
+    fun test_embedded_data_table_simple_table() = runAndroidTest {
         setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable")
 
         val columnValues = mutableMapOf(
@@ -262,7 +262,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
     }
 
     @Test
-    fun test_embedded_data_add_edit_remove_conditions() = runComposeUiTest {
+    fun test_embedded_data_add_edit_remove_conditions() = runAndroidTest {
         // Step 1 - Editable table
         setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions")
         // create case

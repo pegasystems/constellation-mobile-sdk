@@ -7,9 +7,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.waitUntilDoesNotExist
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNodes
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
@@ -18,7 +18,7 @@ import org.junit.Test
 @OptIn(ExperimentalTestApi::class)
 class GroupTest : ComposeTest(PegaVersion.v24_2_2) {
     @Test
-    fun test_group_component() = runComposeUiTest {
+    fun test_group_component() = runAndroidTest {
         setupApp(caseClassName = "O40M3A-MarekCo-Work-GroupTest")
 
         onNodeWithText("New Service").performClick()
