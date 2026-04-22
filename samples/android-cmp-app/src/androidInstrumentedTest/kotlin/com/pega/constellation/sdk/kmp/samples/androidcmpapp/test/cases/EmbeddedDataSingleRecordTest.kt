@@ -10,6 +10,7 @@ import androidx.compose.ui.test.runComposeUiTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.find
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.onAllDescendantsOf
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForDescendantNode
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import java.time.LocalDateTime
@@ -43,6 +44,8 @@ class EmbeddedDataSingleRecordTest : ComposeTest(PegaVersion.v25_1) {
 
         // Check if the same values appears inside inputs in view "Embedded Data - Car single fields"
         val singleFieldsView = "group_[Embedded Data - Car single fields]"
+        // Wait for data propagation before asserting
+        waitForDescendantNode(singleFieldsView, "Audi")
         checkCarData(singleFieldsView, expectedDate, isDetailsView = false)
 
         // Check if the same values appears inside "Embedded Data - Car Details"
