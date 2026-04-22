@@ -16,6 +16,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.DefaultForm
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Details
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Dropdown
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Email
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.EmbeddedData
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FieldGroupTemplate
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.FlowContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Group
@@ -29,6 +30,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButton
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RichText
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RootContainer
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleComboBox
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTable
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableManual
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableSelect
@@ -45,6 +47,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.AssignmentRende
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DataReferenceRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DefaultFormRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.DetailsRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.EmbeddedDataRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FieldGroupTemplateRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.FlowContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.GroupRenderer
@@ -70,6 +73,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.MultiselectRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.PhoneRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.RadioButtonsRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.RichTextRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.SimpleComboBoxRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TextAreaRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TextInputRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TimeRenderer
@@ -103,6 +107,7 @@ object ComponentRenderers {
         Details to DetailsRenderer(),
         Dropdown to DropdownRenderer(),
         Email to EmailRenderer(),
+        EmbeddedData to EmbeddedDataRenderer(),
         FieldGroupTemplate to FieldGroupTemplateRenderer(),
         FlowContainer to FlowContainerRenderer(),
         Group to GroupRenderer(),
@@ -116,6 +121,7 @@ object ComponentRenderers {
         Region to RegionRenderer(),
         RootContainer to RootContainerRenderer(),
         RichText to RichTextRenderer(),
+        SimpleComboBox to SimpleComboBoxRenderer(),
         SimpleTable to SimpleTableRenderer(),
         SimpleTableManual to SimpleTableManualRenderer(),
         SimpleTableSelect to SimpleTableSelectRenderer(),
