@@ -2,6 +2,7 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertCountEquals
@@ -18,13 +19,25 @@ import androidx.compose.ui.test.waitUntilNodeCount
 private const val DEFAULT_TIMEOUT = 5000L
 
 @OptIn(ExperimentalTestApi::class)
-fun ComposeUiTest.waitForNode(text: String, substring: Boolean = false) {
+private fun ComposeUiTest.waitForMatcher(matcher: SemanticsMatcher, errorMessage: String) {
     runCatching {
-        waitUntilExactlyOneExists(hasText(text, substring), timeoutMillis = DEFAULT_TIMEOUT)
+        waitUntilExactlyOneExists(matcher, timeoutMillis = DEFAULT_TIMEOUT)
     }.onFailure {
-        // additional assertion to provide better error message as waitUntil's exception is not very descriptive
-        onNode(hasText(text, substring)).assertExists("Cannot find node with text '$text'")
+        onNode(matcher).assertExists(errorMessage)
     }
+}
+
+@OptIn(ExperimentalTestApi::class)
+fun ComposeUiTest.waitForNode(text: String, substring: Boolean = false) {
+    waitForMatcher(hasText(text, substring), "Cannot find node with text '$text'")
+}
+
+@OptIn(ExperimentalTestApi::class)
+fun ComposeUiTest.waitForDescendantNode(testTag: String, text: String, substring: Boolean = false) {
+    waitForMatcher(
+        hasAnyAncestor(hasTestTag(testTag)) and hasText(text, substring),
+        "Cannot find node with text '$text' inside '$testTag'"
+    )
 }
 
 @OptIn(ExperimentalTestApi::class)
