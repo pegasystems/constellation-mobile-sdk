@@ -1,0 +1,371 @@
+{
+	"data": {
+		"caseInfo": {
+			"caseTypeID": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+			"owner": "user@marco",
+			"availableActions": [{
+				"name": "Edit details",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/OI1OYV-MARCO2-WORK E-3011/actions/pyUpdateCaseDetails",
+						"type": "GET",
+						"title": "Get case action details"
+					}
+				},
+				"ID": "pyUpdateCaseDetails",
+				"type": "Case"
+			}, {
+				"name": "Change stage",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/OI1OYV-MARCO2-WORK E-3011/actions/pyChangeStage",
+						"type": "GET",
+						"title": "Get case action details"
+					}
+				},
+				"ID": "pyChangeStage",
+				"type": "Case"
+			}],
+			"associations": {
+				"follows": false
+			},
+			"lastUpdatedBy": "user@marco",
+			"assignments": [{
+				"instructions": "",
+				"canPerform": "true",
+				"assigneeInfo": {
+					"name": "Administrator",
+					"ID": "user@marco",
+					"type": "worklist"
+				},
+				"processID": "CreateForm_Default",
+				"createTime": "2026-04-14T09:15:48.486Z",
+				"urgency": 10,
+				"processName": "Create",
+				"isMultiStep": "true",
+				"name": "EmbeddedData Combobox",
+				"context": "",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT",
+						"type": "GET",
+						"title": "Get assignment details"
+					}
+				},
+				"ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT",
+				"actions": [{
+					"name": "EmbeddedData Combobox",
+					"links": {
+						"submit": {
+							"rel": "self",
+							"href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT/actions/EmbeddedDataCombobox",
+							"type": "PATCH",
+							"title": "Submit assignment action "
+						},
+						"save": {
+							"rel": "self",
+							"href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT/actions/EmbeddedDataCombobox/save",
+							"type": "PATCH",
+							"title": "Save assignment action "
+						},
+						"open": {
+							"rel": "self",
+							"href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT/actions/EmbeddedDataCombobox",
+							"type": "GET",
+							"title": "Get assignment action details"
+						}
+					},
+					"ID": "EmbeddedDataCombobox",
+					"type": "FlowAction"
+				}]
+			}],
+			"hasNewAttachments": false,
+			"businessID": "E-3011",
+			"sla": {
+				"goal": "",
+				"deadline": ""
+			},
+			"WidgetsToRefresh": ["TaskList"],
+			"caseTypeName": "EmbeddedDataTest",
+			"urgency": 10,
+			"createTime": "2026-04-14T09:15:15.231Z",
+			"createdBy": "user@marco",
+			"name": "EmbeddedDataTest",
+			"stages": [{
+				"entryTime": "2026-04-14T09:15:15.237Z",
+				"name": "Create",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "/cases/OI1OYV-MARCO2-WORK E-3011/stages/PRIM0",
+						"type": "PUT",
+						"title": "Jump to this stage"
+					}
+				},
+				"visited_status": "active",
+				"ID": "PRIM0",
+				"type": "Primary",
+				"transitionType": "create"
+			}],
+			"ID": "OI1OYV-MARCO2-WORK E-3011",
+			"caseTypeIcon": "cmicons/pycase.svg",
+			"status": "New",
+			"stageID": "PRIM0",
+			"stageLabel": "Create",
+			"lastUpdateTime": "2026-04-14T09:15:48.489Z",
+			"content": {
+				"classID": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+				"EmbeddedDataCarSingle": {
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"pyLabel": "",
+					"Model": "",
+					"Year": "",
+					"Brand": ""
+				},
+				"EmbeddedDataCars": [{
+					"Brand": "brand-a",
+					"Model": "model-a",
+					"Price": "300"
+				}, {
+					"Brand": "brand-b",
+					"Model": "model-b",
+					"Price": "400"
+				}],
+				"pxObjClass": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+				"pyLabel": "EmbeddedDataTest",
+				"pyID": "E-3011"
+			}
+		}
+	},
+	"uiResources": {
+		"resources": {
+			"views": {
+				"EmbeddedDataCombobox": [{
+					"children": [{
+						"children": [{
+							"children": [{
+								"config": {
+									"context": ".EmbeddedDataCarSingle",
+									"inheritedProps": [{
+										"prop": "label",
+										"value": "@L "
+									}],
+									"name": "pyReview",
+									"ruleClass": "OI1OYV-Marco2-Data-Car",
+									"type": "view"
+								},
+								"type": "reference"
+							}],
+							"config": {
+								"datasource": {
+									"copyAll": true,
+									"fields": {
+										"key": "@P .Model",
+										"value": ""
+									},
+									"source": "@DATASOURCE .EmbeddedDataCars"
+								},
+								"displayAs": "Combobox",
+								"editable": true,
+								"label": "@L EmbeddedDataCarSingle",
+								"labelOption": "custom",
+								"placeholder": "@L Select...",
+								"ruleClass": "Data-",
+								"targetPage": "@P .EmbeddedDataCarSingle",
+								"value": "@P .EmbeddedDataCarSingle.pyLabel"
+							},
+							"type": "EmbeddedData"
+						}],
+						"name": "Fields",
+						"type": "Region"
+					}],
+					"config": {
+						"NumCols": "2",
+						"localeReference": "@LR OI1OYV-MARCO2-WORK-EMBEDDEDDATATEST!VIEW!EMBEDDEDDATACOMBOBOX",
+						"ruleClass": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+						"template": "DefaultForm"
+					},
+					"name": "EmbeddedDataCombobox",
+					"type": "View",
+					"classID": "OI1OYV-Marco2-Work-EmbeddedDataTest"
+				}],
+				"pyReview": [{
+					"children": [{
+						"children": [{
+							"config": {
+								"label": "@FL .Brand",
+								"labelOption": "default",
+								"value": "@P .Brand"
+							},
+							"type": "TextInput"
+						}, {
+							"config": {
+								"label": "@FL .Model",
+								"labelOption": "default",
+								"value": "@P .Model"
+							},
+							"type": "TextInput"
+						}, {
+							"config": {
+								"label": "@FL .Year",
+								"labelOption": "default",
+								"value": "@P .Year"
+							},
+							"type": "Date"
+						}],
+						"name": "A",
+						"type": "Region"
+					}],
+					"config": {
+						"label": "@L Details",
+						"localeReference": "@LR OI1OYV-MARCO2-DATA-CAR!VIEW!PYREVIEW",
+						"ruleClass": "OI1OYV-Marco2-Data-Car",
+						"showLabel": true,
+						"template": "Details"
+					},
+					"name": "pyReview",
+					"type": "View",
+					"classID": "OI1OYV-Marco2-Data-Car"
+				}]
+			},
+			"fields": {
+				"EmbeddedDataCarSingle": [{
+					"classID": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+					"type": "Page",
+					"dataRetrievalType": "manual",
+					"pageClass": "OI1OYV-Marco2-Data-Car",
+					"label": "EmbeddedDataCarSingle"
+				}],
+				"pyLabel": [{
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"type": "Text",
+					"maxLength": 64,
+					"displayAs": "FixedSizeForInput",
+					"definedOnClassID": "@baseclass",
+					"expectedLength": 20,
+					"label": "Label"
+				}, {
+					"classID": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+					"type": "Text",
+					"maxLength": 64,
+					"displayAs": "pxTextInput",
+					"definedOnClassID": "Work-",
+					"expectedLength": 60,
+					"label": "Label"
+				}],
+				"Model": [{
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"type": "Text",
+					"maxLength": 256,
+					"displayAs": "pxTextInput",
+					"label": "model"
+				}],
+				"Year": [{
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"type": "Date",
+					"displayAs": "pxDateTime",
+					"label": "year"
+				}],
+				"Brand": [{
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"type": "Text",
+					"maxLength": 256,
+					"displayAs": "pxTextInput",
+					"label": "brand"
+				}],
+				"EmbeddedDataCars": [{
+					"classID": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+					"type": "Page List",
+					"dataRetrievalType": "manual",
+					"pageClass": "OI1OYV-Marco2-Data-Car",
+					"label": "EmbeddedDataCars"
+				}],
+				"pyID": [{
+					"classID": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+					"type": "Text",
+					"maxLength": 32,
+					"displayAs": "pxDisplayText",
+					"definedOnClassID": "Work-Cover-",
+					"expectedLength": 22,
+					"label": "Case ID",
+					"isClassKey": true
+				}]
+			}
+		},
+		"components": ["DefaultForm", "Details", "Region", "EmbeddedData", "TextInput", "View", "Date"],
+		"localeReferences": ["OI1OYV-MARCO2-WORK-EMBEDDEDDATATEST!CASE!EMBEDDEDDATATEST"],
+		"root": {
+			"type": "reference",
+			"config": {
+				"type": "view",
+				"name": "EmbeddedDataCombobox",
+				"context": "caseInfo.content"
+			}
+		},
+		"context_data": {},
+		"navigation": {
+			"template": "Horizontal",
+			"steps": [{
+				"allow_jump": true,
+				"name": "Create",
+				"actionID": "Create",
+				"visited_status": "success",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF1",
+						"type": "PATCH",
+						"title": "Go to Create"
+					}
+				},
+				"ID": "AssignmentSF1"
+			}, {
+				"allow_jump": true,
+				"name": "EmbeddedData Combobox",
+				"actionID": "EmbeddedDataCombobox",
+				"visited_status": "current",
+				"ID": "AssignmentSF2"
+			}]
+		},
+		"actionButtons": {
+			"secondary": [{
+				"jsAction": "cancelAssignment",
+				"name": "Cancel",
+				"actionID": "cancel"
+			}, {
+				"jsAction": "navigateToStep",
+				"name": "Previous",
+				"actionID": "back",
+				"links": {
+					"open": {
+						"rel": "self",
+						"href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT/navigation_steps/previous",
+						"type": "PATCH",
+						"title": "Go back to previous step"
+					}
+				}
+			}],
+			"main": [{
+				"jsAction": "finishAssignment",
+				"name": "Submit",
+				"actionID": "submit"
+			}]
+		}
+	},
+	"nextAssignmentInfo": {
+		"context": "self",
+		"className": "OI1OYV-Marco2-Work-EmbeddedDataTest",
+		"links": {
+			"open": {
+				"rel": "self",
+				"href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT",
+				"type": "GET",
+				"title": "Get assignment details"
+			}
+		},
+		"ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK E-3011!CREATEFORM_DEFAULT"
+	}
+}

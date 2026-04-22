@@ -44,6 +44,7 @@ import { UrlComponent } from "../components/fields/url.component.js";
 // import { UserReferenceComponent } from './_components/field/user-reference/user-reference.component';
 // import { ScalarListComponent } from './_components/field/scalar-list/scalar-list.component';
 import { RichTextComponent } from "../components/fields/rich-text.component.js";
+import { SimpleComboBoxComponent } from "../components/fields/simple-combo-box.component.js";
 import { UnsupportedComponent } from "../components/widgets/unsupported.component.js";
 
 // Template components
@@ -55,6 +56,7 @@ import { UnsupportedComponent } from "../components/widgets/unsupported.componen
 import { DataReferenceComponent } from "../components/containers/templates/data-reference.component.js";
 import { DefaultFormComponent } from "../components/containers/default-form.component.js";
 import { DetailsComponent } from "../components/containers/templates/details.component.js";
+import { EmbeddedDataComponent } from "../components/containers/templates/embedded-data.component.js";
 // import { DetailsNarrowWideComponent } from './_components/template/details-narrow-wide/details-narrow-wide.component';
 // import { DetailsOneColumnComponent } from './_components/template/details-one-column/details-one-column.component';
 // import { DetailsSubTabsComponent } from './_components/template/details-sub-tabs/details-sub-tabs.component';
@@ -168,6 +170,7 @@ const pegaSdkComponentMap = {
     Dropdown: DropdownComponent,
     // DynamicTabs: DynamicTabsComponent,
     Email: EmailComponent,
+    EmbeddedData: EmbeddedDataComponent,
     // ErrorBoundary: ErrorBoundaryComponent,
     // FeedContainer: FeedContainerComponent,
     // FieldGroup: FieldGroupComponent,
@@ -215,6 +218,7 @@ const pegaSdkComponentMap = {
     RootContainer: RootContainerComponent,
     // ScalarList: ScalarListComponent,
     // SemanticLink: SemanticLinkComponent,
+    SimpleComboBox: SimpleComboBoxComponent,
     SimpleTable: SimpleTableComponent,
     SimpleTableManual: SimpleTableManualComponent,
     SimpleTableSelect: SimpleTableSelectComponent,
