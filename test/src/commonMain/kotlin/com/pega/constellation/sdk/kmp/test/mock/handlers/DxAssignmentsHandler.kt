@@ -36,6 +36,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("D-7004") -> handleDataReferenceListOfRecordsTest(actionId)
             assignmentId.contains("D-17009") -> handleDataReferenceMultiSelectTest(request, actionId)
             assignmentId.contains("D-9001") -> handleDetailsTemplateTest(actionId)
+            assignmentId.contains("D-12038") -> handleDataRefSemanticLinkTest(actionId)
 
             else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -132,6 +133,12 @@ class DxAssignmentsHandler : MockHandler {
 
     private fun handleDetailsTemplateTest(actionId: String) = when (actionId) {
         "DetailsTemplate2" -> Asset("responses/dx/assignments/DetailsTemplateTest.json")
+        else -> Error(404, "Invalid actionId: $actionId")
+    }
+
+    private fun handleDataRefSemanticLinkTest(actionId: String) = when (actionId) {
+        "Create" -> Asset("responses/dx/assignments/DataRefSemanticLinkTest-1-Create.json")
+        "Create/refresh" -> Asset("responses/dx/assignments/refresh/DataRefSemanticLinkTest-Create-Refresh.json")
         else -> Error(404, "Invalid actionId: $actionId")
     }
 

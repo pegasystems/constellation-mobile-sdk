@@ -31,6 +31,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RichText
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RootContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleComboBox
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SemanticLink
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTable
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableManual
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.SimpleTableSelect
@@ -74,6 +75,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.PhoneRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.RadioButtonsRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.RichTextRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.SimpleComboBoxRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.SemanticLinkRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TextAreaRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TextInputRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.fields.TimeRenderer
@@ -122,6 +124,7 @@ object ComponentRenderers {
         RootContainer to RootContainerRenderer(),
         RichText to RichTextRenderer(),
         SimpleComboBox to SimpleComboBoxRenderer(),
+        SemanticLink to SemanticLinkRenderer(),
         SimpleTable to SimpleTableRenderer(),
         SimpleTableManual to SimpleTableManualRenderer(),
         SimpleTableSelect to SimpleTableSelectRenderer(),

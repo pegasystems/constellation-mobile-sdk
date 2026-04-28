@@ -279,6 +279,8 @@ export class DataReferenceComponent extends ContainerBaseComponent {
     #handleSelection(event) {
         const caseKey = this.pConn.getCaseInfo().getKey();
         const refreshOptions = { autoDetectRefresh: true };
+        // AutoComplete sets value on event.id whereas Dropdown sets it on event.target.value
+        const selectionValue = event?.id || event?.target?.value;
 
         const children = this.pConn.getRawMetadata()?.children;
         if (children?.length > 0 && children[0].config?.value) {
@@ -286,19 +288,29 @@ export class DataReferenceComponent extends ContainerBaseComponent {
             refreshOptions.classID = this.pConn.getRawMetadata().classID;
         }
 
+        // Skip manual refreshCaseView for picklist-based children (Dropdown, AutoComplete, Checkbox)
+        // as they don't have an associated view configured and trigger refresh automatically
+        const hasAssociatedViewConfigured = this.rawViewMetadata.children?.[1]?.children?.length;
+
         if (this.canBeChangedInReviewMode && this.pConn.getValue("__currentPageTabViewName")) {
             this.pConn
                 .getActionsApi()
-                .refreshCaseView(caseKey, this.pConn.getValue("__currentPageTabViewName"), "", refreshOptions);
+                .refreshCaseView(caseKey, this.pConn.getValue("__currentPageTabViewName"), "", refreshOptions)
+                ?.catch((error) => {
+                    console.warn(`${TAG} refreshCaseView failed (review mode)`, error?.name, error?.message);
+                });
             PCore.getDeferLoadManager().refreshActiveComponents(this.pConn.getContextName());
-        } else {
+        } else if (hasAssociatedViewConfigured) {
             const pgRef = this.pConn.getPageReference().replace("caseInfo.content", "");
-            this.pConn.getActionsApi().refreshCaseView(caseKey, this.viewName, pgRef, refreshOptions);
+            this.pConn
+                .getActionsApi()
+                .refreshCaseView(caseKey, this.viewName, pgRef, refreshOptions)
+                ?.catch((error) => {
+                    console.warn(`${TAG} refreshCaseView failed`, error?.name, error?.message);
+                });
         }
 
-        // AutoComplete sets value on event.id whereas Dropdown sets it on event.target.value
-        const propValue = event?.id || event?.target?.value;
-        if (propValue && this.canBeChangedInReviewMode && this.isDisplayModeEnabled) {
+        if (selectionValue && this.canBeChangedInReviewMode && this.isDisplayModeEnabled) {
             PCore.getDataApiUtils()
                 .getCaseEditLock(caseKey, "")
                 .then((caseResponse) => {
@@ -317,7 +329,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
                     const propArr = this.propName.split(".");
                     propArr.forEach((element, idx) => {
                         if (idx + 1 === propArr.length) {
-                            curr[element] = propValue;
+                            curr[element] = selectionValue;
                         } else {
                             curr[element] = {};
                             curr = curr[element];

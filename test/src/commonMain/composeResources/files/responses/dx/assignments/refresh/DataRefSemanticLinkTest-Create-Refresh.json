@@ -1,0 +1,271 @@
+{
+	"data": {
+		"caseInfo": {
+			"content": {
+				"classID": "OI1OYV-Marco2-Work-DataReferenceTest",
+				"DataReferenceSingleCars": {
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"pyGUID": "909106bf-f108-4751-9357-8a628a01dc3f",
+					"Model": "Focus",
+					"Brand": "Ford"
+				}
+			}
+		}
+	},
+	"uiResources": {
+		"resources": {
+			"views": {
+				"Create": [{
+					"children": [{
+						"children": [{
+							"config": {
+								"authorContext": ".DataReferenceSingleCars",
+								"inheritedProps": [{
+									"prop": "label",
+									"value": "@FL .DataReferenceSingleCars"
+								}],
+								"name": "Create_DataReferenceSingleCars",
+								"referenceType": "Data",
+								"ruleClass": "OI1OYV-Marco2-Work-DataReferenceTest",
+								"type": "view"
+							},
+							"type": "reference"
+						}],
+						"name": "Fields",
+						"type": "Region"
+					}],
+					"config": {
+						"NumCols": "2",
+						"localeReference": "@LR OI1OYV-MARCO2-WORK-DATAREFERENCETEST!VIEW!CREATE",
+						"ruleClass": "OI1OYV-Marco2-Work-DataReferenceTest",
+						"template": "DefaultForm"
+					},
+					"name": "Create",
+					"type": "View",
+					"classID": "OI1OYV-Marco2-Work-DataReferenceTest"
+				}],
+				"Create_DataReferenceSingleCars": [{
+					"children": [{
+						"config": {
+							"columns": [{
+								"key": "true",
+								"setProperty": "Associated property",
+								"value": ".pyGUID"
+							}, {
+								"display": "true",
+								"primary": "true",
+								"useForSearch": true,
+								"value": ".Model"
+							}],
+							"contextPage": "@P .DataReferenceSingleCars",
+							"datasource": "D_CarsList2",
+							"deferDatasource": true,
+							"label": "@L ",
+							"labelOption": "custom",
+							"listType": "datapage",
+							"placeholder": "@L Select...",
+							"primaryField": "@P .DataReferenceSingleCars.Model",
+							"value": "@P .DataReferenceSingleCars.pyGUID"
+						},
+						"type": "Dropdown"
+					}, {
+						"children": [{
+							"config": {
+								"context": ".DataReferenceSingleCars",
+								"inheritedProps": [{
+									"prop": "showLabel",
+									"value": true
+								}, {
+									"prop": "label",
+									"value": "@L Create - EmbeddedDataCarSingle"
+								}],
+								"name": "Create_EmbeddedDataCarSingle",
+								"readOnly": true,
+								"ruleClass": "OI1OYV-Marco2-Data-Car",
+								"type": "view"
+							},
+							"type": "reference"
+						}],
+						"name": "Views",
+						"type": "Region"
+					}],
+					"config": {
+						"classKeys": [{
+							"name": "pyGUID"
+						}],
+						"contextClass": "OI1OYV-Marco2-Data-Car",
+						"displayAs": "dropdown",
+						"localeReference": "@LR OI1OYV-MARCO2-WORK-DATAREFERENCETEST!VIEW!CREATE_DATAREFERENCESINGLECARS",
+						"mode": "singleselect",
+						"name": "DataReferenceSingleCars",
+						"parameters": {
+							"brand": ""
+						},
+						"referenceList": "D_CarsList2",
+						"ruleClass": "OI1OYV-Marco2-Work-DataReferenceTest",
+						"selectionMode": "single",
+						"template": "DataReference"
+					},
+					"name": "Create_DataReferenceSingleCars",
+					"type": "View",
+					"classID": "OI1OYV-Marco2-Work-DataReferenceTest"
+				}],
+				"Create_EmbeddedDataCarSingle": [{
+					"children": [{
+						"children": [{
+							"config": {
+								"label": "@FL .Brand",
+								"labelOption": "default",
+								"value": "@P .Brand"
+							},
+							"type": "TextInput"
+						}, {
+							"config": {
+								"label": "@FL .Model",
+								"labelOption": "default",
+								"value": "@P .Model"
+							},
+							"type": "TextInput"
+						}, {
+							"config": {
+								"allowDecimals": true,
+								"alwaysShowISOCode": false,
+								"isoCodeSelection": "constant",
+								"label": "@FL .Price",
+								"labelOption": "default",
+								"value": "@P .Price",
+								"visibility": "@W pyIsMobileApp"
+							},
+							"type": "Currency"
+						}],
+						"name": "Fields",
+						"type": "Region"
+					}],
+					"config": {
+						"localeReference": "@LR OI1OYV-MARCO2-DATA-CAR!VIEW!CREATE_EMBEDDEDDATACARSINGLE",
+						"mode": "editable",
+						"ruleClass": "OI1OYV-Marco2-Data-Car",
+						"template": "DefaultForm"
+					},
+					"name": "Create_EmbeddedDataCarSingle",
+					"type": "View",
+					"classID": "OI1OYV-Marco2-Data-Car"
+				}]
+			},
+			"datapages": {
+				"D_car": {
+					"parameters": [{
+						"name": "pyGUID",
+						"defaultValue": "",
+						"linkedField": "pyGUID"
+					}],
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"mode": "readonly",
+					"isSearchable": false,
+					"isQueryable": false,
+					"isAlternateKeyStorage": true,
+					"structure": "page"
+				},
+				"D_CarsList2": {
+					"parameters": [{
+						"name": "brand",
+						"defaultValue": ""
+					}],
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"mode": "readonly",
+					"isSearchable": false,
+					"isQueryable": true,
+					"structure": "list",
+					"isWorkObject": false,
+					"isDataObject": true
+				},
+				"D_carSavable": {
+					"parameters": [{
+						"name": "pyGUID",
+						"defaultValue": "",
+						"linkedField": "pyGUID"
+					}],
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"mode": "editable",
+					"isSearchable": false,
+					"isQueryable": false,
+					"isAlternateKeyStorage": true,
+					"structure": "page"
+				}
+			},
+			"dataTypes": {
+				"OI1OYV-Marco2-Data-Car": {
+					"classKeys": ["pyGUID"],
+					"savableDataPage": "D_carSavable",
+					"lookupDataPage": "D_car",
+					"lookupDataPageInfo": {
+						"isAlternateKeyStorage": true,
+						"parameters": {
+							"pyGUID": "@P .pyGUID"
+						}
+					}
+				}
+			},
+			"fields": {
+				"pyGUID": [{
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"type": "Text",
+					"maxLength": 128,
+					"displayAs": "pxTextInput",
+					"definedOnClassID": "@baseclass",
+					"label": "Globally unique ID",
+					"isClassKey": true
+				}],
+				"DataReferenceSingleCars": [{
+					"classID": "OI1OYV-Marco2-Work-DataReferenceTest",
+					"type": "Page",
+					"dataRetrievalType": "refer",
+					"pageClass": "OI1OYV-Marco2-Data-Car",
+					"label": "DataReferenceSingleCars",
+					"datasource": {
+						"name": "D_car",
+						"parameters": {
+							"pyGUID": "@P .DataReferenceSingleCars.pyGUID"
+						}
+					}
+				}],
+				"Model": [{
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"type": "Text",
+					"maxLength": 256,
+					"displayAs": "pxTextInput",
+					"label": "model"
+				}],
+				"Brand": [{
+					"classID": "OI1OYV-Marco2-Data-Car",
+					"type": "Text",
+					"maxLength": 256,
+					"displayAs": "pxTextInput",
+					"label": "brand"
+				}]
+			}
+		},
+		"components": ["DefaultForm", "Currency", "Dropdown", "Region", "TextInput", "View", "DataReference"],
+		"localeReferences": ["OI1OYV-MARCO2-WORK-DATAREFERENCETEST!CASE!DATAREFERENCETEST"],
+		"root": {
+			"type": "reference",
+			"config": {
+				"type": "view",
+				"name": "Create",
+				"context": "caseInfo.content"
+			}
+		},
+		"context_data": {
+			"caseInfo": {
+				"content": {
+					"summary_of_when_conditions__": {},
+					"DataReferenceSingleCars": {
+						"summary_of_when_conditions__": {
+							"pyIsMobileApp": false
+						}
+					}
+				}
+			}
+		}
+	}
+}
