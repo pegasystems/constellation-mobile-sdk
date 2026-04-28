@@ -58,6 +58,7 @@ class DxAssignmentsHandler : MockHandler {
             "Create" -> Asset("responses/dx/assignments/DataReferenceListOfRecordsTest-1-SimpleTable.json")
             "DataReferenceListOfRecordsSimpleTable" -> Asset("responses/dx/assignments/DataReferenceListOfRecordsTest-2-TableReadonly.json")
             "DataReferenceListOfRecordsTableReadonly" -> Asset("responses/dx/assignments/DataReferenceListOfRecordsTest-3-SimpleTableReadonly.json")
+            "DataReferenceListOfRecordsSimpleTableReadonly" -> Asset("responses/dx/assignments/DataReferenceListOfRecordsTest-4-FieldValue.json")
             else -> Error(404, "Invalid actionId: $actionId")
         }
     }
