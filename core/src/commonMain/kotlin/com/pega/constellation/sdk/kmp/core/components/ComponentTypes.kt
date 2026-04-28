@@ -42,6 +42,7 @@ object ComponentTypes {
     val RadioButtons = ComponentType("RadioButtons")
     val RichText = ComponentType("RichText")
     val SimpleComboBox = ComponentType("SimpleComboBox")
+    val SemanticLink = ComponentType("SemanticLink")
     val TextArea = ComponentType("TextArea")
     val TextInput = ComponentType("TextInput")
     val Time = ComponentType("Time")

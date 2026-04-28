@@ -34,7 +34,7 @@ import { IntegerComponent } from "../components/fields/integer.component.js";
 // import { PercentageComponent } from './_components/field/percentage/percentage.component';
 import { PhoneComponent } from "../components/fields/phone.component.js";
 import { RadioButtonsComponent } from "../components/fields/radio-buttons.component.js";
-// import { SemanticLinkComponent } from './_components/field/semantic-link/semantic-link.component';
+import { SemanticLinkComponent } from "../components/fields/semantic-link.component.js";
 import { TextAreaComponent } from "../components/fields/text-area.component.js";
 // import { TextComponent } from './_components/field/text/text.component';
 // import { TextContentComponent } from './_components/field/text-content/text-content.component';
@@ -219,6 +219,7 @@ const pegaSdkComponentMap = {
     // ScalarList: ScalarListComponent,
     // SemanticLink: SemanticLinkComponent,
     SimpleComboBox: SimpleComboBoxComponent,
+    SemanticLink: SemanticLinkComponent,
     SimpleTable: SimpleTableComponent,
     SimpleTableManual: SimpleTableManualComponent,
     SimpleTableSelect: SimpleTableSelectComponent,
