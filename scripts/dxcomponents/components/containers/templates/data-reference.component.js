@@ -146,6 +146,11 @@ export class DataReferenceComponent extends ContainerBaseComponent {
                 this.propName = PCore.getAnnotationUtils().getPropertyName(this.firstChildMeta.config.value);
             }
 
+            if (this.#shouldDisplayOnlyMulti()) {
+                this.#handleDisplayOnlyMulti();
+                return;
+            }
+
             this.#generateChildrenToRender();
             this.reconcileChildren(this.children);
             this.#sendPropsUpdate();
@@ -158,6 +163,67 @@ export class DataReferenceComponent extends ContainerBaseComponent {
             visible: this.propsToUse.visibility ?? this.props.visible,
         };
         this.componentsManager.onComponentPropsUpdate(this);
+    }
+
+    #shouldDisplayOnlyMulti() {
+        const isMultiMode = this.selectionMode === SELECTION_MODE.MULTI;
+        return isMultiMode &&
+            (['readonly', 'readonlyMulti', 'map'].includes(this.displayAs) || this.isDisplayModeEnabled);
+    }
+
+    #handleDisplayOnlyMulti() {
+        const semanticLinkChildren = this.#createSemanticLinkChildren();
+        this.children = semanticLinkChildren;
+        this.reconcileChildren(this.children);
+        this.props = {
+            children: this.getChildrenComponentsIds(),
+            visible: this.propsToUse.visibility ?? this.props.visible,
+            label: this.propsToUse.label || "",
+            isDisplayOnlyMulti: true,
+        };
+        this.componentsManager.onComponentPropsUpdate(this);
+    }
+
+    // Creates a SemanticLink pConn per selected item, using primaryField as display text
+    #createSemanticLinkChildren() {
+        const selectionList = this.firstChildMeta.config?.selectionList;
+        const primaryField = this.firstChildMeta.config?.primaryField;
+        const referenceType = this.rawViewMetadata.config?.referenceType || '';
+        const selectionKey = this.firstChildMeta.config?.selectionKey || '.pyGUID';
+
+        if (!selectionList || !primaryField) {
+            return [];
+        }
+
+        const referenceListData = this.pConn.getValue(selectionList);
+        if (!referenceListData || !Array.isArray(referenceListData)) {
+            return [];
+        }
+
+        const primaryFieldProp = primaryField.substring(1);
+        const selectionListProp = selectionList.substring(1);
+        const selectionKeyProp = selectionKey.substring(1);
+
+        return referenceListData.map((child, index) => {
+            const referenceLabel = child[primaryFieldProp] || '';
+
+            const metadata = {
+                type: 'SemanticLink',
+                name: `SemanticLink_${child[selectionKeyProp] || index}`,
+                config: {
+                    text: referenceLabel,
+                    referenceType,
+                }
+            };
+
+            return PCore.createPConnect({
+                meta: metadata,
+                options: {
+                    context: this.pConn.getContextName(),
+                    pageReference: `${this.pConn.getPageReference()}.${selectionListProp}[${index}]`
+                }
+            });
+        });
     }
 
     #updatePropertiesFromProps(theConfigProps) {
@@ -258,7 +324,6 @@ export class DataReferenceComponent extends ContainerBaseComponent {
 
     #setReadOnlyDisplayFlags() {
         const isSingleMode = this.selectionMode === SELECTION_MODE.SINGLE;
-        const isMultiMode = this.selectionMode === SELECTION_MODE.MULTI;
 
         const shouldDisplayOnlySingle = isSingleMode && 
             (this.displayAs === 'readonly' || this.isDisplayModeEnabled) && 
@@ -266,13 +331,6 @@ export class DataReferenceComponent extends ContainerBaseComponent {
 
         if (shouldDisplayOnlySingle) {
             this.props.displayOnlySingle = true;
-        }
-
-        const shouldDisplayOnlyMulti = isMultiMode && 
-            (['readonly', 'readonlyMulti', 'map'].includes(this.displayAs) || this.isDisplayModeEnabled);
-
-        if (shouldDisplayOnlyMulti) {
-            this.props.displayOnlyMulti = true;
         }
     }
 

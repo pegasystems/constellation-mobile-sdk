@@ -24,6 +24,9 @@ export class SemanticLinkComponent extends BaseComponent {
         this.componentsManager.onComponentRemoved(this);
     }
 
+    // Required by ContainerBaseComponent.onEvent() which propagates events to all children
+    onEvent(event) {}
+
     update(pConn) {
         if (this.pConn !== pConn) {
             this.pConn = pConn;
