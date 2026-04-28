@@ -69,6 +69,36 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
     }
 
     @Test
+    fun test_field_value_display() = runAndroidTest {
+        setupApp("O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest")
+
+        // create case
+        onNodeWithText("New Service").performClick()
+
+        // Step 1: Editable Table - select items and proceed
+        waitForNode("DataReference ListOfRecords - Table", substring = true)
+        onAllNodesWithText("Focus")[0].performClick()
+        onAllNodesWithText("Panda")[0].performClick()
+        onNodeWithText("Next").performClick()
+
+        // Step 2: Editable SimpleTable - proceed
+        waitForNode("DataReference ListOfRecords - SimpleTable", substring = true)
+        onNodeWithText("Next").performClick()
+
+        // Step 3: Readonly Table - proceed
+        waitForNode("DataReference ListOfRecords - Table readonly", substring = true)
+        onNodeWithText("Next").performClick()
+
+        // Step 4: Readonly SimpleTable - proceed
+        waitForNode("DataReference ListOfRecords - SimpleTable readonly", substring = true)
+        onNodeWithText("Next").performClick()
+
+        // Step 5: FieldValue - verify display-only multi values (comma-separated SemanticLinks)
+        waitForNode("DataReference ListOfRecords FieldValue", substring = true)
+        waitForNode("A4, Focus")
+    }
+
+    @Test
     fun test_combo_box() = runAndroidTest {
         setupApp("O40M3A-MarekCo-Work-DataReferenceMultiSelectTest")
 
