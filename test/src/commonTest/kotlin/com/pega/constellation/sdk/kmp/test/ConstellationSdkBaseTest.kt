@@ -4,9 +4,8 @@ import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdk.State
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
-import com.pega.constellation.sdk.kmp.core.api.Component
+import com.pega.constellation.sdk.kmp.core.components.children
 import com.pega.constellation.sdk.kmp.core.components.containers.AssignmentCardComponent
-import com.pega.constellation.sdk.kmp.core.components.containers.ContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.DefaultFormComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.FlowContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.OneColumnComponent
@@ -16,6 +15,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.RichTextComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.TextInputComponent
+import com.pega.constellation.sdk.kmp.core.components.structure
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -136,19 +136,6 @@ abstract class ConstellationSdkBaseTest {
         private suspend inline fun <reified S : State> ConstellationSdk.assertState() =
             withTimeoutOrNull(5.seconds) { state.first { it is S } as S }
                 ?: error("Timed out waiting for ${S::class.simpleName} state, actual: ${state.value}")
-
-        private fun Component.structure(indent: String = ""): String {
-            val self = indent + this + "\n"
-            val children = children().joinToString("") { it.structure("$indent-") }
-            return self + children
-        }
-
-        private fun Component.children() = when (this) {
-            is ContainerComponent -> children
-            is RootContainerComponent -> listOfNotNull(modalViewContainer, viewContainer)
-            is FlowContainerComponent -> listOfNotNull(assignment) + alertBanners
-            else -> emptyList()
-        }
 
         private fun RootContainerComponent.getDefaultForm(): DefaultFormComponent {
             val viewContainer = children()[1] as ViewContainerComponent

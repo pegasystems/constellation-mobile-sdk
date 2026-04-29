@@ -9,14 +9,14 @@ import com.pega.constellation.sdk.kmp.core.components.optString
 import kotlinx.serialization.json.JsonObject
 
 class DataReferenceComponent(context: ComponentContext) : ContainerComponent(context) {
-    var isDisplayOnlyMulti: Boolean by mutableStateOf(false)
+    var isDisplayOnly: Boolean by mutableStateOf(false)
         private set
     var label: String by mutableStateOf("")
         private set
 
     override fun applyProps(props: JsonObject) {
         super.applyProps(props)
-        isDisplayOnlyMulti = props.optBoolean("isDisplayOnlyMulti", false)
+        isDisplayOnly = props.optBoolean("isDisplayOnly", false)
         label = props.optString("label")
     }
 }

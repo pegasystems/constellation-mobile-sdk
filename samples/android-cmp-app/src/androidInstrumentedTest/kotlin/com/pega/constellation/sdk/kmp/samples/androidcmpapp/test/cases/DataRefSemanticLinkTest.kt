@@ -36,6 +36,8 @@ class DataRefSemanticLinkTest : ComposeTest(PegaVersion.v25_1) {
         onNodeWithText("Next").performClick()
 
         // Step 2: verify SemanticLink renders the selected car model
+        waitForNode("DataReference SingleRecord FieldValue", substring = true)
+        waitForNode("FieldValue Car")
         waitForNode("Focus")
     }
 }
