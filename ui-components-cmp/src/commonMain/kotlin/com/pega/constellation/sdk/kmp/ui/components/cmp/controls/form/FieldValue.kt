@@ -30,7 +30,7 @@ fun FieldValue(
     valueFontSize: TextUnit = 14.sp,
     valueFontWeight: FontWeight = FontWeight.Normal
 ) {
-    Column(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+    Column(modifier = Modifier.padding(bottom = 8.dp)) {
         if (label.trim().isNotEmpty()) {
             Text(label, color = Color.Gray)
         }

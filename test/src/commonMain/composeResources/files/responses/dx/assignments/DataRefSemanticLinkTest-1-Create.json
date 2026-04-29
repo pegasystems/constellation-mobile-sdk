@@ -45,7 +45,7 @@
 				"urgency": 10,
 				"processName": "Create",
 				"isMultiStep": "true",
-				"name": "step2",
+                "name": "DataReference SingleRecord FieldValue",
 				"context": "",
 				"links": {
 					"open": {
@@ -266,7 +266,7 @@
 					"type": "Page",
 					"dataRetrievalType": "refer",
 					"pageClass": "OI1OYV-Marco2-Data-Car",
-					"label": "DataReferenceSingleCars",
+					"label": "FieldValue Car",
 					"datasource": {
 						"name": "D_car",
 						"parameters": {

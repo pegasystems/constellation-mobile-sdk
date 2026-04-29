@@ -95,7 +95,10 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
 
         // Step 5: FieldValue - verify display-only multi values (comma-separated SemanticLinks)
         waitForNode("DataReference ListOfRecords FieldValue", substring = true)
-        waitForNode("A4, Focus")
+        waitForNode("FieldValue Cars")
+        waitForNode("A4")
+        waitForNode(", ")
+        waitForNode("Focus")
     }
 
     @Test

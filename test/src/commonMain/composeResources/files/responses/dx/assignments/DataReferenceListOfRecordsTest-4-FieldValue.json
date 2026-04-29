@@ -271,7 +271,7 @@
           "type": "Page List",
           "dataRetrievalType": "refer",
           "pageClass": "OI1OYV-Marco2-Data-Car",
-          "label": "DataReferenceListOfRecordsCars",
+          "label": "FieldValue Cars",
           "datasource": {
             "name": "D_car",
             "parameters": {

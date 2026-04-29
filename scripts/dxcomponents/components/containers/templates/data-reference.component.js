@@ -42,7 +42,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
         this.children = this.pConn.getChildren();
         this.#updateSelf();
 
-        const shouldPreloadOptions = 
+        const shouldPreloadOptions =
             (['Dropdown', 'Checkbox'].includes(this.firstChildMeta?.type)) &&
             this.rawViewMetadata.config?.parameters &&
             !this.firstChildMeta.config.deferDatasource;
@@ -114,6 +114,18 @@ export class DataReferenceComponent extends ContainerBaseComponent {
             (displayAs === "autocomplete" || displayAs === "dropdown");
         this.isDisplayModeEnabled = ["DISPLAY_ONLY", "STACKED_LARGE_VAL"].includes(displayMode);
 
+        if (this.#shouldDisplayOnlySingle()) {
+            const semanticLink = this.pConn.getChildren()[0];
+            this.#handleDisplayOnly([semanticLink])
+            return;
+        }
+
+        if (this.#shouldDisplayOnlyMulti()) {
+            const semanticLinkChildren = this.#createSemanticLinkChildren();
+            this.#handleDisplayOnly(semanticLinkChildren);
+            return;
+        }
+
         if (this.firstChildMeta?.type !== "Region") {
             this.firstChildPConnect = this.pConn.getChildren()[0].getPConnect;
 
@@ -146,11 +158,6 @@ export class DataReferenceComponent extends ContainerBaseComponent {
                 this.propName = PCore.getAnnotationUtils().getPropertyName(this.firstChildMeta.config.value);
             }
 
-            if (this.#shouldDisplayOnlyMulti()) {
-                this.#handleDisplayOnlyMulti();
-                return;
-            }
-
             this.#generateChildrenToRender();
             this.reconcileChildren(this.children);
             this.#sendPropsUpdate();
@@ -165,21 +172,25 @@ export class DataReferenceComponent extends ContainerBaseComponent {
         this.componentsManager.onComponentPropsUpdate(this);
     }
 
+    #shouldDisplayOnlySingle() {
+        const isSingleMode = this.selectionMode === SELECTION_MODE.SINGLE;
+        return isSingleMode &&
+            (this.displayAs === 'readonly' || this.isDisplayModeEnabled) && !this.canBeChangedInReviewMode;
+    }
+
     #shouldDisplayOnlyMulti() {
         const isMultiMode = this.selectionMode === SELECTION_MODE.MULTI;
         return isMultiMode &&
             (['readonly', 'readonlyMulti', 'map'].includes(this.displayAs) || this.isDisplayModeEnabled);
     }
 
-    #handleDisplayOnlyMulti() {
-        const semanticLinkChildren = this.#createSemanticLinkChildren();
-        this.children = semanticLinkChildren;
+    #handleDisplayOnly(children) {
+        this.children = children;
         this.reconcileChildren(this.children);
         this.props = {
-            children: this.getChildrenComponentsIds(),
-            visible: this.propsToUse.visibility ?? this.props.visible,
             label: this.propsToUse.label || "",
-            isDisplayOnlyMulti: true,
+            children: this.getChildrenComponentsIds(),
+            isDisplayOnly: true
         };
         this.componentsManager.onComponentPropsUpdate(this);
     }
