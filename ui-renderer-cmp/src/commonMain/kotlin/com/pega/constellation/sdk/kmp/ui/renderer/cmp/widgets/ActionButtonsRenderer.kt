@@ -19,7 +19,7 @@ class ActionButtonsRenderer : ComponentRenderer<ActionButtonsComponent> {
                     title = it.name,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryFixed ,
+                        containerColor = MaterialTheme.colorScheme.secondaryFixed,
                         contentColor = MaterialTheme.colorScheme.onSecondaryFixed
                     ),
                     onClick = { onClick(it) }

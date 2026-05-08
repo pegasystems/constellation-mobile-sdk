@@ -32,7 +32,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.common.Snack
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun LoginScreen(appViewModel: MediaCoAppViewModel, darkTheme: Boolean = false) {
+fun LoginScreen(appViewModel: MediaCoAppViewModel, isDarkTheme: Boolean = false) {
     val authState by appViewModel.authState.collectAsState()
 
     Scaffold(
@@ -47,7 +47,7 @@ fun LoginScreen(appViewModel: MediaCoAppViewModel, darkTheme: Boolean = false) {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painterResource(if (darkTheme) Res.drawable.logo_mediaco_dark else Res.drawable.logo_mediaco),
+                painterResource(if (isDarkTheme) Res.drawable.logo_mediaco_dark else Res.drawable.logo_mediaco),
                 contentDescription = "MediaCo logo",
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.height(48.dp)

@@ -20,8 +20,10 @@ actual fun createDataStore(): DataStore<Preferences> {
                 create = false,
                 error = null
             )
-            val pathStr = directory?.path + "/$DATASTORE_FILE_NAME"
-            pathStr.toPath()
+            val directoryPath = requireNotNull(directory?.path) {
+                "Unable to resolve documents directory for DataStore creation."
+            }
+            "$directoryPath/$DATASTORE_FILE_NAME".toPath()
         }
     )
 }

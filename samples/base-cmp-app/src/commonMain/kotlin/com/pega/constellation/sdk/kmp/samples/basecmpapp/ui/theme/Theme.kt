@@ -76,7 +76,7 @@ val MediaCoAuroraGradient: Brush
             Color(0x774338CA),
             Color(0x00312E81),
             Color(0x88A78BFA),
-            Color(0x66F472B6)
+            Color(0x2AF472B6)
         )
     )
 private val MediaCoTypography = Typography(
@@ -94,11 +94,11 @@ private val MediaCoTypography = Typography(
 
 @Composable
 fun MediaCoTheme(
-    darkTheme: Boolean = true,
+    isDarkTheme: Boolean = true,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = if (isDarkTheme) DarkColors else LightColors,
         typography = MediaCoTypography,
         content = content
     )

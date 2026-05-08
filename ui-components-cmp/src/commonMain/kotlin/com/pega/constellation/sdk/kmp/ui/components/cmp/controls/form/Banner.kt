@@ -50,15 +50,15 @@ fun Banner(
                     painter = painterResource(variant.iconRes),
                     contentDescription = "banner icon",
                     modifier = Modifier.height(24.dp),
-                    tint = MaterialTheme.colorScheme.onError
+                    tint = variant.contentColor()
                 )
             }
 
             Column(Modifier.weight(1f)) {
                 messages.forEach {
                     Row {
-                        if (messages.size > 1) Text("• ", color = MaterialTheme.colorScheme.onError)
-                        Text(text = it, fontSize = 16.sp, color = MaterialTheme.colorScheme.onError)
+                        if (messages.size > 1) Text("• ", color = variant.contentColor())
+                        Text(text = it, fontSize = 16.sp, color = variant.contentColor())
                     }
                 }
             }
@@ -66,7 +66,7 @@ fun Banner(
                 IconButton(onClose) {
                     Icon(
                         painter = painterResource(Res.drawable.baseline_close_48),
-                        tint = MaterialTheme.colorScheme.onError,
+                        tint = variant.contentColor(),
                         contentDescription = "close banner",
                         modifier = Modifier.height(24.dp)
                     )
@@ -82,6 +82,14 @@ fun BannerVariant.containerColor(): Color = when (this) {
     BannerVariant.WARNING -> MaterialTheme.colorScheme.tertiaryContainer
     BannerVariant.INFO -> MaterialTheme.colorScheme.secondaryContainer
     BannerVariant.SUCCESS -> MaterialTheme.colorScheme.primaryContainer
+}
+
+@Composable
+fun BannerVariant.contentColor(): Color = when (this) {
+    BannerVariant.URGENT -> MaterialTheme.colorScheme.onError
+    BannerVariant.WARNING -> MaterialTheme.colorScheme.onTertiaryContainer
+    BannerVariant.INFO -> MaterialTheme.colorScheme.onSecondaryContainer
+    BannerVariant.SUCCESS -> MaterialTheme.colorScheme.onPrimaryContainer
 }
 
 enum class BannerVariant(val title: String, val iconRes: DrawableResource) {

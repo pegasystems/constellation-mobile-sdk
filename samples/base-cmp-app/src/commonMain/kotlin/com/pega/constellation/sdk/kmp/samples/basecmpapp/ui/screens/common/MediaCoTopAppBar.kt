@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,20 +40,17 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaCoTopAppBar(modifier: Modifier = Modifier) {
+fun MediaCoTopAppBar(isDarkTheme: Boolean, modifier: Modifier = Modifier) {
     var showThemeMenu by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-    val darkTheme by PreferencesStore.isDarkThemeFlow.collectAsState(null)
 
-    val themeIcon: ImageVector = when (darkTheme) {
+    val themeIcon: ImageVector = when (isDarkTheme) {
         true -> Icons.Filled.DarkMode
         false -> Icons.Filled.LightMode
-        null -> Icons.Filled.Contrast
     }
-    val themeIconDescription: String = when (darkTheme) {
+    val themeIconDescription: String = when (isDarkTheme) {
         true -> "Dark mode"
         false -> "Light mode"
-        null -> "System theme"
     }
 
     TopAppBar(
@@ -125,8 +121,16 @@ fun MediaCoTopAppBar(modifier: Modifier = Modifier) {
 
 @Preview(widthDp = 500)
 @Composable
-fun MediaCoTopAppBarPreview() {
+fun MediaCoTopAppBarDarkPreview() {
     MediaCoTheme {
-        MediaCoTopAppBar()
+        MediaCoTopAppBar(true)
+    }
+}
+
+@Preview(widthDp = 500)
+@Composable
+fun MediaCoTopAppBarLightPreview() {
+    MediaCoTheme {
+        MediaCoTopAppBar(false)
     }
 }

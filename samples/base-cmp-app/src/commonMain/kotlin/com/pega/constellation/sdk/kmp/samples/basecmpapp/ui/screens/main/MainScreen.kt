@@ -26,7 +26,8 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.Ser
 fun MainScreen(
     appViewModel: MediaCoAppViewModel,
     pegaViewModel: PegaViewModel,
-    servicesViewModel: ServicesViewModel
+    servicesViewModel: ServicesViewModel,
+    isDarkTheme: Boolean,
 ) {
     val navController = rememberNavController()
     val currentEntry by navController.currentBackStackEntryAsState()
@@ -34,7 +35,7 @@ fun MainScreen(
     val currentScreen = currentRoute?.let { MainTab.valueOf(it) } ?: MainTab.Home
 
     Scaffold(
-        topBar = { MediaCoTopAppBar() },
+        topBar = { MediaCoTopAppBar(isDarkTheme) },
         bottomBar = { MediaCoBottomAppBar(currentScreen) { navController.navigate(it.name) } },
         snackbarHost = { SnackbarHost(appViewModel) },
         floatingActionButton = { HomeFab { pegaViewModel.createCase() } }

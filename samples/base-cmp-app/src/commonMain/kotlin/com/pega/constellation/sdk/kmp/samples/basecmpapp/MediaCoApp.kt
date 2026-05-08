@@ -34,11 +34,11 @@ fun MediaCoApp(
     }
     val darkTheme by PreferencesStore.isDarkThemeFlow.collectAsState(null)
     val isDarkTheme = darkTheme ?: isSystemInDarkTheme()
-    MediaCoTheme(darkTheme = isDarkTheme) {
+    MediaCoTheme(isDarkTheme = isDarkTheme) {
         if (authenticated) {
-            MainScreen(appViewModel, pegaViewModel, servicesViewModel)
+            MainScreen(appViewModel, pegaViewModel, servicesViewModel, isDarkTheme)
         } else {
-            LoginScreen(appViewModel, darkTheme = isDarkTheme)
+            LoginScreen(appViewModel, isDarkTheme = isDarkTheme)
         }
     }
 }
