@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.logo_mediaco
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.logo_mediaco_dark
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoAppViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.AuthError
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.Authenticated
@@ -31,7 +32,7 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.common.Snack
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun LoginScreen(appViewModel: MediaCoAppViewModel) {
+fun LoginScreen(appViewModel: MediaCoAppViewModel, darkTheme: Boolean = false) {
     val authState by appViewModel.authState.collectAsState()
 
     Scaffold(
@@ -46,7 +47,7 @@ fun LoginScreen(appViewModel: MediaCoAppViewModel) {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painterResource(Res.drawable.logo_mediaco),
+                painterResource(if (darkTheme) Res.drawable.logo_mediaco_dark else Res.drawable.logo_mediaco),
                 contentDescription = "MediaCo logo",
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.height(48.dp)

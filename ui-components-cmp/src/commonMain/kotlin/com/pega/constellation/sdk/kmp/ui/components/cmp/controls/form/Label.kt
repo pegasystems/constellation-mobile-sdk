@@ -1,10 +1,10 @@
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
@@ -21,26 +21,21 @@ fun Label(
 ) {
     if (hideLabel || label.isEmpty()) return
 
+    val textColor = if (disabled) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        else MaterialTheme.colorScheme.onSurface
+    val asteriskColor = when {
+        disabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        readOnly -> MaterialTheme.colorScheme.onSurface
+        else -> MaterialTheme.colorScheme.error
+    }
+
     Row(modifier = modifier) {
-        Text(text = label, color = textColor(disabled), fontSize = fontSize)
+        Text(text = label, color = textColor, fontSize = fontSize)
         if (required) {
-            Text(" *", color = asteriskColor(disabled, readOnly), fontSize = fontSize)
+            Text(" *", color = asteriskColor, fontSize = fontSize)
         }
     }
 }
-
-private fun asteriskColor(disabled: Boolean, readOnly: Boolean) =
-    when {
-        disabled -> Color.Gray
-        readOnly -> Color.Black
-        else -> Color.Red
-    }
-
-private fun textColor(disabled: Boolean) =
-    when {
-        disabled -> Color.Gray
-        else -> Color.Black
-    }
 
 @Preview(showBackground = true)
 @Composable

@@ -10,6 +10,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,7 +41,7 @@ fun Banner(
     ) {
         Row(
             modifier = Modifier
-                .background(color = variant.colorRes)
+                .background(color = variant.containerColor())
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -49,15 +50,15 @@ fun Banner(
                     painter = painterResource(variant.iconRes),
                     contentDescription = "banner icon",
                     modifier = Modifier.height(24.dp),
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.onError
                 )
             }
 
             Column(Modifier.weight(1f)) {
                 messages.forEach {
                     Row {
-                        if (messages.size > 1) Text("• ", color = Color.White)
-                        Text(text = it, fontSize = 16.sp, color = Color.White)
+                        if (messages.size > 1) Text("• ", color = MaterialTheme.colorScheme.onError)
+                        Text(text = it, fontSize = 16.sp, color = MaterialTheme.colorScheme.onError)
                     }
                 }
             }
@@ -65,7 +66,7 @@ fun Banner(
                 IconButton(onClose) {
                     Icon(
                         painter = painterResource(Res.drawable.baseline_close_48),
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.onError,
                         contentDescription = "close banner",
                         modifier = Modifier.height(24.dp)
                     )
@@ -75,18 +76,19 @@ fun Banner(
     }
 }
 
-object BannerColors {
-    val Success = Color(0xFF20AA50)
-    val Warning = Color(0xFFFD6000)
-    val Error = Color(0xFFD91C29)
-    val Info = Color(0xFF8397AB)
+@Composable
+fun BannerVariant.containerColor(): Color = when (this) {
+    BannerVariant.URGENT -> MaterialTheme.colorScheme.error
+    BannerVariant.WARNING -> MaterialTheme.colorScheme.tertiaryContainer
+    BannerVariant.INFO -> MaterialTheme.colorScheme.secondaryContainer
+    BannerVariant.SUCCESS -> MaterialTheme.colorScheme.primaryContainer
 }
 
-enum class BannerVariant(val title: String, val colorRes: Color, val iconRes: DrawableResource) {
-    URGENT("Error", BannerColors.Error, Res.drawable.baseline_warning_48),
-    WARNING("Warning", BannerColors.Warning, Res.drawable.baseline_flag_48),
-    INFO("Information", BannerColors.Info, Res.drawable.baseline_info_48),
-    SUCCESS("Success", BannerColors.Success, Res.drawable.baseline_done_48)
+enum class BannerVariant(val title: String, val iconRes: DrawableResource) {
+    URGENT("Error", Res.drawable.baseline_warning_48),
+    WARNING("Warning", Res.drawable.baseline_flag_48),
+    INFO("Information", Res.drawable.baseline_info_48),
+    SUCCESS("Success", Res.drawable.baseline_done_48)
 }
 
 @Preview(showBackground = true)

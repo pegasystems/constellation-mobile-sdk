@@ -30,7 +30,7 @@ kotlin {
                 implementation(project(":core"))
                 implementation(project(":ui-components-cmp"))
                 implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
+                implementation(libs.ui.tooling.preview)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.runtime)

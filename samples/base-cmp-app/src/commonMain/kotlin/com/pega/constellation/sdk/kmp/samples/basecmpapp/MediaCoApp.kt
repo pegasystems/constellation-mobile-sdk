@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.AuthError
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.Authenticated
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.TokenExpired
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.data.PreferencesStore
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.login.LoginScreen
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.main.MainScreen
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
@@ -30,12 +32,13 @@ fun MediaCoApp(
             else -> {}
         }
     }
-
-    MediaCoTheme {
+    val darkTheme by PreferencesStore.isDarkThemeFlow.collectAsState(null)
+    val isDarkTheme = darkTheme ?: isSystemInDarkTheme()
+    MediaCoTheme(darkTheme = isDarkTheme) {
         if (authenticated) {
             MainScreen(appViewModel, pegaViewModel, servicesViewModel)
         } else {
-            LoginScreen(appViewModel)
+            LoginScreen(appViewModel, darkTheme = isDarkTheme)
         }
     }
 }

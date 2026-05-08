@@ -28,7 +28,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
+                implementation(libs.ui.tooling.preview)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.runtime)
@@ -51,7 +51,7 @@ kotlin {
                     dependencies {
                         // START: Dependencies required for @Preview to work in Android Studio
                         // https://youtrack.jetbrains.com/projects/KMT/issues/KMT-1312/Preview-not-work-in-commonMain-with-multi-module
-                        implementation(compose.components.uiToolingPreview)
+                        implementation(libs.ui.tooling.preview)
                         implementation(compose.uiTooling)
                         implementation(libs.androidx.activity.compose)
                         implementation(libs.androidx.customview.poolingcontainer)
