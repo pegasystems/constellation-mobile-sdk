@@ -10,7 +10,6 @@ import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
 import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
-import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Companion.getComponentTyped
 import kotlinx.serialization.json.JsonObject
 
 class RootContainerComponent(context: ComponentContext) : BaseComponent(context) {
@@ -35,9 +34,9 @@ class RootContainerComponent(context: ComponentContext) : BaseComponent(context)
 
     override fun applyProps(props: JsonObject) {
         val viewContainerId = ComponentId(props.getString("viewContainer").toInt())
-        viewContainer = context.componentManager.getComponentTyped(viewContainerId)
+        viewContainer = adoptChildAndGetTyped(viewContainerId)
         val modalViewContainerId = ComponentId(props.getString("modalViewContainer").toInt())
-        modalViewContainer = context.componentManager.getComponentTyped(modalViewContainerId)
+        modalViewContainer = adoptChildAndGetTyped(modalViewContainerId)
         val httpMessagesArray = props.getJSONArray("httpMessages")
         httpMessages = httpMessagesArray.mapWithIndex {
             val httpMessage = getJsonObject(it)

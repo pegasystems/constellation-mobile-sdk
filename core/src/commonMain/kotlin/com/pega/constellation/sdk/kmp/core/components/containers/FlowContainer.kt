@@ -9,7 +9,6 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerComponent
-import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Companion.getComponentTyped
 import kotlinx.serialization.json.JsonObject
 
 class FlowContainerComponent(context: ComponentContext) : BaseComponent(context) {
@@ -21,12 +20,11 @@ class FlowContainerComponent(context: ComponentContext) : BaseComponent(context)
         private set
 
     override fun applyProps(props: JsonObject) {
-        val manager = context.componentManager
         val assignmentId = ComponentId(props.getString("assignment").toInt())
         val banners = props.getJSONArray("alertBanners")
         val bannersIds = banners.mapWithIndex { getString(it).toInt() }
         title = props.getString("title")
-        assignment = manager.getComponentTyped(assignmentId)
-        alertBanners = bannersIds.mapNotNull { manager.getComponentTyped(ComponentId(it)) }
+        assignment = adoptChildAndGetTyped(assignmentId)
+        alertBanners = bannersIds.mapNotNull { adoptChildAndGetTyped(ComponentId(it)) }
     }
 }

@@ -32,15 +32,14 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
             .mapWithIndex { getJsonObject(it) }
             .mapNotNull { itemJson ->
                 val componentId = itemJson.getString("componentId")
-                context.componentManager.getComponent(ComponentId(componentId.toInt()))
-                    ?.let { component ->
-                        Item(
-                            id = itemJson.getInt("id"),
-                            heading = itemJson.getString("heading"),
-                            component = component,
-                            allowDelete = itemJson.getBoolean("allowDelete")
-                        )
-                    }
+                adoptChildAndGet(ComponentId(componentId.toInt()))?.let {
+                    Item(
+                        id = itemJson.getInt("id"),
+                        heading = itemJson.getString("heading"),
+                        component = it,
+                        allowDelete = itemJson.getBoolean("allowDelete")
+                    )
+                }
             }
         label = props.getString("label")
         showLabel = props.getString("showLabel").toBoolean()
@@ -49,13 +48,22 @@ class FieldGroupTemplateComponent(context: ComponentContext) : BaseComponent(con
     }
 
     fun addItem() = context.sendComponentEvent(ComponentEvent.fieldGroupAddItem())
-    fun deleteItem(item: Item) = context.sendComponentEvent(ComponentEvent.fieldGroupDeleteItem(item.id))
+    fun deleteItem(item: Item) =
+        context.sendComponentEvent(ComponentEvent.fieldGroupDeleteItem(item.id))
 
-    data class Item(val id: Int, val heading: String, val component: Component, val allowDelete: Boolean)
+    data class Item(
+        val id: Int,
+        val heading: String,
+        val component: Component,
+        val allowDelete: Boolean
+    )
 }
 
 private fun ComponentEvent.Companion.fieldGroupAddItem() =
     ComponentEvent("FieldGroupTemplateEvent", eventData = mapOf("type" to "addItem"))
 
 private fun ComponentEvent.Companion.fieldGroupDeleteItem(itemId: Int) =
-    ComponentEvent("FieldGroupTemplateEvent", eventData = mapOf("type" to "deleteItem", "itemId" to itemId.toString()))
+    ComponentEvent(
+        "FieldGroupTemplateEvent",
+        eventData = mapOf("type" to "deleteItem", "itemId" to itemId.toString())
+    )

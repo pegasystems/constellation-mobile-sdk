@@ -18,12 +18,12 @@ abstract class ContainerComponent(context: ComponentContext) : BaseComponent(con
 
     @CallSuper
     override fun applyProps(props: JsonObject) {
-        children = getChildren(props)
+        children = adoptChildrenAndGet(props)
     }
 
-    private fun getChildren(props: JsonObject): List<Component> {
+    private fun adoptChildrenAndGet(props: JsonObject): List<Component> {
         val children = props.getJSONArray("children")
         val ids = children.mapWithIndex { getString(it).toInt() }
-        return context.componentManager.getComponents(ids.map { ComponentId(it) })
+        return ids.map { ComponentId(it) }.mapNotNull { adoptChildAndGet(it) }
     }
 }
