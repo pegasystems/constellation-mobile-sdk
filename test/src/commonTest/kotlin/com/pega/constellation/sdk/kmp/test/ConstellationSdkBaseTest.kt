@@ -65,33 +65,33 @@ abstract class ConstellationSdkBaseTest {
         assertEquals(
             """
                 RootContainer#1
-                -ModalViewContainer#2
-                -ViewContainer#3
-                --View#4
-                ---OneColumn#5
-                ----Region#6
-                -----View#7
-                ------Region#8
-                -------View#9
-                --------FlowContainer#10
-                ---------Assignment#11
-                ----------AssignmentCard#12
-                -----------View#13
-                ------------DefaultForm#14
-                -------------Region#15
-                --------------TextInput#16
-                --------------TextInput#17
-                --------------TextInput#18
-                --------------Date#19
-                --------------URL#20
-                --------------TextArea#21
-                --------------RichText#22
-                --------------View#23
-                ---------------DefaultForm#25
-                ----------------Region#26
-                -----------------Checkbox#27
-                -----------------TextArea#28
-                --------------Email#24
+                -ModalViewContainer#2(parent=#1)
+                -ViewContainer#3(parent=#1)
+                --View#4(parent=#3)
+                ---OneColumn#5(parent=#4)
+                ----Region#6(parent=#5)
+                -----View#7(parent=#6)
+                ------Region#8(parent=#7)
+                -------View#9(parent=#8)
+                --------FlowContainer#10(parent=#9)
+                ---------Assignment#11(parent=#10)
+                ----------AssignmentCard#12(parent=#11)
+                -----------View#13(parent=#12)
+                ------------DefaultForm#14(parent=#13)
+                -------------Region#15(parent=#14)
+                --------------TextInput#16(parent=#15)
+                --------------TextInput#17(parent=#15)
+                --------------TextInput#18(parent=#15)
+                --------------Date#19(parent=#15)
+                --------------URL#20(parent=#15)
+                --------------TextArea#21(parent=#15)
+                --------------RichText#22(parent=#15)
+                --------------View#23(parent=#15)
+                ---------------DefaultForm#25(parent=#23)
+                ----------------Region#26(parent=#25)
+                -----------------Checkbox#27(parent=#26)
+                -----------------TextArea#28(parent=#26)
+                --------------Email#24(parent=#15)
                 
                 """.trimIndent(),
             root.structure()
@@ -115,6 +115,14 @@ abstract class ConstellationSdkBaseTest {
             richText.value
         )
         assertEquals("caseInfo.content.RichDescription", richText.pConnectPropertyReference)
+    }
+
+    @Test
+    fun test_get_parent() = runTest {
+        val sdk = ConstellationSdk.create(config, engine)
+        sdk.createCase(CASE_CLASS)
+        val root = sdk.assertState<State.Ready>().root
+        assertEquals(root, root.modalViewContainer?.getParent())
     }
 
     companion object {

@@ -6,7 +6,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentId
 import com.pega.constellation.sdk.kmp.core.api.ComponentManager
 import com.pega.constellation.sdk.kmp.core.api.ComponentType
 
-class WKWebViewEngineComponentContext(
+internal class WKWebViewEngineComponentContext(
     override val id: ComponentId,
     override val type: ComponentType,
     override val componentManager: ComponentManager,

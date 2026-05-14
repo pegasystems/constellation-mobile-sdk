@@ -54,7 +54,7 @@ class SimpleTableManualComponent(context: ComponentContext) : BaseComponent(cont
             val rowJsonObject = jsonElement.jsonObject
             val componentIds = rowJsonObject.getJSONArray("cellComponentIds")
             val ids = componentIds.mapWithIndex { getString(it).toInt() }
-            val cellComponents = context.componentManager.getComponents(ids.map { ComponentId(it) })
+            val cellComponents = ids.mapNotNull { adoptChildAndGet(ComponentId(it)) }
             Row(
                 cells = cellComponents.map { Cell(it) },
                 showEditButton = rowJsonObject.getBoolean("showEditButton"),

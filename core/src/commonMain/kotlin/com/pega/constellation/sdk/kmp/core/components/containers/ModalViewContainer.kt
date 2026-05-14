@@ -11,7 +11,6 @@ import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getString
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerComponent
-import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Companion.getComponentTyped
 import kotlinx.serialization.json.JsonObject
 
 class ModalViewContainerComponent(context: ComponentContext) : ContainerComponent(context), HideableComponent {
@@ -34,8 +33,7 @@ class ModalViewContainerComponent(context: ComponentContext) : ContainerComponen
         submitButtonLabel = props.getString("submitLabel")
         val banners = props.getJSONArray("alertBanners")
         val bannersIds = banners.mapWithIndex { getString(it).toInt() }
-        alertBanners =
-            bannersIds.mapNotNull { context.componentManager.getComponentTyped(ComponentId(it)) }
+        alertBanners = bannersIds.mapNotNull { adoptChildAndGetTyped(ComponentId(it)) }
     }
 
     fun onCancelClick() {

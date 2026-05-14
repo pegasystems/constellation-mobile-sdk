@@ -16,6 +16,6 @@ class SimpleTableSelectComponent(context: ComponentContext) : BaseComponent(cont
 
     override fun applyProps(props: JsonObject) {
         val childId = props.getString("child").toInt()
-        child = context.componentManager.getComponent(ComponentId(childId))
+        child = adoptChildAndGet(ComponentId(childId))
     }
 }
