@@ -1,0 +1,58 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+registries:
+  # Specify the private registries here
+  maven:
+    type: maven-repository
+    url: https://bin.pega.io/artifactory/repo2-release/
+    username: ${{secrets.ENG_ARTIFACTORY_USR}}
+    password: ${{secrets.ENG_ARTIFACTORY_PWD}}
+  npm:
+    type: npm-registry
+    url: https://bin.pega.io/artifactory/api/npm/npmjs-dev/
+    username: ${{secrets.ENG_ARTIFACTORY_USR}}
+    password: ${{secrets.ENG_ARTIFACTORY_PWD}}
+  docker:
+    type: docker-registry
+    url: https://docker-dev.bin.pega.io/
+    username: ${{secrets.ENG_ARTIFACTORY_USR}}
+    password: ${{secrets.ENG_ARTIFACTORY_PWD}}
+# note dependabot does not support scanning Helm dependencies.
+
+updates:
+  - package-ecosystem: "gradle" #Replace gradle with any package ecosystem you want Dependabot to scan, such as npm, maven, or pip.
+    # Important: If you include any package-ecosystem that does not exist in your repository, Dependabot will fail to run.
+
+    # Define the directories where Dependabot should scan for version updates. Use "/" to check the root directory or explicitly define the path, e.g., "/tools/*".
+    # To scan all directories, use the configuration below.
+    directories:
+      - "**/*"
+    registries: "*" #Includes both private and publicly available ones.
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+    #reviewers: #you can enable the reviewers who would like to review the dependabot PRs and merge them with the main/master branch
+    # The groups section allows combining multiple dependency updates into a single pull request based on matching patterns.
+    groups:
+      major:
+        update-types:
+          - "major"
+        patterns:
+          - "*"
+      minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "*"
+    #To customize the Dependabot PR title, use the option below. Comment out if it is not required.
+    commit-message:
+      prefix: "Dependabot - [Gradle] -"
+#similarly define for other package-ecosystem, like docker, maven, npm, etc.
+#Note: helm is not supported by dependabot
+#  - package-ecosystem: "docker"
