@@ -34,7 +34,7 @@ fun MainScreen(
     val currentScreen = currentRoute?.let { MainTab.valueOf(it) } ?: MainTab.Home
 
     Scaffold(
-        topBar = { MediaCoTopAppBar() },
+        topBar = { MediaCoTopAppBar(onThemeSelected = appViewModel::updateTheme) },
         bottomBar = { MediaCoBottomAppBar(currentScreen) { navController.navigate(it.name) } },
         snackbarHost = { SnackbarHost(appViewModel) },
         floatingActionButton = { HomeFab { pegaViewModel.createCase() } }
@@ -56,5 +56,3 @@ fun MainScreen(
         }
     }
 }
-
-

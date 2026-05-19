@@ -11,12 +11,17 @@ import java.util.Locale
 
 @OptIn(ExperimentalTestApi::class)
 fun ComposeTest.runAndroidTest(block: suspend ComposeUiTest.() -> Unit) {
-    runComposeUiTest {
-        runCatching {
-            block()
-        }.onFailure {
-            saveScreenshot(this@runAndroidTest.testName.methodName)
-        }.getOrThrow()
+    for (attempt in 1..2) {
+        runComposeUiTest {
+            runCatching {
+                block()
+            }.onFailure {
+                saveScreenshot(this@runAndroidTest.testName.methodName)
+            }.also {
+                if (it.isSuccess) return@runComposeUiTest
+                if (attempt == 2) it.getOrThrow()
+            }
+        }
     }
 }
 

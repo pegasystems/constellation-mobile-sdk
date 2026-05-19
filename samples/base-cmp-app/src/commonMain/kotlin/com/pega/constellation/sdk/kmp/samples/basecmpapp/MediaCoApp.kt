@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,8 +31,9 @@ fun MediaCoApp(
             else -> {}
         }
     }
-
-    MediaCoTheme {
+    val darkTheme by appViewModel.isDarkThemeFlow.collectAsState(null)
+    val isDarkTheme = darkTheme ?: isSystemInDarkTheme()
+    MediaCoTheme(isDarkTheme = isDarkTheme) {
         if (authenticated) {
             MainScreen(appViewModel, pegaViewModel, servicesViewModel)
         } else {

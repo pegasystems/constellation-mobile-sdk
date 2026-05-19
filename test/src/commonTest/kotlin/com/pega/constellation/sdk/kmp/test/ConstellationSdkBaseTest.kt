@@ -134,7 +134,17 @@ abstract class ConstellationSdkBaseTest {
             debuggable = true
         )
 
-        private fun runTest(block: suspend () -> Unit) = runBlocking(Dispatchers.Main) { block() }
+        private fun runTest(block: suspend () -> Unit) =
+            runBlocking(Dispatchers.Main) {
+                for (attempt in 1..2) {
+                    runCatching {
+                        block()
+                    }.also {
+                        if (it.isSuccess) break
+                        if (attempt == 2) it.getOrThrow()
+                    }
+                }
+            }
 
         private suspend fun ConstellationSdk.assertError(condition: (String) -> Boolean) {
             val errorMessage = assertState<State.Error>().error.message

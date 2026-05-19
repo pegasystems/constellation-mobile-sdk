@@ -89,7 +89,8 @@ fun RadioButton(
             text = option.label,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 16.dp),
-            color = if (disabled) Color.Gray else Color.Black
+            color = if (disabled) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                else MaterialTheme.colorScheme.onSurface
         )
     }
 }

@@ -1,8 +1,8 @@
 package com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
@@ -10,10 +10,11 @@ import androidx.compose.ui.unit.sp
 internal fun HelperText(text: String, validateMessage: String, disabled: Boolean, readOnly: Boolean) {
     when {
         validateMessage.isNotEmpty() && !disabled && !readOnly ->
-            Text(text = validateMessage, color = Color.Red, fontSize = 12.sp)
+            Text(text = validateMessage, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
 
         text.isNotEmpty() -> {
-            val color = if (disabled) Color.Gray else Color.Black
+            val color = if (disabled) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                else MaterialTheme.colorScheme.onSurface
             Text(text = text, color = color, fontSize = 12.sp)
         }
     }

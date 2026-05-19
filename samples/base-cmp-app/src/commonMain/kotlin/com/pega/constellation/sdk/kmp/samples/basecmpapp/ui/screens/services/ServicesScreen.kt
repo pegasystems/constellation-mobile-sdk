@@ -83,7 +83,7 @@ private fun AssignmentCard(assignment: Assignment, onAssignmentClicked: (Assignm
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Row(

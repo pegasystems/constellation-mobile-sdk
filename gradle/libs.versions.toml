@@ -4,6 +4,7 @@ android-compileSdk = "36"
 android-minSdk = "26"
 android-targetSdk = "36"
 androidx-activity = "1.13.0"
+androidx-datastore = "1.1.7"
 androidx-core-runtime = "2.2.0"
 androidx-customview-poolingcontainer = "1.1.0"
 androidx-emoji2 = "1.6.0"
@@ -30,6 +31,8 @@ dnd = "0.4.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidx-datastore" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 androidx-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-core-runtime" }
 androidx-customview-poolingcontainer = { module = "androidx.customview:customview-poolingcontainer", version.ref = "androidx-customview-poolingcontainer" }
 androidx-emoji2 = { module = "androidx.emoji2:emoji2", version.ref = "androidx-emoji2" }

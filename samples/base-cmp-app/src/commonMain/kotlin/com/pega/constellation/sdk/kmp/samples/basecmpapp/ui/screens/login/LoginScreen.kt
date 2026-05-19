@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.logo_mediaco
+import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.logo_mediaco_dark
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoAppViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.AuthError
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.Authenticated
@@ -28,11 +29,14 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.Authenti
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.TokenExpired
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthState.Unauthenticated
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.common.SnackbarHost
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.LocalIsDarkTheme
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LoginScreen(appViewModel: MediaCoAppViewModel) {
     val authState by appViewModel.authState.collectAsState()
+    val isDarkTheme = LocalIsDarkTheme.current
+    val logoRes = if (isDarkTheme) Res.drawable.logo_mediaco_dark else Res.drawable.logo_mediaco
 
     Scaffold(
         snackbarHost = { SnackbarHost(appViewModel) }
@@ -46,7 +50,7 @@ fun LoginScreen(appViewModel: MediaCoAppViewModel) {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painterResource(Res.drawable.logo_mediaco),
+                painterResource(logoRes),
                 contentDescription = "MediaCo logo",
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.height(48.dp)
