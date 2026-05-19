@@ -6,6 +6,7 @@ android-targetSdk = "36"
 androidx-activity = "1.13.0"
 androidx-core-runtime = "2.2.0"
 androidx-customview-poolingcontainer = "1.1.0"
+androidx-datastore = "1.2.1"
 androidx-emoji2 = "1.6.0"
 androidx-lifecycle = "2.10.0"
 androidx-test = "1.7.0"
@@ -14,22 +15,24 @@ androidx-test-orchestrator = "1.6.1"
 compose-hot-reload = "1.1.1"
 compose-multiplatform = "1.10.3" # 1.11.0 does not support iosX64 target
 compose-navigation = "2.9.2"
+dnd = "0.4.0"
 htmlconverter = "1.1.1"
 kotlin = "2.3.21"
 kotlinx-coroutines = "1.11.0"
 kotlinx-datetime = "0.8.0"
 kotlinx-serialization-json = "1.11.0"
-ktor = "3.5.0"
 ksoup = "0.2.6"
+ktor = "3.5.0"
 oidc = "0.16.5"
 okhttp = "5.3.2"
 table = "0.3.0"
 uiautomator = "2.3.0"
 webkit = "1.16.0"
-dnd = "0.4.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidx-datastore" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 androidx-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-core-runtime" }
 androidx-customview-poolingcontainer = { module = "androidx.customview:customview-poolingcontainer", version.ref = "androidx-customview-poolingcontainer" }
 androidx-emoji2 = { module = "androidx.emoji2:emoji2", version.ref = "androidx-emoji2" }

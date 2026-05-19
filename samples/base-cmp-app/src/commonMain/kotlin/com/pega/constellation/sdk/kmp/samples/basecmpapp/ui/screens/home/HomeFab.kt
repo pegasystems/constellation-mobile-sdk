@@ -1,42 +1,49 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.home
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.Res
 import com.pega.constellation.sdk.kmp.base_cmp_app.generated.resources.icon_plus
+import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.theme.MediaCoBrandGradient
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun HomeFab(onClick: () -> Unit) {
-    ExtendedFloatingActionButton(
-        onClick = onClick,
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = Color.White
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(14.dp))
+            .background(MediaCoBrandGradient)
+            .clickable(onClick = onClick)
+            .height(48.dp)
+            .padding(start = 14.dp, end = 18.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconPlus()
-            Spacer(Modifier.size(8.dp))
-            Text("New Service", fontSize = 14.sp)
-        }
+        Icon(
+            painterResource(Res.drawable.icon_plus),
+            contentDescription = "plus icon",
+            tint = Color.White,
+            modifier = Modifier.size(16.dp)
+        )
+        Text(
+            text = "New Service",
+            style = MaterialTheme.typography.labelLarge,
+            color = Color.White
+        )
     }
-}
-
-@Composable
-private fun IconPlus() {
-    Icon(
-        painterResource(Res.drawable.icon_plus),
-        "plus icon",
-        modifier = Modifier.size(24.dp)
-    )
 }

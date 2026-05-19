@@ -28,7 +28,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.runtime)
@@ -51,13 +50,13 @@ kotlin {
                     dependencies {
                         // START: Dependencies required for @Preview to work in Android Studio
                         // https://youtrack.jetbrains.com/projects/KMT/issues/KMT-1312/Preview-not-work-in-commonMain-with-multi-module
-                        implementation(compose.components.uiToolingPreview)
                         implementation(compose.uiTooling)
                         implementation(libs.androidx.activity.compose)
                         implementation(libs.androidx.customview.poolingcontainer)
                         implementation(libs.androidx.emoji2)
                         implementation(libs.androidx.lifecycle.runtimeCompose)
                         implementation(libs.androidx.core.runtime)
+                        implementation(libs.compose.ui.tooling.preview)
                         // END: Dependencies required for @Preview to work in Android Studio
                     }
                 }
