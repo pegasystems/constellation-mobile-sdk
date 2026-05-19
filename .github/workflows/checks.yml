@@ -42,9 +42,13 @@ jobs:
           path: ~/.gradle
           key: gradle-cache-android-check
 
-      - name: Run tests
+      - name: Run component tests
         shell: bash
-        run: ./gradlew clean pixelAndroidDeviceTest pixelDebugAndroidTest
+        run: ./gradlew :test:pixelAndroidDeviceTest
+
+      - name: Run sample tests
+        shell: bash
+        run: ./gradlew :samples:android-cmp-app:pixelDebugAndroidTest
 
       - name: Upload test artifacts for failures
         if: failure()

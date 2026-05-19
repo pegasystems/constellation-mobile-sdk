@@ -11,8 +11,6 @@ kotlin {
         namespace = "com.pega.constellation.sdk.kmp.samples.basecmpapp"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
-
-        @Suppress("UnstableApiUsage")
         androidResources.enable = true
     }
 
