@@ -15,6 +15,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderers.Default
 
 private const val TAG = "ComponentRenderer"
 private val LocalRenderers = compositionLocalOf { DefaultRenderers }
+val LocalIsDarkTheme = compositionLocalOf { true }
 val LocalEnv = staticCompositionLocalOf { EnvironmentInfo("en-US", "America/New_York") }
 
 /**

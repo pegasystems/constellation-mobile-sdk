@@ -1,4 +1,4 @@
-package com.pega.constellation.sdk.kmp.samples.basecmpapp.ios
+package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
 import com.pega.constellation.sdk.kmp.engine.webview.ios.ResourceProvider
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager

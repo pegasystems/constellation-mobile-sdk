@@ -1,9 +1,7 @@
-package com.pega.constellation.sdk.kmp.samples.basecmpapp.ios
+package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
 import androidx.compose.ui.window.ComposeUIViewController
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.Injector
-import com.pega.constellation.sdk.kmp.samples.basecmpapp.MediaCoApp
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
