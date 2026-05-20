@@ -1,0 +1,45 @@
+name: Branch Cleaner
+
+on:
+  workflow_dispatch:
+    inputs:
+        token:
+          description: 'GitHub authentication token (PAT or GitHub App token) with required permissions for API access.'
+          required: true
+          type: string
+  
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+  
+jobs:
+  custom-input-configuration:
+    runs-on: ${{ vars.GOVERNANCE_RUNNER }}
+    outputs:
+      default_recipient: ${{ steps.input_config.outputs.default_recipient}}
+      days_before_branch_delete: ${{ steps.input_config.outputs.days_before_branch_delete}}
+      exempt_branches_regex: ${{ steps.input_config.outputs.exempt_branches_regex}}
+    steps:
+      - name: Checkout repository
+        uses: Pega-ProductEngineering/sdea-ci-standards/actions/checkout@v1
+        
+      - name: input-configuration
+        id: input_config
+        run: |
+          default_recipient=$(jq -r '.default_recipient' .github/config/branch-cleaner-config.json)
+          days_before_branch_delete=$(jq -r '.days_before_branch_delete // empty' .github/config/branch-cleaner-config.json)
+          exempt_branches_regex=$(jq -r '.exempt_branches_regex // empty' .github/config/branch-cleaner-config.json)
+          echo "default_recipient=$default_recipient" >> $GITHUB_OUTPUT
+          echo "days_before_branch_delete=$days_before_branch_delete" >> $GITHUB_OUTPUT
+          echo "exempt_branches_regex=$exempt_branches_regex" >> $GITHUB_OUTPUT
+          
+  branch-cleanup:
+    needs: custom-input-configuration
+    uses: Pega-ProductEngineering/branch-cleanup/.github/workflows/master-branch-cleanup.yml@v2.0.0
+    with:
+        default-recipient: ${{ needs.custom-input-configuration.outputs.default_recipient}}
+        days-before-branch-delete: ${{ needs.custom-input-configuration.outputs.days_before_branch_delete }}
+        exempt-branches-regex: ${{ needs.custom-input-configuration.outputs.exempt_branches_regex }}
+        token: ${{ inputs.token }}
+        runner: ${{ vars.GOVERNANCE_RUNNER }}

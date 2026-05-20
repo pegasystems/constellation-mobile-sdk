@@ -1,0 +1,5 @@
+{
+  "default_recipient": "Jenkins_pega",
+  "days_before_branch_delete": 7,
+  "exempt_branches_regex": ""
+}
