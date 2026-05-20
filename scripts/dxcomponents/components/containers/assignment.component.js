@@ -277,6 +277,10 @@ export class AssignmentComponent extends BaseComponent {
     }
 
     buttonClick(sAction, sButtonType) {
+        if (this.loading) {
+            console.debug(TAG, `Action already in progress, action: '${sAction}' will not be executed`);
+            return;
+        }
         // needed to show client validation on banner
         PCore.getPubSubUtils().publish("updateBanners");
         if (sButtonType === "secondary") {

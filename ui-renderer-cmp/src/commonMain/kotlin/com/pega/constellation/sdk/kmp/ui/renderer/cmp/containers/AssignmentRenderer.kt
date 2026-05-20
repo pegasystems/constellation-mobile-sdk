@@ -1,6 +1,8 @@
 package com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import com.pega.constellation.sdk.kmp.core.components.containers.AssignmentComponent
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.ComponentRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.Render
@@ -28,10 +31,10 @@ class AssignmentRenderer : ComponentRenderer<AssignmentComponent> {
             modifier = Modifier.fillMaxSize().alpha(alpha),
             contentAlignment = Alignment.Center
         ) {
-            DelayedProgress(loading)
             Column {
                 children.forEach { it.Render() }
             }
+            DelayedProgress(loading)
         }
     }
 
@@ -49,7 +52,19 @@ class AssignmentRenderer : ComponentRenderer<AssignmentComponent> {
         }
 
         if (showProgress) {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clearAndSetSemantics {}
+                    .clickable(
+                        onClick = { /* Do nothing, consume the click */ },
+                        indication = null, // Removes the ripple effect
+                        interactionSource = remember { MutableInteractionSource() }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
 
