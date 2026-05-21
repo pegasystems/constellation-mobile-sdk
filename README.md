@@ -29,10 +29,18 @@ The SDK provides following components out-of-the-box:
   - EmbeddedData
   - DataReference
     - Single record
-      - Displayed as “SimpleTable”, “Table”, “Dropdown”, “Autocomplete” - supported
-      - Displayed as “Advanced Search" - not supported
-    - List of records - not supported
+      - Displayed as "SimpleTable", "Table", "Dropdown", "Autocomplete" - supported
+      - Displayed as "Search and select", "Cards" - not supported
+      - Read-Only mode
+        - Display as "Read-only field" - supported
+    - List of records
+      - Displayed as "SimpleTable", "Table", "Combo-box", "Checkbox Group" - supported
+      - Displayed as "Search and select", "Cards" - not supported
+      - Read-Only mode
+        - Displayed as "Read-only field", "Table", "SimpleTable" - supported
+        - Displayed as "Map", "Cards" - not supported
     - Many to many - not supported
+  - Details template view
 - **Containers**: 
   - Assignment, AssignmentCard, DefaultForm, FlowContainer, Region, RootContainer, View, ViewContainer, Field Group
 - **Other**: 
@@ -56,11 +64,12 @@ The SDK supports following UI technologies:
 
 ![SDK Architecture](docs/images/architecture.png)
 
-## Get started ##
-- [Getting started with the SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html)
-- [How to integrate with Constellation SDK](docs/how-to-integrate.md)
+## How to integrate existing mobile applications with the SDK ##
+- [How to integrate Compose Multiplatform App with Constellation SDK](docs/how-to-integrate-compose-multiplatform.md)
+- [How to integrate Android Compose App with Constellation SDK](docs/how-to-integrate-android-compose.md)
+- [How to integrate IOS Swift App with Constellation SDK](docs/how-to-integrate-ios-swiftui.md)
 
-## Running sample applications
+## Running SDK Sample applications
 - [Setting up sample Pega application](docs/setup-sample-pega-app.md)
 - [Configuring sample mobile applications](docs/configure-sample-mobile-apps.md)
 - [Running Android sample application using Compose Multiplatform](samples/android-cmp-app/README.md)
