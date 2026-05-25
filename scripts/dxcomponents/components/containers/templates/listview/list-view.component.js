@@ -15,7 +15,7 @@ export class ListViewComponent extends BaseComponent {
     singleSelectionMode;
     multiSelectionMode;
     rowID;
-    listViewItems;
+    listViewItems = [];
     compositeKeys;
     showDynamicFields;
     filterPayload;
@@ -170,6 +170,7 @@ export class ListViewComponent extends BaseComponent {
                 this.#sendPropsUpdate();
             });
         });
+        this.#sendPropsUpdate();
     }
 
     #updateSelection() {

@@ -105,7 +105,7 @@ jobs:
           echo "Deleting simulator SDKTestSimulator (if exists)"
           xcrun simctl delete SDKTestSimulator || true
           echo "Creating new SDKTestSimulator"
-          xcrun simctl create SDKTestSimulator com.apple.CoreSimulator.SimDeviceType.iPhone-17 com.apple.CoreSimulator.SimRuntime.iOS-26-1 | tee simulator.id
+          xcrun simctl create SDKTestSimulator com.apple.CoreSimulator.SimDeviceType.iPhone-17 com.apple.CoreSimulator.SimRuntime.iOS-26-5 | tee simulator.id
 
       - name: iOS sample application UI tests
         run: |
