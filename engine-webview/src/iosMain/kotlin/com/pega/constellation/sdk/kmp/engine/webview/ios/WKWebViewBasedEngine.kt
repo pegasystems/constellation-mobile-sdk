@@ -66,9 +66,9 @@ class WKWebViewBasedEngine(
 
         wkConfig.userContentController.addScriptMessageHandler(
             ConsoleScriptMessageHandler(ConsoleHandler(showDebugLogs = true)),
-            name = "consoleHandler"
+            name = CONSOLE_HANDLER_NAME
         )
-        wkConfig.userContentController.addScriptMessageHandler(formHandler, name = "formHandler")
+        wkConfig.userContentController.addScriptMessageHandler(formHandler, name = FORM_HANDLER_NAME)
         webView = WKWebView(frame = CGRectZero.readValue(), wkConfig)
     }
 
@@ -98,7 +98,7 @@ class WKWebViewBasedEngine(
         )
 
         val customAndOverriddenComponents =
-            formHandler.componentManager.getCustomComponentDefinitions()
+            requireNotNull(formHandler.componentManager).getCustomComponentDefinitions()
                 .mapNotNull { definition ->
                     definition.script?.assetPath()?.let { path ->
                         definition.type.type to path
@@ -251,9 +251,30 @@ class WKWebViewBasedEngine(
         webView.navigationDelegate = navigationDelegate
     }
 
+    override fun destroy() {
+        Log.i(TAG, "Destroying WKWebView engine.")
+        mainScope?.cancel()
+        webView.stopLoading()
+        webView.configuration.userContentController.runCatching {
+            removeScriptMessageHandlerForName(CONSOLE_HANDLER_NAME)
+            removeScriptMessageHandlerForName(FORM_HANDLER_NAME)
+        }
+        webView.UIDelegate = null
+        webView.navigationDelegate = null
+        uiDelegate = null
+        navigationDelegate = null
+        resourceHandler.delegate = null
+        formHandler.eventHandler = null
+        formHandler.componentManager = null
+        initScript = null
+        initialNavigation = null
+    }
+
     companion object {
         private const val TAG = "WKWebViewBasedEngine"
         const val COMPONENT_ASSETS_PREFIX = "/constellation-mobile-sdk-assets/components/"
+        private const val CONSOLE_HANDLER_NAME = "consoleHandler"
+        private const val FORM_HANDLER_NAME = "formHandler"
         private var tweaksApplied = false
     }
 }

@@ -43,6 +43,7 @@ import okhttp3.Response
 
 class AndroidComposeActivity : ComponentActivity() {
     private lateinit var sdk: ConstellationSdk
+    private lateinit var engine: AndroidWebViewEngine
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,21 @@ class AndroidComposeActivity : ComponentActivity() {
         }
     }
 
+    override fun onPause() {
+        engine.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        engine.resume()
+    }
+
+    override fun onDestroy() {
+        engine.destroy()
+        super.onDestroy()
+    }
+
     private fun initConstellation() {
         val config = ConstellationSdkConfig(
             pegaUrl = AndroidSDKConfig.PEGA_URL,
@@ -75,7 +91,7 @@ class AndroidComposeActivity : ComponentActivity() {
             debuggable = true
         )
         val caseClassName = AndroidSDKConfig.PEGA_CASE_CLASS_NAME
-        val engine = AndroidWebViewEngine(
+        engine = AndroidWebViewEngine(
             context = this,
             scope = this.lifecycleScope,
             okHttpClient = buildHttpClient()

@@ -1,5 +1,6 @@
 package com.pega.constellation.sdk.kmp.samples.basecmpapp
 
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.window.ComposeUIViewController
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.auth.AuthManager
@@ -19,7 +20,12 @@ fun MediaCoViewController(): UIViewController {
 
     Injector.init(authManager, engine)
 
-    return ComposeUIViewController { MediaCoApp() }.also { vc ->
+    return ComposeUIViewController {
+        DisposableEffect(Unit) {
+            onDispose { engine.destroy() }
+        }
+        MediaCoApp()
+    }.also { vc ->
         vc.view.addSubview(engine.webView)
     }
 }

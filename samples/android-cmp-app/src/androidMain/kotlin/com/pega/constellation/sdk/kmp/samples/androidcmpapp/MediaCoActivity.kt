@@ -20,6 +20,8 @@ import org.publicvalue.multiplatform.oidc.tokenstore.AndroidSettingsTokenStore
 
 class MediaCoActivity : ComponentActivity() {
 
+    private lateinit var engine: AndroidWebViewEngine
+
     @OptIn(ExperimentalOpenIdConnect::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,7 @@ class MediaCoActivity : ComponentActivity() {
         val authFlowFactory = AndroidCodeAuthFlowFactory().also { it.registerActivity(this) }
         val authManager = createAuthManager(authFlowFactory)
 
-        val engine = AndroidWebViewEngine(
+        engine = AndroidWebViewEngine(
             context = this,
             scope = this.lifecycleScope,
             okHttpClient = buildHttpClient(authManager)
@@ -39,6 +41,21 @@ class MediaCoActivity : ComponentActivity() {
         setContent {
             MediaCoApp()
         }
+    }
+
+    override fun onPause() {
+        engine.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        engine.resume()
+    }
+
+    override fun onDestroy() {
+        engine.destroy()
+        super.onDestroy()
     }
 
     private fun buildHttpClient(authManager: AuthManager) =

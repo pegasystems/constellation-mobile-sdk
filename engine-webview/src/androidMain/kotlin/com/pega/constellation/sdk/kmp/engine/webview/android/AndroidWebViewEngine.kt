@@ -36,6 +36,7 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebView
 import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
+import androidx.annotation.MainThread
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,6 +45,23 @@ import okhttp3.OkHttpClient
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
+/**
+ * WebView-based implementation of [ConstellationSdkEngine] for Android.
+ *
+ * Embeds a [WebView] hosting the Constellation CoreJS engine with JS components.
+ * Network requests are intercepted and routed through the provided [OkHttpClient] instances.
+ *
+ * @param context The Android [android.content.Context] used to create the [WebView].
+ * An Activity context (or a context wrapping an Activity) is recommended.
+ * While we haven't encountered any issues using an Application context,
+ * the official Android documentation states it may cause WebView to behave incorrectly.
+ * (https://developer.android.com/reference/android/webkit/WebView#WebView(android.content.Context)
+ * @param scope [CoroutineScope] used to dispatch async work. The engine does not cancel this
+ * scope on [destroy], prefer lifecycle-aware scopes such as `lifecycleScope` or
+ * `viewModelScope` that are canceled automatically when the host is destroyed.
+ * @param okHttpClient Primary client for Constellation DX API requests.
+ * @param nonDxOkHttpClient Client for non-DX requests. Defaults to [Companion.defaultHttpClient].
+ */
 class AndroidWebViewEngine(
     private val context: Context,
     private val scope: CoroutineScope,
@@ -56,7 +74,7 @@ class AndroidWebViewEngine(
     private lateinit var componentManager: ComponentManager
     private lateinit var networkInterceptor: WebViewNetworkInterceptor
     private lateinit var webViewClient: SdkWebViewClient
-    private lateinit var webView: WebView
+    private var webView: WebView? = null
 
     override fun configure(config: ConstellationSdkConfig, handler: EngineEventHandler) {
         this.config = config
@@ -76,7 +94,56 @@ class AndroidWebViewEngine(
     override fun performAction(action: ConstellationSdkAction) {
         handler.handle(EngineEvent.Loading)
         webViewClient.onPageLoad = { onPageLoad(action) }
+        val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         webView.loadUrl(config.pegaUrl)
+    }
+
+    /**
+     * Releases all resources held by the engine.
+     *
+     * Must be called from the **main thread** — from `Activity.onDestroy()`,
+     * a Compose `DisposableEffect`, or `ViewModel.onCleared()` (via `Dispatchers.Main`).
+     */
+    @MainThread
+    override fun destroy() {
+        val wv = webView ?: return
+        Log.d(TAG, "Destroying WebView")
+        with(wv) {
+            stopLoading()
+            removeJavascriptInterface("sdkbridge")
+            webViewClient = WebViewClient()
+            webChromeClient = null
+            destroy()
+        }
+        webView = null
+    }
+
+    /**
+     * Pauses engine processing.
+     *
+     * Should be called when the host view is paused.
+     * Must be called from the **main thread** — from `Activity.onPause()`.
+     */
+    @MainThread
+    fun pause() {
+        val wv = webView ?: return
+        Log.d(TAG, "Pausing WebView")
+        wv.onPause()
+        wv.pauseTimers()
+    }
+
+    /**
+     * Resumes engine processing after a previous [pause] call.
+     *
+     * Should be called when the host view is resumed.
+     * Must be called from the **main thread** — from `Activity.onResume()`.
+     */
+    @MainThread
+    fun resume() {
+        val wv = webView ?: return
+        Log.d(TAG, "Resuming WebView")
+        wv.onResume()
+        wv.resumeTimers()
     }
 
     private fun onPageLoad(action: ConstellationSdkAction) {
@@ -96,6 +163,7 @@ class AndroidWebViewEngine(
     }
 
     private fun evaluateInit(sdkConfig: String, scripts: String) {
+        val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         webView.evaluateJavascript("typeof window.init") { result ->
             if (result == "\"function\"") {
                 webView.evaluateJavascript("window.init('$sdkConfig', '$scripts')", null)
@@ -136,6 +204,7 @@ class AndroidWebViewEngine(
             put("eventData", JSONObject(event.eventData))
         }
         val script = "window.sendEventToComponent('${id.id}', '$eventJson')"
+        val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         this.scope.launch(Dispatchers.Main.immediate) {
             webView.evaluateJavascript(script, null)
         }
@@ -186,6 +255,7 @@ class AndroidWebViewEngine(
 
     companion object Companion {
         private const val TAG = "AndroidWebViewEngine"
+        private const val WEBVIEW_NULL_MESSAGE = "WebView is null, probably has been destroyed."
 
         fun defaultHttpClient() = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)

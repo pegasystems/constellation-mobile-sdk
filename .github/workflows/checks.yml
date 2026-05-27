@@ -111,7 +111,7 @@ jobs:
         run: |
           set -o pipefail
           rm -rf build || true
-          mkdir build
+          mkdir -p build
           xcodebuild \
             -project samples/swiftui-components-app/UITest/UITest.xcodeproj \
             -scheme UITest \
@@ -120,7 +120,8 @@ jobs:
             -retry-tests-on-failure \
             -test-iterations 2 \
             -parallel-testing-enabled NO \
-             test 2>&1 | xcpretty && exit ${PIPESTATUS[0]}
+            test 2>&1 | xcpretty
+          exit ${PIPESTATUS[0]}
       - name: Upload test artifacts for failures
         if: failure()
         uses: actions/upload-artifact@v4

@@ -40,6 +40,10 @@ class MockSdkEngine : ConstellationSdkEngine {
         handler.handle(EngineEvent.Ready(EnvironmentInfo("en-US", "America/New_York")))
     }
 
+    override fun destroy() {
+        // No cleanup needed for mock engine
+    }
+
     private fun ComponentManager.configureComponents() {
         component(10, ComponentTypes.TextInput) {
             put("label", "First Name")

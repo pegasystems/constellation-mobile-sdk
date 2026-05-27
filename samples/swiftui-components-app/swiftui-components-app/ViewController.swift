@@ -20,6 +20,8 @@ class ViewController: UIViewController {
                 StateView(wrapper: wrapper).onAppear {
                     wrapper.create(SDKConfiguration.caseClassName)
                 }
+            }.onDisappear {
+                engine.destroy()
             }
         )
 

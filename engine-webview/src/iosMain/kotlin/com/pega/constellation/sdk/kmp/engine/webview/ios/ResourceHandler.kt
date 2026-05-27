@@ -28,7 +28,7 @@ interface ResourceHandlerDelegate {
 class ResourceHandler(
     val mainScope: () -> CoroutineScope
 ) : NSObject(), WKURLSchemeHandlerProtocol {
-    lateinit var delegate: ResourceHandlerDelegate
+    var delegate: ResourceHandlerDelegate? = null
     private val tasks = mutableMapOf<NSURLRequest, Job>()
 
     @ObjCSignatureOverride
@@ -40,7 +40,7 @@ class ResourceHandler(
             try {
                 Log.i(TAG, "Starting WKURLScheme task. <${startURLSchemeTask.request.URL}>")
                 val (data, response) = withContext(Dispatchers.IO) {
-                    delegate.performRequest(startURLSchemeTask.request)
+                    requireNotNull(delegate).performRequest(startURLSchemeTask.request)
                 }
                 if (!isActive) {
                     Log.i(TAG, "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}>")

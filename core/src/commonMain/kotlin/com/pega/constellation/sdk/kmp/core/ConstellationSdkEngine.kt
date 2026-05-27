@@ -15,6 +15,12 @@ interface ConstellationSdkEngine {
      * Performs the specified action using the Constellation SDK.
      */
     fun performAction(action: ConstellationSdkAction)
+
+    /**
+     * Releases all resources held by the engine. Must be called when the engine is no longer needed.
+     */
+    fun destroy()
+
 }
 
 /**

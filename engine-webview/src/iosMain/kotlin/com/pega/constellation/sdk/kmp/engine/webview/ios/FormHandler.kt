@@ -17,9 +17,9 @@ import platform.WebKit.*
 import platform.darwin.NSObject
 
 private const val TAG = "FormHandler"
-class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
-    lateinit var eventHandler: EngineEventHandler
-    lateinit var componentManager: ComponentManager
+class FormHandler : NSObject(), WKScriptMessageHandlerProtocol {
+    var eventHandler: EngineEventHandler? = null
+    var componentManager: ComponentManager? = null
     private val passthroughSubject = MutableSharedFlow<ComponentEvent>(extraBufferCapacity = 64)
     val eventStream: SharedFlow<ComponentEvent> = passthroughSubject
 
@@ -35,6 +35,7 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             Log.w(TAG, "Cannot decode message type")
             return
         }
+        val eventHandler = requireNotNull(eventHandler)
         when (type) {
             "updateComponent" -> handleUpdateComponent(array)
             "addComponent" -> handleAddComponent(array)
@@ -52,7 +53,7 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
     }
 
     fun handleLoading() {
-        eventHandler.handle(EngineEvent.Loading)
+        requireNotNull(eventHandler).handle(EngineEvent.Loading)
     }
 
     private fun handleUpdateComponent(input: List<Any?>) {
@@ -60,7 +61,7 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
         val props = input.getOrNull(2) as? String
         if (cId != null && props != null) {
             val propsJson = Json.parseToJsonElement(props).jsonObject
-            componentManager.updateComponent(ComponentId(cId), propsJson)
+            requireNotNull(componentManager).updateComponent(ComponentId(cId), propsJson)
         } else {
             Log.w(TAG, "Unexpected parameters types in updateComponent")
         }
@@ -73,7 +74,7 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             Log.w(TAG, "Unexpected input for addComponent.")
             return
         }
-
+        val componentManager = requireNotNull(componentManager)
         val context = WKWebViewEngineComponentContext(
             ComponentId(cId),
             ComponentType(cType),
@@ -89,13 +90,13 @@ class FormHandler() : NSObject(), WKScriptMessageHandlerProtocol {
             Log.w(TAG, "Unexpected input for removeComponent.")
             return
         }
-        componentManager.removeComponent(ComponentId(cId))
+        requireNotNull(componentManager).removeComponent(ComponentId(cId))
     }
 
     private fun handleOnReady(input: List<Any?>) {
         (input.getOrNull(1) as? String)?.let {
             val envInfoJson = Json.parseToJsonElement(it).jsonObject
-            eventHandler.handle(EngineEvent.Ready(envInfoJson.toEnvironmentInfo()))
+            requireNotNull(eventHandler).handle(EngineEvent.Ready(envInfoJson.toEnvironmentInfo()))
         } ?: Log.w(TAG, "Unexpected input for onReady")
     }
 }
