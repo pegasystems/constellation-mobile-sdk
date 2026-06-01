@@ -41,6 +41,7 @@ class DxCasesHandler : MockHandler {
             "OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord" -> Asset("responses/dx/cases/EmbeddedDataTest-SingleRecord.json")
             "OFV0MW-Marco-Work-EmbeddedDataTest-Combobox" -> Asset("responses/dx/cases/EmbeddedDataTest-Combobox-POST.json")
             "OI1OYV-Marco2-Work-DataReferenceTest-FieldOnly" -> Asset("responses/dx/cases/DataRefSemanticLinkTest-POST.json")
+            "OI1OYV-Marco2-Work-SimpleTest" -> Asset("responses/dx/cases/NextPreviousTest-Step1-POST.json")
             else -> Error(500, "Missing response for case $caseTypeId")
         }
     }

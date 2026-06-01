@@ -13,11 +13,11 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class EmbeddedDataComboboxTest : ComposeTest(PegaVersion.v25_1) {
+class EmbeddedDataComboboxTest : ComposeTest() {
 
     @Test
     fun test_embedded_data_combobox() = runComposeUiTest {
-        setupApp("OFV0MW-Marco-Work-EmbeddedDataTest-Combobox")
+        setupApp("OFV0MW-Marco-Work-EmbeddedDataTest-Combobox", pegaVersion = PegaVersion.v25_1)
 
         // create case
         onNodeWithText("New Service").performClick()

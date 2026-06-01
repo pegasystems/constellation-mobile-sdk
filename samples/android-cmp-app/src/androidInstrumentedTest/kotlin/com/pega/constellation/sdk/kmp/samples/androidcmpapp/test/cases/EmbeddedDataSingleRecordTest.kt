@@ -17,11 +17,11 @@ import java.time.LocalDateTime
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class EmbeddedDataSingleRecordTest : ComposeTest(PegaVersion.v25_1) {
+class EmbeddedDataSingleRecordTest : ComposeTest() {
 
     @Test
     fun test_embedded_data_single_record() = runAndroidTest {
-        setupApp("OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord")
+        setupApp("OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord", pegaVersion = PegaVersion.v25_1)
 
         onNodeWithText("New Service").performClick()
 

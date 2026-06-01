@@ -16,10 +16,10 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
+class CaseProcessingTest : ComposeTest() {
     @Test
     fun test_case_processing_sdk_testing() = runAndroidTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting")
+        setupApp(caseClassName = "DIXL-MediaCo-Work-SDKTesting", pegaVersion = PegaVersion.v24_1_0)
 
         onNodeWithText("New Service").performClick()
         waitForNode("Create (S-", substring = true)
@@ -41,7 +41,7 @@ class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
 
     @Test
     fun test_case_processing_service() = runAndroidTest {
-        setupApp(caseClassName = "DIXL-MediaCo-Work-NewService")
+        setupApp(caseClassName = "DIXL-MediaCo-Work-NewService", pegaVersion = PegaVersion.v24_1_0)
 
         onNodeWithText("New Service").performClick()
         waitForNode("Customer (N-", substring = true)
@@ -75,5 +75,37 @@ class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
         onNodeWithText("Submit").performClick()
 
         waitForNode("New Service")
+    }
+
+    @Test
+    fun test_case_processing_backward() = runAndroidTest {
+        setupApp(caseClassName = "OI1OYV-Marco2-Work-SimpleTest", pegaVersion = PegaVersion.v25_1)
+
+        onNodeWithText("New Service").performClick()
+        waitForNode("step1 (S-", substring = true)
+
+        waitForNode("step1 input")
+        waitForNode("step1 boolean")
+        onNodeWithText("Next").performClick()
+
+        waitForNode("step2 input")
+        onNodeWithText("Next").performClick()
+
+        waitForNode("step3 boolean")
+        waitForNode("step3 input")
+        onNodeWithText("Next").performClick()
+
+        waitForNode("step4 input")
+        onNodeWithText("Previous").performClick()
+
+        waitForNode("step3 boolean")
+        waitForNode("step3 input")
+        onNodeWithText("Previous").performClick()
+
+        waitForNode("step2 input")
+        onNodeWithText("Previous").performClick()
+
+        waitForNode("step1 input")
+        waitForNode("step1 boolean")
     }
 }

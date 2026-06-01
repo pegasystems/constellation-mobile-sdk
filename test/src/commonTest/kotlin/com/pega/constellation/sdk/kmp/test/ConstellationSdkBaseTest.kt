@@ -27,12 +27,12 @@ import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 
 abstract class ConstellationSdkBaseTest {
-    protected lateinit var engine: ConstellationSdkEngine
+    protected var engine: ConstellationSdkEngine? = null
     protected val config = buildSdkConfig()
+    protected lateinit var sdk: ConstellationSdk
 
     @Test
     fun test_initialization() = runTest {
-        val sdk = ConstellationSdk.create(config, engine)
         assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()
@@ -44,23 +44,21 @@ abstract class ConstellationSdkBaseTest {
     @Test
     fun test_initialization_with_invalid_url() = runTest {
         val invalidConfig = config.copy(pegaUrl = "https://invalid.url")
-        val sdk = ConstellationSdk.create(invalidConfig, engine)
-        assertEquals(State.Initial, sdk.state.value)
-        sdk.createCase(CASE_CLASS)
-        sdk.assertState<State.Loading>()
-        sdk.assertError { it == "Engine failed to load init scripts" }
+        val invalidSdk = ConstellationSdk.create(invalidConfig,requireNotNull(engine))
+        assertEquals(State.Initial, invalidSdk.state.value)
+        invalidSdk.createCase(CASE_CLASS)
+        invalidSdk.assertState<State.Loading>()
+        invalidSdk.assertError { it == "Engine failed to load init scripts" }
     }
 
     @Test
     fun test_initialization_invalid_case_id() = runTest {
-        val sdk = ConstellationSdk.create(config, engine)
         sdk.createCase("DIXL-MediaCo-Work-Invalid-Case-Id")
         sdk.assertError { it.contains("Constellation SDK initialization failed!") }
     }
 
     @Test
     fun test_component_structure() = runTest {
-        val sdk = ConstellationSdk.create(config, engine)
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
         assertEquals(EXPECTED_COMPONENT_STRUCTURE, root.structure())
@@ -72,7 +70,6 @@ abstract class ConstellationSdkBaseTest {
 
     @Test
     fun test_rich_text() = runTest {
-        val sdk = ConstellationSdk.create(config, engine)
         sdk.createCase(CASE_CLASS)
 
         val defaultForm = sdk.assertState<State.Ready>().root.getDefaultForm()
@@ -87,7 +84,6 @@ abstract class ConstellationSdkBaseTest {
 
     @Test
     fun test_get_parent() = runTest {
-        val sdk = ConstellationSdk.create(config, engine)
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
         assertEquals(root, root.modalViewContainer?.getParent())
@@ -95,12 +91,11 @@ abstract class ConstellationSdkBaseTest {
 
     @Test
     fun test_engine_destroy() = runTest {
-        val sdk = ConstellationSdk.create(config, engine)
         assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()
         sdk.assertState<State.Ready>()
-        engine.destroy()
+        requireNotNull(engine).destroy()
         runCatching {
             sdk.createCase(CASE_CLASS)
         }.onFailure {

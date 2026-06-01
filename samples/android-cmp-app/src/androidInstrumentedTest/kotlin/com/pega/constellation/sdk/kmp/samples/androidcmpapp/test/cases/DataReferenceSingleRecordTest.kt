@@ -14,7 +14,7 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v24_1_0) {
+class DataReferenceSingleRecordTest : ComposeTest() {
     private val columns = listOf("ID", "BRAND", "MODEL", "COLOR")
     private val cars = listOf(
         listOf("1", "Ford", "Focus", "Silver"),
@@ -26,7 +26,7 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v24_1_0) {
 
     @Test
     fun test_simple_table() = runAndroidTest {
-        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2")
+        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2", pegaVersion = PegaVersion.v24_1_0)
 
         // create case
         onNodeWithText("New Service").performClick()
@@ -44,7 +44,7 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v24_1_0) {
 
     @Test
     fun test_dropdown() = runAndroidTest {
-        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2")
+        setupApp("O40M3A-MarekCo-Work-DataReferenceTest2", pegaVersion = PegaVersion.v24_1_0)
 
         // create case
         onNodeWithText("New Service").performClick()

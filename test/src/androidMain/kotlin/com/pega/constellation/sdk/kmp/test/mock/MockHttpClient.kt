@@ -1,9 +1,8 @@
 package com.pega.constellation.sdk.kmp.test.mock
 
-import android.content.Context
 import okhttp3.OkHttpClient
 
 @Suppress("FunctionName")
-fun MockHttpClient(context: Context, pegaVersion: PegaVersion) = OkHttpClient.Builder()
-    .addInterceptor(MockInterceptor(context, pegaVersion))
+fun MockHttpClient(mockInterceptor: MockInterceptor) = OkHttpClient.Builder()
+    .addInterceptor(mockInterceptor)
     .build()

@@ -15,7 +15,7 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class DetailsTest : ComposeTest(PegaVersion.v25_1) {
+class DetailsTest : ComposeTest() {
 
     private val expectedFields = mapOf(
         "name" to "John",
@@ -31,7 +31,7 @@ class DetailsTest : ComposeTest(PegaVersion.v25_1) {
 
     @Test
     fun test_details_template() = runAndroidTest {
-        setupApp(caseClassName = "OI1OYV-Marco2-Work-DetailsTemplateTest")
+        setupApp(caseClassName = "OI1OYV-Marco2-Work-DetailsTemplateTest", pegaVersion = PegaVersion.v25_1)
 
         onNodeWithText("New Service").performClick()
         waitForNode("Details template", substring = true)

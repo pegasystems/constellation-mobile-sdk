@@ -16,7 +16,7 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
+class DataReferenceListOfRecordsTest : ComposeTest() {
     val columns = listOf("BRAND", "MODEL")
 
     @Test
@@ -32,7 +32,7 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
             listOf("Fiat", "Panda", "$ 10000")
         )
 
-        setupApp("O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest")
+        setupApp("O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest", pegaVersion = PegaVersion.v25_1)
 
         // create case
         onNodeWithText("New Service").performClick()
@@ -70,7 +70,7 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
 
     @Test
     fun test_field_value_display() = runAndroidTest {
-        setupApp("O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest")
+        setupApp("O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest", pegaVersion = PegaVersion.v25_1)
 
         // create case
         onNodeWithText("New Service").performClick()
@@ -103,7 +103,7 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v25_1) {
 
     @Test
     fun test_combo_box() = runAndroidTest {
-        setupApp("O40M3A-MarekCo-Work-DataReferenceMultiSelectTest")
+        setupApp("O40M3A-MarekCo-Work-DataReferenceMultiSelectTest", pegaVersion = PegaVersion.v25_1)
 
         // Create case
         onNodeWithText("New Service").performClick()

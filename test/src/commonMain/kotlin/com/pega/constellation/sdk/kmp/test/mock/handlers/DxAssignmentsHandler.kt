@@ -12,17 +12,41 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class DxAssignmentsHandler : MockHandler {
-    private val regex = Regex(".*/assignments/(.+?)[/?](?:actions/([^?]+))?")
+    private val assignmentActionsRegex = Regex(".*/assignments/(.+?)[/?](?:actions/([^?]+))?")
+    private val assignmentNavStepsActionsRegex =
+        Regex(".*/assignments/(.+?)[/?](?:navigation_steps/([^?]+))")
+    private val openAssignmentRegex = Regex(".*/assignments/([^?/]+)")
+    private val nextPreviousTestStack = ArrayDeque<String>()
 
     override fun canHandle(request: MockRequest) = request.isDxApi("assignments")
 
     override fun handle(request: MockRequest): MockResponse {
-        val match = regex.find(request.url) ?: return Error(400, "Invalid request")
+        return when (request.method) {
+            "GET" -> handleOpenAssignment(request)
+            "PATCH" -> handleAssignmentAction(request)
+            else -> Error(400, "Unsupported method: ${request.method}")
+        }
+    }
+
+    private fun handleOpenAssignment(request: MockRequest): MockResponse {
+        val match = openAssignmentRegex.find(request.url) ?: return Error(400, "Invalid request")
+        val assignmentId = match.groupValues[1]
+        return when {
+            assignmentId.contains("K-11018") -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11018.json")
+            assignmentId.contains("K-11019") -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11019.json")
+            else -> Error(404, "Cannot handle open assignment: $assignmentId")
+        }
+    }
+
+    private fun handleAssignmentAction(request: MockRequest): MockResponse {
+        var match = assignmentActionsRegex.find(request.url)
+        if (match?.groups?.get(1) == null || match.groups.get(2) == null) {
+            match = assignmentNavStepsActionsRegex.find(request.url)
+                ?: return Error(400, "Invalid request")
+        }
         val assignmentId = match.groupValues[1]
         val actionId = match.groupValues[2]
         return when {
-            assignmentId.contains("K-11018") && actionId.isEmpty() -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11018.json")
-            assignmentId.contains("K-11019") && actionId.isEmpty() -> Asset("responses/dx/assignments/KeysAndCiphers-OpenAssignment-11019.json")
             assignmentId.contains("S-17098") && actionId == "Create" -> Asset("responses/dx/assignments/SDKTesting-1-Create.json")
             assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
             assignmentId.contains("A-22") -> Asset("responses/dx/assignments/AutoCompleteTest-DataRef.json")
@@ -37,8 +61,9 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("D-17009") -> handleDataReferenceMultiSelectTest(request, actionId)
             assignmentId.contains("D-9001") -> handleDetailsTemplateTest(actionId)
             assignmentId.contains("D-12038") -> handleDataRefSemanticLinkTest(actionId)
+            assignmentId.contains("S-10029") -> handleNextPreviousTest(actionId)
 
-            else -> Error(501, "Cannot handle assignment: $assignmentId, action: $actionId")
+            else -> Error(404, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
     }
 
@@ -63,7 +88,10 @@ class DxAssignmentsHandler : MockHandler {
         }
     }
 
-    private fun handleDataReferenceMultiSelectTest(request: MockRequest, actionId: String): MockResponse {
+    private fun handleDataReferenceMultiSelectTest(
+        request: MockRequest,
+        actionId: String
+    ): MockResponse {
         if (actionId != "Create") return Error(404, "Invalid actionId: $actionId")
 
         val pageInstructions = request.getPageInstructions()
@@ -73,10 +101,13 @@ class DxAssignmentsHandler : MockHandler {
         val validInsertCount = pageInstructions.count {
             val obj = it.jsonObject
             obj["instruction"]?.jsonPrimitive?.content == "INSERT" &&
-                obj["target"]?.jsonPrimitive?.content == ".CarsSelection" &&
-                obj["content"]?.jsonObject?.containsKey("Id") == true
+                    obj["target"]?.jsonPrimitive?.content == ".CarsSelection" &&
+                    obj["content"]?.jsonObject?.containsKey("Id") == true
         }
-        if (validInsertCount < 2) return Error(400, "Expected at least 2 valid INSERT instructions for .CarsSelection, got $validInsertCount")
+        if (validInsertCount < 2) return Error(
+            400,
+            "Expected at least 2 valid INSERT instructions for .CarsSelection, got $validInsertCount"
+        )
 
         return Asset("responses/dx/assignments/DataReferenceMultiSelectTest-1-Create.json")
     }
@@ -88,7 +119,10 @@ class DxAssignmentsHandler : MockHandler {
         }
     }
 
-    private fun handleEmbeddedDataTableSimpleTableTest(request: MockRequest, actionId: String): MockResponse {
+    private fun handleEmbeddedDataTableSimpleTableTest(
+        request: MockRequest,
+        actionId: String
+    ): MockResponse {
         return when (actionId) {
             "EmbeddedDataDisplayAsRepeatingViewEdit" -> Asset("responses/dx/assignments/EmbeddedDataTest-EditableTablePopup.json")
             "EDTableEditablePopup/refresh" -> {
@@ -97,9 +131,13 @@ class DxAssignmentsHandler : MockHandler {
                 when (pageInstructions.size) {
                     2 -> Asset("responses/dx/assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-1.json")
                     4 -> Asset("responses/dx/assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-2.json")
-                    else -> Error(404, "No data for given pageInstructions size: ${pageInstructions.size} for actionId: $actionId")
+                    else -> Error(
+                        404,
+                        "No data for given pageInstructions size: ${pageInstructions.size} for actionId: $actionId"
+                    )
                 }
             }
+
             "EDTableEditablePopup" -> Asset("responses/dx/assignments/EmbeddedDataTest-ReadonlySimpleTable.json")
             "EDSimpleTableReadonly" -> Asset("responses/dx/assignments/EmbeddedDataTest-ReadonlyTable.json")
             else -> Error(404, "Invalid actionId: $actionId")
@@ -141,6 +179,25 @@ class DxAssignmentsHandler : MockHandler {
         "Create" -> Asset("responses/dx/assignments/DataRefSemanticLinkTest-1-Create.json")
         "Create/refresh" -> Asset("responses/dx/assignments/refresh/DataRefSemanticLinkTest-Create-Refresh.json")
         else -> Error(404, "Invalid actionId: $actionId")
+    }
+
+    private fun handleNextPreviousTest(actionId: String): MockResponse {
+        val step1Json = "responses/dx/cases/NextPreviousTest-Step1-POST.json"
+        val step2Json = "responses/dx/assignments/NextPreviousTest-1-Step2.json"
+        val step3Json = "responses/dx/assignments/NextPreviousTest-2-Step3.json"
+        val step4Json = "responses/dx/assignments/NextPreviousTest-3-Step4.json"
+
+        val url = when (actionId) {
+            "Create" -> step2Json.also { nextPreviousTestStack.addLast(step1Json) }
+            "Step2" -> step3Json.also { nextPreviousTestStack.addLast(step2Json) }
+            "Step3" -> step4Json.also { nextPreviousTestStack.addLast(step3Json) }
+            "previous" -> return nextPreviousTestStack.removeLastOrNull()
+                ?.let { Asset(it) }
+                ?: Error(404, "No more assets for action 'previous' (stack is empty)")
+
+            else -> return Error(404, "Invalid actionId: $actionId")
+        }
+        return Asset(url)
     }
 
     private fun handleNewService(actionId: String) = when (actionId) {

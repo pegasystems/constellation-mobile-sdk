@@ -36,11 +36,11 @@ import java.util.TimeZone
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
+class EmbeddedDataListOfRecordsTest : ComposeTest() {
 
     @Test
     fun test_embedded_data_repeating_view() = runAndroidTest {
-        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable")
+        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable", pegaVersion = PegaVersion.v24_2_2)
 
         // create case
         onNodeWithText("New Service").performClick()
@@ -137,7 +137,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
 
     @Test
     fun test_embedded_data_table_simple_table() = runAndroidTest {
-        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable")
+        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable", pegaVersion = PegaVersion.v24_2_2)
 
         val columnValues = mutableMapOf(
             "brand" to "Ford",
@@ -264,7 +264,7 @@ class EmbeddedDataListOfRecordsTest : ComposeTest(PegaVersion.v24_2_2) {
     @Test
     fun test_embedded_data_add_edit_remove_conditions() = runAndroidTest {
         // Step 1 - Editable table
-        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions")
+        setupApp("O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions", pegaVersion = PegaVersion.v24_2_2)
         // create case
         onNodeWithText("New Service").performClick()
         // verify form title

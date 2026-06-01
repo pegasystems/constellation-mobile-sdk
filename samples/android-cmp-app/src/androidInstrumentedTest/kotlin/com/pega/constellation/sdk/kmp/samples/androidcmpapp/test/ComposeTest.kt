@@ -25,18 +25,20 @@ import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.components.CustomEma
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.pega.PegaViewModel
 import com.pega.constellation.sdk.kmp.samples.basecmpapp.ui.screens.services.ServicesViewModel
 import com.pega.constellation.sdk.kmp.test.mock.MockHttpClient
+import com.pega.constellation.sdk.kmp.test.mock.MockInterceptor
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.junit.Rule
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
+import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 @OptIn(ExperimentalOpenIdConnect::class)
 abstract class ComposeTest(
-    private val pegaVersion: PegaVersion,
     val mode: ComposeTestMode = MockServer,
 ) {
     @get:Rule
@@ -46,18 +48,31 @@ abstract class ComposeTest(
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context = instrumentation.targetContext
     private val authManager = AuthManager(scope, FakeAuthFlowFactory(), FakeTokenStore(mode.token))
-    private val httpClient = buildHttpClient(authManager)
-    private val engine = AndroidWebViewEngine(context, webViewScope, httpClient, httpClient)
+    private lateinit var mockInterceptor: MockInterceptor
+    private lateinit var httpClient: OkHttpClient
+    private var engine: AndroidWebViewEngine? = null
 
     @BeforeTest
     fun setUp() {
         hideKeyboard()
-        Injector.init(authManager, engine)
         AppContext.init(context)
     }
 
+    @AfterTest
+    fun tearDown() {
+        webViewScope.launch {
+            engine?.destroy()
+        }
+    }
+
     @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String) {
+    protected fun ComposeUiTest.setupApp(caseClassName: String, pegaVersion: PegaVersion) {
+        mockInterceptor = MockInterceptor(context, pegaVersion)
+        httpClient = buildHttpClient(authManager)
+        val engine = AndroidWebViewEngine(context, webViewScope, httpClient, httpClient)
+        this@ComposeTest.engine = engine
+        Injector.init(authManager, engine)
+
         setContent {
             MediaCoApp(
                 appViewModel = viewModel { MediaCoAppViewModel(authManager) },
@@ -67,7 +82,7 @@ abstract class ComposeTest(
         }
     }
 
-    private fun buildSdk() = ConstellationSdk.create(buildSdkConfig(), engine)
+    private fun buildSdk() = ConstellationSdk.create(buildSdkConfig(), requireNotNull(engine))
 
     private fun buildSdkConfig() = ConstellationSdkConfig(
         pegaUrl = PEGA_URL,
@@ -78,7 +93,7 @@ abstract class ComposeTest(
     private fun buildComponentManager() = ComponentManager.create(TestComponentDefinitions)
 
     private fun buildHttpClient(authManager: AuthManager) = when (mode) {
-        is MockServer -> MockHttpClient(context, pegaVersion)
+        is MockServer -> MockHttpClient(mockInterceptor)
         is RealServer -> OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .build()

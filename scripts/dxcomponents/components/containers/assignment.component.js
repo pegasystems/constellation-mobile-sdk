@@ -271,11 +271,6 @@ export class AssignmentComponent extends BaseComponent {
         this.buttonClick(oData.action, oData.buttonType);
     }
 
-    cleanAssignmentCard() {
-        this.assignmentCardComponent?.destroy();
-        this.assignmentCardComponent = undefined;
-    }
-
     buttonClick(sAction, sButtonType) {
         if (this.loading) {
             console.debug(TAG, `Action already in progress, action: '${sAction}' will not be executed`);
@@ -288,18 +283,8 @@ export class AssignmentComponent extends BaseComponent {
                 case "navigateToStep":
                     this.blurAllFields();
                     this.bReInit = true;
-                    this.setLoading(true);
-                    const navigatePromise = this.navigateToStep("previous", this.itemKey$);
-                    navigatePromise
-                        .then(() => {
-                            this.cleanAssignmentCard();
-                            this.updateChanges();
-                        })
-                        .catch((error) => {
-                            console.warn(TAG, `'${sAction}' failed with error ${error}`);
-                        })
+                    this.executeAction(this.navigateToStep("previous", this.itemKey$), sAction)
                         .finally(() => {
-                            this.setLoading(false);
                             PCore.getPubSubUtils().publish("updateBanners");
                         });
                     break;
@@ -307,9 +292,7 @@ export class AssignmentComponent extends BaseComponent {
                 case "saveAssignment": {
                     const caseID = this.pConn.getCaseInfo().getKey();
                     const assignmentID = this.pConn.getCaseInfo().getAssignmentID();
-                    const savePromise = this.saveAssignment(this.itemKey$);
-                    this.setLoading(true);
-                    savePromise
+                    this.executeAction(this.saveAssignment(this.itemKey$), sAction)
                         .then(() => {
                             const caseType = this.pConn
                                 .getCaseInfo()
@@ -317,14 +300,9 @@ export class AssignmentComponent extends BaseComponent {
                             PCore.getPubSubUtils().publish("cancelPressed");
                             this.onSaveActionSuccess({ caseType, caseID, assignmentID });
                         })
-                        .catch((error) => {
-                            console.warn(TAG, `'${sAction}' failed with error ${error}`);
-                        })
                         .finally(() => {
-                            this.setLoading(false);
                             PCore.getPubSubUtils().publish("updateBanners");
                         });
-
                     break;
                 }
 
@@ -334,34 +312,15 @@ export class AssignmentComponent extends BaseComponent {
                     // cancel will never cause case to be deleted.
                     // That could be done with 'cancelCreateStageAssignment' but it needs assignment action to be 'modal'
                     // current bootstrap-shell.js does not provide any option to use 'modal'.
-                    const cancelPromise = this.cancelAssignment(this.itemKey$);
-                    this.setLoading(true);
-                    cancelPromise
+                    this.executeAction(this.cancelAssignment(this.itemKey$), sAction)
                         .then(() => {
                             PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
-                        })
-                        .catch((error) => {
-                            console.warn(TAG, `'${sAction}' failed with error ${error}`);
-                        })
-                        .finally(() => {
-                            this.setLoading(false);
                         });
                     break;
 
-                case "rejectCase": {
-                    const rejectPromise = this.rejectCase(this.itemKey$);
-                    this.setLoading(true);
-                    rejectPromise
-                        .then(() => {})
-                        .catch((error) => {
-                            console.warn(TAG, `'${sAction}' failed with error ${error}`);
-                        })
-                        .finally(() => {
-                            this.setLoading(false);
-                        });
-
+                case "rejectCase":
+                    this.executeAction(this.rejectCase(this.itemKey$), sAction);
                     break;
-                }
 
                 default:
                     break;
@@ -371,40 +330,37 @@ export class AssignmentComponent extends BaseComponent {
                 case "finishAssignment":
                     this.blurAllFields();
                     this.bReInit = true;
-                    this.setLoading(true);
-                    const finishPromise = this.finishAssignment(this.itemKey$);
-                    finishPromise
-                        .then(() => {
-                            console.log(TAG, `'${sAction}' finished successfully`);
-                            this.cleanAssignmentCard();
-                            this.updateChanges();
-                        })
-                        .catch((error) => {
-                            console.warn(TAG, `'${sAction}' failed with error ${error}`);
-                        })
+                    this.executeAction(this.finishAssignment(this.itemKey$), sAction)
                         .finally(() => {
-                            this.setLoading(false);
                             PCore.getPubSubUtils().publish("updateBanners");
                         });
                     break;
 
-                case "approveCase": {
-                    const approvePromise = this.approveCase(this.itemKey$);
-                    this.setLoading(true);
-                    approvePromise
-                        .then(() => {})
-                        .catch((error) => {
-                            console.warn(TAG, `'${sAction}' failed with error ${error}`);
-                        })
+                case "approveCase":
+                    this.executeAction(this.approveCase(this.itemKey$), sAction)
                         .finally(() => {
-                            this.setLoading(false);
                             PCore.getPubSubUtils().publish("updateBanners");
                         });
                     break;
-                }
+
                 default:
                     break;
             }
         }
+    }
+
+    executeAction = (promise, sAction) => {
+        this.setLoading(true);
+        return promise
+            .then(result => {
+                console.log(TAG, `'${sAction}' finished successfully`);
+                return result;
+            })
+            .catch(error => {
+                console.warn(TAG, `'${sAction}' failed with error`, error);
+            })
+            .finally(() => {
+                this.setLoading(false);
+            });
     }
 }

@@ -11,11 +11,11 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class DataRefSemanticLinkTest : ComposeTest(PegaVersion.v25_1) {
+class DataRefSemanticLinkTest : ComposeTest() {
 
     @Test
     fun test_data_reference_form_and_semantic_link() = runAndroidTest {
-        setupApp("OI1OYV-Marco2-Work-DataReferenceTest-FieldOnly")
+        setupApp("OI1OYV-Marco2-Work-DataReferenceTest-FieldOnly", pegaVersion = PegaVersion.v25_1)
 
         // create case
         onNodeWithText("New Service").performClick()

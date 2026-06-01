@@ -16,10 +16,10 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import org.junit.Test
 
 @OptIn(ExperimentalTestApi::class)
-class GroupTest : ComposeTest(PegaVersion.v24_2_2) {
+class GroupTest : ComposeTest() {
     @Test
     fun test_group_component() = runAndroidTest {
-        setupApp(caseClassName = "O40M3A-MarekCo-Work-GroupTest")
+        setupApp(caseClassName = "O40M3A-MarekCo-Work-GroupTest", pegaVersion = PegaVersion.v24_2_2)
 
         onNodeWithText("New Service").performClick()
         waitForNode("GroupTest - Create", substring = true)
