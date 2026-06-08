@@ -16,8 +16,8 @@ class NativeBridge {
         this.updateNativeComponent(component);
     }
 
-    setRequestBody(body) {
-        sdkbridge.setRequestBody(body);
+    setRequestBody(requestId, body) {
+        sdkbridge.setRequestBody(requestId, body);
     }
 
     onReady(envInfo) {

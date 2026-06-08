@@ -82,7 +82,7 @@ class AndroidWebViewEngine(
 
         this.componentManager = config.componentManager
         this.networkInterceptor =
-            WebViewNetworkInterceptor(config.pegaUrl, okHttpClient, nonDxOkHttpClient)
+            WebViewNetworkInterceptor(scope, config.pegaUrl, okHttpClient, nonDxOkHttpClient)
         val assetInterceptor = WebViewAssetInterceptor(context, config)
 
         val interceptors = listOf(assetInterceptor, networkInterceptor)
@@ -108,6 +108,7 @@ class AndroidWebViewEngine(
     override fun destroy() {
         val wv = webView ?: return
         Log.d(TAG, "Destroying WebView")
+        networkInterceptor.close()
         with(wv) {
             stopLoading()
             removeJavascriptInterface("sdkbridge")
@@ -179,7 +180,7 @@ class AndroidWebViewEngine(
             is AddComponent -> onAddComponent(event.id, event.type)
             is UpdateComponent -> componentManager.updateComponent(event.id, event.propsJson)
             is RemoveComponent -> componentManager.removeComponent(event.id)
-            is SetRequestBody -> networkInterceptor.setRequestBody(event.body)
+            is SetRequestBody -> networkInterceptor.setRequestBody(event.requestId, event.body)
             is OnReady -> handler.handle(EngineEvent.Ready(event.envInfoJson.toEnvironmentInfo()))
             is OnFinished -> handler.handle(EngineEvent.Finished(event.successMessage))
             is OnError -> handler.handle(

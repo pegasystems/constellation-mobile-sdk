@@ -4,19 +4,32 @@ import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import java.util.concurrent.ConcurrentLinkedQueue
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.util.concurrent.ConcurrentHashMap
 
 internal class WebViewNetworkInterceptor(
+    scope: CoroutineScope,
     private val pegaUrl: String,
     private val okHttpClient: OkHttpClient,
     private val nonDxOkHttpClient: OkHttpClient
 ) : WebViewInterceptor {
-    private val requestBodyQueue = ConcurrentLinkedQueue<String>()
+    private val requestBodies = ConcurrentHashMap<String, RequestBodyEntry>()
+    private val cleanupJob: Job = scope.launch(Dispatchers.Default) {
+        while (isActive) {
+            delay(CLEANUP_INTERVAL_MS)
+            cleanupExpiredBodies()
+        }
+    }
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
         runCatching {
@@ -39,13 +52,19 @@ internal class WebViewNetworkInterceptor(
             )
         }
 
-    fun setRequestBody(body: String) {
-        requestBodyQueue.add(body)
+    fun setRequestBody(requestId: String, body: String) {
+        requestBodies[requestId] = RequestBodyEntry(body, System.currentTimeMillis())
+    }
+
+    fun close() {
+        cleanupJob.cancel()
+        requestBodies.clear()
     }
 
     private fun OkHttpClient.execute(request: WebResourceRequest): Response {
-        val body = requestBodyQueue.takeIf { request.method in listOf("POST", "PATCH") }
-            ?.poll()
+        val requestId = request.requestHeaderValue(REQUEST_BODY_ID_HEADER)
+        val body = requestId
+            ?.let { requestBodies.remove(it)?.body }
             ?.toRequestBody()
         val filteredHeaders = request.requestHeaders.filterNot {
             isAuthorizationHeaderUndefined(it.key, it.value) || isHeaderDisallowed(it.key)
@@ -83,14 +102,31 @@ internal class WebViewNetworkInterceptor(
             }
         }
 
+    private fun WebResourceRequest.requestHeaderValue(headerName: String) =
+        requestHeaders.entries.firstOrNull { it.key.equals(headerName, ignoreCase = true) }?.value
+
+    private fun cleanupExpiredBodies() {
+        val cutoff = System.currentTimeMillis() - REQUEST_BODY_TTL_MS
+        requestBodies.entries.removeIf { it.value.createdAtMillis < cutoff }
+    }
+
+    private data class RequestBodyEntry(
+        val body: String,
+        val createdAtMillis: Long
+    )
+
     companion object {
         private const val TAG = "WebViewNetworkInterceptor"
+        private const val REQUEST_BODY_ID_HEADER = "X-Request-Body-Id"
+        private const val CLEANUP_INTERVAL_MS = 60_000L
+        private const val REQUEST_BODY_TTL_MS = 300_000L
         private val DISALLOWED_HEADERS_LIST = listOf(
             "Referer",
             "Origin",
             "X-Requested-With",
             "User-Agent",
-            "sec-ch-ua*"
+            "sec-ch-ua*",
+            REQUEST_BODY_ID_HEADER
         ).map { it.lowercase() }
     }
 }
