@@ -8,6 +8,7 @@ import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Compani
 import com.pega.constellation.sdk.kmp.core.internal.ComponentObservableDelegate
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 
 /**
  * Represents a UI component.
@@ -39,6 +40,9 @@ abstract class BaseComponent(
     var pConnectPropertyReference: String by mutableStateOf("")
         private set
 
+    var configAlternateDesignSystem: JsonObject? by mutableStateOf(null)
+        private set
+
     var parentId: ComponentId? by mutableStateOf(null)
         private set
 
@@ -46,6 +50,7 @@ abstract class BaseComponent(
 
     override fun onUpdate(props: JsonObject) {
         pConnectPropertyReference = props.optString("pConnectPropertyReference")
+        configAlternateDesignSystem = props["configAlternateDesignSystem"]?.jsonObject
 
         applyProps(props)
         notifyObservers()
