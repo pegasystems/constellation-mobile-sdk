@@ -1,6 +1,9 @@
 name: "Perform build and checks"
 on:
-  push
+  push:
+    branches:
+      - master
+  pull_request:
 jobs:
   validate-android:
     runs-on: 'ubuntu-latest'
