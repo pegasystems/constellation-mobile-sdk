@@ -31,8 +31,8 @@ class ConstellationSdkTest : ConstellationSdkBaseTest() {
             val engine = AndroidWebViewEngine(
                 context = appContext,
                 scope = scope,
-                okHttpClient = MockHttpClient(interceptor),
-                nonDxOkHttpClient = MockHttpClient(interceptor)
+                callFactory = MockHttpClient(interceptor),
+                nonDxCallFactory = MockHttpClient(interceptor)
             )
             this@ConstellationSdkTest.engine = engine
             sdk = ConstellationSdk.create(config, engine)

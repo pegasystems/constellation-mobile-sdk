@@ -40,6 +40,7 @@ import androidx.annotation.MainThread
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Call
 
 import okhttp3.OkHttpClient
 import org.json.JSONObject
@@ -49,7 +50,7 @@ import java.util.concurrent.TimeUnit
  * WebView-based implementation of [ConstellationSdkEngine] for Android.
  *
  * Embeds a [WebView] hosting the Constellation CoreJS engine with JS components.
- * Network requests are intercepted and routed through the provided [OkHttpClient] instances.
+ * Network requests are intercepted and routed through the provided [Call.Factory] implementation instances.
  *
  * @param context The Android [android.content.Context] used to create the [WebView].
  * An Activity context (or a context wrapping an Activity) is recommended.
@@ -59,14 +60,14 @@ import java.util.concurrent.TimeUnit
  * @param scope [CoroutineScope] used to dispatch async work. The engine does not cancel this
  * scope on [destroy], prefer lifecycle-aware scopes such as `lifecycleScope` or
  * `viewModelScope` that are canceled automatically when the host is destroyed.
- * @param okHttpClient Primary client for Constellation DX API requests.
- * @param nonDxOkHttpClient Client for non-DX requests. Defaults to [Companion.defaultHttpClient].
+ * @param callFactory Primary client for Constellation DX API requests, [OkHttpClient] or any other implementation of [Call.Factory].
+ * @param nonDxCallFactory Client for non-DX requests. Defaults to [Companion.defaultHttpClient].
  */
 class AndroidWebViewEngine(
     private val context: Context,
     private val scope: CoroutineScope,
-    private val okHttpClient: OkHttpClient,
-    private val nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
+    private val callFactory: Call.Factory,
+    private val nonDxCallFactory: Call.Factory = defaultHttpClient()
 ) : ConstellationSdkEngine {
 
     private lateinit var config: ConstellationSdkConfig
@@ -82,7 +83,7 @@ class AndroidWebViewEngine(
 
         this.componentManager = config.componentManager
         this.networkInterceptor =
-            WebViewNetworkInterceptor(scope, config.pegaUrl, okHttpClient, nonDxOkHttpClient)
+            WebViewNetworkInterceptor(scope, config.pegaUrl, callFactory, nonDxCallFactory)
         val assetInterceptor = WebViewAssetInterceptor(context, config)
 
         val interceptors = listOf(assetInterceptor, networkInterceptor)
