@@ -12,6 +12,7 @@ import {
 export class SelectBaseComponent extends PicklistBaseComponent {
     listItems = [];
     onRecordChange = null;
+    latestOptionsRequestId = 0;
 
     fieldOnChange(value) {
         super.fieldOnChange(value);
@@ -78,20 +79,35 @@ export class SelectBaseComponent extends PicklistBaseComponent {
         };
 
         if (isDeferredDatasource && isSourceDataPage) {
-            PCore.getDataApi()
-                .init(dataConfig, contextName)
+            const requestId = ++this.latestOptionsRequestId;
+            Promise.resolve()
+                .then(() => PCore.getDataApi().init(dataConfig, contextName))
                 .then((dataApiObj) => {
-                    dataApiObj.fetchData("").then((response) => {
-                        const displayFieldMeta = getDisplayFieldsMetaData(dataConfig.columns);
-                        this.listItems = populateItems(response, displayFieldMeta, dataApiObj);
-                        this.updateOptions(
-                            fieldMetadata,
-                            className,
-                            isDeferredDatasource,
-                            isSourceDataPage,
-                            datasource
-                        );
-                    });
+                    return dataApiObj.fetchData("").then((response) => ({ response, dataApiObj }));
+                })
+                .then(({ response, dataApiObj }) => {
+                    if (!this.alive || requestId !== this.latestOptionsRequestId) {
+                        return;
+                    }
+
+                    const displayFieldMeta = getDisplayFieldsMetaData(dataConfig.columns);
+                    this.listItems = populateItems(response, displayFieldMeta, dataApiObj);
+                    this.updateOptions(
+                        fieldMetadata,
+                        className,
+                        isDeferredDatasource,
+                        isSourceDataPage,
+                        datasource
+                    );
+                })
+                .catch((error) => {
+                    if (!this.alive || requestId !== this.latestOptionsRequestId) {
+                        return;
+                    }
+
+                    console.warn("[SelectBaseComponent] Failed to load data-page options", error?.message || error);
+                    this.listItems = [];
+                    this.updateOptions(fieldMetadata, className, isDeferredDatasource, isSourceDataPage, datasource);
                 });
         }
         this.updateOptions(fieldMetadata, className, isDeferredDatasource, isSourceDataPage, datasource);

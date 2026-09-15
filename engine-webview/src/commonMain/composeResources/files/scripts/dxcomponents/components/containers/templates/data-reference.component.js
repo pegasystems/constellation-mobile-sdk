@@ -27,6 +27,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
     displayAs;
     // Indicates first mount. Present also on web.
     isMounting = true
+    latestOptionsRequestId = 0;
 
     constructor(componentsManager, pConn) {
         super(componentsManager, pConn);
@@ -149,6 +150,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
     }
 
     #loadOptions(refList, parameters, rawViewMetadata) {
+        const requestId = ++this.latestOptionsRequestId;
         const firstChildMeta = rawViewMetadata.children[0];
         const firstChildPConnect = this.pConn.getChildren()[0].getPConnect();
 
@@ -164,10 +166,10 @@ export class DataReferenceComponent extends ContainerBaseComponent {
         if (!shouldLoadOptions) return;
 
         const { value = "", key = "", text = "" } = firstChildMeta.config?.datasource?.fields ?? {};
-        PCore.getDataApiUtils()
-            .getData(refList, { dataViewParameters: parameters })
+        Promise.resolve()
+            .then(() => PCore.getDataApiUtils().getData(refList, { dataViewParameters: parameters }))
             .then((res) => {
-                if (!this.alive) {
+                if (!this.alive || requestId !== this.latestOptionsRequestId) {
                     return;
                 }
                 if (res.data.data !== null) {
@@ -188,10 +190,14 @@ export class DataReferenceComponent extends ContainerBaseComponent {
                     this.#updateProperties()
                 }
             })
-            .catch(() => {
-                return Promise.resolve({
-                    data: { data: [] },
-                });
+            .catch((error) => {
+                if (!this.alive || requestId !== this.latestOptionsRequestId) {
+                    return;
+                }
+
+                console.warn(`${TAG} Failed to load selectable data`, error?.message || error);
+                this.dropDownDataSource = [];
+                this.#updateProperties();
             });
     }
 

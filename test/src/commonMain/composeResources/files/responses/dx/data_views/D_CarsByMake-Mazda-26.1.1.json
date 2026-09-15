@@ -1,0 +1,62 @@
+{
+  "fetchDateTime": "2026-09-09T11:35:08.810Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 3,
+  "data": [
+    {
+      "pxSaveDateTime": null,
+      "pxUpdateSystemID": "test-system",
+      "ModelName": "3",
+      "pxUpdateDateTime": "2026-09-08T13:48:31.438Z",
+      "pxUpdateOpName": "Test Operator",
+      "pxUpdateOperator": "test",
+      "pxObjClass": "OAOEH9-EloEloApp-Data-Cars",
+      "CarMake": "Mazda",
+      "pxCreateOperator": "test",
+      "pxCreateDateTime": "2026-09-08T13:48:20.870Z",
+      "pxCreateSystemID": "test-system",
+      "ModelType": "Sedan",
+      "ModelYear": "2010",
+      "pyGUID": "9bf00a43-1537-48df-8b72-c45fc73f19c4",
+      "pxCommitDateTime": null,
+      "pxCreateOpName": "Test Operator"
+    },
+    {
+      "pxSaveDateTime": null,
+      "pxUpdateSystemID": "test-system",
+      "ModelName": "CX60",
+      "pxUpdateDateTime": "2026-09-08T13:49:17.386Z",
+      "pxUpdateOpName": "Test Operator",
+      "pxUpdateOperator": "test",
+      "pxObjClass": "OAOEH9-EloEloApp-Data-Cars",
+      "CarMake": "Mazda",
+      "pxCreateOperator": "test",
+      "pxCreateDateTime": "2026-09-08T13:48:45.389Z",
+      "pxCreateSystemID": "test-system",
+      "ModelType": "SUV",
+      "ModelYear": "2020",
+      "pyGUID": "b558a84a-eef5-42bd-b0c9-6539785a1f81",
+      "pxCommitDateTime": null,
+      "pxCreateOpName": "Test Operator"
+    },
+    {
+      "pxSaveDateTime": null,
+      "pxUpdateSystemID": "test-system",
+      "ModelName": "CX30",
+      "pxUpdateDateTime": "2026-09-08T13:48:45.240Z",
+      "pxUpdateOpName": "Test Operator",
+      "pxUpdateOperator": "test",
+      "pxObjClass": "OAOEH9-EloEloApp-Data-Cars",
+      "CarMake": "Mazda",
+      "pxCreateOperator": "test",
+      "pxCreateDateTime": "2026-09-08T13:48:31.569Z",
+      "pxCreateSystemID": "test-system",
+      "ModelType": "SUV",
+      "ModelYear": "2019",
+      "pyGUID": "c131449b-489c-486a-be87-765758d1190d",
+      "pxCommitDateTime": null,
+      "pxCreateOpName": "Test Operator"
+    }
+  ],
+  "hasMoreResults": false
+}

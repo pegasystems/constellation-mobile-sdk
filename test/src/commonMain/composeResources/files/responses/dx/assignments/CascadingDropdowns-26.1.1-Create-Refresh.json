@@ -1,0 +1,282 @@
+{
+  "data": {
+    "caseInfo": {
+      "content": {
+        "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+        "CarMake": "Mazda",
+        "CarModel": "",
+        "pxUrgencyWork": 10,
+        "pyLabel": "Cascading Dropdowns",
+        "pyStatusWork": "New",
+        "pyID": "C-2601"
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "Create": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "inheritedProps": [
+                        {
+                          "prop": "label",
+                          "value": "@L Primary fields"
+                        },
+                        {
+                          "prop": "showLabel",
+                          "value": false
+                        }
+                      ],
+                      "name": "pyPrimaryFields",
+                      "ruleClass": "Work-",
+                      "type": "view"
+                    },
+                    "type": "reference"
+                  },
+                  {
+                    "config": {
+                      "datasource": "@ASSOCIATED .CarMake",
+                      "deferDatasource": true,
+                      "label": "@FL .CarMake",
+                      "labelOption": "default",
+                      "listType": "associated",
+                      "placeholder": "Select...",
+                      "value": "@P .CarMake"
+                    },
+                    "type": "Dropdown"
+                  },
+                  {
+                    "config": {
+                      "datasource": "@ASSOCIATED .CarModel",
+                      "deferDatasource": true,
+                      "label": "@FL .CarModel",
+                      "labelOption": "default",
+                      "listType": "associated",
+                      "placeholder": "Select...",
+                      "value": "@P .CarModel"
+                    },
+                    "type": "Dropdown"
+                  }
+                ],
+                "name": "Fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "NumCols": "2",
+              "localeReference": "@LR OAOEH9-ELOELOAPP-WORK-CASCADINGDROPDOWNS!VIEW!CREATE",
+              "ruleClass": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+              "template": "DefaultForm"
+            },
+            "name": "Create",
+            "type": "View",
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns"
+          }
+        ],
+        "pyPrimaryFields": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "label": "@FL .pyID",
+                      "labelOption": "default",
+                      "value": "@P .pyID"
+                    },
+                    "type": "TextInput"
+                  },
+                  {
+                    "config": {
+                      "label": "@L Label",
+                      "labelOption": "custom",
+                      "value": "@P .pyLabel"
+                    },
+                    "type": "TextInput"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .pxUrgencyWork",
+                      "labelOption": "default",
+                      "value": "@P .pxUrgencyWork"
+                    },
+                    "type": "Decimal"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .pyStatusWork",
+                      "labelOption": "default",
+                      "value": "@P .pyStatusWork"
+                    },
+                    "type": "TextInput"
+                  }
+                ],
+                "name": "Fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "NumCols": "2",
+              "inheritParentLayout": false,
+              "label": "@L Primary fields",
+              "localeReference": "@LR OAOEH9-ELOELOAPP-WORK-CASCADINGDROPDOWNS!VIEW!PYPRIMARYFIELDS",
+              "ruleClass": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+              "template": "DefaultForm"
+            },
+            "name": "pyPrimaryFields",
+            "type": "View",
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns"
+          }
+        ]
+      },
+      "datapages": {
+        "D_CarsByMake": {
+          "parameters": [
+            {
+              "name": "CarMake",
+              "defaultValue": "",
+              "linkedField": "CarMake"
+            }
+          ],
+          "classID": "OAOEH9-EloEloApp-Data-Cars",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": false,
+          "structure": "list",
+          "isWorkObject": false,
+          "isDataObject": true,
+          "allowExportToExcel": true
+        }
+      },
+      "fields": {
+        "CarModel": [
+          {
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+            "type": "Text",
+            "displayAs": "pxDropdown",
+            "label": "CarModel",
+            "datasource": {
+              "tableType": "DataPage",
+              "tableClass": "OAOEH9-EloEloApp-Data-Cars",
+              "name": "D_CarsByMake",
+              "propertyForDisplayText": "@P .ModelName",
+              "propertyForValue": "@P .pyGUID",
+              "parameters": [
+                {
+                  "name": "CarMake",
+                  "value": "@P .CarMake"
+                }
+              ]
+            }
+          }
+        ],
+        "CarMake": [
+          {
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+            "type": "Text",
+            "displayAs": "pxDropdown",
+            "label": "CarMake",
+            "datasource": {
+              "tableType": "PromptList",
+              "records": [
+                {
+                  "key": "Ford",
+                  "value": "Ford"
+                },
+                {
+                  "key": "Mazda",
+                  "value": "Mazda"
+                },
+                {
+                  "key": "Fiat",
+                  "value": "Fiat"
+                },
+                {
+                  "key": "Mercedes",
+                  "value": "Mercedes"
+                }
+              ]
+            }
+          }
+        ],
+        "pxUrgencyWork": [
+          {
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+            "type": "Decimal",
+            "displayAs": "pxNumber",
+            "definedOnClassID": "Work-",
+            "label": "Urgency",
+            "isDeclarativeTarget": true,
+            "isSpecial": true
+          }
+        ],
+        "pyLabel": [
+          {
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+            "type": "Text",
+            "maxLength": 64,
+            "displayAs": "pxTextInput",
+            "definedOnClassID": "Work-",
+            "expectedLength": 60,
+            "label": "Label"
+          }
+        ],
+        "pyStatusWork": [
+          {
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+            "type": "Text",
+            "maxLength": 32,
+            "displayAs": "WorkStatus",
+            "definedOnClassID": "Work-",
+            "expectedLength": 32,
+            "label": "Work status"
+          }
+        ],
+        "pyID": [
+          {
+            "classID": "OAOEH9-EloEloApp-Work-CascadingDropdowns",
+            "type": "Text",
+            "maxLength": 32,
+            "displayAs": "pxDisplayText",
+            "definedOnClassID": "Work-Cover-",
+            "expectedLength": 22,
+            "label": "Case ID",
+            "isClassKey": true
+          }
+        ]
+      }
+    },
+    "components": [
+      "DefaultForm",
+      "Decimal",
+      "Dropdown",
+      "Region",
+      "TextInput",
+      "View"
+    ],
+    "localeReferences": [
+      "OAOEH9-ELOELOAPP-WORK-CASCADINGDROPDOWNS!CASE!CASCADING DROPDOWNS",
+      "@BASECLASS!DATAPAGE!D_CARSBYMAKE"
+    ],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "Create",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {
+      "caseInfo": {
+        "content": {
+          "summary_of_associated_lists__": {}
+        }
+      }
+    }
+  }
+}

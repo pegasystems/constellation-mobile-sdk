@@ -9,12 +9,13 @@ fi
 
 rm -Rf cdn/*
 
-declare -a RELEASES=("8.24.1" "8.24.2" "25.1")
+declare -a RELEASES=("8.24.1" "8.24.2" "25.1" "26.1.1")
 
 declare -a CDN_URLS=( 
     "https://release.constellation.pega.io/8.24.2-422/react/prod" #24.1
     "https://prod-cdn.constellation.pega.io/8.24.52-349/react/prod" #24.2
     "https://prod-cdn.constellation.pega.io/25.1.1-199/react/prod" #25.1
+    "https://prod-cdn.constellation.pega.io/26.1.2-106082/react/prod" #26.1.1 environment
 )
 
 for i in "${!RELEASES[@]}"
@@ -71,3 +72,26 @@ done
     curl --compressed "${LIB_PHONE_NUMBER_URL}" -o "${OUTPUT_DIR_25_1}/libphonenumber.js"
     echo "First 256 chars from downloaded file (for verification)"
     head -c 256 "${OUTPUT_DIR_25_1}/libphonenumber.js"
+
+echo "====== Downloading 26.1.1 additional js dependencies ======"
+OUTPUT_DIR_26_1_1="cdn/${RELEASES[3]}"
+# Unlike the earlier CDN profiles, Pega 26.1.1 does not list libphonenumber in
+# lib_asset.json. The downloaded Core bundle references this transitive chunk
+# instead, so resolve it from the same bundle and fail rather than creating an
+# incomplete local CDN fixture. Keep the local name stable because CdnHandler
+# maps the hashed remote URL to libphonenumber.js in the test assets.
+LIB_PHONE_NUMBER_PATH=$(grep -oE 'prerequisite/js/libphonenumber\.[[:alnum:]_-]+\.js' \
+    "${OUTPUT_DIR_26_1_1}/constellation-core.js" | sort -u)
+if [[ -z "${LIB_PHONE_NUMBER_PATH}" ]]; then
+    echo "ERROR: Could not extract libphonenumber path from ${OUTPUT_DIR_26_1_1}/constellation-core.js"
+    exit 1
+fi
+if [[ "$(printf '%s\n' "${LIB_PHONE_NUMBER_PATH}" | wc -l | tr -d ' ')" -ne 1 ]]; then
+    echo "ERROR: Found multiple libphonenumber paths in ${OUTPUT_DIR_26_1_1}/constellation-core.js: ${LIB_PHONE_NUMBER_PATH}"
+    exit 1
+fi
+LIB_PHONE_NUMBER_URL_26_1_1="${CDN_URLS[3]}/${LIB_PHONE_NUMBER_PATH}"
+echo "Downloading ${LIB_PHONE_NUMBER_URL_26_1_1}"
+curl --compressed "${LIB_PHONE_NUMBER_URL_26_1_1}" -o "${OUTPUT_DIR_26_1_1}/libphonenumber.js"
+echo "First 256 chars from downloaded file (for verification)"
+head -c 256 "${OUTPUT_DIR_26_1_1}/libphonenumber.js"

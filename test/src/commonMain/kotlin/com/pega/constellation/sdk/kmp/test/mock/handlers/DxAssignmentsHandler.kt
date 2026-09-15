@@ -50,6 +50,7 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("S-17098") && actionId == "Create" -> Asset("responses/dx/assignments/SDKTesting-1-Create.json")
             assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
             assignmentId.contains("A-22") -> Asset("responses/dx/assignments/AutoCompleteTest-DataRef.json")
+            assignmentId.contains("C-2601") && actionId == "Create/refresh" -> Asset("responses/dx/assignments/CascadingDropdowns-26.1.1-Create-Refresh.json")
             assignmentId.contains("N-16042") -> handleNewService(actionId)
             assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
             assignmentId.contains("K-10048") -> handleKeysAndCiphers(request, actionId)

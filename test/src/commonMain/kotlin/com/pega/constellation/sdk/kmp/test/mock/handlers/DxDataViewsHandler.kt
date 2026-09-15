@@ -20,6 +20,7 @@ class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
         val dataViewId = request.url.substringAfter(DX_API_PATH + "data_views/")
         return when (dataViewId) {
             "D_pxBootstrapConfig" -> Asset("responses/dx/data_views/D_pxBootstrapConfig-${pegaVersion.coreJsVersionString}.json")
+            "D_CarsByMake" -> handleCarsByMake(request.body ?: "")
             "D_CarsList" -> handleCarsList(request.body ?: "")
             "D_CarsList2" -> handleCarsList2(request.body ?: "")
             "D_SampleCaseTypeList" -> Asset("responses/dx/data_views/D_SampleCaseTypeList.json")
@@ -54,6 +55,24 @@ class DxDataViewsHandler(private val pegaVersion: PegaVersion) : MockHandler {
             Asset("responses/dx/data_views/D_CarsList-Ford.json")
         } else {
             Asset("responses/dx/data_views/D_CarsList.json")
+        }
+    }
+
+    private fun handleCarsByMake(body: String): MockResponse {
+        val make = runCatching {
+            Json.parseToJsonElement(body).jsonObject["dataViewParameters"]
+                ?.jsonObject
+                ?.get("CarMake")
+                ?.jsonPrimitive
+                ?.content
+        }.getOrNull()
+        return when (make) {
+            null, "" -> Error(
+                400,
+                """{"errorClassification":"Invalid inputs","localizedValue":"One or more inputs are invalid","errorDetails":[{"message":"Error_Invalid_Inputs_Missing_Required_Parameters","erroneousInputOutputFieldInPage":"","erroneousInputOutputIdentifier":"","errorClassification":"","localizedValue":"Required parameters for data view are missing","messageParameters":[]}]})"""
+            )
+            "Mazda" -> Asset("responses/dx/data_views/D_CarsByMake-Mazda-26.1.1.json")
+            else -> Error(404, "Unexpected car make $make")
         }
     }
 
