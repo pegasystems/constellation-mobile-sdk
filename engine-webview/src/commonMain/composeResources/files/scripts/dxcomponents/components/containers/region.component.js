@@ -9,21 +9,15 @@ export class RegionComponent extends ContainerBaseComponent {
     init() {
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
-            this.#checkAndUpdate
+            this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
-        this.#updateSelf();
+        this.updateSelf();
     }
 
     update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.jsComponentPConnectData.unsubscribeFn?.();
-            this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
-                this,
-                this.#checkAndUpdate
-            );
-            this.#updateSelf();
+        if (this.updatePConnAndResubscribeIfContextChanged(pConn, this.checkAndUpdate)) {
+            this.updateSelf();
         }
     }
 
@@ -33,13 +27,13 @@ export class RegionComponent extends ContainerBaseComponent {
         childrenComponents.forEach((component) => component.onEvent(event));
     }
 
-    #checkAndUpdate() {
+    checkAndUpdate() {
         if (this.#refViewChildChanged()) {
-            this.#updateSelf();
+            this.updateSelf();
         }
     }
 
-    #updateSelf() {
+    updateSelf() {
         this.reconcileChildren();
         this.props.children = this.getChildrenProps();
         this.componentsManager.onComponentPropsUpdate(this);

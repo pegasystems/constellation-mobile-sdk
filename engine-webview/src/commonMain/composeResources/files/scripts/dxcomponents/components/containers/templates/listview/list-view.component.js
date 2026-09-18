@@ -1,5 +1,6 @@
 import { getListContextResponse } from "./listViewHelpers.js";
 import { BaseComponent } from "../../../base.component.js";
+import { deepEquals } from "../../../../helpers/utils.js";
 
 const SELECTION_MODE = { SINGLE: "single", MULTI: "multi" };
 const TAG = "[ListViewComponent]";
@@ -45,7 +46,7 @@ export class ListViewComponent extends BaseComponent {
 
     init() {
         this.componentsManager.onComponentAdded(this);
-        this.#updateSelf();
+        this.updateSelf();
     }
 
     update(pConn, payload) {
@@ -58,7 +59,7 @@ export class ListViewComponent extends BaseComponent {
         const shouldReloadData = this.#shouldReloadData(this.payload, payload) || pConnChanged;
         this.payload = payload;
 
-        this.#updateSelf(shouldReloadData);
+        this.updateSelf(shouldReloadData);
     }
 
     onEvent(event) {
@@ -77,7 +78,7 @@ export class ListViewComponent extends BaseComponent {
             const { value, selectionKey, contextPage, primaryField, ...rest } = payload;
             return rest;
         };
-        return JSON.stringify(filterPayload(oldPayload)) !== JSON.stringify(filterPayload(newPayload));
+        return !deepEquals(filterPayload(oldPayload), filterPayload(newPayload));
     }
 
     #fieldOnChange(clickedItemIndex, isSelected) {
@@ -102,7 +103,7 @@ export class ListViewComponent extends BaseComponent {
         this.pConn?.getListActions?.()?.setSelectedRows([selectedObject]);
     }
 
-    #updateSelf(shouldReloadData = true) {
+    updateSelf(shouldReloadData = true) {
         this.configProps$ = this.pConn.getConfigProps();
 
         // By default, pyGUID is used for Data classes and pyID is for Work classes as row-id/key

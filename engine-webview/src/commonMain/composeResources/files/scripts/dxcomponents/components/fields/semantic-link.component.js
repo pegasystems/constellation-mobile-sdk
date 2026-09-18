@@ -26,20 +26,7 @@ export class SemanticLinkComponent extends BaseComponent {
     // Required by ContainerBaseComponent.onEvent() which propagates events to all children
     onEvent(event) {}
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.checkAndUpdate();
-        }
-    }
-
-    checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
         this.props.label = configProps.label ?? "";
         this.props.value = configProps.text ?? configProps.value ?? "";

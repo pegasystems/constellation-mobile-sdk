@@ -1,4 +1,5 @@
 import { ContainerBaseComponent } from "../container-base.component.js";
+import { deepEquals } from "../../../helpers/utils.js";
 import {
     buildFieldsForTable,
     evaluateAllowRowAction,
@@ -43,11 +44,11 @@ export class SimpleTableManualComponent extends ContainerBaseComponent {
     init() {
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
-            this.#checkAndUpdate
+            this.checkAndUpdate
         );
         this.isInitialized = true;
         this.componentsManager.onComponentAdded(this);
-        this.#updateSelf();
+        this.updateSelf();
     }
 
     destroy() {
@@ -57,19 +58,12 @@ export class SimpleTableManualComponent extends ContainerBaseComponent {
     }
 
     update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.#updateSelf();
+        if (this.updatePConnAndResubscribeIfContextChanged(pConn, this.checkAndUpdate)) {
+            this.updateSelf();
         }
     }
 
-    #checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps())
         if (configProps.visibility != null) {
             this.props.visible = this.utils.getBooleanValue(configProps.visibility);
@@ -353,7 +347,7 @@ export class SimpleTableManualComponent extends ContainerBaseComponent {
             return false;
         }
         for (let i = 0; i < oldList.length; i++) {
-            if (JSON.stringify(oldList[i]) !== JSON.stringify(newList[i])) {
+            if (!deepEquals(oldList[i], newList[i])) {
                 return false;
             }
         }

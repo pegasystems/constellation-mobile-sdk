@@ -19,10 +19,10 @@ export class RootContainerComponent extends ContainerBaseComponent {
         Utils.setHasViewContainer("false");
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
-            this.#checkAndUpdate
+            this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
-        this.#checkAndUpdate();
+        this.checkAndUpdate();
     }
 
     #sendPropsUpdate() {
@@ -50,13 +50,7 @@ export class RootContainerComponent extends ContainerBaseComponent {
         });
     }
 
-    #checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         this.#configureModalContainer();
         const { renderingMode } = this.jsComponentPConnect.getCurrentCompleteProps(this);
         if (renderingMode === "noPortal") {

@@ -15,7 +15,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
 import org.junit.runner.RunWith
 import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,21 +22,6 @@ import kotlin.test.assertEquals
 class ConstellationSdkTest : ConstellationSdkBaseTest() {
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
     private val scope = CoroutineScope(Dispatchers.Main)
-
-    @BeforeTest
-    fun setup() {
-        runBlocking(Dispatchers.Main) {
-            val interceptor = MockInterceptor(appContext, PegaVersion.v24_1_0)
-            val engine = AndroidWebViewEngine(
-                context = appContext,
-                scope = scope,
-                okHttpClient = MockHttpClient(interceptor),
-                nonDxOkHttpClient = MockHttpClient(interceptor)
-            )
-            this@ConstellationSdkTest.engine = engine
-            sdk = ConstellationSdk.create(config, engine)
-        }
-    }
 
     @AfterTest
     fun teardown() {
@@ -47,8 +31,20 @@ class ConstellationSdkTest : ConstellationSdkBaseTest() {
         }
     }
 
+    override fun setupSdk(pegaVersion: PegaVersion) {
+        val interceptor = MockInterceptor(appContext, pegaVersion)
+        val engine = AndroidWebViewEngine(
+            context = appContext,
+            scope = scope,
+            okHttpClient = MockHttpClient(interceptor),
+            nonDxOkHttpClient = MockHttpClient(interceptor)
+        )
+        this@ConstellationSdkTest.engine = engine
+        sdk = ConstellationSdk.create(config, engine)
+    }
+
     @Test
-    fun test_engine_pause_resume() = runTest {
+    fun test_engine_pause_resume() = runTest(PegaVersion.v24_1_0) {
         (engine as AndroidWebViewEngine).pause()
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()

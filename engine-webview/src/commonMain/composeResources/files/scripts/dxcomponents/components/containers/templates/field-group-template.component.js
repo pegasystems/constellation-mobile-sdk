@@ -1,4 +1,4 @@
-import { Utils } from "../../../helpers/utils.js";
+import { deepEquals, Utils } from "../../../helpers/utils.js";
 import { ContainerBaseComponent } from "../container-base.component.js";
 import { evaluateAllowRowAction, getReferenceList } from "./template-utils.js";
 
@@ -94,7 +94,7 @@ export class FieldGroupTemplateComponent extends ContainerBaseComponent {
         const newReferenceList = this.configProps.referenceList ?? [];
         if (
             this.referenceList === undefined ||
-            JSON.stringify(this.referenceList) !== JSON.stringify(newReferenceList)
+            !deepEquals(this.referenceList, newReferenceList)
         ) {
             this.referenceList = newReferenceList;
             const { children, items } = this.#syncChildrenAndItems(lookForChildInConfig);

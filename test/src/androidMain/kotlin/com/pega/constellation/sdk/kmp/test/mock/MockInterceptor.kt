@@ -17,8 +17,11 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
+import java.util.concurrent.CopyOnWriteArrayList
 
 class MockInterceptor(private val context: Context, pegaVersion: PegaVersion) : Interceptor {
+
+    private val requests = CopyOnWriteArrayList<MockRequest>()
 
     private val handlers = listOf(
         CdnHandler(),
@@ -32,6 +35,7 @@ class MockInterceptor(private val context: Context, pegaVersion: PegaVersion) : 
             .apply { Log.i(TAG, "request: [$method] $url") }
             .runCatching {
                 val mockedRequest = MockRequest(method, url.toString(), body?.string())
+                requests += mockedRequest
                 val handler = handlers.firstOrNull { it.canHandle(mockedRequest) }
                 val response = handler?.handle(mockedRequest)
                 requireNotNull(response) { "Missing handler" }
@@ -39,6 +43,8 @@ class MockInterceptor(private val context: Context, pegaVersion: PegaVersion) : 
             .getOrElse { Error(message = it.message ?: "Unknown error") }
             .also { Log.i(TAG, " -> response: $it") }
             .toResponse(chain.request())
+
+    fun findRequest(urlPart: String) = requests.lastOrNull { it.url.contains(urlPart) }
 
     private fun MockResponse.toResponse(request: Request): Response = when (this) {
         is Asset -> context.asset(path).toResponseBody().toResponse(request, 200)

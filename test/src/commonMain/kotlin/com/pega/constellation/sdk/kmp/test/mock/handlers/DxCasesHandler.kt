@@ -46,6 +46,7 @@ class DxCasesHandler : MockHandler {
             "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards" -> Asset("responses/dx/cases/DataReferenceMultiSelectCardsTest-POST.json")
             "OI1OYV-Marco2-Work-DataReferenceSingleRecordCards" -> Asset("responses/dx/cases/DataReferenceSingleSelectCardsTest-POST.json")
             "OI1OYV-Marco2-Work-SimpleTest" -> Asset("responses/dx/cases/NextPreviousTest-Step1-POST.json")
+            "OI1OYV-Marco2-Work-Invisible-Required" -> Asset("responses/dx/cases/HiddenRequiredTextInputTest-POST.json")
             else -> Error(500, "Missing response for case $caseTypeId")
         }
     }

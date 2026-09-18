@@ -41,11 +41,11 @@
           "type": "worklist"
         },
         "processID": "CreateForm_Default",
-        "createTime": "2026-08-07T12:20:02.709Z",
+        "createTime": "2026-09-03T10:06:48.477Z",
         "urgency": 10,
         "processName": "Create",
         "isMultiStep": "true",
-        "name": "Verify Readonly mode",
+        "name": "Display-only cards",
         "context": "",
         "links": {
           "open": {
@@ -57,28 +57,28 @@
         },
         "ID": "ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT",
         "actions": [{
-          "name": "Verify Readonly mode",
+          "name": "display only cards",
           "links": {
             "submit": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT/actions/VerifyReadonlyMode",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT/actions/DisplayOnlyCards",
               "type": "PATCH",
               "title": "Submit assignment action "
             },
             "save": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT/actions/VerifyReadonlyMode/save",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT/actions/DisplayOnlyCards/save",
               "type": "PATCH",
               "title": "Save assignment action "
             },
             "open": {
               "rel": "self",
-              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT/actions/VerifyReadonlyMode",
+              "href": "/assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT/actions/DisplayOnlyCards",
               "type": "GET",
               "title": "Get assignment action details"
             }
           },
-          "ID": "VerifyReadonlyMode",
+          "ID": "DisplayOnlyCards",
           "type": "FlowAction"
         }]
       }],
@@ -91,11 +91,11 @@
       "WidgetsToRefresh": ["TaskList"],
       "caseTypeName": "DataReferenceListOfRecordsCards",
       "urgency": 10,
-      "createTime": "2026-08-07T12:19:55.581Z",
+      "createTime": "2026-09-03T10:04:29.889Z",
       "createdBy": "user@marco",
       "name": "DataReferenceListOfRecordsCards",
       "stages": [{
-        "entryTime": "2026-08-07T12:19:55.585Z",
+        "entryTime": "2026-09-03T10:04:29.903Z",
         "name": "Create",
         "links": {
           "open": {
@@ -115,44 +115,48 @@
       "status": "New",
       "stageID": "PRIM0",
       "stageLabel": "Create",
-      "lastUpdateTime": "2026-08-07T12:20:02.714Z",
+      "lastUpdateTime": "2026-09-03T10:06:48.479Z",
       "content": {
         "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
+        "pxUrgencyWork": 10,
+        "pyLabel": "DataReferenceListOfRecordsCards",
+        "pyStatusWork": "New",
+        "pyID": "D-32087",
         "CarsDataReferenceList": [{
-          "pyGUID": "1d6b041c-2751-4da7-9be7-f36c35c9404e",
-          "classID": "OI1OYV-Marco2-Data-Car",
-          "Brand": "Audi",
-          "Model": "A4",
-          "Year": "2010-02-02",
-          "Price": 30000.000000000
-        }, {
           "pyGUID": "ddbe3b2a-1ffa-4685-8c14-356349906617",
           "classID": "OI1OYV-Marco2-Data-Car",
           "Brand": "Fiat",
           "Model": "Panda",
           "Year": "2005-04-04",
           "Price": 10000.000000000
+        }, {
+          "pyGUID": "1d6b041c-2751-4da7-9be7-f36c35c9404e",
+          "classID": "OI1OYV-Marco2-Data-Car",
+          "Brand": "Audi",
+          "Model": "A4",
+          "Year": "2010-02-02",
+          "Price": 30000.000000000
         }],
-        "pxObjClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
-        "pyLabel": "DataReferenceListOfRecordsCards",
-        "pyID": "D-32087"
+        "pxObjClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards"
       }
     }
   },
   "uiResources": {
     "resources": {
       "views": {
-        "VerifyReadonlyMode": [{
+        "DisplayOnlyCards": [{
           "children": [{
             "children": [{
               "config": {
-                "authorContext": ".CarsDataReferenceList",
                 "inheritedProps": [{
                   "prop": "label",
-                  "value": "@FL .CarsDataReferenceList"
+                  "value": "@L Details"
+                }, {
+                  "prop": "showLabel",
+                  "value": true
                 }],
-                "name": "VerifyReadonlyMode_CarsDataReferenceList",
-                "ruleClass": "OI1OYV-Marco2-Data-Car",
+                "name": "pyReview",
+                "ruleClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
                 "type": "view"
               },
               "type": "reference"
@@ -162,15 +166,104 @@
           }],
           "config": {
             "NumCols": "2",
-            "localeReference": "@LR OI1OYV-MARCO2-WORK-DATAREFERENCELISTOFRECORDSCARDS!VIEW!VERIFYREADONLYMODE",
+            "localeReference": "@LR OI1OYV-MARCO2-WORK-DATAREFERENCELISTOFRECORDSCARDS!VIEW!DISPLAYONLYCARDS",
             "ruleClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
             "template": "DefaultForm"
           },
-          "name": "VerifyReadonlyMode",
+          "name": "DisplayOnlyCards",
           "type": "View",
           "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards"
         }],
-        "VerifyReadonlyMode_CarsDataReferenceList": [{
+        "pyReview": [{
+          "children": [{
+            "children": [{
+              "config": {
+                "inheritedProps": [{
+                  "prop": "label",
+                  "value": "@L Primary fields"
+                }, {
+                  "prop": "showLabel",
+                  "value": false
+                }],
+                "name": "pyPrimaryFields",
+                "ruleClass": "Work-",
+                "type": "view"
+              },
+              "type": "reference"
+            }, {
+              "config": {
+                "authorContext": ".CarsDataReferenceList",
+                "inheritedProps": [{
+                  "prop": "label",
+                  "value": "@FL .CarsDataReferenceList"
+                }],
+                "name": "Details_CarsDataReferenceList",
+                "ruleClass": "OI1OYV-Marco2-Data-Car",
+                "type": "view"
+              },
+              "type": "reference"
+            }],
+            "name": "A",
+            "type": "Region"
+          }],
+          "config": {
+            "label": "@L Details",
+            "localeReference": "@LR OI1OYV-MARCO2-WORK-DATAREFERENCELISTOFRECORDSCARDS!VIEW!PYREVIEW",
+            "ruleClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
+            "showLabel": true,
+            "template": "Details"
+          },
+          "name": "pyReview",
+          "type": "View",
+          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards"
+        }],
+        "pyPrimaryFields": [{
+          "children": [{
+            "children": [{
+              "config": {
+                "label": "@FL .pyID",
+                "labelOption": "default",
+                "value": "@P .pyID"
+              },
+              "type": "TextInput"
+            }, {
+              "config": {
+                "label": "@L Label",
+                "labelOption": "custom",
+                "value": "@P .pyLabel"
+              },
+              "type": "TextInput"
+            }, {
+              "config": {
+                "label": "@FL .pxUrgencyWork",
+                "labelOption": "default",
+                "value": "@P .pxUrgencyWork"
+              },
+              "type": "Decimal"
+            }, {
+              "config": {
+                "label": "@FL .pyStatusWork",
+                "labelOption": "default",
+                "value": "@P .pyStatusWork"
+              },
+              "type": "TextInput"
+            }],
+            "name": "Fields",
+            "type": "Region"
+          }],
+          "config": {
+            "NumCols": "2",
+            "inheritParentLayout": false,
+            "label": "@L Primary fields",
+            "localeReference": "@LR OI1OYV-MARCO2-WORK-DATAREFERENCELISTOFRECORDSCARDS!VIEW!PYPRIMARYFIELDS",
+            "ruleClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
+            "template": "DefaultForm"
+          },
+          "name": "pyPrimaryFields",
+          "type": "View",
+          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards"
+        }],
+        "Details_CarsDataReferenceList": [{
           "children": [{
             "config": {
               "contextClass": "OI1OYV-Marco2-Data-Car",
@@ -253,17 +346,17 @@
             "contextClass": "OI1OYV-Marco2-Data-Car",
             "displayAs": "cards",
             "imagePosition": "none",
-            "localeReference": "@LR OI1OYV-MARCO2-DATA-CAR!VIEW!VERIFYREADONLYMODE_CARSDATAREFERENCELIST",
+            "localeReference": "@LR OI1OYV-MARCO2-DATA-CAR!VIEW!DETAILS_CARSDATAREFERENCELIST",
             "mode": "readonly",
             "name": "CarsDataReferenceList",
             "parentContextClass": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
-            "referenceList": "D_carList",
+            "referenceList": "D_CarsList2",
             "ruleClass": "OI1OYV-Marco2-Data-Car",
             "selectionMode": "multi",
             "showImageDescription": false,
             "template": "DataReference"
           },
-          "name": "VerifyReadonlyMode_CarsDataReferenceList",
+          "name": "Details_CarsDataReferenceList",
           "type": "View",
           "classID": "OI1OYV-Marco2-Data-Car"
         }]
@@ -310,6 +403,43 @@
         }
       },
       "fields": {
+        "pxUrgencyWork": [{
+          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
+          "type": "Decimal",
+          "displayAs": "pxNumber",
+          "definedOnClassID": "Work-",
+          "label": "Urgency",
+          "isDeclarativeTarget": true,
+          "isSpecial": true
+        }],
+        "pyLabel": [{
+          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
+          "type": "Text",
+          "maxLength": 64,
+          "displayAs": "pxTextInput",
+          "definedOnClassID": "Work-",
+          "expectedLength": 60,
+          "label": "Label"
+        }],
+        "pyStatusWork": [{
+          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "WorkStatus",
+          "definedOnClassID": "Work-",
+          "expectedLength": 32,
+          "label": "Work Status"
+        }],
+        "pyID": [{
+          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
+          "type": "Text",
+          "maxLength": 32,
+          "displayAs": "pxDisplayText",
+          "definedOnClassID": "Work-Cover-",
+          "expectedLength": 22,
+          "label": "Case ID",
+          "isClassKey": true
+        }],
         "CarsDataReferenceList": [{
           "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
           "type": "Page List",
@@ -357,35 +487,16 @@
           "type": "Decimal",
           "displayAs": "pxCurrency",
           "label": "price"
-        }],
-        "pyLabel": [{
-          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
-          "type": "Text",
-          "maxLength": 64,
-          "displayAs": "pxTextInput",
-          "definedOnClassID": "Work-",
-          "expectedLength": 60,
-          "label": "Label"
-        }],
-        "pyID": [{
-          "classID": "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
-          "type": "Text",
-          "maxLength": 32,
-          "displayAs": "pxDisplayText",
-          "definedOnClassID": "Work-Cover-",
-          "expectedLength": 22,
-          "label": "Case ID",
-          "isClassKey": true
         }]
       }
     },
-    "components": ["DefaultForm", "Checkbox", "Region", "View", "DataReference"],
+    "components": ["DefaultForm", "Details", "Decimal", "Checkbox", "Region", "TextInput", "View", "DataReference"],
     "localeReferences": ["OI1OYV-MARCO2-WORK-DATAREFERENCELISTOFRECORDSCARDS!CASE!DATAREFERENCELISTOFRECORDSCARDS"],
     "root": {
       "type": "reference",
       "config": {
         "type": "view",
-        "name": "VerifyReadonlyMode",
+        "name": "DisplayOnlyCards",
         "context": "caseInfo.content"
       }
     },
@@ -438,8 +549,22 @@
         "allow_jump": true,
         "name": "Verify Readonly mode",
         "actionID": "VerifyReadonlyMode",
-        "visited_status": "current",
+        "visited_status": "success",
+        "links": {
+          "open": {
+            "rel": "self",
+            "href": "assignments/ASSIGN-WORKLIST OI1OYV-MARCO2-WORK D-32087!CREATEFORM_DEFAULT/navigation_steps/AssignmentSF4",
+            "type": "PATCH",
+            "title": "Go to Verify Readonly mode"
+          }
+        },
         "ID": "AssignmentSF4"
+      }, {
+        "allow_jump": true,
+        "name": "display only cards",
+        "actionID": "DisplayOnlyCards",
+        "visited_status": "current",
+        "ID": "AssignmentSF5"
       }]
     },
     "actionButtons": {

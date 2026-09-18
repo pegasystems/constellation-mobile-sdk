@@ -1,3 +1,6 @@
+import { removeNode } from "./pconnect-helpers.js";
+import { deepEquals } from "./helpers/utils.js";
+
 const TAG = "[PConnBridge]";
 
 export class JsComponentPConnectService {
@@ -221,7 +224,7 @@ export class JsComponentPConnectService {
             returnObject.unsubscribeFn = () => {
                 console.log(TAG, `Unsubscribing component from store: ${inComp.pConn.meta.type}#${theCompID}`);
                 inComp.subscribedToStore = false;
-                this.removeFormField(inComp);
+                this.handleNodeRemoval(inComp);
                 theUnsub();
             };
         }
@@ -256,6 +259,23 @@ export class JsComponentPConnectService {
     removeFormField(inComp) {
         if (inComp.pConn?.removeFormField) {
             inComp.pConn?.removeFormField();
+        }
+    }
+    /**
+     * Handles pConnect node removal.
+     *
+     * This function calls 3 functions which removes nodes depending on Pega version.
+     * For Pega 24 pConn.removeFormField handles removal, pConn.removeNode does not exist.
+     * For Pega 25 pConn.removeFormField is no-op, pConn.removeNode removes only invisible nodes.
+     * For Pega 26 pConn.removeFormField is no-op, pConn.removeNode removes nodes regardless visibility.
+     */
+    handleNodeRemoval(inComp) {
+        this.removeFormField(inComp);
+        const pConn = inComp.pConn;
+        if (pConn?.removeNode) {
+            pConn.removeNode();
+            // we need to remove node manually for Pega 25 in case node is visible
+            removeNode(inComp);
         }
     }
 
@@ -295,7 +315,6 @@ export class JsComponentPConnectService {
         const compID = this.getComponentID(inComp);
 
         const currentProps = this.componentPropsArr[compID];
-        const currentPropsAsStr = JSON.stringify(currentProps);
 
         const incomingProps = this.getComponentProps(inComp);
 
@@ -316,9 +335,7 @@ export class JsComponentPConnectService {
             delete incomingProps.isLoggedOut;
         }
 
-        const incomingPropsAsStr = JSON.stringify(incomingProps);
-
-        bRet = currentPropsAsStr != incomingPropsAsStr;
+        bRet = !deepEquals(currentProps, incomingProps);
 
         if (incomingProps.httpMessages) {
             inComp.jsComponentPConnectData.httpMessages = incomingProps.httpMessages;

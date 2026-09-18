@@ -29,20 +29,7 @@ export class EmbeddedDataComponent extends ContainerBaseComponent {
         super.destroy();
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.checkAndUpdate();
-        }
-    }
-
-    checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
         const displayAs = configProps.displayAs ?? "";
         const displayMode = configProps.displayMode ?? "";

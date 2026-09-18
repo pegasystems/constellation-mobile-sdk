@@ -33,19 +33,6 @@ export class FieldBaseComponent extends BaseComponent {
         super.destroy();
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.checkAndUpdate();
-        }
-    }
-
-    checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.updateSelf();
-        }
-    }
-
     updateSelf() {
         this.updateBaseProps();
         this.propName = this.pConn.getStateProps().value;

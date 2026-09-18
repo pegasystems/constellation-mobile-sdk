@@ -1,3 +1,7 @@
+export function deepEquals(oldValue, newValue) {
+    return PCore.isDeepEqual(oldValue, newValue);
+}
+
 export class Utils {
     getOptionList(configProps, dataObject) {
         const listType = configProps.listType;

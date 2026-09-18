@@ -21,31 +21,13 @@ export class GroupComponent extends ContainerBaseComponent {
     init() {
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
-            this.#checkAndUpdate
+            this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
-        this.#checkAndUpdate();
+        this.checkAndUpdate();
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.jsComponentPConnectData.unsubscribeFn?.();
-            this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
-                this,
-                this.#checkAndUpdate
-            );
-            this.#checkAndUpdate();
-        }
-    }
-
-    #checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
         this.props.visible = configProps.visibility ?? this.pConn.getComputedVisibility() ?? true;
         this.props.showHeading = configProps.showHeading ?? true;

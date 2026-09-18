@@ -34,23 +34,10 @@ export class SimpleTableSelectComponent extends ContainerBaseComponent {
             this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
-        this.#updateSelf();
+        this.updateSelf();
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.checkAndUpdate();
-        }
-    }
-
-    checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const theConfigProps = this.pConn.getConfigProps();
         this.label = theConfigProps.label;
         this.renderMode = theConfigProps.renderMode;
@@ -67,9 +54,10 @@ export class SimpleTableSelectComponent extends ContainerBaseComponent {
         const { MULTI } = PCore.getConstants().LIST_SELECTION_MODE;
         const { selectionMode, selectionList } = this.pConn.getConfigProps();
         const isMultiSelectMode = selectionMode === MULTI;
-        if (isMultiSelectMode && this.renderMode === "ReadOnly") {
-            this.showSimpleTableManual = true;
-        } else {
+        const isReadOnly = this.renderMode === "ReadOnly" || theConfigProps.readOnly || this.propsToUse.readOnly;
+        this.showSimpleTableManual = isMultiSelectMode && isReadOnly;
+
+        if (!this.showSimpleTableManual) {
             const pageReference = this.pConn.getPageReference();
             let referenceProp = isMultiSelectMode
                 ? selectionList.substring(1)

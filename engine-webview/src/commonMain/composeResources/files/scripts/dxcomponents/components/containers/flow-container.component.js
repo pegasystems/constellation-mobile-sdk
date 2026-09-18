@@ -1,5 +1,5 @@
 import { ReferenceComponent } from "./reference.component.js";
-import { Utils } from "../../helpers/utils.js";
+import { deepEquals, Utils } from "../../helpers/utils.js";
 import { ContainerBaseComponent } from "./container-base.component.js";
 
 const TAG = "[FlowContainerComponent]";
@@ -44,7 +44,7 @@ export class FlowContainerComponent extends ContainerBaseComponent {
     init() {
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
-            this.#checkAndUpdate
+            this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
 
@@ -55,8 +55,8 @@ export class FlowContainerComponent extends ContainerBaseComponent {
         this.pCoreConstants = PCore.getConstants();
         this.#initComponent();
         this.#initContainer();
-        this.#checkAndUpdate();
-        this.#createAndInitAssignmentComponent(); // needs to be called after #initComponent and #checkAndUpdate
+        this.checkAndUpdate();
+        this.#createAndInitAssignmentComponent(); // needs to be called after #initComponent and checkAndUpdate
         this.#subscribeForEvents();
     }
 
@@ -65,13 +65,6 @@ export class FlowContainerComponent extends ContainerBaseComponent {
         this.setTimeoutIds = [];
         this.#unsubscribeForEvents();
         super.destroy();
-    }
-
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.#checkAndUpdate();
-        }
     }
 
     #sendPropsUpdate() {
@@ -92,7 +85,7 @@ export class FlowContainerComponent extends ContainerBaseComponent {
         this.cancelPressed = true;
     }
 
-    #checkAndUpdate() {
+    checkAndUpdate() {
         const shouldComponentUpdate = this.jsComponentPConnect.shouldComponentUpdate(this);
         const pConn = this.assignmentPConn || this.pConn;
         const caseViewModeFromProps = this.jsComponentPConnect.getComponentProp(this, "caseViewMode");
@@ -119,7 +112,7 @@ export class FlowContainerComponent extends ContainerBaseComponent {
             if (!this.alive) {
                 return;
             }
-            this.#updateSelf();
+            this.updateSelf();
         }, delay);
         this.setTimeoutIds.push(timeoutId);
     }
@@ -128,7 +121,7 @@ export class FlowContainerComponent extends ContainerBaseComponent {
         const completeProps = this.jsComponentPConnect.getCurrentCompleteProps(this);
         const newBannerMessages = (completeProps.pageMessages || []).concat(this.#getValidationMessages());
 
-        if (JSON.stringify(newBannerMessages) !== JSON.stringify(this.bannerMessages)) {
+        if (!deepEquals(newBannerMessages, this.bannerMessages)) {
             this.bannerMessages = newBannerMessages;
             this.#destroyBanners();
             this.#createBanners();
@@ -202,7 +195,7 @@ export class FlowContainerComponent extends ContainerBaseComponent {
         this.assignmentComponent = assignmentComponent;
     }
 
-    #updateSelf() {
+    updateSelf() {
         const caseViewMode = this.assignmentPConn.getValue("context_data.caseViewMode");
         if (caseViewMode === "perform") {
             if (Utils.okToInitFlowContainer()) {
@@ -313,7 +306,7 @@ export class FlowContainerComponent extends ContainerBaseComponent {
             this.childPConfig = childPConfig;
             return;
         }
-        if (JSON.stringify(this.childPConfig) !== JSON.stringify(childPConfig)) {
+        if (!deepEquals(this.childPConfig, childPConfig)) {
             this.assignmentPConn = this.#getAssignmentPConn(this.pConn);
             this.childPConfig = childPConfig;
         }

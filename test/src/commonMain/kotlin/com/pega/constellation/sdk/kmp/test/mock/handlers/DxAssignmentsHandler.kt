@@ -66,6 +66,8 @@ class DxAssignmentsHandler : MockHandler {
             assignmentId.contains("D-9001") -> handleDetailsTemplateTest(actionId)
             assignmentId.contains("D-12038") -> handleDataRefSemanticLinkTest(actionId)
             assignmentId.contains("S-10029") -> handleNextPreviousTest(actionId)
+            assignmentId.contains("S-19004") && actionId == "Create" ->
+                Asset("responses/dx/assignments/HiddenRequiredTextInputTest-1-Step2.json")
 
             else -> Error(404, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
@@ -128,6 +130,7 @@ class DxAssignmentsHandler : MockHandler {
             "Create" -> Asset("responses/dx/assignments/DataReferenceMultiSelectCardsTest-1-DataPageParam.json")
             "DataPageParamChange" -> Asset("responses/dx/assignments/DataReferenceMultiSelectCardsTest-2-HideLabelsAndImage.json")
             "VerifyCardContent" -> Asset("responses/dx/assignments/DataReferenceMultiSelectCardsTest-3-ReadOnly.json")
+            "VerifyReadonlyMode" -> Asset("responses/dx/assignments/DataReferenceMultiSelectCardsTest-4-DisplayOnly.json")
             else -> Error(404, "Invalid actionId: $actionId")
         }
     }

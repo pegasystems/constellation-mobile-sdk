@@ -30,17 +30,17 @@ export class SelectableCardComponent extends ContainerBaseComponent {
     init() {
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
-            this.#checkAndUpdate
+            this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
-        this.#checkAndUpdate();
+        this.checkAndUpdate();
     }
 
     update(pConn, cardType) {
-        if (this.cardType !== cardType || this.pConn !== pConn) {
-            this.pConn = pConn;
+        const pConnChanged = this.updatePConnAndResubscribeIfContextChanged(pConn, this.checkAndUpdate);
+        if (this.cardType !== cardType || pConnChanged) {
             this.cardType = cardType;
-            this.#checkAndUpdate();
+            this.checkAndUpdate();
         }
     }
 
@@ -68,13 +68,7 @@ export class SelectableCardComponent extends ContainerBaseComponent {
         }
     }
 
-    #checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
         this.value = configProps.value ?? this.props.value;
         this.props.value = this.value;

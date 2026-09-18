@@ -8,6 +8,7 @@ import com.pega.constellation.sdk.kmp.core.api.Component
 import com.pega.constellation.sdk.kmp.core.components.children
 import com.pega.constellation.sdk.kmp.core.components.containers.AssignmentCardComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.AssignmentComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.DataReferenceComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.DefaultFormComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.FlowContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ModalViewContainerComponent
@@ -16,10 +17,14 @@ import com.pega.constellation.sdk.kmp.core.components.containers.RegionComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ViewContainerComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.CheckboxComponent
+import com.pega.constellation.sdk.kmp.core.components.fields.RadioButtonsComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.RichTextComponent
 import com.pega.constellation.sdk.kmp.core.components.fields.TextInputComponent
 import com.pega.constellation.sdk.kmp.core.components.structure
 import com.pega.constellation.sdk.kmp.core.components.widgets.ActionButtonsComponent
+import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerComponent
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -37,8 +42,10 @@ abstract class ConstellationSdkBaseTest {
     protected val config = buildSdkConfig()
     protected lateinit var sdk: ConstellationSdk
 
+    abstract fun setupSdk(pegaVersion: PegaVersion)
+
     @Test
-    fun test_initialization() = runTest {
+    fun test_initialization() = runTest(PegaVersion.v24_1_0) {
         assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()
@@ -48,7 +55,7 @@ abstract class ConstellationSdkBaseTest {
     }
 
     @Test
-    fun test_initialization_with_invalid_url() = runTest {
+    fun test_initialization_with_invalid_url() = runTest(PegaVersion.v24_1_0) {
         val invalidConfig = config.copy(pegaUrl = "https://invalid.url")
         val invalidSdk = ConstellationSdk.create(invalidConfig, requireNotNull(engine))
         assertEquals(State.Initial, invalidSdk.state.value)
@@ -58,13 +65,13 @@ abstract class ConstellationSdkBaseTest {
     }
 
     @Test
-    fun test_initialization_invalid_case_id() = runTest {
+    fun test_initialization_invalid_case_id() = runTest(PegaVersion.v24_1_0) {
         sdk.createCase("DIXL-MediaCo-Work-Invalid-Case-Id")
         sdk.assertError { it.contains("Constellation SDK initialization failed!") }
     }
 
     @Test
-    fun test_component_structure() = runTest {
+    fun test_component_structure() = runTest(PegaVersion.v24_1_0) {
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
         assertEquals(EXPECTED_COMPONENT_STRUCTURE, root.structure())
@@ -75,7 +82,7 @@ abstract class ConstellationSdkBaseTest {
     }
 
     @Test
-    fun test_rich_text() = runTest {
+    fun test_rich_text() = runTest(PegaVersion.v24_1_0) {
         sdk.createCase(CASE_CLASS)
 
         val defaultForm = sdk.assertState<State.Ready>().root.getDefaultForm()
@@ -89,7 +96,7 @@ abstract class ConstellationSdkBaseTest {
     }
 
     @Test
-    fun test_get_parent() = runTest {
+    fun test_get_parent() = runTest(PegaVersion.v24_1_0) {
         sdk.createCase(CASE_CLASS)
         val root = sdk.assertState<State.Ready>().root
         assertEquals(
@@ -99,7 +106,7 @@ abstract class ConstellationSdkBaseTest {
     }
 
     @Test
-    fun test_engine_destroy() = runTest {
+    fun test_engine_destroy() = runTest(PegaVersion.v24_1_0) {
         assertEquals(State.Initial, sdk.state.value)
         sdk.createCase(CASE_CLASS)
         sdk.assertState<State.Loading>()
@@ -116,7 +123,7 @@ abstract class ConstellationSdkBaseTest {
     }
 
     @Test
-    fun test_visible_view_renders_after_hidden_step() = runTest {
+    fun test_visible_view_renders_after_hidden_step() = runTest(PegaVersion.v24_1_0) {
         sdk.createCase("OI1OYV-Marco2-Work-InvisibleDataReferenceTest")
         val root = sdk.assertState<State.Ready>().root
         val flowContainer = root.descendants().filterIsInstance<FlowContainerComponent>().single()
@@ -125,7 +132,7 @@ abstract class ConstellationSdkBaseTest {
             flowContainer.descendants().filterIsInstance<AssignmentCardComponent>().single()
         assertTrue(assignmentCard.children.none { it is ViewComponent })
 
-        advanceStep(assignmentCard.children.filterIsInstance<ActionButtonsComponent>().single())
+        root.clickPrimaryButton("Next")
 
         waitForStep(flowContainer, "DataReference ListOfRecords - Visible (D-1014611)")
         val assignmentView = assignmentCard.children.filterIsInstance<ViewComponent>().single()
@@ -134,9 +141,81 @@ abstract class ConstellationSdkBaseTest {
         assertTrue(assignmentView.children.single() is DefaultFormComponent)
     }
 
-    private fun advanceStep(actionButtons: ActionButtonsComponent) {
-        actionButtons.onClick(actionButtons.primaryButtons.single { it.jsAction == "finishAssignment" })
+    @Test
+    fun test_hidden_required_multiselect_does_not_block_submission() = runTest(PegaVersion.v25_1) {
+        sdk.createCase(DATA_REFERENCE_CARDS_CASE_CLASS)
+        val root = sdk.assertState<State.Ready>().root
+        val visibilityControl = root.descendants()
+            .filterIsInstance<RadioButtonsComponent>()
+            .single()
+
+        visibilityControl.updateValue("required")
+        waitUntil("DataReference to become required") {
+            root.descendants()
+                .filterIsInstance<RadioButtonsComponent>()
+                .singleOrNull()
+                ?.value == "required"
+        }
+        root.descendants()
+            .filterIsInstance<RadioButtonsComponent>()
+            .single()
+            .updateValue("invisible")
+        waitUntil("DataReference children to be removed") {
+            root.descendants()
+                .filterIsInstance<DataReferenceComponent>()
+                .singleOrNull()
+                ?.children
+                ?.isEmpty() == true
+        }
+
+        root.clickPrimaryButton("Next")
+
+        val flowContainer = root.descendants().filterIsInstance<FlowContainerComponent>().single()
+        waitForStep(flowContainer, "Verify Card Content and Visible Required Disabled (D-32087)")
     }
+
+    @Test
+    fun test_hidden_required_text_input_inside_view_does_not_block_submission() =
+        runTest(PegaVersion.v25_1) {
+            sdk.createCase(INVISIBLE_REQUIRED_CASE_CLASS)
+            val root = sdk.assertState<State.Ready>().root
+            val checkbox = root.descendants().filterIsInstance<CheckboxComponent>().single()
+
+            checkbox.updateValue("true")
+            waitUntil("required text input to appear") {
+                root.descendants()
+                    .filterIsInstance<TextInputComponent>()
+                    .singleOrNull()
+                    ?.label == "step1 input"
+            }
+
+            root.clickPrimaryButton("Next")
+            waitUntil("required validation banner to appear") {
+                root.descendants()
+                    .filterIsInstance<AlertBannerComponent>()
+                    .any { banner -> banner.messages.any { it.contains("Cannot be blank") } }
+            }
+
+            checkbox.updateValue("false")
+            waitUntil("required text input children to be removed") {
+                root.descendants().none { it is TextInputComponent }
+            }
+            root.clickPrimaryButton("Next")
+
+            waitUntil("assignment to advance to step 2") {
+                root.descendants()
+                    .filterIsInstance<TextInputComponent>()
+                    .singleOrNull()
+                    ?.label == "step2 input"
+            }
+            val flowContainer = root.descendants().filterIsInstance<FlowContainerComponent>().single()
+            waitForStep(flowContainer, "step2 (S-19004)")
+            waitUntil("required validation banner to disappear") {
+                root.descendants()
+                    .filterIsInstance<AlertBannerComponent>()
+                    .none { banner -> banner.messages.any { it.contains("Cannot be blank") } }
+            }
+        }
 
     private suspend fun waitForStep(flowContainer: FlowContainerComponent, title: String) {
         waitUntil("Step with title '$title' is not visible") {
@@ -155,9 +234,28 @@ abstract class ConstellationSdkBaseTest {
     private fun Component.descendants(): List<Component> =
         children().flatMap { listOf(it) + it.descendants() }
 
+
+
+    protected fun runTest(pegaVersion: PegaVersion, block: suspend () -> Unit) =
+        runBlocking(Dispatchers.Main) {
+            setupSdk(pegaVersion)
+            for (attempt in 1..2) {
+                runCatching {
+                    block()
+                }.also {
+                    if (it.isSuccess) break
+                    if (attempt == 2) it.getOrThrow()
+                }
+            }
+        }
+
     companion object {
         private const val PEGA_URL = "https://insert-url-here.example/prweb"
         protected const val CASE_CLASS = "DIXL-MediaCo-Work-SDKTesting"
+        private const val DATA_REFERENCE_CARDS_CASE_CLASS =
+            "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards"
+        private const val INVISIBLE_REQUIRED_CASE_CLASS =
+            "OI1OYV-Marco2-Work-Invisible-Required"
 
         @JvmStatic
         protected val EXPECTED_COMPONENT_STRUCTURE = """
@@ -198,19 +296,6 @@ abstract class ConstellationSdkBaseTest {
             debuggable = true
         )
 
-        @JvmStatic
-        protected fun runTest(block: suspend () -> Unit) =
-            runBlocking(Dispatchers.Main) {
-                for (attempt in 1..2) {
-                    runCatching {
-                        block()
-                    }.also {
-                        if (it.isSuccess) break
-                        if (attempt == 2) it.getOrThrow()
-                    }
-                }
-            }
-
         private suspend fun ConstellationSdk.assertError(condition: (String) -> Boolean) {
             val errorMessage = assertState<State.Error>().error.message
             assertTrue(condition(errorMessage))
@@ -220,6 +305,22 @@ abstract class ConstellationSdkBaseTest {
         protected suspend inline fun <reified S : State> ConstellationSdk.assertState() =
             withTimeoutOrNull(5.seconds) { state.first { it is S } as S }
                 ?: error("Timed out waiting for ${S::class.simpleName} state, actual: ${state.value}")
+
+        private suspend fun waitUntil(description: String, condition: () -> Boolean) {
+            withTimeoutOrNull(5.seconds) {
+                while (!condition()) delay(10)
+            } ?: error("Timed out waiting for $description")
+        }
+
+        private fun Component.descendants(): Sequence<Component> = sequence {
+            yield(this@descendants)
+            children().forEach { yieldAll(it.descendants()) }
+        }
+
+        private fun Component.clickPrimaryButton(name: String) {
+            val actionButtons = descendants().filterIsInstance<ActionButtonsComponent>().single()
+            actionButtons.onClick(actionButtons.primaryButtons.single { it.name.trim() == name })
+        }
 
         private fun RootContainerComponent.getDefaultForm(): DefaultFormComponent {
             val viewContainer = children()[1] as ViewContainerComponent

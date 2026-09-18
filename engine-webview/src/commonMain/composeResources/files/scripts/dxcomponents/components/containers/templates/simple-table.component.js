@@ -27,20 +27,7 @@ export class SimpleTableComponent extends ContainerBaseComponent {
         this.checkAndUpdate();
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.checkAndUpdate();
-        }
-    }
-
-    checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const configProps = this.pConn.resolveConfigProps(this.pConn.getConfigProps());
         this.props.label = configProps.label;
 

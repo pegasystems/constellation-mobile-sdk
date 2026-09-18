@@ -19,22 +19,24 @@ export class DetailsComponent extends DetailsTemplateBase {
         this.type = "Details";
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.checkAndUpdate();
-        }
+    init() {
+        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
+            this,
+            this.checkAndUpdate
+        );
+        this.componentsManager.onComponentAdded(this);
+        this.checkAndUpdate();
     }
 
     checkAndUpdate() {
         const bUpdateSelf = this.jsComponentPConnect.shouldComponentUpdate(this);
 
         if (bUpdateSelf || this.hasRawMetadataChanged()) {
-            this.#updateSelf();
+            this.updateSelf();
         }
     }
 
-    #updateSelf() {
+    updateSelf() {
         const rawMetaData = this.pConn.resolveConfigProps(this.pConn.getRawMetadata()?.config);
         this.label = this.pConn.getInheritedProps().label ?? rawMetaData?.label ?? "";
         this.showLabel = this.pConn.getInheritedProps().showLabel ?? rawMetaData?.showLabel ?? true;

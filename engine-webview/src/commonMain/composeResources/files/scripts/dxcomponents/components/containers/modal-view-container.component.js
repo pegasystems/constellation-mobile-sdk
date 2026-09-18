@@ -1,5 +1,6 @@
 import { ReferenceComponent } from "./reference.component.js";
 import { ContainerBaseComponent } from "./container-base.component.js";
+import { deepEquals } from "../../helpers/utils.js";
 
 const TAG = "[ModalViewContainerComponent]";
 
@@ -20,7 +21,7 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
         this.localizedVal = PCore.getLocaleUtils().getLocaleValue;
         this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
             this,
-            this.#checkAndUpdate
+            this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
 
@@ -34,13 +35,6 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
     destroy() {
         this.#destroyBanners();
         super.destroy();
-    }
-
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.#checkAndUpdate();
-        }
     }
 
     onEvent(event) {
@@ -59,13 +53,7 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
         }
     }
 
-    #checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const routingInfo = this.jsComponentPConnect.getComponentProp(this, 'routingInfo');
 
         let loadingInfo;
@@ -224,12 +212,7 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
     }
 
     #compareCaseInfoIsDifferent(oCurrentCaseInfo) {
-        let bRet = false;
-        const sCurrnentCaseInfo = JSON.stringify(oCurrentCaseInfo);
-        const sOldCaseInfo = JSON.stringify(this.oCaseInfo);
-        if (sCurrnentCaseInfo !== sOldCaseInfo) {
-            bRet = true;
-        }
+        const bRet = !deepEquals(oCurrentCaseInfo, this.oCaseInfo);
         if (bRet) {
             this.oCaseInfo = JSON.parse(JSON.stringify(oCurrentCaseInfo));
         }

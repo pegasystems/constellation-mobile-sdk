@@ -35,8 +35,7 @@ export class CheckBoxComponent extends FieldBaseComponent {
     }
 
     update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
+        if (this.updatePConnAndResubscribeIfContextChanged(pConn, this.checkAndUpdate)) {
             if (this.selectionMode === MULTI_MODE) {
                 this.#initMultiMode();
             }

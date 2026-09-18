@@ -1,4 +1,5 @@
 import { ContainerBaseComponent } from "../container-base.component.js";
+import { deepEquals } from "../../../helpers/utils.js";
 
 export class DetailsTemplateBase extends ContainerBaseComponent {
     childrenMetadataOld;
@@ -7,19 +8,10 @@ export class DetailsTemplateBase extends ContainerBaseComponent {
         super(componentsManager, pConn);
     }
 
-    init() {
-        this.jsComponentPConnectData = this.jsComponentPConnect.registerAndSubscribeComponent(
-            this,
-            this.checkAndUpdate
-        );
-        this.componentsManager.onComponentAdded(this);
-        this.checkAndUpdate();
-    }
-
     hasRawMetadataChanged() {
         const newChildrenMetadata = this.#fetchChildrenMetadata();
 
-        if (!PCore.isDeepEqual(newChildrenMetadata, this.childrenMetadataOld)) {
+        if (!deepEquals(newChildrenMetadata, this.childrenMetadataOld)) {
             this.childrenMetadataOld = newChildrenMetadata;
             return true;
         }

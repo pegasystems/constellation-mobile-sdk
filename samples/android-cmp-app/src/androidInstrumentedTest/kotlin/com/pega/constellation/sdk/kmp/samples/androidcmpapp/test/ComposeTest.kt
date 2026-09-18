@@ -82,6 +82,16 @@ abstract class ComposeTest(
         }
     }
 
+    @OptIn(ExperimentalTestApi::class)
+    protected fun ComposeUiTest.waitForRequestBody(urlPart: String): String {
+        var requestBody: String? = null
+        waitUntil(timeoutMillis = 3_000) {
+            requestBody = mockInterceptor.findRequest(urlPart)?.body
+            requestBody != null
+        }
+        return requireNotNull(requestBody)
+    }
+
     private fun buildSdk() = ConstellationSdk.create(buildSdkConfig(), requireNotNull(engine))
 
     private fun buildSdkConfig() = ConstellationSdkConfig(

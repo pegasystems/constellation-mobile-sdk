@@ -116,6 +116,7 @@ private fun SelectableCardItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(8.dp)
             .clickable(enabled = componentEnabled, onClick = onClick)
             .semantics {
                 role = if (multiSelect) Role.Checkbox else Role.RadioButton

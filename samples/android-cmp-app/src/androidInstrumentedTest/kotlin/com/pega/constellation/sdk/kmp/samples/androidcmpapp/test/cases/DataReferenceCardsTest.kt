@@ -15,12 +15,14 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.waitUntilNodeCount
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @OptIn(ExperimentalTestApi::class)
 class DataReferenceCardsTest : ComposeTest() {
@@ -64,7 +66,7 @@ class DataReferenceCardsTest : ComposeTest() {
         onNodeWithText("Next").performClick()
         waitForNode("Cannot be blank")
 
-        listOf("A4", "Panda", "Focus").forEach { card(it).performClick() }
+        listOf("A4", "Panda", "Focus").forEach { card(it).performScrollTo().performClick() }
         listOf("A4", "Panda", "Focus").forEach { card(it).assertIsSelected() }
         card("Panda").performClick()
         listOf("A4", "Focus").forEach { card(it).assertIsSelected() }
@@ -92,7 +94,7 @@ class DataReferenceCardsTest : ComposeTest() {
     }
 
     @Test
-    fun test_multiselect_hide_field_labels_and_image_and_readonly_mode() = runAndroidTest {
+    fun test_multiselect_hide_field_labels_and_image_and_readonly_display_only_modes() = runAndroidTest {
         setupApp(
             "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards",
             pegaVersion = PegaVersion.v25_1
@@ -116,6 +118,15 @@ class DataReferenceCardsTest : ComposeTest() {
         onNodeWithText("Next").performClick()
         waitForNode("Verify Readonly mode", substring = true)
         verifyCards(listOf("A4" to "Audi", "Panda" to "Fiat"))
+        onNodeWithText("Submit").performClick()
+        assertEquals(
+            """{"content":{},"pageInstructions":[]}""",
+            waitForRequestBody("/actions/VerifyReadonlyMode")
+        )
+        waitForNode("Display-only cards", substring = true)
+        waitForNode("CarsDataReferenceList")
+        waitForNode("Panda")
+        waitForNode("A4")
     }
 
     @Test

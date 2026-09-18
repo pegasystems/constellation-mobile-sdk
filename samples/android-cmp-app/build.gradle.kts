@@ -33,6 +33,8 @@ kotlin {
             implementation(libs.androidx.uiautomator)
             implementation(libs.kotlin.test)
             implementation(libs.androidx.test.core)
+            implementation(libs.androidx.test.espresso.core)
+            implementation(libs.androidx.test.runner)
         }
     }
 }

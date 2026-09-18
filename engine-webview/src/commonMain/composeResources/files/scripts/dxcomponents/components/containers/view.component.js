@@ -30,25 +30,12 @@ export class ViewComponent extends ContainerBaseComponent {
 
     init() {
         this.jsComponentPConnectData =
-            this.jsComponentPConnect.registerAndSubscribeComponent(this, this.#checkAndUpdate);
+            this.jsComponentPConnect.registerAndSubscribeComponent(this, this.checkAndUpdate);
         this.componentsManager.onComponentAdded(this);
-        this.#checkAndUpdate();
+        this.checkAndUpdate();
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.#checkAndUpdate();
-        }
-    }
-
-    #checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         if (this.jsComponentPConnect.getComponentID(this) === undefined) {
             return;
         }

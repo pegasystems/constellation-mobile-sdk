@@ -77,10 +77,7 @@ export class AssignmentComponent extends ContainerBaseComponent {
     }
 
     update(pConn, childrenPConns, itemKey) {
-        const pConnChanged = this.pConn !== pConn;
-        if (pConnChanged) {
-            this.pConn = pConn;
-        }
+        const pConnChanged = this.updatePConnAndResubscribeIfContextChanged(pConn, this.checkAndUpdate);
         this.childrenPConns = childrenPConns;
         this.itemKey$ = itemKey;
         if (this.bInitialized) {

@@ -1,4 +1,5 @@
 import { ContainerBaseComponent } from "../container-base.component.js";
+import { deepEquals } from "../../../helpers/utils.js";
 
 const TAG = "[DataReferenceComponent]";
 const SELECTION_MODE = { SINGLE: "single", MULTI: "multi" };
@@ -42,23 +43,10 @@ export class DataReferenceComponent extends ContainerBaseComponent {
         this.componentsManager.onComponentAdded(this);
 
         this.children = this.pConn.getChildren();
-        this.#updateSelf();
+        this.updateSelf();
     }
 
-    update(pConn) {
-        if (this.pConn !== pConn) {
-            this.pConn = pConn;
-            this.checkAndUpdate();
-        }
-    }
-
-    checkAndUpdate() {
-        if (this.jsComponentPConnect.shouldComponentUpdate(this)) {
-            this.#updateSelf();
-        }
-    }
-
-    #updateSelf() {
+    updateSelf() {
         const newRawViewMetadata = this.pConn.getRawMetadata();
         const newParameters = this.pConn.getConfigProps().parameters;
         if (this.#parametersChanged(newParameters, newRawViewMetadata)) {
@@ -145,8 +133,8 @@ export class DataReferenceComponent extends ContainerBaseComponent {
     }
 
     #parametersChanged(newParameters, newRawViewMetadata) {
-        return JSON.stringify(newParameters) !== JSON.stringify(this.parameters) ||
-            JSON.stringify(newRawViewMetadata) !== JSON.stringify(this.rawViewMetadata)
+        return !deepEquals(newParameters, this.parameters) ||
+            !deepEquals(newRawViewMetadata, this.rawViewMetadata)
     }
 
     #loadOptions(refList, parameters, rawViewMetadata) {
@@ -357,7 +345,7 @@ export class DataReferenceComponent extends ContainerBaseComponent {
                     label: this.propsToUse.label,
                     viewName: this.pConn.getCurrentView(),
                     parameters: this.rawViewMetadata.config.parameters,
-                    readOnly: false,
+                    readOnly: config.renderMode === "ReadOnly" || this.propsToUse.readOnly,
                     localeReference: this.rawViewMetadata.config.localeReference,
                     ...(this.selectionMode === SELECTION_MODE.SINGLE ? { referenceType: this.referenceType } : ""),
                     dataRelationshipContext:
