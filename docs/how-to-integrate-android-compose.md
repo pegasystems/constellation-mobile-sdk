@@ -11,6 +11,15 @@
 - Gradle `9.4.0` through the SDK's Gradle Wrapper when building the SDK locally
 - minSdk version
     - minSdk needs to be >= 26
+- Android System WebView
+    - The SDK requires a WebView implementation based on Chromium 103 or later.
+
+#### Updating and verifying Android System WebView
+
+Update **Android System WebView** through the [Google Play Store](https://play.google.com/store/apps/details?id=com.google.android.webview), as you would any other Android app.
+On Android 7.0 (API level 24) and later, the device can use one of several installed WebView provider packages. 
+When testing, ensure that the updated package is selected as the WebView implementation in Developer options, if that setting is available on the device. 
+For programmatic diagnostics, use [`WebViewCompat.getCurrentWebViewPackage()`](https://developer.android.com/reference/androidx/webkit/WebViewCompat#getCurrentWebViewPackage(android.content.Context)) to log the provider package and its version.
 
 ### 2. Setup Gradle dependencies
 
