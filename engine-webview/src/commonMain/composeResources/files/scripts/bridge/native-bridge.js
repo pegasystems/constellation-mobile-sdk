@@ -88,10 +88,12 @@ class NativeBridge {
             return;
         }
         let componentProps = component.props;
-        if (component.pConn) {
-            componentProps["pConnectPropertyReference"] = this.#getPropertyReference(component.pConn);
+        const pConn = component.pConn
+        if (pConn) {
+            componentProps["pConnectPropertyReference"] = this.#getPropertyReference(pConn);
+            const configProps = pConn.resolveConfigProps(pConn.getConfigProps());
+            componentProps["configAlternateDesignSystem"] = configProps?.configAlternateDesignSystem;
         }
-
         const props = JSON.stringify(componentProps);
         console.log(TAG, `Updating component ${component.type}#${id}, props: ${props}`);
         sdkbridge.updateComponent(id, props);

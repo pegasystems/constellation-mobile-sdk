@@ -8,6 +8,7 @@ import com.pega.constellation.sdk.kmp.core.internal.ComponentManagerImpl.Compani
 import com.pega.constellation.sdk.kmp.core.internal.ComponentObservableDelegate
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 
 /**
  * Represents a UI component.
@@ -39,6 +40,22 @@ abstract class BaseComponent(
     var pConnectPropertyReference: String by mutableStateOf("")
         private set
 
+    /**
+     * The alternate design-system configuration resolved for this component.
+     *
+     * This server-provided configuration is exposed as JSON for renderers to interpret. It is
+     * `null` when no alternate design system is configured, including after a later update
+     * removes the configuration.
+     */
+    var configAlternateDesignSystem: JsonObject? by mutableStateOf(null)
+        private set
+
+    /**
+     * The identifier of this component's parent, or `null` for the root component.
+     *
+     * The component manager assigns this value when the parent adopts the component. Use
+     * [getParent] to retrieve the parent component.
+     */
     var parentId: ComponentId? by mutableStateOf(null)
         private set
 
@@ -46,6 +63,7 @@ abstract class BaseComponent(
 
     override fun onUpdate(props: JsonObject) {
         pConnectPropertyReference = props.optString("pConnectPropertyReference")
+        configAlternateDesignSystem = props["configAlternateDesignSystem"]?.jsonObject
 
         applyProps(props)
         notifyObservers()

@@ -100,6 +100,38 @@ For more information about rendering and overriding components, please refer to 
 - [Rendering components using Compose](../ui/renderer/cmp/README.md#rendering-components) section.
 - [Rendering components using SwiftUI](../samples/swiftui-components-app/README.md#renderer) section.
 
+#### Component metadata
+
+Every component inherits metadata from `BaseComponent` that renderers and custom renderers can
+inspect:
+
+- `pConnectPropertyReference` is the fully qualified Pega property reference, including its page
+  context, for the component's current value.
+- `parentId` is the SDK identifier of the parent component. It is `null` for the root component;
+  call `getParent()` to obtain the parent component when needed.
+
+#### Alternate design-system configuration
+
+Every component inherits `configAlternateDesignSystem` from `BaseComponent`. It contains the
+server-resolved `configAlternateDesignSystem` value as a `JsonObject`, allowing built-in or custom
+renderers to interpret design-system-specific settings without the SDK defining properties for
+every configuration value.
+
+The value is updated with each component update and is `null` when the server does not provide the
+configuration. For example, a custom Compose renderer can read an optional setting:
+
+```kotlin
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
+
+override fun TextInputComponent.Render() {
+    val color = configAlternateDesignSystem
+        ?.get("color")
+        ?.jsonPrimitive
+        ?.contentOrNull
+}
+```
+
 ### Creating new components
 
 It is possible to create new components (or override existing components) and pass them to the SDK.
