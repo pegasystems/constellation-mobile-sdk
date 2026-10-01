@@ -94,7 +94,7 @@ class AndroidComposeActivity : ComponentActivity() {
         engine = AndroidWebViewEngine(
             context = this,
             scope = this.lifecycleScope,
-            okHttpClient = buildHttpClient()
+            callFactory = buildHttpClient()
         )
         sdk = ConstellationSdk.create(config, engine)
         sdk.createCase(caseClassName)

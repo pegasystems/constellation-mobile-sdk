@@ -33,7 +33,7 @@ class MediaCoActivity : ComponentActivity() {
         engine = AndroidWebViewEngine(
             context = this,
             scope = this.lifecycleScope,
-            okHttpClient = buildHttpClient(authManager)
+            callFactory = buildHttpClient(authManager)
         )
         Injector.init(authManager, engine)
         AppContext.init(this)
@@ -59,7 +59,7 @@ class MediaCoActivity : ComponentActivity() {
     }
 
     private fun buildHttpClient(authManager: AuthManager) =
-        AndroidWebViewEngine.defaultHttpClient()
+        AndroidWebViewEngine.defaultCallFactory()
             .newBuilder()
             .addInterceptor(AuthInterceptor(authManager))
             .addNetworkInterceptor(NetworkInterceptor())

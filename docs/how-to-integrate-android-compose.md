@@ -81,15 +81,15 @@ For programmatic diagnostics, use [`WebViewCompat.getCurrentWebViewPackage()`](h
     - AndroidWebViewEngine needs a few parameters:
         - context — activity context. It is required for WebView initialization and operation.
         - scope — coroutine scope. E.g.: lifecycleScope of the activity can be used.
-        - okHttpClient — instance of OkHttpClient which will be used by the engine to perform DX network requests.
-        - nonDxOkHttpClient — (optional) instance of OkHttpClient which will be used to perform non-DX network requests.
+        - callFactory — instance of Call.Factory, such as OkHttpClient, which will be used by the engine to perform DX network requests.
+        - nonDxCallFactory — (optional) instance of Call.Factory, such as OkHttpClient, which will be used to perform non-DX network requests.
     ```kotlin
-    val httpClient = buildHttpClient()
-    val engine = AndroidWebViewEngine(context, scope, httpClient)
+    val callFactory = buildHttpClient()
+    val engine = AndroidWebViewEngine(context, scope, callFactory)
     ```
 
    In order to authenticate with Pega Server, an OAuth 2.0 token needs to be provided for each request.
-   While creating the okHttpClient instance, add a custom interceptor which will add the "Authorization" header:
+   While creating an OkHttpClient call factory, add a custom interceptor which will add the "Authorization" header:
     ```kotlin
    
     private fun buildHttpClient() =

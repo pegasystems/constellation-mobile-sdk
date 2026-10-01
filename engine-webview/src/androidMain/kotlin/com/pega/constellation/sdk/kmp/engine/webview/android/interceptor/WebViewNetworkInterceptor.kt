@@ -10,8 +10,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import okhttp3.Call
 import okhttp3.Headers.Companion.toHeaders
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -20,8 +20,8 @@ import java.util.concurrent.ConcurrentHashMap
 internal class WebViewNetworkInterceptor(
     scope: CoroutineScope,
     private val pegaUrl: String,
-    private val okHttpClient: OkHttpClient,
-    private val nonDxOkHttpClient: OkHttpClient
+    private val callFactory: Call.Factory,
+    private val nonDxCallFactory: Call.Factory
 ) : WebViewInterceptor {
     private val requestBodies = ConcurrentHashMap<String, RequestBodyEntry>()
     private val cleanupJob: Job = scope.launch(Dispatchers.Default) {
@@ -34,9 +34,9 @@ internal class WebViewNetworkInterceptor(
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
         runCatching {
             if (request.url.toString().startsWith(pegaUrl)) {
-                okHttpClient.execute(request).toWebResourceResponse()
+                callFactory.execute(request).toWebResourceResponse()
             } else {
-                nonDxOkHttpClient.execute(request).toWebResourceResponse()
+                nonDxCallFactory.execute(request).toWebResourceResponse()
             }
         }.getOrElse {
             val message = it.message.orEmpty()
@@ -61,7 +61,7 @@ internal class WebViewNetworkInterceptor(
         requestBodies.clear()
     }
 
-    private fun OkHttpClient.execute(request: WebResourceRequest): Response {
+    private fun Call.Factory.execute(request: WebResourceRequest): Response {
         val requestId = request.requestHeaderValue(REQUEST_BODY_ID_HEADER)
         val body = requestId
             ?.let { requestBodies.remove(it)?.body }

@@ -54,19 +54,19 @@ To do that please follow below steps:
       class AndroidWebViewEngine(
           private val context: Context,
           private val scope: CoroutineScope,
-          private val okHttpClient: OkHttpClient,
-          private val nonDxOkHttpClient: OkHttpClient = defaultHttpClient()
+          private val callFactory: Call.Factory,
+          private val nonDxCallFactory: Call.Factory = defaultCallFactory()
       ) : ConstellationSdkEngine
       ```
     - For "context"  try to find object in current scope. If no object available ask user to provide it.
     - For "scope"  try to find object in current scope. It can be lifecycleScope of activity (if we are in activity class). (remember about import androidx.lifecycle.lifecycleScope)
       If no scope found ask user to provide one. If he does not provide any then create a scope.
-    - For "okHttpClient" ask user for an instance. Explain that it is needed for Pega DX communication.
+    - For "callFactory" ask user for an instance. Explain that it is needed for Pega DX communication and can be any Call.Factory, including OkHttpClient.
       If he does not provide any instance then create it for him using AndroidWebViewEngine.defaultHttpClient() method.
-      If you are creating okHttpClient please ask user if he wants to have authentication interceptor for adding token to every request which is needed for authentication.
+      If you are creating an OkHttpClient call factory please ask user if he wants to have authentication interceptor for adding token to every request which is needed for authentication.
       example code:
       ```kotlin
-      val httpClient = AndroidWebViewEngine.defaultHttpClient()
+      val httpClient = AndroidWebViewEngine.defaultCallFactory()
           .newBuilder()
           .addInterceptor(AuthInterceptor()) // add it only if client said so
           .build()
@@ -84,7 +84,7 @@ To do that please follow below steps:
       }
       ```
       Leave "TOKEN_HERE" as dummy input. App developer will paste real token later.
-    - For "nonDxOkHttpClient" ask user for an instance. Explain that it is needed for  Pega Non-DX communication (e.g: JS resources).
+    - For "nonDxCallFactory" ask user for an instance. Explain that it is needed for Pega Non-DX communication (e.g: JS resources) and can be any Call.Factory, including OkHttpClient.
       Suggest that he can skip this argument.
     - Create AndroidWebViewEngine with specified parameters in previous steps.
       example of AndroidWebViewEngine:
@@ -92,7 +92,7 @@ To do that please follow below steps:
       val engine = AndroidWebViewEngine(
           context = this,
           scope = this.lifecycleScope,
-          okHttpClient = httpClient
+          callFactory = httpClient
       )
       ```
 
