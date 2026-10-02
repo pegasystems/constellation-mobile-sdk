@@ -12,12 +12,12 @@ The configuration has been prepared to work with the [MediaCo sample Pega applic
 
 #### Configuration attributes
 
-| SDKConfig.kt (CMP)   | Info.plist (SwiftUI)                | Description                                                    | Default value                                   |
-|----------------------|-------------------------------------|----------------------------------------------------------------|-------------------------------------------------|
-| PEGA_URL             | PegaSystemURL                       | URL to Pega Platform server                                    | https://insert-url-here.example/prweb           |
-| PEGA_CASE_CLASS_NAME | PegaCaseClassName                   | Name of the case type class to be created                      | DIXL-MediaCo-Work-NewService                    |
-| AUTH_CLIENT_ID       | PegaAuthConfiguration.client_id     | Client ID associated with the OAuth 2.0 client registration    | 25795373220702300272                            |
-| AUTH_REDIRECT_URI    | PegaAuthConfiguration.redirect_uris | Redirect URI associated with the OAuth 2.0 client registration | com.pega.mobile.constellation.sample://redirect |
+| SDKConfig.kt (CMP)   | Info.plist (SwiftUI)                | Description                                                    | Default value                                                                                                                  |
+|----------------------|-------------------------------------|----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| PEGA_URL             | PegaSystemURL                       | URL to Pega Platform server                                    | https://insert-url-here.example/prweb                                                                                          |
+| PEGA_CASE_CLASS_NAME | PegaCaseClassName                   | Name of the case type class to be created                      | DIXL-MediaCo-Work-NewService                                                                                                   |
+| AUTH_CLIENT_ID       | PegaAuthConfiguration.client_id     | Client ID associated with the OAuth 2.0 client registration    | 25795373220702300272                                                                                                           |
+| AUTH_REDIRECT_URI    | PegaAuthConfiguration.redirect_uris | Redirect URI associated with the OAuth 2.0 client registration | com.pega.mobile.constellation.sample://redirect <br>(Do not change. Additional changes in gradle files is needed if modified.) |
 
 The CMP sample keeps `PEGA_CASE_CLASS_NAME` as the case type created by the
 `New Service` action. After authentication, the bottom navigation also provides

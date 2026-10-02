@@ -13,3 +13,19 @@ We strongly recommend that you set up the SDK to work with the MediaCo sample Pe
 4. [Configure sample mobile application.](configure-sample-mobile-apps.md)
 5. Run the sample mobile application in Android Studio or XCode.
 
+## Setting up new Pega application with SDK
+
+The SDK sample application can connect to any Pega application. To authorize the
+sample application, create or update an OAuth 2.0 client registration in your
+Pega application with the sample app's redirect URI.
+
+### Steps
+
+1. Open your Pega application.
+2. In Dev Studio, go to **Records > Security > OAuth 2.0 Client Registration**.
+3. Click **Create**, complete the required fields, then click **Create and open**.
+4. Set **Type of client** to **Public**.
+5. Select **Authorization code**.
+6. Click **+** and add the following authentication redirect URI:
+   `com.pega.mobile.constellation.sample://redirect`
+7. Save the client registration.
