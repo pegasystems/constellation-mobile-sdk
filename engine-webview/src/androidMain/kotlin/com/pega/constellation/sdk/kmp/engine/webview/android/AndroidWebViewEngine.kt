@@ -36,6 +36,7 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.internal.SdkWebView
 import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
 import com.pega.constellation.sdk.kmp.engine.webview.common.JsError
+import com.pega.constellation.sdk.kmp.engine.webview.common.asJavaScriptStringLiteral
 import androidx.annotation.MainThread
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -205,7 +206,9 @@ class AndroidWebViewEngine(
             put("componentData", JSONObject(event.componentData))
             put("eventData", JSONObject(event.eventData))
         }
-        val script = "window.sendEventToComponent('${id.id}', '$eventJson')"
+        val quotedId = id.id.toString().asJavaScriptStringLiteral()
+        val quotedEventJson = eventJson.toString().asJavaScriptStringLiteral()
+        val script = "window.sendEventToComponent($quotedId, $quotedEventJson)"
         val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         this.scope.launch(Dispatchers.Main.immediate) {
             webView.evaluateJavascript(script, null)

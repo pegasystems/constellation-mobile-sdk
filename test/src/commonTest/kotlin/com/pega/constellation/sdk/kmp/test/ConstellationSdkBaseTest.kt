@@ -24,12 +24,18 @@ import com.pega.constellation.sdk.kmp.core.components.fields.TextInputComponent
 import com.pega.constellation.sdk.kmp.core.components.structure
 import com.pega.constellation.sdk.kmp.core.components.widgets.ActionButtonsComponent
 import com.pega.constellation.sdk.kmp.core.components.widgets.AlertBannerComponent
+import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlin.jvm.JvmStatic
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -43,6 +49,7 @@ abstract class ConstellationSdkBaseTest {
     protected lateinit var sdk: ConstellationSdk
 
     abstract fun setupSdk(pegaVersion: PegaVersion)
+    protected abstract fun findMockRequest(urlPart: String): MockRequest?
 
     @Test
     fun test_initialization() = runTest(PegaVersion.v24_1_0) {
@@ -93,6 +100,37 @@ abstract class ConstellationSdkBaseTest {
             richText.value
         )
         assertEquals("caseInfo.content.RichDescription", richText.pConnectPropertyReference)
+    }
+
+    @Test
+    fun test_component_event_with_all_special_characters() = runTest(PegaVersion.v24_1_0) {
+        sdk.createCase(CASE_CLASS)
+        val root = sdk.assertState<State.Ready>().root
+        val textInput = root.descendants()
+            .filterIsInstance<TextInputComponent>()
+            .first { it.pConnectPropertyReference == "caseInfo.content.Name" }
+        val value = buildString {
+            append("ASCII punctuation: ")
+            append(('!'..'/').joinToString(""))
+            append((':'..'@').joinToString(""))
+            append(('['..'`').joinToString(""))
+            append(('{'..'~').joinToString(""))
+            append("\nControl characters: ")
+            for (codePoint in 0x00..0x1F) append(codePoint.toChar())
+            append(" Unicode: café, 漢字, 😀, \u2028, \u2029")
+        }
+        textInput.updateFocus(true)
+        textInput.updateValue(value)
+        textInput.updateFocus(false)
+        delay(100)
+        assertEquals(value, textInput.value)
+        root.clickPrimaryButton("Next")
+        waitUntil("special-character assignment request to be received") {
+            findMockRequest("/actions/Create")
+                ?.let { it.method == "PATCH" && it.body != null } == true
+        }
+        val requestBody = requireNotNull(findMockRequest("/actions/Create")?.body)
+        assertTrue(Json.parseToJsonElement(requestBody).containsString(value))
     }
 
     @Test
@@ -208,7 +246,8 @@ abstract class ConstellationSdkBaseTest {
                     .singleOrNull()
                     ?.label == "step2 input"
             }
-            val flowContainer = root.descendants().filterIsInstance<FlowContainerComponent>().single()
+            val flowContainer =
+                root.descendants().filterIsInstance<FlowContainerComponent>().single()
             waitForStep(flowContainer, "step2 (S-19004)")
             waitUntil("required validation banner to disappear") {
                 root.descendants()
@@ -233,7 +272,6 @@ abstract class ConstellationSdkBaseTest {
 
     private fun Component.descendants(): List<Component> =
         children().flatMap { listOf(it) + it.descendants() }
-
 
 
     protected fun runTest(pegaVersion: PegaVersion, block: suspend () -> Unit) =
@@ -310,6 +348,12 @@ abstract class ConstellationSdkBaseTest {
             withTimeoutOrNull(5.seconds) {
                 while (!condition()) delay(10)
             } ?: error("Timed out waiting for $description")
+        }
+
+        private fun JsonElement.containsString(value: String): Boolean = when (this) {
+            is JsonPrimitive -> isString && content == value
+            is JsonObject -> values.any { it.containsString(value) }
+            is JsonArray -> any { it.containsString(value) }
         }
 
         private fun Component.descendants(): Sequence<Component> = sequence {

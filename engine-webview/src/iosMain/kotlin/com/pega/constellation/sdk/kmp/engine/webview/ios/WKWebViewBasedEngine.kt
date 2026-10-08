@@ -12,6 +12,7 @@ import com.pega.constellation.sdk.kmp.core.api.ComponentScript
 import com.pega.constellation.sdk.kmp.core.components.widgets.Dialog
 import com.pega.constellation.sdk.kmp.engine.webview.common.EngineConfiguration
 import com.pega.constellation.sdk.kmp.engine.webview.common.InternalError
+import com.pega.constellation.sdk.kmp.engine.webview.common.asJavaScriptStringLiteral
 import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Companion.COMPONENT_ASSETS_PREFIX
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
@@ -239,8 +241,9 @@ class WKWebViewBasedEngine(
                     }
                     mainScope?.launch {
                         formHandler.eventStream.collect { event ->
+                            val eventContent = event.eventContent.asJavaScriptStringLiteral()
                             webView.evaluateJavaScript(
-                                "window.sendEventToComponent(${event.id}, '${event.eventContent}')",
+                                "window.sendEventToComponent(${event.id}, $eventContent)",
                                 completionHandler = null
                             )
                         }

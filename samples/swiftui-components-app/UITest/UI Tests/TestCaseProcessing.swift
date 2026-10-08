@@ -37,6 +37,20 @@ final class TestCaseProcessing: MockedAppTestCase {
         XCTAssertEqual(caseID, "S-24001")
     }
 
+    func testSpecialCharactersInTextInputCanBeSubmitted() throws {
+        verifyMainScreen()
+        let nextButton = app.buttons.firstContainingLabel(text: "Next")
+        let name = ##"ASCII punctuation: !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ Unicode: café, 漢字, 😀"##
+        tapCreateButton("SDKTesting")
+        fillTextField(0, "Name", name)
+
+        XCTAssertEqual(app.textFields.element(boundBy: 0).value as? String, name)
+        nextButton.assertExists().tap()
+
+        app.staticTexts["Case ID"].assertExists()
+        XCTAssertEqual(app.textFields.firstMatch.value as? String, "S-24001")
+    }
+
     func testFormValidation() throws {
         verifyMainScreen()
         // Button's label contains some extra spaces (padding?)

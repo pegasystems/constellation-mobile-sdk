@@ -22,6 +22,7 @@ import kotlin.test.assertEquals
 class ConstellationSdkTest : ConstellationSdkBaseTest() {
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
     private val scope = CoroutineScope(Dispatchers.Main)
+    private lateinit var mockInterceptor: MockInterceptor
 
     @AfterTest
     fun teardown() {
@@ -32,16 +33,18 @@ class ConstellationSdkTest : ConstellationSdkBaseTest() {
     }
 
     override fun setupSdk(pegaVersion: PegaVersion) {
-        val interceptor = MockInterceptor(appContext, pegaVersion)
+        mockInterceptor = MockInterceptor(appContext, pegaVersion)
         val engine = AndroidWebViewEngine(
             context = appContext,
             scope = scope,
-            callFactory = MockHttpClient(interceptor),
-            nonDxCallFactory = MockHttpClient(interceptor)
+            callFactory = MockHttpClient(mockInterceptor),
+            nonDxCallFactory = MockHttpClient(mockInterceptor)
         )
         this@ConstellationSdkTest.engine = engine
         sdk = ConstellationSdk.create(config, engine)
     }
+
+    override fun findMockRequest(urlPart: String) = mockInterceptor.findRequest(urlPart)
 
     @Test
     fun test_engine_pause_resume() = runTest(PegaVersion.v24_1_0) {
