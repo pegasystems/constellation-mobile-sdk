@@ -57,7 +57,7 @@
     ```kotlin
     kotlin {
         sourceSets {
-            val sdkVersion = "4.1.0"
+            val sdkVersion = "5.0.0"
             val okHttpVersion = "X.Y.Z" // use the desired version
             commonMain {
                 dependencies {
