@@ -1,4 +1,4 @@
-## AI SKILLS for SDK users
+## AI skills for SDK users
 
 This folder contains skills which can be used by Constellation Mobile SDK users.
 

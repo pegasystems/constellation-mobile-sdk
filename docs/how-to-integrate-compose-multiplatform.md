@@ -16,6 +16,9 @@
 - minSdk version
    - minSdk needs to be >= 26
 
+> [!TIP]
+> Next steps can be done using AI skill - see the [AI skills for SDK users](ai/README.md).
+
 ### 2. Setup Gradle dependencies
 
 1. Build and publish SDK dependencies in the Maven Local repository
@@ -231,3 +234,5 @@ See [Compose Android Sample Application](../samples/android-compose-app/README.m
 ## More documentation
 
 For more detailed information, please refer to the [Constellation SDK Core documentation](../core/README.md).
+
+For guided, AI-assisted setup, see the [AI skills for SDK users](ai/README.md).

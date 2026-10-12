@@ -20,6 +20,9 @@ This extension function is helpful for rendering any component as well.
 
 ### Overriding component rendering
 
+> [!TIP]
+> Next steps can be done using AI skill - see the [AI skills for SDK users](ai/README.md).
+
 Use *ProvideRenderers* method to override component rendering by providing custom renderers:
 
 ```kotlin
