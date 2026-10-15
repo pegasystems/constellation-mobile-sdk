@@ -25,8 +25,8 @@ class MockInterceptor(private val context: Context, pegaVersion: PegaVersion) : 
 
     private val handlers = listOf(
         CdnHandler(),
-        DxAssignmentsHandler(),
-        DxCasesHandler(),
+        DxAssignmentsHandler(pegaVersion),
+        DxCasesHandler(pegaVersion),
         DxDataViewsHandler(pegaVersion),
     )
 

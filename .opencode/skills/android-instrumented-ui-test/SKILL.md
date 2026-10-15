@@ -15,10 +15,10 @@ Tests are run with Compose UI Test against a mock HTTP server backed by fixture 
 ## Checklist — Adding a New Test
 
 ### 1. Register the mock fixture in handlers.
-- For assignment processing PATCH responses (files in test/src/commonMain/composeResources/files/responses/dx/assignments) -> `DxAssignmentsHandler`
+- For assignment processing PATCH responses (files in `test/src/commonMain/composeResources/files/responses/dx/<version>/assignments` or the legacy `dx/assignments`) -> `DxAssignmentsHandler`
     - Please use `assignmentId` from response and create `handle` function for each test. Inside `handle` function handle exact request using `actionId`
-- For POST, DELETE, PATCH (not handled by `DxAssignmentsHandler`) related jsons (POST in name, files in test/src/commonMain/composeResources/files/responses/dx/cases/) -> `DxCasesHandler`
-- For Datapages related responses (D_ prefix in name, files in test/src/commonMain/composeResources/files/responses/dx/data_views) -> `DxDataViewsHandler`
+- For POST, DELETE, PATCH (not handled by `DxAssignmentsHandler`) related JSONs (files in `test/src/commonMain/composeResources/files/responses/dx/<version>/cases` or the legacy `dx/cases`) -> `DxCasesHandler`
+- For data-page responses (D_ prefix in name, files in `test/src/commonMain/composeResources/files/responses/dx/<version>/data_views` or the legacy `dx/data_views`) -> `DxDataViewsHandler`
 
 
 Handlers inside folder: `test/src/commonMain/kotlin/com/pega/constellation/sdk/kmp/test/mock/handlers/`
@@ -157,4 +157,4 @@ waitForNodes("text", count = 2)
 
 ## PegaVersion
 
-Please ask user for PegaVersion if he didin't specify it. Available values are defined in `PegaVersion` (e.g. `PegaVersion.v24_1_0`, `PegaVersion.v24_2_2`, `PegaVersion.v25_1`).
+Please ask user for PegaVersion if he didin't specify it. Available values are defined in `PegaVersion` (e.g. `PegaVersion.v24_1_0`, `PegaVersion.v24_2_2`, `PegaVersion.v25_1`, `PegaVersion.v26_1`). Version-specific fixtures use the matching `dx/24.1`, `dx/24.2`, `dx/25.1`, or `dx/26.1` directory.

@@ -15,7 +15,7 @@ class CascadingDropdownTest : ComposeTest() {
     fun test_cascading_dropdown_recovers_after_missing_parameter_error() = runAndroidTest {
         setupApp(
             caseClassName = "OAOEH9-EloEloApp-Work-CascadingDropdowns",
-            pegaVersion = PegaVersion.v26_1_1
+            pegaVersion = PegaVersion.v26_1
         )
 
         onNodeWithText("New Service").performClick()

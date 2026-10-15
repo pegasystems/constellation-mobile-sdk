@@ -5,12 +5,13 @@ import com.pega.constellation.sdk.kmp.test.mock.MockRequest
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-class DxCasesHandler : MockHandler {
+class DxCasesHandler(private val pegaVersion: PegaVersion) : MockHandler {
     override fun canHandle(request: MockRequest) = request.isDxApi("cases")
 
     override fun handle(request: MockRequest) = when (request.method) {
@@ -27,26 +28,26 @@ class DxCasesHandler : MockHandler {
         return when (caseTypeId) {
             "DIXL-MediaCo-Work-SDKTesting" -> Asset("responses/dx/cases/SDKTesting-POST.json")
             "DIXL-MediaCo-Work-NewService" -> Asset("responses/dx/cases/NewService-POST.json")
-            "OAOEH9-EloEloApp-Work-CascadingDropdowns" -> Asset("responses/dx/cases/CascadingDropdowns-26.1.1-POST.json")
-            "OFV0MW-Marco-Work-AutoCompleteTest" -> Asset("responses/dx/cases/AutoCompleteTest-POST.json")
-            "O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable" -> Asset("responses/dx/cases/EmbeddedDataTest-RepeatingViewEditable-POST.json")
-            "O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable" -> Asset("responses/dx/cases/EmbeddedDataTest-EditableTable-POST.json")
-            "O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions" -> Asset("responses/dx/cases/EmbeddedDataTest-Conditions-POST.json")
-            "O40M3A-MarekCo-Work-DataReferenceTest2" -> Asset("responses/dx/cases/DataReferenceTest-POST.json")
-            "O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest" -> Asset("responses/dx/cases/DataReferenceListOfRecordsTest-POST.json")
-            "OI1OYV-Marco2-Work-InvisibleDataReferenceTest" -> Asset("responses/dx/cases/InvisibleDataReferenceTest-POST.json")
-            "O40M3A-MarekCo-Work-DataReferenceMultiSelectTest" -> Asset("responses/dx/cases/DataReferenceMultiSelectTest-POST.json")
-            "O40M3A-MarekCo-Work-KeysAndCiphers" -> Asset("responses/dx/cases/KeysAndCiphers-POST.json")
-            "O40M3A-MarekCo-Work-GroupTest" -> Asset("responses/dx/cases/GroupTest-POST.json")
-            "O40M3A-MarekCo-Work-NestedJSON" -> Asset("responses/dx/cases/NestedJSON-POST.json")
-            "OI1OYV-Marco2-Work-DetailsTemplateTest" -> Asset("responses/dx/cases/DetailsTest-POST.json")
-            "OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord" -> Asset("responses/dx/cases/EmbeddedDataTest-SingleRecord.json")
-            "OFV0MW-Marco-Work-EmbeddedDataTest-Combobox" -> Asset("responses/dx/cases/EmbeddedDataTest-Combobox-POST.json")
-            "OI1OYV-Marco2-Work-DataReferenceTest-FieldOnly" -> Asset("responses/dx/cases/DataRefSemanticLinkTest-POST.json")
-            "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards" -> Asset("responses/dx/cases/DataReferenceMultiSelectCardsTest-POST.json")
-            "OI1OYV-Marco2-Work-DataReferenceSingleRecordCards" -> Asset("responses/dx/cases/DataReferenceSingleSelectCardsTest-POST.json")
-            "OI1OYV-Marco2-Work-SimpleTest" -> Asset("responses/dx/cases/NextPreviousTest-Step1-POST.json")
-            "OI1OYV-Marco2-Work-Invisible-Required" -> Asset("responses/dx/cases/HiddenRequiredTextInputTest-POST.json")
+            "OAOEH9-EloEloApp-Work-CascadingDropdowns" -> Asset(versionedPath("cases/CascadingDropdowns-POST.json"))
+            "OFV0MW-Marco-Work-AutoCompleteTest" -> Asset(versionedPath("cases/AutoCompleteTest-POST.json"))
+            "O40M3A-MarekCo-Work-EmbeddedDataTest-RepeatingViewEditable" -> Asset(versionedPath("cases/EmbeddedDataTest-RepeatingViewEditable-POST.json"))
+            "O40M3A-MarekCo-Work-EmbeddedDataTest-EditableTable" -> Asset(versionedPath("cases/EmbeddedDataTest-EditableTable-POST.json"))
+            "O40M3A-MarekCo-Work-EmbeddedDataTest-Conditions" -> Asset(versionedPath("cases/EmbeddedDataTest-Conditions-POST.json"))
+            "O40M3A-MarekCo-Work-DataReferenceTest2" -> Asset(versionedPath("cases/DataReferenceTest-POST.json"))
+            "O40M3A-MarekCo-Work-DataReferenceListOfRecordsTest" -> Asset(versionedPath("cases/DataReferenceListOfRecordsTest-POST.json"))
+            "OI1OYV-Marco2-Work-InvisibleDataReferenceTest" -> Asset(versionedPath("cases/InvisibleDataReferenceTest-POST.json"))
+            "O40M3A-MarekCo-Work-DataReferenceMultiSelectTest" -> Asset(versionedPath("cases/DataReferenceMultiSelectTest-POST.json"))
+            "O40M3A-MarekCo-Work-KeysAndCiphers" -> Asset(versionedPath("cases/KeysAndCiphers-POST.json"))
+            "O40M3A-MarekCo-Work-GroupTest" -> Asset(versionedPath("cases/GroupTest-POST.json"))
+            "O40M3A-MarekCo-Work-NestedJSON" -> Asset(versionedPath("cases/NestedJSON-POST.json"))
+            "OI1OYV-Marco2-Work-DetailsTemplateTest" -> Asset(versionedPath("cases/DetailsTest-POST.json"))
+            "OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord" -> Asset(versionedPath("cases/EmbeddedDataTest-SingleRecord.json"))
+            "OFV0MW-Marco-Work-EmbeddedDataTest-Combobox" -> Asset(versionedPath("cases/EmbeddedDataTest-Combobox-POST.json"))
+            "OI1OYV-Marco2-Work-DataReferenceTest-FieldOnly" -> Asset(versionedPath("cases/DataRefSemanticLinkTest-POST.json"))
+            "OI1OYV-Marco2-Work-DataReferenceListOfRecordsCards" -> Asset(versionedPath("cases/DataReferenceMultiSelectCardsTest-POST.json"))
+            "OI1OYV-Marco2-Work-DataReferenceSingleRecordCards" -> Asset(versionedPath("cases/DataReferenceSingleSelectCardsTest-POST.json"))
+            "OI1OYV-Marco2-Work-SimpleTest" -> Asset(versionedPath("cases/NextPreviousTest-Step1-POST.json"))
+            "OI1OYV-Marco2-Work-Invisible-Required" -> Asset(versionedPath("cases/HiddenRequiredTextInputTest-POST.json"))
             else -> Error(500, "Missing response for case $caseTypeId")
         }
     }
@@ -63,10 +64,10 @@ class DxCasesHandler : MockHandler {
         val pageInstructions = bodyJson.getValue("pageInstructions").jsonArray
         val interestPage = bodyJson.getValue("interestPage").jsonPrimitive.content
         return when {
-            interestPage == ".EmbeddedDataListOfRecords(1)" && pageInstructions.size == 1 -> Asset("responses/dx/cases/views/EmbeddedDataTest-Edit-Popup-Refresh-1-PATCH.json")
-            interestPage == ".EmbeddedDataListOfRecords(1)" && pageInstructions.size == 2 -> Asset("responses/dx/cases/views/EmbeddedDataTest-Edit-Popup-Refresh-2-PATCH.json")
-            interestPage == ".EmbeddedDataListOfRecords(2)" && pageInstructions.size == 2 -> Asset("responses/dx/cases/views/EmbeddedDataTest-Add-Popup-Refresh-1-PATCH.json")
-            interestPage == ".EmbeddedDataListOfRecords(2)" && pageInstructions.size == 4 -> Asset("responses/dx/cases/views/EmbeddedDataTest-Add-Popup-Refresh-2-PATCH.json")
+            interestPage == ".EmbeddedDataListOfRecords(1)" && pageInstructions.size == 1 -> Asset(versionedPath("cases/views/EmbeddedDataTest-Edit-Popup-Refresh-1-PATCH.json"))
+            interestPage == ".EmbeddedDataListOfRecords(1)" && pageInstructions.size == 2 -> Asset(versionedPath("cases/views/EmbeddedDataTest-Edit-Popup-Refresh-2-PATCH.json"))
+            interestPage == ".EmbeddedDataListOfRecords(2)" && pageInstructions.size == 2 -> Asset(versionedPath("cases/views/EmbeddedDataTest-Add-Popup-Refresh-1-PATCH.json"))
+            interestPage == ".EmbeddedDataListOfRecords(2)" && pageInstructions.size == 4 -> Asset(versionedPath("cases/views/EmbeddedDataTest-Add-Popup-Refresh-2-PATCH.json"))
             else -> Error(404, "No data for given interestPage: $interestPage and pageInstructions size: ${pageInstructions.size}")
         }
     }
@@ -74,7 +75,9 @@ class DxCasesHandler : MockHandler {
     private fun handleDelete(request: MockRequest) =
         when {
             request.url.contains("S-17098") -> Asset("responses/dx/cases/SDKTesting-DELETE.json")
-            request.url.contains("K-11019") -> Asset("responses/dx/cases/KeysAndCiphers-DELETE.json")
+            request.url.contains("K-11019") -> Asset(versionedPath("cases/KeysAndCiphers-DELETE.json"))
             else -> Error(500, "Missing response for ${request.url}")
-        }
+    }
+
+    private fun versionedPath(relativePath: String) = "responses/dx/${pegaVersion.fixtureDirectory}/$relativePath"
 }
