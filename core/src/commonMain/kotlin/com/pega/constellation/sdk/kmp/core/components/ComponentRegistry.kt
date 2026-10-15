@@ -26,6 +26,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ListView
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ModalViewContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Multiselect
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ObjectReference
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
@@ -56,6 +57,7 @@ import com.pega.constellation.sdk.kmp.core.components.containers.GroupComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ListViewComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.ModalViewContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.OneColumnComponent
+import com.pega.constellation.sdk.kmp.core.components.containers.ObjectReferenceComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RegionComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.RootContainerComponent
 import com.pega.constellation.sdk.kmp.core.components.containers.SimpleTableComponent
@@ -124,6 +126,7 @@ object ComponentRegistry {
         Def(ModalViewContainer) { ModalViewContainerComponent(it) },
         Def(Multiselect) { MultiselectComponent(it) },
         Def(OneColumn) { OneColumnComponent(it) },
+        Def(ObjectReference) { ObjectReferenceComponent(it) },
         Def(Phone) { PhoneComponent(it) },
         Def(RadioButtons) { RadioButtonsComponent(it) },
         Def(Region) { RegionComponent(it) },

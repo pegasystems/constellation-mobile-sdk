@@ -55,6 +55,11 @@ The SDK provides following components out-of-the-box:
         - Displayed as "Read-only field", "Table", "SimpleTable", "Cards" - supported
         - Displayed as "Map"
     - Many to many - not supported
+  - ObjectReference
+    - Single record displayed as Autocomplete or Dropdown - supported
+    - Multiple records displayed as Combobox/Multiselect - supported
+    - Cards, Checkbox Group, Table/SimpleTable, and display-only modes - supported where supplied metadata maps to existing SDK children
+    - Search and select, Map, Embedded Insight Table, interactive reference navigation, and review-mode persistence - not supported
   - Details template view
 - **Containers**: 
   - Assignment, AssignmentCard, DefaultForm, FlowContainer, Region, RootContainer, View, ViewContainer, Field Group

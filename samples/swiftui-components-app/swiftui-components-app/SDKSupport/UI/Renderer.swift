@@ -23,6 +23,8 @@ extension Component {
             FieldGroupTemplateComponentView(fieldGroupTemplate)
         case let root as RootContainerComponent:
             RootContainer(root)
+        case let objectReference as ObjectReferenceComponent:
+            ObjectReferenceComponentView(objectReference)
         case let simpleTable as SimpleTableComponent:
             SimpleTableComponentView(simpleTable)
         case let flowContainer as FlowContainerComponent:

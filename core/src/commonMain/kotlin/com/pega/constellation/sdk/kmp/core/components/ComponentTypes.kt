@@ -18,6 +18,7 @@ object ComponentTypes {
     val ListView = ComponentType("ListView")
     val ModalViewContainer = ComponentType("ModalViewContainer")
     val OneColumn = ComponentType("OneColumn")
+    val ObjectReference = ComponentType("ObjectReference")
     val Region = ComponentType("Region")
     val RootContainer = ComponentType("RootContainer")
     val View = ComponentType("View")

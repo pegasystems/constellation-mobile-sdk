@@ -55,6 +55,7 @@ import { UnsupportedComponent } from "../components/widgets/unsupported.componen
 // import { CaseViewComponent } from './_components/template/case-view/case-view.component';
 // import { ConfirmationComponent } from './_components/template/confirmation/confirmation.component';
 import { DataReferenceComponent } from "../components/containers/templates/data-reference.component.js";
+import { ObjectReferenceComponent } from "../components/containers/object-reference.component.js";
 import { DefaultFormComponent } from "../components/containers/default-form.component.js";
 import { DetailsComponent } from "../components/containers/templates/details.component.js";
 import { EmbeddedDataComponent } from "../components/containers/templates/embedded-data.component.js";
@@ -202,6 +203,7 @@ const pegaSdkComponentMap = {
     // //   'NarrowWidePage': NarrowWidePage,
     // NavBar: NavbarComponent,
     OneColumn: OneColumnComponent,
+    ObjectReference: ObjectReferenceComponent,
     // OneColumnPage: OneColumnPageComponent,
     // OneColumnTab: OneColumnTabComponent,
     // Operator: OperatorComponent,

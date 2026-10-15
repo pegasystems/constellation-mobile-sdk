@@ -55,7 +55,7 @@ export class SelectableCardComponent extends ContainerBaseComponent {
     }
 
     onEvent(event) {
-        super.onEvent(event);
+        // 'ClickItem' event should not be passed down to children components
         if (event.type === "ClickItem") {
             const clickedItemIndex = Number(event.componentData.clickedItemIndex);
             const element = this.cards[clickedItemIndex].commonCardProps;
@@ -65,7 +65,9 @@ export class SelectableCardComponent extends ContainerBaseComponent {
                 element.selected = event.componentData.isSelected === "true";
                 this.#handleChangeMultiMode(element);
             }
+            return;
         }
+        super.onEvent(event);
     }
 
     updateSelf() {

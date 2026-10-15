@@ -101,7 +101,7 @@ class AndroidComposeActivity : ComponentActivity() {
     }
 
     private fun buildHttpClient() =
-        AndroidWebViewEngine.defaultHttpClient()
+        AndroidWebViewEngine.defaultCallFactory()
             .newBuilder()
             .addInterceptor(AuthInterceptor())
             .addNetworkInterceptor(NetworkInterceptor())

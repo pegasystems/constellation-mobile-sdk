@@ -27,6 +27,7 @@ import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ListView
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ModalViewContainer
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Multiselect
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.OneColumn
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.ObjectReference
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Phone
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.RadioButtons
 import com.pega.constellation.sdk.kmp.core.components.ComponentTypes.Region
@@ -58,6 +59,7 @@ import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.GroupRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ListViewRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ModalViewContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.OneColumnRenderer
+import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.ObjectReferenceRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RegionRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.RootContainerRenderer
 import com.pega.constellation.sdk.kmp.ui.renderer.cmp.containers.SimpleTableManualRenderer
@@ -126,6 +128,7 @@ object ComponentRenderers {
         ModalViewContainer to ModalViewContainerRenderer(),
         Multiselect to MultiselectRenderer(),
         OneColumn to OneColumnRenderer(),
+        ObjectReference to ObjectReferenceRenderer(),
         Phone to PhoneRenderer(),
         RadioButtons to RadioButtonsRenderer(),
         Region to RegionRenderer(),
