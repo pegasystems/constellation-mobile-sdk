@@ -3,6 +3,46 @@
 
 Integration with SwiftUI applications is demonstrated in the README of iOS sample application.
 
+### Preventing WebView throttling
+
+On iOS, a `WKWebView` that is created by `WKWebViewBasedEngine` must remain in the
+view hierarchy while the SDK is processing a case. Otherwise, iOS may throttle the
+WebView and make the form unusably slow. Keep the engine WebView in the hierarchy
+even when the form is rendered by SwiftUI:
+
+```swift
+import SwiftUI
+import UIKit
+import ConstellationSdk
+
+struct EngineWebView: UIViewRepresentable {
+    private let webView: UIView
+
+    init(_ engine: WKWebViewBasedEngine) {
+        webView = engine.webView
+    }
+
+    func makeUIView(context: Context) -> UIView {
+        webView
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
+}
+```
+
+Add the wrapper alongside the SDK state view, using a small invisible frame:
+
+```swift
+VStack(spacing: 0) {
+    EngineWebView(engine)
+        .frame(height: 1)
+        .opacity(0)
+    StateView(wrapper: wrapper)
+}
+```
+
+Remove or destroy the engine when the containing view is dismissed.
+
 ### Prerequisites
 
 - JDK 17 or newer to run Gradle

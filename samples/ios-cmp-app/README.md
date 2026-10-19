@@ -57,4 +57,10 @@ struct ContentView: View {
 }
 ```
 
+On iOS, the `WKWebView` created by the SDK engine must remain attached to the
+view hierarchy while a case is being processed. The shared
+`MediaCoViewController` keeps the engine WebView attached for this reason;
+removing it can cause iOS to throttle WebView activity and make the form
+unusable.
+
 More information: https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-direct-integration.html

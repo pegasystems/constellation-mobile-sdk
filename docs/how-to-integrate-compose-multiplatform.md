@@ -155,11 +155,16 @@
          val provider: ResourceProvider = ResourceProviderImpl()
          val engine = WKWebViewBasedEngine(provider)
         ```
-    - The created engine instance can be passed to the Compose Multiplatform code.
+    - Keep the engine WebView in the iOS view hierarchy while the SDK is processing
+      a case. If the WebView is not attached to a view hierarchy, iOS may throttle
+      it and make the form unusably slow. Attach it to the returned
+      `ComposeUIViewController`:
    
-       ```kotlin
+        ```kotlin
         fun MainViewController() = ComposeUIViewController {
             App(engine)
+        }.also { viewController ->
+            viewController.view.addSubview(engine.webView)
         }
         ```
 

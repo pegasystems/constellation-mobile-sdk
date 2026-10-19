@@ -26,6 +26,7 @@ fun MediaCoViewController(): UIViewController {
         }
         MediaCoApp()
     }.also { vc ->
+        // Keep the WebView attached to prevent iOS from throttling it.
         vc.view.addSubview(engine.webView)
     }
 }

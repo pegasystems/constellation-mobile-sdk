@@ -42,6 +42,14 @@ The XCFramework can be used in the sample app `swiftui-components-app`. To do so
 This section highlights important files, classes, and structures to help you understand
 interoperability between the multiplatform library and native iOS code.
 
+#### iOS WebView throttling
+
+The `WKWebView` owned by `WKWebViewBasedEngine` must remain in the view hierarchy
+while a case is being processed. iOS can throttle a WebView that is not attached,
+making the form unusably slow. The sample keeps it attached through
+`EngineWebView`, using a small invisible frame in both the production and mocked
+SwiftUI flows. Destroy the engine when the containing flow is dismissed.
+
 #### [Renderer](./swiftui-components-app/SDKSupport/UI/Renderer.swift)
 
 Provides an extension to the `Component` class, adding the `renderView()` function. This
