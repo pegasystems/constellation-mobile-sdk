@@ -2,6 +2,13 @@
 
 `engine-webview` provides the Android and iOS WebView implementations of the SDK engine.
 
+## Engine lifecycle
+
+`ConstellationSdkEngine.destroy()` is terminal for an engine instance. Call it from
+the host lifecycle when the engine is no longer needed. Initialization, bridge
+events, and platform callbacks that arrive after destruction are ignored safely;
+callers do not need to coordinate late WebView or WKWebView callbacks.
+
 ## Bundled JavaScript Resources
 
 The [`src/commonMain/composeResources/files/scripts/`](src/commonMain/composeResources/files/scripts/) directory is the canonical source for the JavaScript bridge and engine page.

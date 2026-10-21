@@ -17,6 +17,7 @@ import com.pega.constellation.sdk.kmp.engine.webview.ios.WKWebViewBasedEngine.Co
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -60,6 +61,7 @@ class WKWebViewBasedEngine(
     private var initialNavigation: WKNavigation? = null
     private var uiDelegate: WKUIDelegateProtocol? = null
     private var navigationDelegate: WKNavigationDelegateProtocol? = null
+    private var destroyed = false
 
     init {
         val wkConfig = WKWebViewConfiguration()
@@ -78,6 +80,7 @@ class WKWebViewBasedEngine(
         config: ConstellationSdkConfig,
         handler: EngineEventHandler
     ) {
+        check(!destroyed) { ENGINE_DESTROYED_MESSAGE }
         this.config = config
         this.handler = handler
         this.formHandler.eventHandler = handler
@@ -88,6 +91,7 @@ class WKWebViewBasedEngine(
     }
 
     override fun performAction(action: ConstellationSdkAction) {
+        check(!destroyed) { ENGINE_DESTROYED_MESSAGE }
         mainScope?.cancel()
         mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -221,26 +225,33 @@ class WKWebViewBasedEngine(
     private fun configureNavigationDelegate() {
         navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
+                if (destroyed) return
                 if (didFinishNavigation == initialNavigation) {
                     Log.i(TAG, "Initial navigation completed, injecting scripts.")
                     val injector = ScriptInjector()
                     mainScope?.launch {
+                        if (destroyed) return@launch
                         try {
                             injector.load("Console")
                             injector.load("FormHandler")
                             injector.append(initScript ?: "")
                             injector.inject(webView)
+                        } catch (e: CancellationException) {
+                            throw e
                         } catch (e: Throwable) {
                             Log.e(TAG, "Error during engine initialization.", e)
-                            handler.handle(
-                                EngineEvent.Error(
-                                    InternalError("Error during engine initialization: ${e.message}")
+                            if (!destroyed) {
+                                handler.handle(
+                                    EngineEvent.Error(
+                                        InternalError("Error during engine initialization: ${e.message}")
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                     mainScope?.launch {
                         formHandler.eventStream.collect { event ->
+                            if (destroyed) return@collect
                             val eventContent = event.eventContent.asJavaScriptStringLiteral()
                             webView.evaluateJavaScript(
                                 "window.sendEventToComponent(${event.id}, $eventContent)",
@@ -255,6 +266,8 @@ class WKWebViewBasedEngine(
     }
 
     override fun destroy() {
+        if (destroyed) return
+        destroyed = true
         Log.i(TAG, "Destroying WKWebView engine.")
         mainScope?.cancel()
         webView.stopLoading()
@@ -274,6 +287,7 @@ class WKWebViewBasedEngine(
     }
 
     companion object {
+        private const val ENGINE_DESTROYED_MESSAGE = "The WebView engine has been destroyed."
         private const val TAG = "WKWebViewBasedEngine"
         const val COMPONENT_ASSETS_PREFIX = "/constellation-mobile-sdk-assets/components/"
         private const val CONSOLE_HANDLER_NAME = "consoleHandler"

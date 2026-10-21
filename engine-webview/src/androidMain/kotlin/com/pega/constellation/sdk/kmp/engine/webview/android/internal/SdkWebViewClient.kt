@@ -9,13 +9,15 @@ import com.pega.constellation.sdk.kmp.engine.webview.android.interceptor.WebView
 internal class SdkWebViewClient(
     private val interceptors: List<WebViewInterceptor> = emptyList(),
 ) : WebViewClient() {
-    internal var onPageLoad: () -> Unit = {}
+    internal var onPageLoad: (() -> Unit)? = null
 
     override fun shouldInterceptRequest(
         view: WebView,
         request: WebResourceRequest
     ) = interceptors.firstNotNullOfOrNull { it.shouldInterceptRequest(view, request) }
 
-    override fun onPageFinished(view: WebView, url: String?) = onPageLoad()
+    override fun onPageFinished(view: WebView, url: String?) {
+        onPageLoad?.invoke()
+    }
 
 }

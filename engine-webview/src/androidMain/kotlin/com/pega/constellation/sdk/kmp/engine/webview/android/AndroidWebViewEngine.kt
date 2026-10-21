@@ -40,6 +40,8 @@ import com.pega.constellation.sdk.kmp.engine.webview.common.asJavaScriptStringLi
 import androidx.annotation.MainThread
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.Call
 
@@ -77,10 +79,16 @@ class AndroidWebViewEngine(
     private lateinit var networkInterceptor: WebViewNetworkInterceptor
     private lateinit var webViewClient: SdkWebViewClient
     private var webView: WebView? = null
+    private var destroyed = false
+    private var eventScope: CoroutineScope? = null
 
     override fun configure(config: ConstellationSdkConfig, handler: EngineEventHandler) {
+        check(!destroyed) { ENGINE_DESTROYED_MESSAGE }
         this.config = config
         this.handler = handler
+        eventScope = CoroutineScope(
+            scope.coroutineContext + kotlinx.coroutines.SupervisorJob(scope.coroutineContext[Job])
+        )
 
         this.componentManager = config.componentManager
         this.networkInterceptor =
@@ -94,8 +102,11 @@ class AndroidWebViewEngine(
     }
 
     override fun performAction(action: ConstellationSdkAction) {
+        check(!destroyed) { ENGINE_DESTROYED_MESSAGE }
         handler.handle(EngineEvent.Loading)
-        webViewClient.onPageLoad = { onPageLoad(action) }
+        webViewClient.onPageLoad = {
+            if (!destroyed) onPageLoad(action)
+        }
         val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         webView.loadUrl(config.pegaUrl)
     }
@@ -108,6 +119,12 @@ class AndroidWebViewEngine(
      */
     @MainThread
     override fun destroy() {
+        if (destroyed) return
+        destroyed = true
+        eventScope?.cancel()
+        eventScope = null
+        if (!::webViewClient.isInitialized) return
+        webViewClient.onPageLoad = null
         val wv = webView ?: return
         Log.d(TAG, "Destroying WebView")
         networkInterceptor.close()
@@ -129,6 +146,7 @@ class AndroidWebViewEngine(
      */
     @MainThread
     fun pause() {
+        if (destroyed) return
         val wv = webView ?: return
         Log.d(TAG, "Pausing WebView")
         wv.onPause()
@@ -143,6 +161,7 @@ class AndroidWebViewEngine(
      */
     @MainThread
     fun resume() {
+        if (destroyed) return
         val wv = webView ?: return
         Log.d(TAG, "Resuming WebView")
         wv.onResume()
@@ -150,6 +169,7 @@ class AndroidWebViewEngine(
     }
 
     private fun onPageLoad(action: ConstellationSdkAction) {
+        if (destroyed) return
         val configuration = EngineConfiguration(
             url = config.pegaUrl,
             action = action,
@@ -166,8 +186,10 @@ class AndroidWebViewEngine(
     }
 
     private fun evaluateInit(sdkConfig: String, scripts: String) {
+        if (destroyed) return
         val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         webView.evaluateJavascript("typeof window.init") { result ->
+            if (destroyed) return@evaluateJavascript
             if (result == "\"function\"") {
                 webView.evaluateJavascript("window.init('$sdkConfig', '$scripts')", null)
             } else {
@@ -177,6 +199,7 @@ class AndroidWebViewEngine(
     }
 
     private fun onBridgeEvent(event: BridgeEvent) {
+        if (destroyed) return
         Log.d(TAG, "Bridge event: $event")
         when (event) {
             is AddComponent -> onAddComponent(event.id, event.type)
@@ -200,6 +223,7 @@ class AndroidWebViewEngine(
     }
 
     private fun sendComponentEvent(id: ComponentId, event: ComponentEvent) {
+        if (destroyed) return
         Log.d(TAG, "Sending: $event")
         val eventJson = JSONObject().apply {
             put("type", event.type)
@@ -209,9 +233,10 @@ class AndroidWebViewEngine(
         val quotedId = id.id.toString().asJavaScriptStringLiteral()
         val quotedEventJson = eventJson.toString().asJavaScriptStringLiteral()
         val script = "window.sendEventToComponent($quotedId, $quotedEventJson)"
-        val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
-        this.scope.launch(Dispatchers.Main.immediate) {
-            webView.evaluateJavascript(script, null)
+        eventScope?.launch(Dispatchers.Main.immediate) {
+            if (!destroyed) {
+                webView?.evaluateJavascript(script, null)
+            }
         }
     }
 
@@ -260,6 +285,7 @@ class AndroidWebViewEngine(
 
     companion object Companion {
         private const val TAG = "AndroidWebViewEngine"
+        private const val ENGINE_DESTROYED_MESSAGE = "The WebView engine has been destroyed."
         private const val WEBVIEW_NULL_MESSAGE = "WebView is null, probably has been destroyed."
 
         fun defaultCallFactory() = OkHttpClient.Builder()

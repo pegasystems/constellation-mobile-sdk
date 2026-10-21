@@ -35,7 +35,7 @@ class FormHandler : NSObject(), WKScriptMessageHandlerProtocol {
             Log.w(TAG, "Cannot decode message type")
             return
         }
-        val eventHandler = requireNotNull(eventHandler)
+        val eventHandler = eventHandler ?: return
         when (type) {
             "updateComponent" -> handleUpdateComponent(array)
             "addComponent" -> handleAddComponent(array)
@@ -53,7 +53,7 @@ class FormHandler : NSObject(), WKScriptMessageHandlerProtocol {
     }
 
     fun handleLoading() {
-        requireNotNull(eventHandler).handle(EngineEvent.Loading)
+        eventHandler?.handle(EngineEvent.Loading)
     }
 
     private fun handleUpdateComponent(input: List<Any?>) {
@@ -61,7 +61,7 @@ class FormHandler : NSObject(), WKScriptMessageHandlerProtocol {
         val props = input.getOrNull(2) as? String
         if (cId != null && props != null) {
             val propsJson = Json.parseToJsonElement(props).jsonObject
-            requireNotNull(componentManager).updateComponent(ComponentId(cId), propsJson)
+            componentManager?.updateComponent(ComponentId(cId), propsJson)
         } else {
             Log.w(TAG, "Unexpected parameters types in updateComponent")
         }
@@ -74,7 +74,7 @@ class FormHandler : NSObject(), WKScriptMessageHandlerProtocol {
             Log.w(TAG, "Unexpected input for addComponent.")
             return
         }
-        val componentManager = requireNotNull(componentManager)
+        val componentManager = componentManager ?: return
         val context = WKWebViewEngineComponentContext(
             ComponentId(cId),
             ComponentType(cType),
@@ -90,13 +90,13 @@ class FormHandler : NSObject(), WKScriptMessageHandlerProtocol {
             Log.w(TAG, "Unexpected input for removeComponent.")
             return
         }
-        requireNotNull(componentManager).removeComponent(ComponentId(cId))
+        componentManager?.removeComponent(ComponentId(cId))
     }
 
     private fun handleOnReady(input: List<Any?>) {
         (input.getOrNull(1) as? String)?.let {
             val envInfoJson = Json.parseToJsonElement(it).jsonObject
-            requireNotNull(eventHandler).handle(EngineEvent.Ready(envInfoJson.toEnvironmentInfo()))
+            eventHandler?.handle(EngineEvent.Ready(envInfoJson.toEnvironmentInfo()))
         } ?: Log.w(TAG, "Unexpected input for onReady")
     }
 }
@@ -107,4 +107,3 @@ val List<Any?>.componentId: Int?
         is String -> value.toIntOrNull()
         else -> null
     }
-

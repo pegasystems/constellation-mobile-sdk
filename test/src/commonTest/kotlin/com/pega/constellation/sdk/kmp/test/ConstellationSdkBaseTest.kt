@@ -150,10 +150,11 @@ abstract class ConstellationSdkBaseTest {
         sdk.assertState<State.Loading>()
         sdk.assertState<State.Ready>()
         requireNotNull(engine).destroy()
+        requireNotNull(engine).destroy()
         runCatching {
             sdk.createCase(CASE_CLASS)
         }.onFailure {
-            assertEquals("WebView is null, probably has been destroyed.", it.message)
+            assertEquals("The WebView engine has been destroyed.", it.message)
         }.also {
             assertTrue(it.isFailure)
         }
@@ -276,8 +277,9 @@ abstract class ConstellationSdkBaseTest {
 
     protected fun runTest(pegaVersion: PegaVersion, block: suspend () -> Unit) =
         runBlocking(Dispatchers.Main) {
-            setupSdk(pegaVersion)
             for (attempt in 1..2) {
+                engine?.destroy()
+                setupSdk(pegaVersion)
                 runCatching {
                     block()
                 }.also {
