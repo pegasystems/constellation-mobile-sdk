@@ -7,11 +7,13 @@ import com.pega.constellation.sdk.kmp.core.api.Component
 import com.pega.constellation.sdk.kmp.core.api.ComponentContext
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
 import com.pega.constellation.sdk.kmp.core.api.ComponentId
+import com.pega.constellation.sdk.kmp.core.components.ComponentTypes
 import com.pega.constellation.sdk.kmp.core.components.getBoolean
 import com.pega.constellation.sdk.kmp.core.components.getInt
 import com.pega.constellation.sdk.kmp.core.components.getJSONArray
 import com.pega.constellation.sdk.kmp.core.components.getJsonObject
 import com.pega.constellation.sdk.kmp.core.components.getString
+import com.pega.constellation.sdk.kmp.core.components.optString
 import kotlinx.serialization.json.JsonObject
 
 class FieldGroupTemplateComponent(context: ComponentContext) : ContainerComponent(context) {
@@ -35,9 +37,12 @@ class FieldGroupTemplateComponent(context: ComponentContext) : ContainerComponen
                 children.firstOrNull { it.context.id == componentId }?.let {
                     Item(
                         id = itemJson.getInt("id"),
+                        pyReference = itemJson.optString("pyReference"),
                         heading = itemJson.getString("heading"),
                         component = it,
-                        allowDelete = itemJson.getBoolean("allowDelete")
+                        // TODO: perhaps make allowEdit configurable through Pega?
+                        allowEdit = itemJson.optString("pyReference").isNotEmpty(),
+                        allowDelete = itemJson.getBoolean("allowDelete"),
                     )
                 }
             }
@@ -48,13 +53,22 @@ class FieldGroupTemplateComponent(context: ComponentContext) : ContainerComponen
     }
 
     fun addItem() = context.sendComponentEvent(ComponentEvent.fieldGroupAddItem())
+    // TODO: maybe this lookup and call should be implemented on some other layer (or by the consumer app)?
+    fun editItem(item: Item) {
+        val assignmentComponent = context.componentManager.getComponents()
+            .find { it.context.type == ComponentTypes.Assignment } as? AssignmentComponent
+        println("item.pyReference: ${item.pyReference}, assignmentComponent: $assignmentComponent")
+        assignmentComponent?.navigateToStep(item.pyReference)
+    }
     fun deleteItem(item: Item) =
         context.sendComponentEvent(ComponentEvent.fieldGroupDeleteItem(item.id))
 
     data class Item(
         val id: Int,
+        val pyReference: String,
         val heading: String,
         val component: Component,
+        val allowEdit: Boolean,
         val allowDelete: Boolean
     )
 }
