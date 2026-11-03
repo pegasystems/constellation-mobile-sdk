@@ -58,11 +58,11 @@ class ViewController: UIViewController {
     }
 
     private func createSDK(with engine: ConstellationSdkEngine) -> ConstellationSdk {
+        ConstellationSdkCompanion().debuggable = SDKConfiguration.debuggable
         // Create configuration which will be used in SDK
         let configuration = ConstellationSdkConfig(
             pegaUrl: SDKConfiguration.environmentURL.absoluteString,
-            componentManager: ComponentManagerCompanion().create(customDefinitions: []),
-            debuggable: SDKConfiguration.debuggable
+            componentManager: ComponentManagerCompanion().create(customDefinitions: [])
         )
 
         return ConstellationSdkCompanion().create(config: configuration, engine: engine)

@@ -126,8 +126,10 @@ To do that please follow below steps:
     - Please change "TOKEN_HERE" added in Android AuthInterceptor and iOS ResourceProviderImpl to SDKConfig.AUTH_TOKEN.
 
 
-2.  Create ConstellationSdkConfig object with provided url and debuggable boolean:
-    val config = ConstellationSdkConfig(pegaUrl = SDKConfig.PEGA_URL, debuggable=<DEBUGGABLE>) (ConstellationSdkConfig should be imported from com.pega.constellation.sdk.kmp.core)
+2. Create ConstellationSdkConfig with the provided URL:
+    val config = ConstellationSdkConfig(pegaUrl = SDKConfig.PEGA_URL) (import from com.pega.constellation.sdk.kmp.core)
+    - For debug-build-only logging, initialize `ConstellationSdk.debuggable` in the platform host before SDK creation: use the application's `BuildConfig.DEBUG` on Android and Swift `#if DEBUG` on iOS. Enable app BuildConfig generation if needed.
+    - Read "Debugging and inspection" in `core/README.md` of the SDK repository, using the version being integrated.
 
 3. Create ConstellationSdk instance
     - Ask user where he wants to create ConstellationSdk in his multiplatform code.

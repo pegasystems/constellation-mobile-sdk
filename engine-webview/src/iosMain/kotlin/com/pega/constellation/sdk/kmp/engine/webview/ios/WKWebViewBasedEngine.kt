@@ -3,6 +3,7 @@ package com.pega.constellation.sdk.kmp.engine.webview.ios
 import PegaMobileWKWebViewTweaks.allowForHTTPSchemeHandlerRegistration
 import PegaMobileWKWebViewTweaks.applyTweaks
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEvent
@@ -54,6 +55,7 @@ class WKWebViewBasedEngine(
     private lateinit var handler: EngineEventHandler
     private var mainScope: CoroutineScope? = null
     private val formHandler = FormHandler()
+    private val consoleHandler = ConsoleHandler()
     private val resourceHandler = ResourceHandler(
         mainScope = { mainScope as CoroutineScope }
     )
@@ -69,7 +71,7 @@ class WKWebViewBasedEngine(
         wkConfig.setValue(true, forKey = "allowUniversalAccessFromFileURLs")
 
         wkConfig.userContentController.addScriptMessageHandler(
-            ConsoleScriptMessageHandler(ConsoleHandler(showDebugLogs = true)),
+            ConsoleScriptMessageHandler(consoleHandler),
             name = CONSOLE_HANDLER_NAME
         )
         wkConfig.userContentController.addScriptMessageHandler(formHandler, name = FORM_HANDLER_NAME)
@@ -100,7 +102,7 @@ class WKWebViewBasedEngine(
         val engineConfig = EngineConfiguration(
             url = config.pegaUrl,
             action = action,
-            debuggable = config.debuggable
+            debuggable = ConstellationSdk.debuggable
         )
 
         val customAndOverriddenComponents =
@@ -123,9 +125,9 @@ class WKWebViewBasedEngine(
         configureUIDelegate()
         configureNavigationDelegate()
 
-        webView.setInspectable(config.debuggable)
+        webView.setInspectable(ConstellationSdk.debuggable)
 
-        Log.i(TAG, "Bootstrapping Constellation engine.")
+        Log.i(TAG) { "Bootstrapping Constellation engine." }
         val indexURL =
             NSURL(string = config.pegaUrl).URLByAppendingPathComponent(pathComponent = "constellation-mobile-sdk-assets/scripts/index.html")
         initialNavigation = webView.loadRequest(NSURLRequest(uRL = indexURL!!))
@@ -225,12 +227,16 @@ class WKWebViewBasedEngine(
     private fun configureNavigationDelegate() {
         navigationDelegate = object : NSObject(), WKNavigationDelegateProtocol {
             override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
-                if (destroyed) return
+                if (destroyed) {
+                    return
+                }
                 if (didFinishNavigation == initialNavigation) {
-                    Log.i(TAG, "Initial navigation completed, injecting scripts.")
+                    Log.i(TAG) { "Initial navigation completed, injecting scripts." }
                     val injector = ScriptInjector()
                     mainScope?.launch {
-                        if (destroyed) return@launch
+                        if (destroyed) {
+                            return@launch
+                        }
                         try {
                             injector.load("Console")
                             injector.load("FormHandler")
@@ -251,7 +257,9 @@ class WKWebViewBasedEngine(
                     }
                     mainScope?.launch {
                         formHandler.eventStream.collect { event ->
-                            if (destroyed) return@collect
+                            if (destroyed) {
+                                return@collect
+                            }
                             val eventContent = event.eventContent.asJavaScriptStringLiteral()
                             webView.evaluateJavaScript(
                                 "window.sendEventToComponent(${event.id}, $eventContent)",
@@ -266,9 +274,11 @@ class WKWebViewBasedEngine(
     }
 
     override fun destroy() {
-        if (destroyed) return
+        if (destroyed) {
+            return
+        }
         destroyed = true
-        Log.i(TAG, "Destroying WKWebView engine.")
+        Log.i(TAG) { "Destroying WKWebView engine." }
         mainScope?.cancel()
         webView.stopLoading()
         webView.configuration.userContentController.runCatching {

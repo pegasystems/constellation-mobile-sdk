@@ -1,9 +1,9 @@
 package com.pega.constellation.sdk.kmp.engine.webview.android.interceptor
 
-import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import com.pega.constellation.sdk.kmp.core.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

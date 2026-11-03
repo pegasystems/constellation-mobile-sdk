@@ -1,7 +1,7 @@
 <!--
 Sync Impact Report
-- Version: initial -> 1.0.0
-- Modified principles: None
+- Version: 1.0.0 -> 1.0.1
+- Modified principles: Engineering Standards (braced multiline `if` statements)
 - Added sections: Core Principles, Engineering Standards, Spec-Driven Workflow, Governance
 - Removed sections: None
 - Templates requiring updates: None
@@ -39,6 +39,7 @@ User-visible behavior, public APIs, supported platform constraints, integration 
 ## Engineering Standards
 
 - Use the existing Kotlin, Kotlin Multiplatform, Compose Multiplatform, SwiftUI, JavaScript, and Gradle conventions before introducing new abstractions.
+- Write Kotlin `if` constructs with braces and each branch on separate lines, even when a branch contains a single statement or expression; do not use single-line branches.
 - Keep changes focused. Do not mix unrelated refactoring, dependency upgrades, formatting churn, or generated artifacts with feature work.
 - Prefer explicit types and small composable functions. Add comments only where the intent or platform constraint is not obvious from the code.
 - New components MUST define both the business-logic integration needed by the JavaScript bridge and the native rendering or fallback behavior required by supported platforms.
@@ -58,4 +59,4 @@ User-visible behavior, public APIs, supported platform constraints, integration 
 
 This constitution supplements `AGENTS.md`, module READMEs, and existing build or contribution documentation. When guidance conflicts, the more specific repository or module rule applies, while security and compatibility requirements remain mandatory. Constitution changes require a rationale, an update to the version and amendment date below, and review by the repository maintainers.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-08-12
+**Version**: 1.0.1 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-10-23

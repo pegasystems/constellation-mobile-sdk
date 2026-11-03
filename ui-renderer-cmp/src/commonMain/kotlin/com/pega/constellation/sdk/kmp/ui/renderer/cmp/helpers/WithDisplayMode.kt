@@ -18,7 +18,7 @@ fun WithDisplayMode(
         DisplayMode.EDITABLE -> editable.invoke()
         DisplayMode.DISPLAY_ONLY -> displayOnly.invoke()
         DisplayMode.STACKED_LARGE_VAL -> {
-            Log.i(
+            Log.w(
                 "WithDisplayMode",
                 "DisplayMode STACKED_LARGE_VAL not supported, fallback to DISPLAY_ONLY"
             )

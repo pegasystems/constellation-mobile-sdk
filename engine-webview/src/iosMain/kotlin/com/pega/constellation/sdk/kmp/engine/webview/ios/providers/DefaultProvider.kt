@@ -18,7 +18,7 @@ class DefaultProvider : ResourceProvider {
     }
 
     override suspend fun performRequest(request: NSURLRequest): Pair<NSData, NSURLResponse> {
-        Log.i(TAG, "Sending request to ${request.URL?.absoluteString ?: "nil"} using built-in mechanism.")
+        Log.i(TAG) { "Sending request to ${request.URL?.absoluteString ?: "nil"} using built-in mechanism." }
         return suspendCoroutine { continuation ->
             NSURLSession.sharedSession.dataTaskWithRequest(request) { data, response, error ->
 

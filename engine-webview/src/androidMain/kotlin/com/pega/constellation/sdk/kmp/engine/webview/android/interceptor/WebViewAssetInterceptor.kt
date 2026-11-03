@@ -3,13 +3,13 @@ package com.pega.constellation.sdk.kmp.engine.webview.android.interceptor
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewAssetLoader.PathHandler
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.api.ComponentScript
 import com.pega.constellation.sdk.kmp.engine_webview.generated.resources.Res
 
@@ -31,8 +31,12 @@ internal class WebViewAssetInterceptor(
         view: WebView,
         request: WebResourceRequest
     ): WebResourceResponse? {
-        Log.v(TAG, "Intercepting request: ${request.url}")
-        val uri = if (request.url == pegaUrl) indexHtmlUri else request.url
+        Log.v(TAG) { "Intercepting request: ${request.url}" }
+        val uri = if (request.url == pegaUrl) {
+            indexHtmlUri
+        } else {
+            request.url
+        }
         return assetLoader.shouldInterceptRequest(uri)
     }
 

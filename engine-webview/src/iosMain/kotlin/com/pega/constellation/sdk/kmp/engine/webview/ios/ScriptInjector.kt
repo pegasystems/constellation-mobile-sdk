@@ -37,9 +37,9 @@ class ScriptInjector {
 
     @Throws(Exception::class)
     fun load(name: String) {
-        Log.i(TAG, "Loading $name")
+        Log.i(TAG) { "Loading $name" }
         val script = loadScript(name)
-        Log.i(TAG, "$name loaded, size = ${script.length}")
+        Log.i(TAG) { "$name loaded, size = ${script.length}" }
         scripts.add(script)
     }
 

@@ -25,6 +25,11 @@ The CMP sample keeps `PEGA_CASE_CLASS_NAME` as the case type created by the
 `D_pxBootstrapConfig` data view and allows the user to choose a different type
 at runtime.
 
+The CMP samples explicitly enable SDK debugging. See the
+[SwiftUI sample configuration](../samples/swiftui-components-app/README.md#configuration)
+for its debugging setting. These settings do not automatically follow the
+application build mode.
+
 The runtime catalog request is:
 
 ```text

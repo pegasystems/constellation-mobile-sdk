@@ -6,10 +6,7 @@ import platform.WebKit.WKScriptMessageHandlerProtocol
 import platform.WebKit.WKUserContentController
 import platform.darwin.NSObject
 
-class ConsoleHandler(
-    private val showDebugLogs: Boolean
-) {
-
+class ConsoleHandler {
     fun handleMessage(body: Any?) {
         val input = body as? List<*>
         val logLevel = (input?.getOrNull(0) as? Double)?.toInt()
@@ -20,14 +17,12 @@ class ConsoleHandler(
             return
         }
 
-        if (!showDebugLogs && logLevel > 2) {
-            return
-        }
-
         when (logLevel) {
             1 -> Log.e(TAG, "JS: $logMessage")
             2 -> Log.w(TAG, "JS: $logMessage")
-            else -> Log.i(TAG, "JS: $logMessage")
+            3 -> Log.i(TAG) { "JS: $logMessage" }
+            4 -> Log.d(TAG) { "JS: $logMessage" }
+            else -> Log.i(TAG) { "JS: $logMessage" }
         }
     }
 

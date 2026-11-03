@@ -2,15 +2,16 @@ package com.pega.constellation.sdk.kmp.engine.webview.android
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebView.setWebContentsDebuggingEnabled
 import android.webkit.WebViewClient
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkAction
+import com.pega.constellation.sdk.kmp.core.ConstellationSdk
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkConfig
 import com.pega.constellation.sdk.kmp.core.ConstellationSdkEngine
 import com.pega.constellation.sdk.kmp.core.EngineEvent
 import com.pega.constellation.sdk.kmp.core.EngineEventHandler
+import com.pega.constellation.sdk.kmp.core.Log
 import com.pega.constellation.sdk.kmp.core.EnvironmentInfo.Companion.toEnvironmentInfo
 import com.pega.constellation.sdk.kmp.core.api.ComponentContextImpl
 import com.pega.constellation.sdk.kmp.core.api.ComponentEvent
@@ -97,7 +98,7 @@ class AndroidWebViewEngine(
 
         val interceptors = listOf(assetInterceptor, networkInterceptor)
         this.webViewClient = SdkWebViewClient(interceptors)
-        setWebContentsDebuggingEnabled(config.debuggable)
+        setWebContentsDebuggingEnabled(ConstellationSdk.debuggable)
         this.webView = createWebView(webViewClient)
     }
 
@@ -105,7 +106,9 @@ class AndroidWebViewEngine(
         check(!destroyed) { ENGINE_DESTROYED_MESSAGE }
         handler.handle(EngineEvent.Loading)
         webViewClient.onPageLoad = {
-            if (!destroyed) onPageLoad(action)
+            if (!destroyed) {
+                onPageLoad(action)
+            }
         }
         val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         webView.loadUrl(config.pegaUrl)
@@ -119,14 +122,18 @@ class AndroidWebViewEngine(
      */
     @MainThread
     override fun destroy() {
-        if (destroyed) return
+        if (destroyed) {
+            return
+        }
         destroyed = true
         eventScope?.cancel()
         eventScope = null
-        if (!::webViewClient.isInitialized) return
+        if (!::webViewClient.isInitialized) {
+            return
+        }
         webViewClient.onPageLoad = null
         val wv = webView ?: return
-        Log.d(TAG, "Destroying WebView")
+        Log.d(TAG) { "Destroying WebView" }
         networkInterceptor.close()
         with(wv) {
             stopLoading()
@@ -146,9 +153,11 @@ class AndroidWebViewEngine(
      */
     @MainThread
     fun pause() {
-        if (destroyed) return
+        if (destroyed) {
+            return
+        }
         val wv = webView ?: return
-        Log.d(TAG, "Pausing WebView")
+        Log.d(TAG) { "Pausing WebView" }
         wv.onPause()
         wv.pauseTimers()
     }
@@ -161,19 +170,23 @@ class AndroidWebViewEngine(
      */
     @MainThread
     fun resume() {
-        if (destroyed) return
+        if (destroyed) {
+            return
+        }
         val wv = webView ?: return
-        Log.d(TAG, "Resuming WebView")
+        Log.d(TAG) { "Resuming WebView" }
         wv.onResume()
         wv.resumeTimers()
     }
 
     private fun onPageLoad(action: ConstellationSdkAction) {
-        if (destroyed) return
+        if (destroyed) {
+            return
+        }
         val configuration = EngineConfiguration(
             url = config.pegaUrl,
             action = action,
-            debuggable = config.debuggable
+            debuggable = ConstellationSdk.debuggable
         )
         evaluateInit(
             sdkConfig = configuration.toJsonString(),
@@ -186,10 +199,14 @@ class AndroidWebViewEngine(
     }
 
     private fun evaluateInit(sdkConfig: String, scripts: String) {
-        if (destroyed) return
+        if (destroyed) {
+            return
+        }
         val webView = requireNotNull(webView) { WEBVIEW_NULL_MESSAGE }
         webView.evaluateJavascript("typeof window.init") { result ->
-            if (destroyed) return@evaluateJavascript
+            if (destroyed) {
+                return@evaluateJavascript
+            }
             if (result == "\"function\"") {
                 webView.evaluateJavascript("window.init('$sdkConfig', '$scripts')", null)
             } else {
@@ -199,8 +216,10 @@ class AndroidWebViewEngine(
     }
 
     private fun onBridgeEvent(event: BridgeEvent) {
-        if (destroyed) return
-        Log.d(TAG, "Bridge event: $event")
+        if (destroyed) {
+            return
+        }
+        Log.d(TAG) { "Bridge event: $event" }
         when (event) {
             is AddComponent -> onAddComponent(event.id, event.type)
             is UpdateComponent -> componentManager.updateComponent(event.id, event.propsJson)
@@ -223,8 +242,10 @@ class AndroidWebViewEngine(
     }
 
     private fun sendComponentEvent(id: ComponentId, event: ComponentEvent) {
-        if (destroyed) return
-        Log.d(TAG, "Sending: $event")
+        if (destroyed) {
+            return
+        }
+        Log.d(TAG) { "Sending: $event" }
         val eventJson = JSONObject().apply {
             put("type", event.type)
             put("componentData", JSONObject(event.componentData))
@@ -247,7 +268,6 @@ class AndroidWebViewEngine(
         webViewClient = client
         webChromeClient =
             SdkWebChromeClient(
-                debuggable = config.debuggable,
                 onAlert = { message, onConfirm ->
                     componentManager.rootContainerComponent?.presentDialog(
                         Dialog.Config(

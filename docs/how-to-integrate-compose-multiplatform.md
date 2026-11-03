@@ -174,14 +174,34 @@
 1. Create a ConstellationSdkConfig
     - It requires a pegaUrl parameter which is the URL of the Pega Server instance, e.g. "https://insert-url-here.example/prweb"
     - An optional componentManager instance can be passed to provide custom implementations of components. (see: [Creating new components](../core/README.md#creating-new-components))
-    - An optional debuggable flag can be set to debug the underlying WebView engine
     ```kotlin
-    val config = ConstellationSdkConfig(
-        pegaUrl = "https://insert-url-here.example/prweb"
-    )
+    val config = ConstellationSdkConfig(pegaUrl = "https://insert-url-here.example/prweb")
     ```
    
 2. Create an SDK instance with the config and engine
+    For debug-build-only logging, initialize `ConstellationSdk.debuggable` in the
+    platform host before SDK creation. On Android, use the application's
+    `BuildConfig.DEBUG` (enable app BuildConfig generation if needed):
+
+    ```kotlin
+    ConstellationSdk.debuggable = BuildConfig.DEBUG
+    ```
+
+    In a Swift host using the SDK framework, initialize at application startup:
+
+    ```swift
+    #if DEBUG
+    ConstellationSdkCompanion().debuggable = true
+    #else
+    ConstellationSdkCompanion().debuggable = false
+    #endif
+    ```
+
+    For a shared CMP framework that does not export the SDK, pass this host-build
+    Boolean into the Kotlin entry point and set the flag there. See
+    [Debugging and inspection](../core/README.md#debugging-and-inspection)
+    for details.
+
     ```kotlin
     val sdk = ConstellationSdk.create(config, engine)
     ```

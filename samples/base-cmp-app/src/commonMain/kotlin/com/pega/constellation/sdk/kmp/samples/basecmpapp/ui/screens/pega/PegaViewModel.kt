@@ -46,6 +46,7 @@ class PegaViewModel(
     companion object {
         val Factory = viewModelFactory {
             initializer {
+                ConstellationSdk.debuggable = true
                 PegaViewModel(
                     sdk = ConstellationSdk.create(buildConfig(), Injector.engine),
                     caseClassName = SDKConfig.PEGA_CASE_CLASS_NAME
@@ -55,8 +56,7 @@ class PegaViewModel(
 
         private fun buildConfig() = ConstellationSdkConfig(
             pegaUrl = SDKConfig.PEGA_URL,
-            componentManager = ComponentManager.create(CustomDefinitions),
-            debuggable = true
+            componentManager = ComponentManager.create(CustomDefinitions)
         )
 
     }

@@ -33,6 +33,16 @@ interface ConstellationSdk {
 
     companion object {
         /**
+         * Enables info/debug/verbose SDK logs and WebView inspection for all instances.
+         * Defaults to `false`; warnings and errors are always logged. Set before SDK creation.
+         */
+        var debuggable: Boolean
+            get() = Log.debugEnabled
+            set(value) {
+                Log.debugEnabled = value
+            }
+
+        /**
          * Allows to create [ConstellationSdk] object.
          *
          * @param config Constellation SDK configuration

@@ -1,6 +1,5 @@
 package com.pega.constellation.sdk.kmp.engine.webview.android.internal
 
-import android.util.Log
 import android.webkit.ConsoleMessage
 import android.webkit.ConsoleMessage.MessageLevel.DEBUG
 import android.webkit.ConsoleMessage.MessageLevel.ERROR
@@ -11,18 +10,21 @@ import android.webkit.JsPromptResult
 import android.webkit.JsResult
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import com.pega.constellation.sdk.kmp.core.Log
 
 internal class SdkWebChromeClient(
-    private val debuggable: Boolean,
     private val onAlert: (message: String, onConfirm: () -> Unit) -> Unit,
     private val onConfirm: (message: String, onConfirm: () -> Unit, onCancel: () -> Unit) -> Unit,
     private val onPrompt: (message: String, defaultValue: String?, onConfirm: (String?) -> Unit, onCancel: () -> Unit) -> Unit
 ) : WebChromeClient() {
     override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
-        val priority = consoleMessage.messageLevel().toPriority()
-        if (debuggable || priority == Log.ERROR || priority == Log.WARN) {
-            val errorMsg = consoleMessage.getErrorMessage()
-            Log.println(priority, TAG, consoleMessage.message() + errorMsg)
+        val message = { consoleMessage.message() + consoleMessage.getErrorMessage() }
+        when (consoleMessage.messageLevel()) {
+            TIP -> Log.v(TAG, message)
+            LOG -> Log.i(TAG, message)
+            DEBUG -> Log.d(TAG, message)
+            WARNING -> Log.w(TAG, message())
+            ERROR -> Log.e(TAG, message())
         }
         return true
     }
@@ -60,14 +62,6 @@ internal class SdkWebChromeClient(
 
     private fun ConsoleMessage.getErrorMessage() =
         if (messageLevel() == ERROR) ", source: ${sourceId()} (${lineNumber()})" else ""
-
-    private fun ConsoleMessage.MessageLevel.toPriority() = when (this) {
-        TIP -> Log.VERBOSE
-        LOG -> Log.VERBOSE
-        WARNING -> Log.WARN
-        ERROR -> Log.ERROR
-        DEBUG -> Log.DEBUG
-    }
 
     companion object {
         private const val TAG = "SdkWebViewConsole"

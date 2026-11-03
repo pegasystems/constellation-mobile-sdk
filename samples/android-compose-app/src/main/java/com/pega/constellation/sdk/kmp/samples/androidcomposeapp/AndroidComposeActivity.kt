@@ -77,6 +77,7 @@ class AndroidComposeActivity : ComponentActivity() {
     }
 
     private fun initConstellation() {
+        ConstellationSdk.debuggable = true
         val config = ConstellationSdkConfig(
             pegaUrl = AndroidSDKConfig.PEGA_URL,
             componentManager = ComponentManager.create(
@@ -87,8 +88,7 @@ class AndroidComposeActivity : ComponentActivity() {
                         ::EmailComponent
                     )
                 )
-            ),
-            debuggable = true
+            )
         )
         val caseClassName = AndroidSDKConfig.PEGA_CASE_CLASS_NAME
         engine = AndroidWebViewEngine(

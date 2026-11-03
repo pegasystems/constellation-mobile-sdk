@@ -331,10 +331,7 @@ abstract class ConstellationSdkBaseTest {
                 
                 """.trimIndent()
 
-        private fun buildSdkConfig() = ConstellationSdkConfig(
-            pegaUrl = PEGA_URL,
-            debuggable = true
-        )
+        private fun buildSdkConfig() = ConstellationSdkConfig(pegaUrl = PEGA_URL)
 
         private suspend fun ConstellationSdk.assertError(condition: (String) -> Boolean) {
             val errorMessage = assertState<State.Error>().error.message

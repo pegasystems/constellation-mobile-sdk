@@ -112,17 +112,18 @@ For programmatic diagnostics, use [`WebViewCompat.getCurrentWebViewPackage()`](h
 3. Create a ConstellationSdkConfig
     - It requires a pegaUrl parameter which is the URL of the Pega Server instance.
     - An optional componentManager instance can be passed to provide custom implementations of components. (see: [Creating new components](../core/README.md#creating-new-components))
-    - An optional debuggable flag can be set to debug the underlying WebView engine
     ```kotlin
-    val config = ConstellationSdkConfig(
-        pegaUrl = "https://insert-url-here.example/prweb"
-    )
+    val config = ConstellationSdkConfig(pegaUrl = "https://insert-url-here.example/prweb")
     ```
 
 4. Create an SDK instance with the config and engine
     ```kotlin
+    ConstellationSdk.debuggable = BuildConfig.DEBUG // Use the application's BuildConfig.
     val sdk = ConstellationSdk.create(config, engine)
     ```
+    Enable `android.buildFeatures.buildConfig = true` in the app module if needed.
+    See [Debugging and inspection](../core/README.md#debugging-and-inspection)
+    for details about the flag.
 5. Create a new case
     - To create a new case, call the createCase method on the ConstellationSdk instance.
     - It requires a caseClassName parameter which is the name of the Case Type class to be created, e.g. "DIXL-MediaCo-Work-NewService".

@@ -59,6 +59,12 @@ kotlin {
             }
         }
 
+        iosTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
+
         androidMain {
             dependencies {
                 implementation(libs.okhttp)

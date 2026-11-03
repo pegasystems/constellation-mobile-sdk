@@ -10,8 +10,11 @@ Build the multiplatform framework with Gradle `9.4.0` and JDK 17 or newer using 
 ### Configuration
 
 The application can be configured via parameters in the `Info.plist` file. These
-properties are read by static methods of the `SDKConfiguration` class and passed
-during the multiplatform SDK initialization in `ConstellationSdkConfig`.
+properties are read by static methods of the `SDKConfiguration` class and used
+during SDK initialization.
+
+The sample sets the global SDK flag from `SDKConfiguration.debuggable` before SDK
+creation. The optional `Debuggable` plist key defaults to `false`.
 
 ### Multiplatform Framework
 

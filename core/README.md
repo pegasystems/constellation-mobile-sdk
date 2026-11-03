@@ -14,6 +14,26 @@ Build the project with the Gradle Wrapper and JDK 17 or newer. The project uses 
 - **Engine independent**: Centralized engine operations in `ConstellationSdkEngine`.
 - **Custom Components**: Extensible API and component abstractions for development of custom components.
 
+### Debugging and inspection
+
+`ConstellationSdk.debuggable` defaults to `false` and is shared by all SDK
+instances. When disabled, SDK info/debug/verbose logs, including forwarded
+custom-component messages, are hidden; warnings and errors remain visible.
+
+Set the flag before SDK creation and leave it unchanged during flows. To enable
+debugging only in debug builds, initialize it from the host application's build
+setting (`BuildConfig.DEBUG` on Android, `#if DEBUG` in Swift). The SDK does not
+infer the app's build type or prevent the flag from being enabled in a release.
+
+The flag also controls WebView inspection and embedded configuration. Android
+inspection is process-wide; iOS inspection is per view. Changing the flag does
+not automatically reconfigure existing views. Independent host/provider logs and
+the browser inspector's original console are not filtered.
+
+`core.Log` provides a `v/d/i/w/e` facade. Android writes native Logcat priorities,
+tags and error stack traces; iOS/JVM use formatted stdout. Lazy `v/d/i` calls
+avoid formatting suppressed messages.
+
 ### Getting Started
 
 To get started with the Constellation SDK, follow these steps:
@@ -31,7 +51,6 @@ where:
 - **config** - constellation sdk config object with parameters:
     - **pegaUrl** — URL to Pega server e.g.: *https://insert-url-here.example/prweb*
     - **componentManager** (optional) — Instance of ComponentManager that is responsible for providing component definitions and managing them in the runtime
-    - **debuggable** (optional) — Flag that allows for debugging of the underlying WebView engine
 - **engine** - platform-specific implementation of *ConstellationSdkEngine* interface
 
 **2. Create Pega case using SDK**

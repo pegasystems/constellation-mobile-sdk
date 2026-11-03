@@ -38,22 +38,22 @@ class ResourceHandler(
     ) {
         mainScope().launch {
             try {
-                Log.i(TAG, "Starting WKURLScheme task. <${startURLSchemeTask.request.URL}>")
+                Log.i(TAG) { "Starting WKURLScheme task. <${startURLSchemeTask.request.URL}>" }
                 val (data, response) = withContext(Dispatchers.IO) {
                     requireNotNull(delegate).performRequest(startURLSchemeTask.request)
                 }
                 if (!isActive) {
-                    Log.i(TAG, "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}>")
+                    Log.i(TAG) { "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}>" }
                     return@launch
                 }
-                Log.i(TAG, "WKURLScheme task is finished. <${startURLSchemeTask.request.URL}>")
+                Log.i(TAG) { "WKURLScheme task is finished. <${startURLSchemeTask.request.URL}>" }
                 tasks.remove(startURLSchemeTask)
                 startURLSchemeTask.didReceiveResponse(response)
                 startURLSchemeTask.didReceiveData(data)
                 startURLSchemeTask.didFinish()
             } catch (e: Throwable) {
                 if (!isActive) {
-                    Log.i(TAG, "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}> error=${e.message}")
+                    Log.i(TAG) { "WKURLScheme task cancelled. <${startURLSchemeTask.request.URL}> error=${e.message}" }
                     return@launch
                 }
                 Log.w(TAG, "WKURLScheme task failed. <${startURLSchemeTask.request.URL}> error=${e.message}")
@@ -69,7 +69,7 @@ class ResourceHandler(
         webView: WKWebView,
         stopURLSchemeTask: WKURLSchemeTaskProtocol
     ) {
-        Log.i(TAG, "Stopping WKURLScheme task. <${stopURLSchemeTask.request.URL}>")
+        Log.i(TAG) { "Stopping WKURLScheme task. <${stopURLSchemeTask.request.URL}>" }
         tasks[stopURLSchemeTask]?.cancel()
         tasks.remove(stopURLSchemeTask)
     }

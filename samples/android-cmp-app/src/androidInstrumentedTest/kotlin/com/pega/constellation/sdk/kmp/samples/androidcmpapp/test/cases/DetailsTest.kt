@@ -23,7 +23,7 @@ class DetailsTest : ComposeTest() {
         "is adult" to "No",
         "salary" to "$ 12345",
         "Working start time" to "02:30 AM",
-        "meeting date time" to "2026-04-14 02:00 PM",
+        "meeting date time" to "2026-04-14 01:00 PM",
         "phone" to "+48521521521",
         "Description" to "Some description\nabout this person",
         "Rich description" to "Somedescription1. about2. this3. person", // rich text has new lines, but they are not visible for test
