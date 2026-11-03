@@ -19,6 +19,16 @@ async function init(sdkConfig, componentsOverridesStr) {
         const config = JSON.parse(sdkConfig);
         await bootstrap(config.url, onPCoreReady);
 
+        const environmentInfo = PCore.getEnvironmentInfo();
+        if (typeof environmentInfo.updateFeatureMap === "function") {
+            environmentInfo.updateFeatureMap({ deferUpdateCaseSummaryView: false });
+        } else {
+            console.warn(
+                TAG,
+                "Cannot disable case-summary refresh: updateFeatureMap unavailable."
+            );
+        }
+
         if (config.action.type === "CreateCase") {
             await createCase(config.action.caseClassName, config.action.startingFields);
         } else if (config.action.type === "OpenAssignment") {

@@ -9,6 +9,15 @@ the host lifecycle when the engine is no longer needed. Initialization, bridge
 events, and platform callbacks that arrive after destruction are ignored safely;
 callers do not need to coordinate late WebView or WKWebView callbacks.
 
+
+## Case-summary refresh
+
+After bootstrap, `init.js` sets `deferUpdateCaseSummaryView` to `false` because embedded
+forms do not render case summaries. If CoreJS's private `updateFeatureMap` method is
+unavailable, it logs a warning and continues with the runtime's existing behavior.
+There is no native configuration option. Exceptions from an existing method follow
+the normal initialization-error path.
+
 ## Console logging
 
 Engine diagnostics and supported WebView console messages use the shared
