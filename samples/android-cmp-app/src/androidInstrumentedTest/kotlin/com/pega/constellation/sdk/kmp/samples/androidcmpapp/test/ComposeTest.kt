@@ -1,7 +1,7 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
-import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
@@ -30,19 +30,29 @@ import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.AppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.junit.Rule
+import org.junit.rules.TestRule
+import org.junit.runner.Description
 import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
-@OptIn(ExperimentalOpenIdConnect::class)
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class PegaCase(val caseClassName: String)
+
+@OptIn(ExperimentalOpenIdConnect::class, ExperimentalTestApi::class)
 abstract class ComposeTest(
+    private val pegaVersion: PegaVersion,
     val mode: ComposeTestMode = MockServer,
+    maxAttempts: Int = 2,
 ) {
     @get:Rule
-    val testName = org.junit.rules.TestName()
+    val composeTestRule: TestRule = RetryingComposeTestRule(this, maxAttempts)
+    internal lateinit var composeRule: ComposeContentTestRule
+    internal lateinit var testDescription: Description
     private val scope = CoroutineScope(Dispatchers.Default)
     private val webViewScope = CoroutineScope(Dispatchers.Main)
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
@@ -54,26 +64,21 @@ abstract class ComposeTest(
 
     @BeforeTest
     fun setUp() {
+        val caseClassName = requireNotNull(testDescription.getAnnotation(PegaCase::class.java)) {
+            "Missing @PegaCase on ${testDescription.className}.${testDescription.methodName}"
+        }.caseClassName
+        require(caseClassName.isNotBlank()) {
+            "Empty case type in @PegaCase on ${testDescription.className}.${testDescription.methodName}"
+        }
         hideKeyboard()
         AppContext.init(context)
-    }
-
-    @AfterTest
-    fun tearDown() {
-        webViewScope.launch {
-            engine?.destroy()
-        }
-    }
-
-    @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.setupApp(caseClassName: String, pegaVersion: PegaVersion) {
         mockInterceptor = MockInterceptor(context, pegaVersion)
         httpClient = buildHttpClient(authManager)
         val engine = AndroidWebViewEngine(context, webViewScope, httpClient, httpClient)
         this@ComposeTest.engine = engine
         Injector.init(authManager, engine)
 
-        setContent {
+        composeRule.setContent {
             MediaCoApp(
                 appViewModel = viewModel { MediaCoAppViewModel(authManager) },
                 pegaViewModel = viewModel { PegaViewModel(buildSdk(), caseClassName) },
@@ -82,8 +87,15 @@ abstract class ComposeTest(
         }
     }
 
-    @OptIn(ExperimentalTestApi::class)
-    protected fun ComposeUiTest.waitForRequestBody(urlPart: String): String {
+    @AfterTest
+    fun tearDown() {
+        runBlocking(Dispatchers.Main) {
+            engine?.destroy()
+            engine = null
+        }
+    }
+
+    protected fun ComposeContentTestRule.waitForRequestBody(urlPart: String): String {
         var requestBody: String? = null
         waitUntil(timeoutMillis = 3_000) {
             requestBody = mockInterceptor.findRequest(urlPart)?.body

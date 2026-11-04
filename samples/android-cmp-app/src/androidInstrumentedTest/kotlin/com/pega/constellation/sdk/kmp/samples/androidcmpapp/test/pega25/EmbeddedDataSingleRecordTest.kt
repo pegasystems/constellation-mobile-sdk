@@ -1,0 +1,73 @@
+package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.pega25
+
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaCase
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.find
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.onAllDescendantsOf
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForDescendantNode
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
+import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
+import java.time.LocalDateTime
+import kotlin.test.Test
+
+@OptIn(ExperimentalTestApi::class)
+class EmbeddedDataSingleRecordTest : ComposeTest(PegaVersion.v25_1) {
+
+    @Test
+    @PegaCase("OFV0MW-Marco-Work-EmbeddedDataTest-SingleRecord")
+    fun test_embedded_data_single_record() = runAndroidTest {
+
+        onNodeWithText("New Service").performClick()
+
+        // verify form title
+        waitForNode("Embedded Data Single Record (", substring = true)
+
+        val carView = "view_[Embedded Data Single Record - Car]"
+        onAllDescendantsOf(carView).let {
+            it.find("brand").performTextInput("Audi")
+            it.find("model").performTextInput("A5")
+            it.find("year").performScrollTo().performClick()
+            onNodeWithText("Today, ", substring = true).performClick()
+            onNodeWithText("OK").performClick()
+            it.find("price").performTextInput("123000")
+        }
+        // remove focus to propagate data
+        onNodeWithText("Embedded Data Single Record - Car").performClick()
+
+        val expectedDate = LocalDateTime.now().toString().substring(0, 10)
+
+        // Check if the same values appears inside inputs in view "Embedded Data - Car single fields"
+        val singleFieldsView = "group_[Embedded Data - Car single fields]"
+        // Wait for data propagation before asserting
+        waitForDescendantNode(singleFieldsView, "Audi")
+        checkCarData(singleFieldsView, expectedDate, isDetailsView = false)
+
+        // Check if the same values appears inside "Embedded Data - Car Details"
+        val carDetailsView = "view_[Embedded Data - Car Details]"
+        checkCarData(carDetailsView, expectedDate, isDetailsView = true)
+    }
+
+    private fun ComposeContentTestRule.checkCarData(
+        viewName: String,
+        expectedDate: String,
+        isDetailsView: Boolean
+    ) {
+        onAllDescendantsOf(viewName).let {
+            it.find("Audi").assertExists()
+            it.find("A5").assertExists()
+            it.find(expectedDate).assertExists()
+            if (isDetailsView) {
+                it.find("$ 123000").assertExists()
+            } else {
+                it.find("123000").assertExists()
+            }
+        }
+    }
+}

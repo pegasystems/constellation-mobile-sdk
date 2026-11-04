@@ -1,0 +1,39 @@
+{
+  "fetchDateTime": "2026-10-27T10:04:07.895Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 5,
+  "data": [
+    {
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Model": "A4",
+      "pyGUID": "067f6be1-819a-41ab-b0a1-fc129199a074"
+    },
+    {
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Model": "C-Class",
+      "pyGUID": "8495d3b2-609a-44a3-a8aa-1300db094ef7"
+    },
+    {
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Model": "3 Series",
+      "pyGUID": "ad8a5b02-83fe-4bf2-a738-135d473df87a"
+    },
+    {
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Model": "Golf",
+      "pyGUID": "c6398654-03bd-487c-a9b5-d1b474868ffc"
+    },
+    {
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Model": "Camry",
+      "pyGUID": "eaf449dd-b7cc-483b-96f5-b9546336aa5d"
+    }
+  ],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS - Pega (Local)",
+    "sourceExecutionTime": "1.227 ms"
+  },
+  "pageSize": 5
+}

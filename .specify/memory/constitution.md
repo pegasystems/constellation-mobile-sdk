@@ -1,8 +1,8 @@
 <!--
 Sync Impact Report
-- Version: 1.0.0 -> 1.0.1
-- Modified principles: Engineering Standards (braced multiline `if` statements)
-- Added sections: Core Principles, Engineering Standards, Spec-Driven Workflow, Governance
+- Version: 1.0.1 -> 1.0.2
+- Modified principles: - Modified principles: IV. Verification Is Part of the Design
+- Added sections: Prohibit tests of test classes and infrastructure; verify them through existing scenarios.
 - Removed sections: None
 - Templates requiring updates: None
 - Follow-up TODOs: None
@@ -27,6 +27,10 @@ Changes to public Kotlin APIs, component types, renderer contracts, JavaScript c
 ### IV. Verification Is Part of the Design
 
 Each specification MUST define how behavior will be verified. Implementations MUST include the smallest appropriate automated tests and MUST run relevant Gradle, Android, iOS, JavaScript, or sample checks before review. Test fixtures and deterministic mocked responses SHOULD be preferred over network-dependent tests. A change is not complete when it compiles only; the acceptance scenarios and affected platform paths must be exercised.
+
+Tests MUST NOT be created for test classes or test infrastructure, including mock handlers,
+test rules, helpers, and fixtures. Changes to that infrastructure MUST be verified through
+existing SDK or sample scenarios that use it, rather than adding tests of the tests.
 
 ### V. Secure and Observable Integration
 
@@ -59,4 +63,4 @@ User-visible behavior, public APIs, supported platform constraints, integration 
 
 This constitution supplements `AGENTS.md`, module READMEs, and existing build or contribution documentation. When guidance conflicts, the more specific repository or module rule applies, while security and compatibility requirements remain mandatory. Constitution changes require a rationale, an update to the version and amendment date below, and review by the repository maintainers.
 
-**Version**: 1.0.1 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-10-23
+**Version**: 1.0.2 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-10-23

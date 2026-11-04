@@ -38,18 +38,30 @@ function getReferenceProperty(config) {
     return getDataRelationshipContext(config.value);
 }
 
+export function getReferenceDisplayProperty(config, { preserveRelativePath = false } = {}) {
+    const referenceProperty = getReferenceProperty(config);
+    const displayProperty = getPropertyName(config.displayField);
+    if (referenceProperty && displayProperty.startsWith(`${referenceProperty}.`)) {
+        return displayProperty.substring(referenceProperty.length + 1);
+    }
+    return preserveRelativePath ? displayProperty : getLeafPropertyName(config.displayField);
+}
+
 function getCompositeKeys(config, pConn) {
     const referenceProperty = getReferenceProperty(config);
     const parameters = pConn.getFieldMetadata?.(referenceProperty)?.datasource?.parameters ?? {};
+    const referenceLeaf = referenceProperty.split(".").pop();
     return Object.values(parameters).filter((parameter) => {
         if (typeof parameter !== "string" || !referenceProperty) return false;
-        return getPropertyName(parameter).includes(referenceProperty);
+        const property = getPropertyName(parameter);
+        const parentProperty = property.substring(0, property.lastIndexOf(".")).split(".").pop();
+        return parentProperty === referenceLeaf;
     });
 }
 
 export function buildReferenceColumns(config, pConn, referenceType) {
     const referenceProperty = getReferenceProperty(config);
-    const displayField = getLeafPropertyName(config.displayField);
+    const displayField = getReferenceDisplayProperty(config) || (referenceType === "Case" ? "pyLabel" : "");
     const selectionProperty = getLeafPropertyName(
         config.mode === OBJECT_REFERENCE_SELECTION_MODE.MULTI ? config.selectionKey : config.value
     );

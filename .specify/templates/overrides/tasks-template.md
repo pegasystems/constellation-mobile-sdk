@@ -9,6 +9,11 @@
 - `[P]` means the task can run in parallel with other tasks in the same phase.
 - `[Story]` identifies the user story, for example `[US1]`.
 - Every task MUST include an exact repository path or command.
+- Versioned test tasks MUST name the recorded Pega version and the matching handler/test
+  location; preserve shared fixtures unless their provenance establishes a version.
+- Mark verification tasks complete only with execution evidence. Record historical results,
+  unavailable checks, and unimplemented tests separately; do not equate syntax or compilation
+  with runtime acceptance.
 
 ## Phase 1: Setup
 

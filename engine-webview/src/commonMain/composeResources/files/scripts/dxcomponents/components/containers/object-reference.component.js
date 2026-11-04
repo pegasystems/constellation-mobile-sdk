@@ -6,6 +6,7 @@ import {
     getDataRelationshipContext,
     getLeafPropertyName,
     getPropertyName,
+    getReferenceDisplayProperty,
     getSelectionList,
     normalizeObjectReferenceType,
     stripPropertyAnnotation,
@@ -14,7 +15,12 @@ import {
 const TAG = "[ObjectReferenceComponent]";
 
 export class ObjectReferenceComponent extends ContainerBaseComponent {
-    props = { children: [], visible: true, label: "", isDisplayOnly: false };
+    props = {
+        children: [],
+        visible: true,
+        label: "",
+        isDisplayOnly: false
+    };
     rawMetadata = {};
     resolvedType = "";
     mode = "";
@@ -64,6 +70,7 @@ export class ObjectReferenceComponent extends ContainerBaseComponent {
 
         if (!this.props.visible) {
             this.parameterRequestId += 1;
+            this.parameterRequestKey = "";
             this.reconcileChildren([]);
             this.#sendPropsUpdate();
             return;
@@ -92,7 +99,9 @@ export class ObjectReferenceComponent extends ContainerBaseComponent {
             return this.#wrapChild(this.#createChild("SimpleTableSelect", this.#buildTableConfig(rawConfig, propsToUse, referenceType)));
         }
 
-        if (this.mode === "readonly-multi") return this.#buildReadonlyMultiChildren(rawConfig, referenceType);
+        if (this.mode === "readonly-multi" || (this.mode === "multi" && displayOnly)) {
+            return this.#buildReadonlyMultiChildren(rawConfig, referenceType);
+        }
         if (displayOnly || this.resolvedType === "SemanticLink") {
             return this.#wrapChild(this.#buildSemanticLink(rawConfig, propsToUse, displayMode, referenceType));
         }
@@ -125,14 +134,18 @@ export class ObjectReferenceComponent extends ContainerBaseComponent {
 
     #buildSelectableConfig(rawConfig, propsToUse, referenceType) {
         const generated = buildReferenceColumns(rawConfig, this.pConn, referenceType);
-        const displayField = getPropertyName(rawConfig.displayField);
+        const displayField = getReferenceDisplayProperty(rawConfig) || (referenceType === "Case" ? "pyLabel" : "");
         const valueField = getLeafPropertyName(generated.value);
+        const value = this.mode === OBJECT_REFERENCE_SELECTION_MODE.SINGLE && rawConfig.aliasKey
+            ? `@P ${rawConfig.aliasKey}`
+            : generated.value;
         const fieldMetadata = this.pConn.getFieldMetadata?.(
             this.mode === OBJECT_REFERENCE_SELECTION_MODE.SINGLE ? getPropertyName(rawConfig.value)?.split(".")[0] : getPropertyName(rawConfig.pagelistValue)
         ) ?? {};
         return {
             ...rawConfig,
-            value: generated.value,
+            componentType: this.resolvedType,
+            value,
             columns: generated.columns,
             compositeKeys: generated.compositeKeys,
             datasource: { ...generated.datasource, name: rawConfig.referenceList },
@@ -262,21 +275,30 @@ export class ObjectReferenceComponent extends ContainerBaseComponent {
     #buildReadonlyMultiChildren(rawConfig, referenceType) {
         const selectionList = getSelectionList(rawConfig);
         const records = this.pConn.getValue(selectionList) ?? [];
-        const displayProperty = getLeafPropertyName(rawConfig.displayField);
+        const displayProperty = getReferenceDisplayProperty(rawConfig, { preserveRelativePath: true });
         const keyProperty = getLeafPropertyName(rawConfig.selectionKey);
         if (!Array.isArray(records)) return [];
         return records.map((record, index) => this.pConn.createComponent({
             type: "SemanticLink",
             config: {
-                text: record?.[displayProperty] ?? record?.[keyProperty] ?? "",
+                text: this.#getRecordProperty(record, displayProperty) ?? record?.[keyProperty] ?? "",
                 referenceType,
                 name: `ObjectReference_${record?.[keyProperty] ?? index}`,
             },
         }));
     }
 
+    #getRecordProperty(record, property) {
+        if (!record || !property) return undefined;
+        return property.split(".").reduce((value, segment) => value?.[segment], record);
+    }
+
     #loadCheckboxOptions(rawConfig, parameters) {
-        const requestKey = JSON.stringify({ context: this.pConn.getContextName?.(), referenceList: rawConfig.referenceList, parameters });
+        const requestKey = JSON.stringify({
+            context: this.pConn.getContextName?.(),
+            referenceList: rawConfig.referenceList,
+            parameters
+        });
         if (requestKey === this.parameterRequestKey) return;
         this.parameterRequestKey = requestKey;
         const requestId = ++this.parameterRequestId;
@@ -285,14 +307,20 @@ export class ObjectReferenceComponent extends ContainerBaseComponent {
                 if (!this.alive || requestId !== this.parameterRequestId || !this.props.visible) return;
                 const records = response?.data?.data;
                 if (!Array.isArray(records)) throw new Error("Invalid ObjectReference options response");
-                const key = getLeafPropertyName(rawConfig.selectionKey);
-                const text = getLeafPropertyName(rawConfig.displayField);
-                this.parameterizedDataSource = records.filter((record) => record?.[key] != null)
-                    .map((record) => ({ key: record[key], value: record[key], text: record[text] ?? record[key] }));
+                const key = getPropertyName(rawConfig.selectionKey);
+                const text = getReferenceDisplayProperty(rawConfig, { preserveRelativePath: true });
+                this.parameterizedDataSource = records
+                    .map((record) => {
+                        const keyValue = this.#getRecordProperty(record, key);
+                        const textValue = this.#getRecordProperty(record, text);
+                        return keyValue == null ? null : { key: keyValue, value: keyValue, text: textValue ?? keyValue };
+                    })
+                    .filter(Boolean);
                 this.#updateSelf();
             })
             .catch((error) => {
                 if (requestId !== this.parameterRequestId) return;
+                this.parameterRequestKey = "";
                 this.parameterizedDataSource = [];
                 console.warn(TAG, "Parameterized ObjectReference options failed to load.", {
                     status: error?.status ?? error?.statusCode ?? error?.response?.status ?? "",
@@ -305,9 +333,22 @@ export class ObjectReferenceComponent extends ContainerBaseComponent {
     #onRecordChange = () => {
         const rawConfig = this.rawMetadata.config ?? {};
         const caseKey = this.pConn.getCaseInfo?.().getKey?.();
-        const viewName = this.rawMetadata.name;
-        if (!viewName || !this.pConn.getActionsApi) return;
-        const pageReference = this.pConn.getPageReference().replace("caseInfo.content", "");
+        const viewName = this.rawMetadata.name || this.pConn.getCurrentView?.();
+        if (!viewName || !this.pConn.getActionsApi) return
+
+        const componentConfig = this.pConn.getComponentConfig?.() ?? {};
+        const isEditableTable = Boolean(componentConfig.isEditableTable);
+        const contextName = this.pConn.getContextName?.() ?? "";
+        const isRefreshableContext = ["modal", "workarea", "actionarea"].some((context) => contextName.includes(context));
+        const fieldDefaults = PCore.getFieldDefaultUtils?.().fieldDefaults?.DataReference ?? {};
+        const allowImplicitRefresh = fieldDefaults.allowImplicitRefresh ?? true;
+        // Skip refreshCaseView when inside an inline editable table row (isEditableTable) —
+        // a refresh would be disruptive to in-progress row edits.
+        if (!allowImplicitRefresh || isEditableTable || !isRefreshableContext) return;
+
+        const pageReference = this.pConn.getPageReference().startsWith("objectInfo")
+            ? this.pConn.getPageReference().replace("objectInfo.content", "")
+            : this.pConn.getPageReference().replace("caseInfo.content", "");
         this.pConn.getActionsApi().refreshCaseView(caseKey, viewName, pageReference, {
             autoDetectRefresh: true,
             propertyName: rawConfig.value ?? "",

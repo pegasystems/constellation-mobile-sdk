@@ -42,6 +42,11 @@
 
 ## Test Strategy
 
+Inspect the retained tests before naming suites or commands. For versioned mock scenarios,
+record the exact `PegaVersion`, fixture directory, handler delegate, and test package/class.
+Distinguish sample Compose lifecycle retries from SDK rule body retries and Android coverage
+from iOS acceptance. Honor feature-specific restrictions on new test harnesses.
+
 | Scenario | Test type | Location or command | Expected result |
 | --- | --- | --- | --- |
 | [scenario] | [unit/device/sample/manual] | `[path or command]` | [result] |

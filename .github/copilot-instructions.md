@@ -4,7 +4,7 @@
 
 This repository is the Pega Constellation Mobile SDK, a Kotlin Multiplatform SDK for native Android and iOS applications. It includes shared core logic, platform-specific WebView engines, Compose Multiplatform UI components and renderers, JavaScript bridge components, tests, and sample applications.
 
-Read `AGENTS.md`, `.specify/memory/constitution.md`, the relevant module README, and the relevant `docs/` page before proposing or changing code. Do not load `ai-instructions/AGENTS.md` unless the user explicitly types `load instruction agents`.
+Read `AGENTS.md`, `.specify/memory/constitution.md`, the relevant module README, and the relevant `docs/` page before proposing or changing code.
 
 ## Required Behavior
 

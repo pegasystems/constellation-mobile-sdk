@@ -1,0 +1,31 @@
+{
+  "availableActions": [
+    {
+      "name": "Edit details",
+      "links": {
+        "open": {
+          "rel": "self",
+          "href": "/cases/OR97MD-CONSTELL_1-WORK D-3003/actions/pyUpdateCaseDetails",
+          "type": "GET",
+          "title": "Get case action details"
+        }
+      },
+      "ID": "pyUpdateCaseDetails",
+      "type": "Case"
+    },
+    {
+      "name": "Change stage",
+      "links": {
+        "open": {
+          "rel": "self",
+          "href": "/cases/OR97MD-CONSTELL_1-WORK D-3003/actions/pyChangeStage",
+          "type": "GET",
+          "title": "Get case action details"
+        }
+      },
+      "ID": "pyChangeStage",
+      "type": "Case"
+    }
+  ],
+  "availableProcesses": []
+}

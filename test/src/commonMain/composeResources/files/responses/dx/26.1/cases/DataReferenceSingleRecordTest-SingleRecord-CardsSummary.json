@@ -1,0 +1,396 @@
+{
+  "data": {
+    "caseInfo": {
+      "caseTypeID": "OR97MD-Constell_1-Work-DataReferenceTest",
+      "owner": "test",
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "test",
+      "assignments": [
+        {
+          "instructions": "",
+          "canPerform": "true",
+          "assigneeInfo": {
+            "name": "Administrator",
+            "ID": "test",
+            "type": "worklist"
+          },
+          "processID": "DataReferenceSingle_Flow",
+          "createTime": "2026-10-27T10:06:18.592Z",
+          "urgency": 10,
+          "processName": "Select Scenario",
+          "isMultiStep": "true",
+          "name": "Cards",
+          "context": "",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+              "type": "GET",
+              "title": "Get assignment details"
+            }
+          },
+          "ID": "ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+          "actions": [
+            {
+              "name": "Cards",
+              "links": {
+                "save": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Cards/save",
+                  "type": "PATCH",
+                  "title": "Save assignment action "
+                },
+                "open": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Cards",
+                  "type": "GET",
+                  "title": "Get assignment action details"
+                }
+              },
+              "ID": "Cards",
+              "type": "FlowAction"
+            }
+          ],
+          "status": "New"
+        }
+      ],
+      "hasNewAttachments": false,
+      "businessID": "D-2004",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "promotedActions": [
+        {
+          "name": "Change stage",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/actions/pyChangeStage",
+              "type": "GET",
+              "title": "Get case action details"
+            }
+          },
+          "ID": "pyChangeStage",
+          "type": "case",
+          "category": "action"
+        }
+      ],
+      "WidgetsToRefresh": [],
+      "caseTypeName": "Data Reference Single Record Test",
+      "urgency": 10,
+      "createTime": "2026-10-27T10:04:07.452Z",
+      "createdBy": "test",
+      "name": "Data Reference Single Record Test",
+      "stages": [
+        {
+          "entryTime": "2026-10-27T10:04:07.458Z",
+          "name": "Data Reference - Single",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/stages/PRIM0",
+              "type": "PUT",
+              "title": "Jump to this stage"
+            }
+          },
+          "visited_status": "active",
+          "ID": "PRIM0",
+          "type": "Primary",
+          "transitionType": "create"
+        },
+        {
+          "name": "Data Reference - Multi",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/stages/PRIM1",
+              "type": "PUT",
+              "title": "Jump to this stage"
+            }
+          },
+          "visited_status": "future",
+          "ID": "PRIM1",
+          "type": "Primary",
+          "transitionType": "resolution"
+        }
+      ],
+      "ID": "OR97MD-CONSTELL_1-WORK D-2004",
+      "caseTypeIcon": "puzzle-solid",
+      "status": "New",
+      "stageID": "PRIM0",
+      "stageLabel": "Data Reference - Single",
+      "lastUpdateTime": "2026-10-27T10:06:18.594Z",
+      "content": {
+        "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+        "pxCreateOperator": "test",
+        "pxUpdateDateTime": "2026-10-27T10:06:18.594Z",
+        "pxUpdateOperator": "test",
+        "pyStatusWork": "New",
+        "pxCreateDateTime": "2026-10-27T10:04:07.452Z",
+        "pxAssignment": {
+          "classID": "Assign-",
+          "pxUrgencyAssign": "",
+          "pxTaskLabel": "",
+          "pxDeadlineTime": ""
+        },
+        "pxObjClass": "OR97MD-Constell_1-Work-DataReferenceTest",
+        "pyLabel": "Data Reference Single Record Test",
+        "pyID": "D-2004"
+      }
+    },
+    "referencedUsers": [
+      {
+        "UserID": "test",
+        "UserName": "Administrator"
+      }
+    ]
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "pyCaseSummary": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "label": "@L Work Status",
+                      "labelOption": "custom",
+                      "value": "@P .pyStatusWork"
+                    },
+                    "type": "TextInput"
+                  }
+                ],
+                "name": "Primary fields",
+                "type": "Region"
+              },
+              {
+                "children": [
+                  {
+                    "config": {
+                      "createDateTime": "@P .pxCreateDateTime",
+                      "createLabel": "@L Created",
+                      "createOperator": "@USER .pxCreateOperator",
+                      "label": "@L Create operator",
+                      "updateDateTime": "@P .pxUpdateDateTime",
+                      "updateLabel": "@L Updated",
+                      "updateOperator": "@USER .pxUpdateOperator"
+                    },
+                    "type": "CaseOperator"
+                  },
+                  {
+                    "config": {
+                      "createDateTime": "@P .pxCreateDateTime",
+                      "createLabel": "@L Created",
+                      "createOperator": "@USER .pxCreateOperator",
+                      "label": "@L Update operator",
+                      "updateDateTime": "@P .pxUpdateDateTime",
+                      "updateLabel": "@L Updated",
+                      "updateOperator": "@USER .pxUpdateOperator"
+                    },
+                    "type": "CaseOperator"
+                  }
+                ],
+                "name": "Secondary fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "localeReference": "@LR OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!VIEW!PYCASESUMMARY",
+              "ruleClass": "OR97MD-Constell_1-Work-DataReferenceTest",
+              "template": "CaseSummary"
+            },
+            "name": "pyCaseSummary",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest"
+          }
+        ],
+        "pyAssignmentDetails": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "formatter": "DateTime-Since",
+                      "label": "@L Due",
+                      "labelOption": "custom",
+                      "value": "@P .pxAssignment.pxDeadlineTime",
+                      "visibility": "@E .pxAssignment.pxDeadlineTime != ''"
+                    },
+                    "type": "DateTime"
+                  },
+                  {
+                    "config": {
+                      "label": "@L Urgency",
+                      "labelOption": "custom",
+                      "showGroupSeparators": true,
+                      "value": "@P .pxAssignment.pxUrgencyAssign"
+                    },
+                    "type": "Decimal"
+                  }
+                ],
+                "name": "fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "buttonLabel": "@L Go",
+              "heading": "@P .pxAssignment.pxTaskLabel",
+              "label": "@L Assignment",
+              "localeReference": "@LR WORK-!VIEW!PYASSIGNMENTDETAILS",
+              "ruleClass": "Work-",
+              "showFieldLabels": true,
+              "subtype": "ASSIGNMENT",
+              "template": "SummaryList"
+            },
+            "name": "pyAssignmentDetails",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest"
+          }
+        ]
+      },
+      "fields": {
+        "pxCreateOperator": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "displayAs": "HarnessOperator",
+            "definedOnClassID": "Work-",
+            "expectedLength": 40,
+            "label": "Create Operator",
+            "isSpecial": true
+          }
+        ],
+        "pxUpdateDateTime": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Date Time",
+            "displayAs": "pxDateTime",
+            "definedOnClassID": "Work-",
+            "label": "Update datetime",
+            "isSpecial": true
+          }
+        ],
+        "pxUpdateOperator": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "displayAs": "HarnessOperator",
+            "definedOnClassID": "Work-",
+            "label": "Update Operator",
+            "isSpecial": true
+          }
+        ],
+        "pyStatusWork": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "maxLength": 32,
+            "displayAs": "WorkStatus",
+            "definedOnClassID": "Work-",
+            "expectedLength": 32,
+            "label": "Work status"
+          }
+        ],
+        "pxCreateDateTime": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Date Time",
+            "displayAs": "pxDateTime",
+            "definedOnClassID": "Work-",
+            "label": "Create datetime",
+            "isSpecial": true
+          }
+        ],
+        "pxUrgencyAssign": [
+          {
+            "classID": "Assign-",
+            "type": "Decimal",
+            "displayAs": "UrgencyAssign",
+            "label": "Urgency of Assignment",
+            "isDeclarativeTarget": true,
+            "isSpecial": true
+          }
+        ],
+        "pxAssignment": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Page",
+            "definedOnClassID": "Work-",
+            "dataRetrievalType": "manual",
+            "pageClass": "Assign-",
+            "label": "Assignment"
+          }
+        ],
+        "pxTaskLabel": [
+          {
+            "classID": "Assign-",
+            "type": "Text",
+            "maxLength": 128,
+            "label": "Task Label",
+            "isSpecial": true
+          }
+        ],
+        "pxDeadlineTime": [
+          {
+            "classID": "Assign-",
+            "type": "Date Time",
+            "displayAs": "DateTime-Medium",
+            "label": "Deadline Time",
+            "isSpecial": true
+          }
+        ],
+        "pyLabel": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "maxLength": 64,
+            "displayAs": "pxTextInput",
+            "definedOnClassID": "Work-",
+            "expectedLength": 60,
+            "label": "Label"
+          }
+        ],
+        "pyID": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "maxLength": 32,
+            "displayAs": "pxDisplayText",
+            "definedOnClassID": "Work-Cover-",
+            "expectedLength": 22,
+            "label": "Case ID",
+            "isClassKey": true
+          }
+        ]
+      }
+    },
+    "components": [
+      "CaseSummary",
+      "Decimal",
+      "SummaryList",
+      "Region",
+      "TextInput",
+      "CaseOperator",
+      "View",
+      "DateTime"
+    ],
+    "localeReferences": [
+      "OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!CASE!DATA REFERENCE TEST"
+    ],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "pyCaseSummary",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {}
+  }
+}

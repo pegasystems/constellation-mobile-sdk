@@ -36,7 +36,7 @@ By default the SDK uses hidden WebView as the JavaScript execution engine.
 
 Currently, the SDK supports creating cases of a specified type, opening and processing assignments.
 
-## Supported components
+## Supported components Pega 24 & 25
 The SDK provides following components out-of-the-box:
 - **Simple fields**: 
   - Checkbox, Currency, Date, DateTime, Decimal, Dropdown, Autocomplete, Email, Integer, Phone, RadioButtons, TextArea, Richtext (readonly), TextInput, Time, Url
@@ -45,15 +45,15 @@ The SDK provides following components out-of-the-box:
   - DataReference
     - Single record
       - Displayed as "SimpleTable", "Table", "Dropdown", "Autocomplete", "Cards" - supported
-      - Displayed as "Search and select"
+      - Displayed as "Search and select" - not supported
       - Read-Only mode
         - Display as "Read-only field" - supported
     - List of records
       - Displayed as "SimpleTable", "Table", "Combo-box", "Checkbox Group", "Cards" - supported
-      - Displayed as "Search and select"
+      - Displayed as "Search and select" - not supported
       - Read-Only mode
         - Displayed as "Read-only field", "Table", "SimpleTable", "Cards" - supported
-        - Displayed as "Map"
+        - Displayed as "Map" - not supported
     - Many to many - not supported
   - ObjectReference
     - Single record displayed as Autocomplete or Dropdown - supported
@@ -65,6 +65,40 @@ The SDK provides following components out-of-the-box:
   - Assignment, AssignmentCard, DefaultForm, FlowContainer, Region, RootContainer, View, ViewContainer, Field Group
 - **Other**: 
   - ActionButtons, AlertBanner
+
+## Supported components Pega 26
+
+The SDK provides following components out-of-the-box:
+- **Simple fields**:
+    - Checkbox, Currency, Date, DateTime, Decimal, Dropdown, Autocomplete, Email, Integer, Phone, RadioButtons, TextArea, Richtext (readonly), TextInput, Time, Url
+- **Advanced fields**:
+    - EmbeddedData - not supported
+    - DataReference
+        - Single record
+            - Displayed as:
+              - "Combobox" (Limited to 1 display field, Show details not supported), 
+              - "Dropdown" (Show details not supported), 
+              - "Table", "SimpleTable", "Cards" - supported 
+            - Displayed as "Search and select" - not supported
+            - Read-Only mode
+                - Display as "Read-only field" - supported
+        - List of records
+            - Displayed as "SimpleTable", "Table", "Combobox" (Limited to 1 display field), "Checkbox Group", "Cards" - supported
+            - Displayed as "Search and select" - not supported
+            - Read-Only mode
+                - Displayed as "Read-only field", "Table", "SimpleTable", "Cards" - supported
+                - Displayed as "Map" - not supported
+        - Many to many - not supported
+    - ObjectReference
+        - Single record displayed as Autocomplete or Dropdown - supported
+        - Multiple records displayed as Combobox/Multiselect - supported
+        - Cards, Checkbox Group, Table/SimpleTable, and display-only modes - supported where supplied metadata maps to existing SDK children
+        - Search and select, Map, Embedded Insight Table, interactive reference navigation, and review-mode persistence - not supported
+    - Details template view
+- **Containers**:
+    - Assignment, AssignmentCard, DefaultForm, FlowContainer, Region, RootContainer, View, ViewContainer, Field Group
+- **Other**:
+    - ActionButtons, AlertBanner
 
 ## Architecture
 

@@ -1,8 +1,7 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
-import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.test.core.app.takeScreenshot
 import androidx.test.core.graphics.writeToTestStorage
 import java.text.SimpleDateFormat
@@ -10,21 +9,12 @@ import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalTestApi::class)
-fun ComposeTest.runAndroidTest(block: suspend ComposeUiTest.() -> Unit) {
-    for (attempt in 1..2) {
-        runCatching {
-            runComposeUiTest {
-                runCatching {
-                    block()
-                }.onFailure {
-                    saveScreenshot(this@runAndroidTest.testName.methodName)
-                }.getOrThrow()
-            }
-        }.also {
-            if (it.isSuccess) break
-            if (attempt == 2) it.getOrThrow()
-        }
-    }
+fun ComposeTest.runAndroidTest(block: ComposeContentTestRule.() -> Unit) {
+    runCatching {
+        block(composeRule)
+    }.onFailure {
+        saveScreenshot(testDescription.methodName)
+    }.getOrThrow()
 }
 
 @OptIn(ExperimentalTestApi::class)

@@ -32,13 +32,32 @@ The helper scripts under `.specify/scripts/bash/` create and resolve feature art
 
 Use the GitHub Copilot skills in `.github/skills/` in this order:
 
-1. `/speckit-constitution`
+1. Read the existing constitution; use `/speckit-constitution` only for an intentional amendment.
 2. `/speckit-specify`
 3. `/speckit-clarify` when requirements need clarification
 4. `/speckit-plan`
-5. `/speckit-checklist` or `/speckit-analyze` when appropriate
-6. `/speckit-tasks`
+5. `/speckit-tasks`
+6. `/speckit-analyze` after spec, plan, and tasks exist
 7. `/speckit-implement`
 8. `/speckit-converge` when implementation leaves documented work incomplete
+
+Use `/speckit-checklist` when a requirements checklist is useful.
+
+## Selecting an Existing Feature
+
+Helpers resolve `SPECIFY_FEATURE_DIRECTORY` first, then `.specify/feature.json`; they do not
+infer feature scope from the checked-out Git branch. A branch can affect more than one spec.
+For a read-only check of another feature, use both overrides so the persisted selection
+remains unchanged:
+
+```bash
+SPECIFY_FEATURE_DIRECTORY=specs/001-compose-test-setup \
+SPECIFY_FEATURE_NO_PERSIST=1 \
+.specify/scripts/bash/check-prerequisites.sh --json --require-spec --require-tasks --include-tasks
+```
+
+When synchronizing specs after existing code changes, identify the record as retrospective,
+link the implementation evidence, and keep unexecuted acceptance checks open. Historical
+test reports must not be presented as fresh verification.
 
 The project metadata records the Copilot integration and Spec-Kit version. The bundled Spec-Kit workflow descriptor is available under `.specify/workflows/`; it is not a GitHub Actions workflow.

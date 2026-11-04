@@ -126,7 +126,6 @@ export class MultiselectComponent extends FieldBaseComponent {
 
         const listActions = this.pConn.getListActions();
         listActions.insert({ ...content, nonFormProperties }, startIndex);
-        listActions.update(content, startIndex);
     }
 
     removeItem(key) {

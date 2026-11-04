@@ -40,3 +40,48 @@ It exposes:
 - MediaCoApp composable function that can be used directly in Compose to display MediaCo application.
 - Injector for dependency injection 
 - AuthManager for managing authentication.
+
+### Instrumented tests
+
+Scenario tests are grouped under
+`src/androidInstrumentedTest/kotlin/com/pega/constellation/sdk/kmp/samples/androidcmpapp/test/`:
+
+- `pega24/`: Pega 24.1 and 24.2 scenarios.
+- `pega25/`: Pega 25 scenarios.
+- `pega26/`: Pega 26 scenarios.
+
+Test setup, utilities, runners, and fakes remain shared in the parent package and `fake/`.
+`DataReferenceTestHelper` shares car data, dropdown and card lookup, and table/card assertions
+between the Pega 26 single-record and list-of-records scenarios; selection and submission logic
+remain in each scenario.
+Each test class passes its Pega version to `ComposeTest`, and each scenario declares its
+case type with `@PegaCase`:
+
+```kotlin
+class CaseProcessingTest : ComposeTest(PegaVersion.v24_1_0) {
+    @Test
+    @PegaCase("DIXL-MediaCo-Work-SDKTesting")
+    fun test_case_processing_sdk_testing() = runAndroidTest {
+        onNodeWithText("New Service").performClick()
+        // Scenario interactions and assertions.
+    }
+}
+```
+
+`ComposeTest.setUp()` initializes the mock client, WebView engine, injector, and app content
+before the scenario body runs. Missing or blank case annotations fail explicitly.
+The shared runner captures screenshots on scenario failures and retries with a fresh Compose
+environment and a complete setup/teardown lifecycle. Two attempts are the default; pass
+`maxAttempts = 1` to disable retries.
+
+Each version package can be run independently by setting the instrumentation package filter,
+for example on a connected device:
+
+```bash
+./gradlew :samples:android-cmp-app:connectedDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.package=com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.pega26
+```
+
+Run all versions by filtering on the parent `com.pega.constellation.sdk.kmp.samples.androidcmpapp.test`
+package instead. Download the required local CDN assets first, as described in the
+[mock response README](../../test/src/commonMain/composeResources/files/responses/README.md).

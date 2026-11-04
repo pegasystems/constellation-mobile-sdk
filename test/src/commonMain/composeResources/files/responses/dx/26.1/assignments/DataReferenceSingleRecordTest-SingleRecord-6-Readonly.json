@@ -1,0 +1,534 @@
+{
+  "data": {
+    "caseInfo": {
+      "caseTypeID": "OR97MD-Constell_1-Work-DataReferenceTest",
+      "owner": "test",
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "test",
+      "assignments": [
+        {
+          "instructions": "",
+          "canPerform": "true",
+          "assigneeInfo": {
+            "name": "Administrator",
+            "ID": "test",
+            "type": "worklist"
+          },
+          "processID": "DataReferenceSingle_Flow",
+          "createTime": "2026-10-27T10:06:39.416Z",
+          "urgency": 10,
+          "processName": "Select Scenario",
+          "isMultiStep": "true",
+          "name": "Readonly",
+          "context": "",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+              "type": "GET",
+              "title": "Get assignment details"
+            }
+          },
+          "ID": "ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+          "actions": [
+            {
+              "name": "Readonly",
+              "links": {
+                "submit": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Readonly",
+                  "type": "PATCH",
+                  "title": "Submit assignment action "
+                },
+                "save": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Readonly/save",
+                  "type": "PATCH",
+                  "title": "Save assignment action "
+                },
+                "open": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Readonly",
+                  "type": "GET",
+                  "title": "Get assignment action details"
+                }
+              },
+              "ID": "Readonly",
+              "type": "FlowAction"
+            }
+          ],
+          "status": "New"
+        }
+      ],
+      "hasNewAttachments": false,
+      "businessID": "D-2004",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "promotedActions": [
+        {
+          "name": "Change stage",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/actions/pyChangeStage",
+              "type": "GET",
+              "title": "Get case action details"
+            }
+          },
+          "ID": "pyChangeStage",
+          "type": "case",
+          "category": "action"
+        }
+      ],
+      "WidgetsToRefresh": [
+        "TaskList"
+      ],
+      "caseTypeName": "Data Reference Single Record Test",
+      "urgency": 10,
+      "createTime": "2026-10-27T10:04:07.452Z",
+      "createdBy": "test",
+      "name": "Data Reference Single Record Test",
+      "stages": [
+        {
+          "entryTime": "2026-10-27T10:04:07.458Z",
+          "name": "Data Reference - Single",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/stages/PRIM0",
+              "type": "PUT",
+              "title": "Jump to this stage"
+            }
+          },
+          "visited_status": "active",
+          "ID": "PRIM0",
+          "type": "Primary",
+          "transitionType": "create"
+        },
+        {
+          "name": "Data Reference - Multi",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/stages/PRIM1",
+              "type": "PUT",
+              "title": "Jump to this stage"
+            }
+          },
+          "visited_status": "future",
+          "ID": "PRIM1",
+          "type": "Primary",
+          "transitionType": "resolution"
+        }
+      ],
+      "ID": "OR97MD-CONSTELL_1-WORK D-2004",
+      "caseTypeIcon": "puzzle-solid",
+      "status": "New",
+      "stageID": "PRIM0",
+      "stageLabel": "Data Reference - Single",
+      "lastUpdateTime": "2026-10-27T10:06:39.419Z",
+      "content": {
+        "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+        "DataReferenceSingleRecord": {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Model": "Camry",
+          "pyGUID": "eaf449dd-b7cc-483b-96f5-b9546336aa5d"
+        },
+        "pxAssignment": {
+          "classID": "Assign-",
+          "pxUrgencyAssign": "",
+          "pxTaskLabel": "",
+          "pxDeadlineTime": ""
+        },
+        "pxObjClass": "OR97MD-Constell_1-Work-DataReferenceTest",
+        "pyLabel": "Data Reference Single Record Test",
+        "pyID": "D-2004"
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "Readonly": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "componentType": "SemanticLink",
+                      "contextPage": "@P .DataReferenceSingleRecord",
+                      "displayField": "@P .DataReferenceSingleRecord.Model",
+                      "label": "@FL .DataReferenceSingleRecord",
+                      "labelOption": "default",
+                      "linkReference": true,
+                      "mode": "readonly-single",
+                      "referenceList": "D_CarList",
+                      "targetObjectClass": "OR97MD-Constell_1-Data-Car",
+                      "targetObjectType": "data",
+                      "value": "@P .DataReferenceSingleRecord.pyGUID"
+                    },
+                    "type": "ObjectReference"
+                  }
+                ],
+                "name": "Fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "NumCols": "2",
+              "localeReference": "@LR OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!VIEW!READONLY",
+              "ruleClass": "OR97MD-Constell_1-Work-DataReferenceTest",
+              "template": "DefaultForm"
+            },
+            "name": "Readonly",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest"
+          }
+        ],
+        "pyAssignmentDetails": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "formatter": "DateTime-Since",
+                      "label": "@L Due",
+                      "labelOption": "custom",
+                      "value": "@P .pxAssignment.pxDeadlineTime",
+                      "visibility": "@E .pxAssignment.pxDeadlineTime != ''"
+                    },
+                    "type": "DateTime"
+                  },
+                  {
+                    "config": {
+                      "label": "@L Urgency",
+                      "labelOption": "custom",
+                      "showGroupSeparators": true,
+                      "value": "@P .pxAssignment.pxUrgencyAssign"
+                    },
+                    "type": "Decimal"
+                  }
+                ],
+                "name": "fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "buttonLabel": "@L Go",
+              "heading": "@P .pxAssignment.pxTaskLabel",
+              "label": "@L Assignment",
+              "localeReference": "@LR WORK-!VIEW!PYASSIGNMENTDETAILS",
+              "ruleClass": "Work-",
+              "showFieldLabels": true,
+              "subtype": "ASSIGNMENT",
+              "template": "SummaryList"
+            },
+            "name": "pyAssignmentDetails",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest"
+          }
+        ]
+      },
+      "datapages": {
+        "D_Car": {
+          "parameters": [
+            {
+              "name": "pyGUID",
+              "defaultValue": "",
+              "linkedField": "pyGUID"
+            }
+          ],
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "mode": "editable",
+          "isSearchable": false,
+          "isQueryable": false,
+          "isAlternateKeyStorage": true,
+          "structure": "page"
+        },
+        "D_CarList": {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": true,
+          "structure": "list",
+          "isWorkObject": false,
+          "isDataObject": true,
+          "allowExportToExcel": true
+        }
+      },
+      "dataTypes": {
+        "OR97MD-Constell_1-Data-Car": {
+          "classKeys": [
+            "pyGUID"
+          ],
+          "savableDataPage": "D_Car",
+          "lookupDataPage": "D_Car",
+          "lookupDataPageInfo": {
+            "isAlternateKeyStorage": true,
+            "parameters": {
+              "pyGUID": "@P .pyGUID"
+            }
+          }
+        }
+      },
+      "fields": {
+        "Model": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "label": "Model"
+          }
+        ],
+        "DataReferenceSingleRecord": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Page",
+            "dataRetrievalType": "copy",
+            "pageClass": "OR97MD-Constell_1-Data-Car",
+            "label": "Data reference single record",
+            "datasource": {
+              "name": "D_Car",
+              "parameters": {
+                "pyGUID": "@P .DataReferenceSingleRecord.pyGUID"
+              }
+            }
+          }
+        ],
+        "pyGUID": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 128,
+            "displayAs": "pxTextInput",
+            "definedOnClassID": "@baseclass",
+            "label": "Globally unique ID",
+            "isClassKey": true
+          }
+        ],
+        "pxUrgencyAssign": [
+          {
+            "classID": "Assign-",
+            "type": "Decimal",
+            "displayAs": "UrgencyAssign",
+            "label": "Urgency of Assignment",
+            "isDeclarativeTarget": true,
+            "isSpecial": true
+          }
+        ],
+        "pxAssignment": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Page",
+            "definedOnClassID": "Work-",
+            "dataRetrievalType": "manual",
+            "pageClass": "Assign-",
+            "label": "Assignment"
+          }
+        ],
+        "pxTaskLabel": [
+          {
+            "classID": "Assign-",
+            "type": "Text",
+            "maxLength": 128,
+            "label": "Task Label",
+            "isSpecial": true
+          }
+        ],
+        "pxDeadlineTime": [
+          {
+            "classID": "Assign-",
+            "type": "Date Time",
+            "displayAs": "DateTime-Medium",
+            "label": "Deadline Time",
+            "isSpecial": true
+          }
+        ],
+        "pyLabel": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "maxLength": 64,
+            "displayAs": "pxTextInput",
+            "definedOnClassID": "Work-",
+            "expectedLength": 60,
+            "label": "Label"
+          }
+        ],
+        "pyID": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "maxLength": 32,
+            "displayAs": "pxDisplayText",
+            "definedOnClassID": "Work-Cover-",
+            "expectedLength": 22,
+            "label": "Case ID",
+            "isClassKey": true
+          }
+        ]
+      }
+    },
+    "components": [
+      "DefaultForm",
+      "Decimal",
+      "ObjectReference",
+      "SummaryList",
+      "Region",
+      "View",
+      "SemanticLink",
+      "DateTime"
+    ],
+    "localeReferences": [
+      "OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!CASE!DATA REFERENCE TEST"
+    ],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "Readonly",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {},
+    "settings": {
+      "autoSave": false
+    },
+    "navigation": {
+      "template": "Horizontal",
+      "steps": [
+        {
+          "allow_jump": true,
+          "name": "Combobox",
+          "actionID": "Combobox",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF1",
+              "type": "PATCH",
+              "title": "Go to Combobox"
+            }
+          },
+          "ID": "AssignmentSF1"
+        },
+        {
+          "allow_jump": true,
+          "name": "Dropdown",
+          "actionID": "Dropdown",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF2",
+              "type": "PATCH",
+              "title": "Go to Dropdown"
+            }
+          },
+          "ID": "AssignmentSF2"
+        },
+        {
+          "allow_jump": true,
+          "name": "Table",
+          "actionID": "Table",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF3",
+              "type": "PATCH",
+              "title": "Go to Table"
+            }
+          },
+          "ID": "AssignmentSF3"
+        },
+        {
+          "allow_jump": true,
+          "name": "Simple Table",
+          "actionID": "SimpleTable",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF4",
+              "type": "PATCH",
+              "title": "Go to Simple Table"
+            }
+          },
+          "ID": "AssignmentSF4"
+        },
+        {
+          "allow_jump": true,
+          "name": "Cards",
+          "actionID": "Cards",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF5",
+              "type": "PATCH",
+              "title": "Go to Cards"
+            }
+          },
+          "ID": "AssignmentSF5"
+        },
+        {
+          "allow_jump": true,
+          "name": "Readonly",
+          "actionID": "Readonly",
+          "visited_status": "current",
+          "ID": "AssignmentSF6"
+        }
+      ]
+    },
+    "actionButtons": {
+      "secondary": [
+        {
+          "jsAction": "cancelAssignment",
+          "name": "Cancel",
+          "actionID": "cancel"
+        },
+        {
+          "jsAction": "navigateToStep",
+          "name": "Previous",
+          "actionID": "back",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/previous",
+              "type": "PATCH",
+              "title": "Go back to previous step"
+            }
+          }
+        }
+      ],
+      "main": [
+        {
+          "jsAction": "finishAssignment",
+          "name": "Submit",
+          "actionID": "submit"
+        }
+      ]
+    }
+  },
+  "nextAssignmentInfo": {
+    "context": "self",
+    "className": "OR97MD-Constell_1-Work-DataReferenceTest",
+    "links": {
+      "open": {
+        "rel": "self",
+        "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+        "type": "GET",
+        "title": "Get assignment details"
+      }
+    },
+    "ID": "ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW"
+  }
+}

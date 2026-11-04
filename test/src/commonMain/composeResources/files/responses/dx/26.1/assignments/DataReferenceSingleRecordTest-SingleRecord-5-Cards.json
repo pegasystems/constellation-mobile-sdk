@@ -1,0 +1,771 @@
+{
+  "data": {
+    "caseInfo": {
+      "caseTypeID": "OR97MD-Constell_1-Work-DataReferenceTest",
+      "owner": "test",
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "test",
+      "assignments": [
+        {
+          "instructions": "",
+          "canPerform": "true",
+          "assigneeInfo": {
+            "name": "Administrator",
+            "ID": "test",
+            "type": "worklist"
+          },
+          "processID": "DataReferenceSingle_Flow",
+          "createTime": "2026-10-27T10:06:18.592Z",
+          "urgency": 10,
+          "processName": "Select Scenario",
+          "isMultiStep": "true",
+          "name": "Cards",
+          "context": "",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+              "type": "GET",
+              "title": "Get assignment details"
+            }
+          },
+          "ID": "ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+          "actions": [
+            {
+              "name": "Cards",
+              "links": {
+                "submit": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Cards",
+                  "type": "PATCH",
+                  "title": "Submit assignment action "
+                },
+                "save": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Cards/save",
+                  "type": "PATCH",
+                  "title": "Save assignment action "
+                },
+                "open": {
+                  "rel": "self",
+                  "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/actions/Cards",
+                  "type": "GET",
+                  "title": "Get assignment action details"
+                }
+              },
+              "ID": "Cards",
+              "type": "FlowAction"
+            }
+          ],
+          "status": "New"
+        }
+      ],
+      "hasNewAttachments": false,
+      "businessID": "D-2004",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "promotedActions": [
+        {
+          "name": "Change stage",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/actions/pyChangeStage",
+              "type": "GET",
+              "title": "Get case action details"
+            }
+          },
+          "ID": "pyChangeStage",
+          "type": "case",
+          "category": "action"
+        }
+      ],
+      "WidgetsToRefresh": [
+        "TaskList"
+      ],
+      "caseTypeName": "Data Reference Single Record Test",
+      "urgency": 10,
+      "createTime": "2026-10-27T10:04:07.452Z",
+      "createdBy": "test",
+      "name": "Data Reference Single Record Test",
+      "stages": [
+        {
+          "entryTime": "2026-10-27T10:04:07.458Z",
+          "name": "Data Reference - Single",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/stages/PRIM0",
+              "type": "PUT",
+              "title": "Jump to this stage"
+            }
+          },
+          "visited_status": "active",
+          "ID": "PRIM0",
+          "type": "Primary",
+          "transitionType": "create"
+        },
+        {
+          "name": "Data Reference - Multi",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-2004/stages/PRIM1",
+              "type": "PUT",
+              "title": "Jump to this stage"
+            }
+          },
+          "visited_status": "future",
+          "ID": "PRIM1",
+          "type": "Primary",
+          "transitionType": "resolution"
+        }
+      ],
+      "ID": "OR97MD-CONSTELL_1-WORK D-2004",
+      "caseTypeIcon": "puzzle-solid",
+      "status": "New",
+      "stageID": "PRIM0",
+      "stageLabel": "Data Reference - Single",
+      "lastUpdateTime": "2026-10-27T10:06:18.594Z",
+      "content": {
+        "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+        "DataReferenceSingleRecord": {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Model": "Golf",
+          "pyGUID": "c6398654-03bd-487c-a9b5-d1b474868ffc",
+          "Image": ""
+        },
+        "pxAssignment": {
+          "classID": "Assign-",
+          "pxUrgencyAssign": "",
+          "pxTaskLabel": "",
+          "pxDeadlineTime": ""
+        },
+        "pxObjClass": "OR97MD-Constell_1-Work-DataReferenceTest",
+        "pyLabel": "Data Reference Single Record Test",
+        "pyID": "D-2004"
+      }
+    },
+    "D_CarList_pa7598813463218pz": {
+      "pxResults": [
+        {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Price": 56300.25,
+          "Model": "A4",
+          "DateOfProduction": "2017-09-30",
+          "pyGUID": "067f6be1-819a-41ab-b0a1-fc129199a074",
+          "Mileage": 56780,
+          "Image": "",
+          "Brand": "Audi"
+        },
+        {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Price": 32750.5,
+          "Model": "C-Class",
+          "DateOfProduction": "2018-11-08",
+          "pyGUID": "8495d3b2-609a-44a3-a8aa-1300db094ef7",
+          "Mileage": 12450,
+          "Image": "",
+          "Brand": "Mercedes-Benz"
+        },
+        {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Price": 78500.0,
+          "Model": "3 Series",
+          "DateOfProduction": "2021-07-22",
+          "pyGUID": "ad8a5b02-83fe-4bf2-a738-135d473df87a",
+          "Mileage": 78950,
+          "Image": "",
+          "Brand": "BMW"
+        },
+        {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Price": 89200.75,
+          "Model": "Golf",
+          "DateOfProduction": "2020-05-14",
+          "pyGUID": "c6398654-03bd-487c-a9b5-d1b474868ffc",
+          "Mileage": 89320,
+          "Image": "",
+          "Brand": "Volkswagen"
+        },
+        {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Price": 45999.99,
+          "Model": "Camry",
+          "DateOfProduction": "2019-03-15",
+          "pyGUID": "eaf449dd-b7cc-483b-96f5-b9546336aa5d",
+          "Mileage": 45230,
+          "Image": "",
+          "Brand": "Toyota"
+        }
+      ]
+    },
+    "shared": {
+      "D_CarList": {
+        "D_CarList": {
+          "parameters": [],
+          "pxResults": [
+            {
+              "classID": "OR97MD-Constell_1-Data-Car",
+              "Price": 56300.25,
+              "Model": "A4",
+              "DateOfProduction": "2017-09-30",
+              "pyGUID": "067f6be1-819a-41ab-b0a1-fc129199a074",
+              "Mileage": 56780,
+              "Image": "",
+              "Brand": "Audi"
+            },
+            {
+              "classID": "OR97MD-Constell_1-Data-Car",
+              "Price": 32750.5,
+              "Model": "C-Class",
+              "DateOfProduction": "2018-11-08",
+              "pyGUID": "8495d3b2-609a-44a3-a8aa-1300db094ef7",
+              "Mileage": 12450,
+              "Image": "",
+              "Brand": "Mercedes-Benz"
+            },
+            {
+              "classID": "OR97MD-Constell_1-Data-Car",
+              "Price": 78500.0,
+              "Model": "3 Series",
+              "DateOfProduction": "2021-07-22",
+              "pyGUID": "ad8a5b02-83fe-4bf2-a738-135d473df87a",
+              "Mileage": 78950,
+              "Image": "",
+              "Brand": "BMW"
+            },
+            {
+              "classID": "OR97MD-Constell_1-Data-Car",
+              "Price": 89200.75,
+              "Model": "Golf",
+              "DateOfProduction": "2020-05-14",
+              "pyGUID": "c6398654-03bd-487c-a9b5-d1b474868ffc",
+              "Mileage": 89320,
+              "Image": "",
+              "Brand": "Volkswagen"
+            },
+            {
+              "classID": "OR97MD-Constell_1-Data-Car",
+              "Price": 45999.99,
+              "Model": "Camry",
+              "DateOfProduction": "2019-03-15",
+              "pyGUID": "eaf449dd-b7cc-483b-96f5-b9546336aa5d",
+              "Mileage": 45230,
+              "Image": "",
+              "Brand": "Toyota"
+            }
+          ],
+          "loadTime": "2026-10-27T10:06:18.689442713Z"
+        }
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "Cards": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "allowCreatingRecords": false,
+                      "componentType": "Cards",
+                      "contextPage": "@P .DataReferenceSingleRecord",
+                      "displayField": "@P .DataReferenceSingleRecord.Model",
+                      "hideFieldLabels": false,
+                      "image": "@P .DataReferenceSingleRecord.Image",
+                      "imagePosition": "inline-start",
+                      "imageSize": "flexible",
+                      "inlineDisplay": true,
+                      "label": "@FL .DataReferenceSingleRecord",
+                      "labelOption": "default",
+                      "mode": "single",
+                      "referenceList": "D_CarList",
+                      "secondaryFields": [
+                        {
+                          "config": {
+                            "label": "@FL .Brand",
+                            "labelOption": "default",
+                            "value": "@P .Brand"
+                          },
+                          "type": "TextInput"
+                        },
+                        {
+                          "config": {
+                            "label": "@FL .Model",
+                            "labelOption": "default",
+                            "value": "@P .Model"
+                          },
+                          "type": "TextInput"
+                        },
+                        {
+                          "config": {
+                            "label": "@FL .DateOfProduction",
+                            "labelOption": "default",
+                            "value": "@P .DateOfProduction"
+                          },
+                          "type": "Date"
+                        },
+                        {
+                          "config": {
+                            "label": "@FL .Mileage",
+                            "labelOption": "default",
+                            "value": "@P .Mileage"
+                          },
+                          "type": "Integer"
+                        },
+                        {
+                          "config": {
+                            "allowDecimals": true,
+                            "alwaysShowISOCode": false,
+                            "isoCodeSelection": "constant",
+                            "label": "@FL .Price",
+                            "labelOption": "default",
+                            "value": "@P .Price"
+                          },
+                          "type": "Currency"
+                        }
+                      ],
+                      "targetObjectClass": "OR97MD-Constell_1-Data-Car",
+                      "targetObjectType": "data",
+                      "value": "@P .DataReferenceSingleRecord.pyGUID"
+                    },
+                    "type": "ObjectReference"
+                  }
+                ],
+                "name": "Fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "NumCols": "2",
+              "localeReference": "@LR OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!VIEW!CARDS",
+              "ruleClass": "OR97MD-Constell_1-Work-DataReferenceTest",
+              "template": "DefaultForm"
+            },
+            "name": "Cards",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest"
+          }
+        ],
+        "pyAssignmentDetails": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "formatter": "DateTime-Since",
+                      "label": "@L Due",
+                      "labelOption": "custom",
+                      "value": "@P .pxAssignment.pxDeadlineTime",
+                      "visibility": "@E .pxAssignment.pxDeadlineTime != ''"
+                    },
+                    "type": "DateTime"
+                  },
+                  {
+                    "config": {
+                      "label": "@L Urgency",
+                      "labelOption": "custom",
+                      "showGroupSeparators": true,
+                      "value": "@P .pxAssignment.pxUrgencyAssign"
+                    },
+                    "type": "Decimal"
+                  }
+                ],
+                "name": "fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "buttonLabel": "@L Go",
+              "heading": "@P .pxAssignment.pxTaskLabel",
+              "label": "@L Assignment",
+              "localeReference": "@LR WORK-!VIEW!PYASSIGNMENTDETAILS",
+              "ruleClass": "Work-",
+              "showFieldLabels": true,
+              "subtype": "ASSIGNMENT",
+              "template": "SummaryList"
+            },
+            "name": "pyAssignmentDetails",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest"
+          }
+        ]
+      },
+      "datapages": {
+        "D_Car": {
+          "parameters": [
+            {
+              "name": "pyGUID",
+              "defaultValue": "",
+              "linkedField": "pyGUID"
+            }
+          ],
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "mode": "editable",
+          "isSearchable": false,
+          "isQueryable": false,
+          "isAlternateKeyStorage": true,
+          "structure": "page"
+        },
+        "D_CarList": {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": true,
+          "structure": "list",
+          "isWorkObject": false,
+          "isDataObject": true,
+          "allowExportToExcel": true
+        }
+      },
+      "dataTypes": {
+        "OR97MD-Constell_1-Data-Car": {
+          "classKeys": [
+            "pyGUID"
+          ],
+          "savableDataPage": "D_Car",
+          "lookupDataPage": "D_Car",
+          "lookupDataPageInfo": {
+            "isAlternateKeyStorage": true,
+            "parameters": {
+              "pyGUID": "@P .pyGUID"
+            }
+          }
+        }
+      },
+      "fields": {
+        "Model": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "label": "Model"
+          }
+        ],
+        "DataReferenceSingleRecord": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Page",
+            "dataRetrievalType": "copy",
+            "pageClass": "OR97MD-Constell_1-Data-Car",
+            "label": "Data reference single record",
+            "datasource": {
+              "name": "D_Car",
+              "parameters": {
+                "pyGUID": "@P .DataReferenceSingleRecord.pyGUID"
+              }
+            }
+          }
+        ],
+        "pyGUID": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 128,
+            "displayAs": "pxTextInput",
+            "definedOnClassID": "@baseclass",
+            "label": "Globally unique ID",
+            "isClassKey": true
+          }
+        ],
+        "Image": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxURL",
+            "label": "Image",
+            "validateAs": "pxIsValidURL"
+          }
+        ],
+        "Price": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Decimal",
+            "displayAs": "pxCurrency",
+            "label": "Price"
+          }
+        ],
+        "DateOfProduction": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Date",
+            "displayAs": "pxDateTime",
+            "label": "Date of production"
+          }
+        ],
+        "Mileage": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Integer",
+            "displayAs": "pxInteger",
+            "label": "Mileage"
+          }
+        ],
+        "Brand": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "label": "Brand"
+          }
+        ],
+        "pxUrgencyAssign": [
+          {
+            "classID": "Assign-",
+            "type": "Decimal",
+            "displayAs": "UrgencyAssign",
+            "label": "Urgency of Assignment",
+            "isDeclarativeTarget": true,
+            "isSpecial": true
+          }
+        ],
+        "pxAssignment": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Page",
+            "definedOnClassID": "Work-",
+            "dataRetrievalType": "manual",
+            "pageClass": "Assign-",
+            "label": "Assignment"
+          }
+        ],
+        "pxTaskLabel": [
+          {
+            "classID": "Assign-",
+            "type": "Text",
+            "maxLength": 128,
+            "label": "Task Label",
+            "isSpecial": true
+          }
+        ],
+        "pxDeadlineTime": [
+          {
+            "classID": "Assign-",
+            "type": "Date Time",
+            "displayAs": "DateTime-Medium",
+            "label": "Deadline Time",
+            "isSpecial": true
+          }
+        ],
+        "pyLabel": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "maxLength": 64,
+            "displayAs": "pxTextInput",
+            "definedOnClassID": "Work-",
+            "expectedLength": 60,
+            "label": "Label"
+          }
+        ],
+        "pyID": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Text",
+            "maxLength": 32,
+            "displayAs": "pxDisplayText",
+            "definedOnClassID": "Work-Cover-",
+            "expectedLength": 22,
+            "label": "Case ID",
+            "isClassKey": true
+          }
+        ]
+      }
+    },
+    "components": [
+      "DefaultForm",
+      "Decimal",
+      "ObjectReference",
+      "RadioButtons",
+      "SummaryList",
+      "Region",
+      "View",
+      "DateTime"
+    ],
+    "localeReferences": [
+      "OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!CASE!DATA REFERENCE TEST"
+    ],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "Cards",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {
+      "D_CarList_pa7598813463218pz": {
+        "pxResults": [
+          {
+            "summary_of_when_conditions__": {}
+          },
+          {
+            "summary_of_when_conditions__": {}
+          },
+          {
+            "summary_of_when_conditions__": {}
+          },
+          {
+            "summary_of_when_conditions__": {}
+          },
+          {
+            "summary_of_when_conditions__": {}
+          }
+        ]
+      },
+      "caseInfo": {
+        "content": {
+          "summary_of_lists__": {
+            "D_CarList": {
+              "pxResults": "D_CarList_pa7598813463218pz.pxResults"
+            }
+          }
+        }
+      }
+    },
+    "settings": {
+      "autoSave": false
+    },
+    "navigation": {
+      "template": "Horizontal",
+      "steps": [
+        {
+          "allow_jump": true,
+          "name": "Combobox",
+          "actionID": "Combobox",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF1",
+              "type": "PATCH",
+              "title": "Go to Combobox"
+            }
+          },
+          "ID": "AssignmentSF1"
+        },
+        {
+          "allow_jump": true,
+          "name": "Dropdown",
+          "actionID": "Dropdown",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF2",
+              "type": "PATCH",
+              "title": "Go to Dropdown"
+            }
+          },
+          "ID": "AssignmentSF2"
+        },
+        {
+          "allow_jump": true,
+          "name": "Table",
+          "actionID": "Table",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF3",
+              "type": "PATCH",
+              "title": "Go to Table"
+            }
+          },
+          "ID": "AssignmentSF3"
+        },
+        {
+          "allow_jump": true,
+          "name": "Simple Table",
+          "actionID": "SimpleTable",
+          "visited_status": "success",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF4",
+              "type": "PATCH",
+              "title": "Go to Simple Table"
+            }
+          },
+          "ID": "AssignmentSF4"
+        },
+        {
+          "allow_jump": true,
+          "name": "Cards",
+          "actionID": "Cards",
+          "visited_status": "current",
+          "ID": "AssignmentSF5"
+        },
+        {
+          "allow_jump": true,
+          "name": "Readonly",
+          "actionID": "Readonly",
+          "visited_status": "future",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/AssignmentSF6",
+              "type": "PATCH",
+              "title": "Go to Readonly"
+            }
+          },
+          "ID": "AssignmentSF6"
+        }
+      ]
+    },
+    "actionButtons": {
+      "secondary": [
+        {
+          "jsAction": "cancelAssignment",
+          "name": "Cancel",
+          "actionID": "cancel"
+        },
+        {
+          "jsAction": "navigateToStep",
+          "name": "Previous",
+          "actionID": "back",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW/navigation_steps/previous",
+              "type": "PATCH",
+              "title": "Go back to previous step"
+            }
+          }
+        }
+      ],
+      "main": [
+        {
+          "jsAction": "finishAssignment",
+          "name": "Next   ",
+          "actionID": "next"
+        }
+      ]
+    }
+  },
+  "nextAssignmentInfo": {
+    "context": "self",
+    "className": "OR97MD-Constell_1-Work-DataReferenceTest",
+    "links": {
+      "open": {
+        "rel": "self",
+        "href": "/assignments/ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW",
+        "type": "GET",
+        "title": "Get assignment details"
+      }
+    },
+    "ID": "ASSIGN-WORKLIST OR97MD-CONSTELL_1-WORK D-2004!DATAREFERENCESINGLE_FLOW"
+  }
+}

@@ -1,6 +1,5 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
-import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
@@ -11,15 +10,13 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isRoot
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.printToLog
-import androidx.compose.ui.test.waitUntilExactlyOneExists
-import androidx.compose.ui.test.waitUntilNodeCount
-
 private const val DEFAULT_TIMEOUT = 5000L
 
 @OptIn(ExperimentalTestApi::class)
-private fun ComposeUiTest.waitForMatcher(matcher: SemanticsMatcher, errorMessage: String) {
+private fun ComposeContentTestRule.waitForMatcher(matcher: SemanticsMatcher, errorMessage: String) {
     runCatching {
         waitUntilExactlyOneExists(matcher, timeoutMillis = DEFAULT_TIMEOUT)
     }.onFailure {
@@ -27,13 +24,11 @@ private fun ComposeUiTest.waitForMatcher(matcher: SemanticsMatcher, errorMessage
     }
 }
 
-@OptIn(ExperimentalTestApi::class)
-fun ComposeUiTest.waitForNode(text: String, substring: Boolean = false) {
+fun ComposeContentTestRule.waitForNode(text: String, substring: Boolean = false) {
     waitForMatcher(hasText(text, substring), "Cannot find node with text '$text'")
 }
 
-@OptIn(ExperimentalTestApi::class)
-fun ComposeUiTest.waitForDescendantNode(testTag: String, text: String, substring: Boolean = false) {
+fun ComposeContentTestRule.waitForDescendantNode(testTag: String, text: String, substring: Boolean = false) {
     waitForMatcher(
         hasAnyAncestor(hasTestTag(testTag)) and hasText(text, substring),
         "Cannot find node with text '$text' inside '$testTag'"
@@ -41,7 +36,7 @@ fun ComposeUiTest.waitForDescendantNode(testTag: String, text: String, substring
 }
 
 @OptIn(ExperimentalTestApi::class)
-fun ComposeUiTest.waitForNodes(text: String, count: Int, substring: Boolean = false) {
+fun ComposeContentTestRule.waitForNodes(text: String, count: Int, substring: Boolean = false) {
     runCatching {
         waitUntilNodeCount(hasText(text, substring), count, timeoutMillis = DEFAULT_TIMEOUT)
     }.onFailure {
@@ -50,8 +45,7 @@ fun ComposeUiTest.waitForNodes(text: String, count: Int, substring: Boolean = fa
     }
 }
 
-@OptIn(ExperimentalTestApi::class)
-fun ComposeUiTest.printAllFormNodes() = onAllNodes(isRoot())[1].printToLog("FORM NODES")
+fun ComposeContentTestRule.printAllFormNodes() = onAllNodes(isRoot())[1].printToLog("FORM NODES")
 
 
 fun SemanticsNodeInteractionCollection.find(text: String) =

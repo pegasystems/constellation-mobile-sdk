@@ -1,0 +1,484 @@
+{
+  "data": {
+    "caseInfo": {
+      "content": {
+        "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+        "DataReferenceSingleRecord": {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "Model": "C-Class",
+          "pyGUID": "8495d3b2-609a-44a3-a8aa-1300db094ef7",
+          "Price": 32750.5,
+          "DealerPhone": "",
+          "Discount": 8,
+          "CarAvailability": "2026-10-28T11:45:00.000Z",
+          "Length": 4.635,
+          "DealerWorkDayStart": "09:15:48",
+          "DealerWebsite": "https://www.carshopgdansk.eu",
+          "Brand": "Mercedes-Benz",
+          "DateOfProduction": "2018-11-08",
+          "Damaged": false,
+          "Mileage": 12450,
+          "DealerEmail": "piotr.lewandowski@cardealer.com"
+        }
+      }
+    },
+    "D_pyCountryCallingCodeList": {
+      "pxResults": [
+        {
+          "classID": "-",
+          "pyCallingCode": "+1"
+        },
+        {
+          "classID": "-",
+          "pyCallingCode": "+91"
+        },
+        {
+          "classID": "-",
+          "pyCallingCode": "+48"
+        },
+        {
+          "classID": "-",
+          "pyCallingCode": "+44"
+        }
+      ]
+    },
+    "shared": {
+      "D_pyCountryCallingCodeList": {
+        "D_pyCountryCallingCodeList": {
+          "parameters": [],
+          "pxResults": [
+            {
+              "classID": "-",
+              "pyCallingCode": "+1"
+            },
+            {
+              "classID": "-",
+              "pyCallingCode": "+91"
+            },
+            {
+              "classID": "-",
+              "pyCallingCode": "+48"
+            },
+            {
+              "classID": "-",
+              "pyCallingCode": "+44"
+            }
+          ],
+          "loadTime": "2026-10-27T10:04:18.086220425Z"
+        }
+      }
+    }
+  },
+  "uiResources": {
+    "resources": {
+      "views": {
+        "Combobox": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "componentType": "Combobox",
+                      "contextPage": "@P .DataReferenceSingleRecord",
+                      "detailsView": "pyReview",
+                      "displayField": "@P .DataReferenceSingleRecord.Model",
+                      "label": "@FL .DataReferenceSingleRecord",
+                      "labelOption": "default",
+                      "linkReference": true,
+                      "mode": "single",
+                      "referenceList": "D_CarList",
+                      "required": false,
+                      "secondaryFields": [],
+                      "targetObjectClass": "OR97MD-Constell_1-Data-Car",
+                      "targetObjectType": "data",
+                      "value": "@P .DataReferenceSingleRecord.pyGUID"
+                    },
+                    "type": "ObjectReference"
+                  }
+                ],
+                "name": "Fields",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "NumCols": "2",
+              "localeReference": "@LR OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!VIEW!COMBOBOX",
+              "ruleClass": "OR97MD-Constell_1-Work-DataReferenceTest",
+              "template": "DefaultForm"
+            },
+            "name": "Combobox",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest"
+          }
+        ],
+        "pyReview": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "config": {
+                      "label": "@FL .Brand",
+                      "labelOption": "default",
+                      "value": "@P .Brand"
+                    },
+                    "type": "TextInput"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .Model",
+                      "labelOption": "default",
+                      "value": "@P .Model"
+                    },
+                    "type": "TextInput"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .Mileage",
+                      "labelOption": "default",
+                      "value": "@P .Mileage"
+                    },
+                    "type": "Integer"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .Length",
+                      "labelOption": "default",
+                      "value": "@P .Length"
+                    },
+                    "type": "Decimal"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .DateOfProduction",
+                      "labelOption": "default",
+                      "value": "@P .DateOfProduction"
+                    },
+                    "type": "Date"
+                  },
+                  {
+                    "config": {
+                      "caption": "@FL .Damaged",
+                      "captionOption": "default",
+                      "falseLabel": "@L No",
+                      "hideLabel": true,
+                      "labelOption": "default",
+                      "trueLabel": "@L Yes",
+                      "value": "@P .Damaged"
+                    },
+                    "type": "Checkbox"
+                  },
+                  {
+                    "config": {
+                      "allowDecimals": true,
+                      "alwaysShowISOCode": false,
+                      "isoCodeSelection": "constant",
+                      "label": "@FL .Price",
+                      "labelOption": "default",
+                      "value": "@P .Price"
+                    },
+                    "type": "Currency"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .Discount",
+                      "labelOption": "default",
+                      "value": "@P .Discount"
+                    },
+                    "type": "Percentage"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .CarAvailability",
+                      "labelOption": "default",
+                      "value": "@P .CarAvailability"
+                    },
+                    "type": "DateTime"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .DealerEmail",
+                      "labelOption": "default",
+                      "value": "@P .DealerEmail"
+                    },
+                    "type": "Email"
+                  },
+                  {
+                    "config": {
+                      "datasource": {
+                        "fields": {
+                          "value": "@P .pyCallingCode"
+                        },
+                        "source": "@DATASOURCE D_pyCountryCallingCodeList.pxResults"
+                      },
+                      "label": "@FL .DealerPhone",
+                      "labelOption": "default",
+                      "value": "@P .DealerPhone"
+                    },
+                    "type": "Phone"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .DealerWebsite",
+                      "labelOption": "default",
+                      "value": "@P .DealerWebsite"
+                    },
+                    "type": "URL"
+                  },
+                  {
+                    "config": {
+                      "label": "@FL .DealerWorkDayStart",
+                      "labelOption": "default",
+                      "value": "@P .DealerWorkDayStart"
+                    },
+                    "type": "Time"
+                  }
+                ],
+                "name": "A",
+                "type": "Region"
+              }
+            ],
+            "config": {
+              "localeReference": "@LR OR97MD-CONSTELL_1-DATA-CAR!VIEW!PYREVIEW",
+              "ruleClass": "OR97MD-Constell_1-Data-Car",
+              "template": "Details"
+            },
+            "name": "pyReview",
+            "type": "View",
+            "classID": "OR97MD-Constell_1-Data-Car"
+          }
+        ]
+      },
+      "datapages": {
+        "D_Car": {
+          "parameters": [
+            {
+              "name": "pyGUID",
+              "defaultValue": "",
+              "linkedField": "pyGUID"
+            }
+          ],
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "mode": "editable",
+          "isSearchable": false,
+          "isQueryable": false,
+          "isAlternateKeyStorage": true,
+          "structure": "page"
+        },
+        "D_pyCountryCallingCodeList": {
+          "classID": "Code-Pega-List",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": false,
+          "structure": "list",
+          "isWorkObject": false,
+          "allowExportToExcel": false
+        },
+        "D_CarList": {
+          "classID": "OR97MD-Constell_1-Data-Car",
+          "mode": "readonly",
+          "isSearchable": false,
+          "isQueryable": true,
+          "structure": "list",
+          "isWorkObject": false,
+          "isDataObject": true,
+          "allowExportToExcel": true
+        }
+      },
+      "dataTypes": {
+        "OR97MD-Constell_1-Data-Car": {
+          "classKeys": [
+            "pyGUID"
+          ],
+          "savableDataPage": "D_Car",
+          "lookupDataPage": "D_Car",
+          "lookupDataPageInfo": {
+            "isAlternateKeyStorage": true,
+            "parameters": {
+              "pyGUID": "@P .pyGUID"
+            }
+          }
+        }
+      },
+      "fields": {
+        "Model": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "label": "Model"
+          }
+        ],
+        "DataReferenceSingleRecord": [
+          {
+            "classID": "OR97MD-Constell_1-Work-DataReferenceTest",
+            "type": "Page",
+            "dataRetrievalType": "copy",
+            "pageClass": "OR97MD-Constell_1-Data-Car",
+            "label": "Data reference single record",
+            "datasource": {
+              "name": "D_Car",
+              "parameters": {
+                "pyGUID": "@P .DataReferenceSingleRecord.pyGUID"
+              }
+            }
+          }
+        ],
+        "pyGUID": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 128,
+            "displayAs": "pxTextInput",
+            "definedOnClassID": "@baseclass",
+            "label": "Globally unique ID",
+            "isClassKey": true
+          }
+        ],
+        "Price": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Decimal",
+            "displayAs": "pxCurrency",
+            "label": "Price"
+          }
+        ],
+        "DealerPhone": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxPhone",
+            "label": "Dealer phone",
+            "validateAs": "ValidPhoneNumber"
+          }
+        ],
+        "Discount": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Decimal",
+            "displayAs": "pxPercentage",
+            "label": "Discount"
+          }
+        ],
+        "CarAvailability": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Date Time",
+            "displayAs": "pxDateTime",
+            "label": "Car availability"
+          }
+        ],
+        "Length": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Decimal",
+            "displayAs": "pxNumber",
+            "label": "Length"
+          }
+        ],
+        "DealerWorkDayStart": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "TimeOfDay",
+            "displayAs": "pxDateTime",
+            "label": "Dealer work day start"
+          }
+        ],
+        "DealerWebsite": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxURL",
+            "label": "Dealer website",
+            "validateAs": "pxIsValidURL"
+          }
+        ],
+        "Brand": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxTextInput",
+            "label": "Brand"
+          }
+        ],
+        "DateOfProduction": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Date",
+            "displayAs": "pxDateTime",
+            "label": "Date of production"
+          }
+        ],
+        "Damaged": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "True-False",
+            "displayAs": "pxCheckbox",
+            "label": "Damaged"
+          }
+        ],
+        "Mileage": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Integer",
+            "displayAs": "pxInteger",
+            "label": "Mileage"
+          }
+        ],
+        "DealerEmail": [
+          {
+            "classID": "OR97MD-Constell_1-Data-Car",
+            "type": "Text",
+            "maxLength": 256,
+            "displayAs": "pxEmail",
+            "label": "Dealer email",
+            "validateAs": "ValidEmailAddress"
+          }
+        ],
+        "pyCallingCode": [
+          {
+            "classID": "-",
+            "type": "Unknown"
+          }
+        ]
+      }
+    },
+    "components": [
+      "Email",
+      "Percentage",
+      "Time",
+      "View",
+      "Date",
+      "DateTime",
+      "URL",
+      "Integer",
+      "DefaultForm",
+      "Details",
+      "Decimal",
+      "ObjectReference",
+      "Checkbox",
+      "Phone",
+      "Currency",
+      "Region",
+      "AutoComplete",
+      "TextInput"
+    ],
+    "localeReferences": [
+      "OR97MD-CONSTELL_1-WORK-DATAREFERENCETEST!CASE!DATA REFERENCE TEST"
+    ],
+    "root": {
+      "type": "reference",
+      "config": {
+        "type": "view",
+        "name": "Combobox",
+        "context": "caseInfo.content"
+      }
+    },
+    "context_data": {}
+  }
+}

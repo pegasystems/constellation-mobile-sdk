@@ -6,37 +6,34 @@ import com.pega.constellation.sdk.kmp.test.mock.MockResponse
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Asset
 import com.pega.constellation.sdk.kmp.test.mock.MockResponse.Error
 import com.pega.constellation.sdk.kmp.test.mock.PegaVersion
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.int
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
+import com.pega.constellation.sdk.kmp.test.mock.handlers.pega24.DxAssignments24Handler
+import com.pega.constellation.sdk.kmp.test.mock.handlers.pega25.DxAssignments25Handler
+import com.pega.constellation.sdk.kmp.test.mock.handlers.pega26.DxAssignments26Handler
 
-class DxAssignmentsHandler(private val pegaVersion: PegaVersion) : MockHandler {
+class DxAssignmentsHandler(pegaVersion: PegaVersion) : MockHandler {
+    private val versionHandler = when (pegaVersion) {
+        PegaVersion.v24_1_0, PegaVersion.v24_2_2 -> DxAssignments24Handler(pegaVersion)
+        PegaVersion.v25_1 -> DxAssignments25Handler()
+        PegaVersion.v26_1 -> DxAssignments26Handler()
+    }
     private val assignmentActionsRegex = Regex(".*/assignments/(.+?)[/?](?:actions/([^?]+))?")
     private val assignmentNavStepsActionsRegex =
         Regex(".*/assignments/(.+?)[/?](?:navigation_steps/([^?]+))")
     private val openAssignmentRegex = Regex(".*/assignments/([^?/]+)")
-    private val nextPreviousTestStack = ArrayDeque<String>()
 
     override fun canHandle(request: MockRequest) = request.isDxApi("assignments")
 
-    override fun handle(request: MockRequest): MockResponse {
-        return when (request.method) {
-            "GET" -> handleOpenAssignment(request)
-            "PATCH" -> handleAssignmentAction(request)
-            else -> Error(400, "Unsupported method: ${request.method}")
-        }
+    override fun handle(request: MockRequest): MockResponse = when (request.method) {
+        "GET" -> handleOpenAssignment(request)
+        "PATCH" -> handleAssignmentAction(request)
+        else -> Error(400, "Unsupported method: ${request.method}")
     }
 
     private fun handleOpenAssignment(request: MockRequest): MockResponse {
         val match = openAssignmentRegex.find(request.url) ?: return Error(400, "Invalid request")
         val assignmentId = match.groupValues[1]
-        return when {
-            assignmentId.contains("K-11018") -> Asset(versionedPath("assignments/KeysAndCiphers-OpenAssignment-11018.json"))
-            assignmentId.contains("K-11019") -> Asset(versionedPath("assignments/KeysAndCiphers-OpenAssignment-11019.json"))
-            else -> Error(404, "Cannot handle open assignment: $assignmentId")
-        }
+        return versionHandler.openAssignment(assignmentId)
+            ?: Error(404, "Cannot handle open assignment: $assignmentId")
     }
 
     private fun handleAssignmentAction(request: MockRequest): MockResponse {
@@ -50,206 +47,17 @@ class DxAssignmentsHandler(private val pegaVersion: PegaVersion) : MockHandler {
         return when {
             assignmentId.contains("S-17098") && actionId == "Create" -> Asset("responses/dx/assignments/SDKTesting-1-Create.json")
             assignmentId.contains("E-6026") && actionId == "Create" -> Asset("responses/dx/assignments/EmbeddedData-1-Create.json")
-            assignmentId.contains("A-22") -> Asset(versionedPath("assignments/AutoCompleteTest-DataRef.json"))
-            assignmentId.contains("C-2601") && actionId == "Create/refresh" -> Asset(versionedPath("assignments/CascadingDropdowns-Create-Refresh.json"))
             assignmentId.contains("N-16042") -> handleNewService(actionId)
-            assignmentId.contains("D-2036") -> handleDataReferenceTest(request, actionId)
-            assignmentId.contains("K-10048") -> handleKeysAndCiphers(request, actionId)
-            assignmentId.contains("G-3025") -> handleGroupTest(actionId)
-            assignmentId.contains("E-22056") -> handleEmbeddedDataRepeatingViewTest(actionId)
-            assignmentId.contains("E-24003") -> handleEmbeddedDataTableSimpleTableTest(request, actionId)
-            assignmentId.contains("E-26028") -> handleEmbeddedDataConditionsTest(actionId)
-            assignmentId.contains("D-1014611") -> handleInvisibleDataReferenceTest(actionId)
-            assignmentId.contains("D-7004") -> handleDataReferenceListOfRecordsTest(actionId)
-            assignmentId.contains("D-17009") -> handleDataReferenceMultiSelectTest(request, actionId)
-            assignmentId.contains("D-32087") -> handleDataReferenceListOfRecordsCardsTest(actionId)
-            assignmentId.contains("D-32116") -> handleDataReferenceSingleRecordCardsTest(actionId)
-            assignmentId.contains("D-9001") -> handleDetailsTemplateTest(actionId)
-            assignmentId.contains("D-12038") -> handleDataRefSemanticLinkTest(actionId)
-            assignmentId.contains("S-10029") -> handleNextPreviousTest(actionId)
-            assignmentId.contains("S-19004") && actionId == "Create" ->
-                Asset(versionedPath("assignments/HiddenRequiredTextInputTest-1-Step2.json"))
-
-            else -> Error(404, "Cannot handle assignment: $assignmentId, action: $actionId")
+            else -> versionHandler.handleAction(request, assignmentId, actionId)
+                ?: Error(404, "Cannot handle assignment: $assignmentId, action: $actionId")
         }
-    }
-
-    private fun handleDataReferenceTest(request: MockRequest, actionId: String): MockResponse {
-        val carId = request.getContentPageKey("CarsDataReferenceSingle", "Id")
-            ?: return Error(400, "Missing request body")
-
-        return when (actionId) {
-            "SingleDisplayAsTable" -> Asset(versionedPath("assignments/DataReferenceTest-1-Review.json"))
-            "Create/refresh" -> Asset(versionedPath("assignments/refresh/DataReferenceTest-Refresh-$carId.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleDataReferenceListOfRecordsTest(actionId: String): MockResponse {
-        return when (actionId) {
-            "Create" -> Asset(versionedPath("assignments/DataReferenceListOfRecordsTest-1-SimpleTable.json"))
-            "DataReferenceListOfRecordsSimpleTable" -> Asset(versionedPath("assignments/DataReferenceListOfRecordsTest-2-TableReadonly.json"))
-            "DataReferenceListOfRecordsTableReadonly" -> Asset(versionedPath("assignments/DataReferenceListOfRecordsTest-3-SimpleTableReadonly.json"))
-            "DataReferenceListOfRecordsSimpleTableReadonly" -> Asset(versionedPath("assignments/DataReferenceListOfRecordsTest-4-FieldValue.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleInvisibleDataReferenceTest(actionId: String): MockResponse {
-        return when (actionId) {
-            "Create" -> Asset(versionedPath("assignments/InvisibleDataReferenceTest-1-Visible.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleDataReferenceMultiSelectTest(
-        request: MockRequest,
-        actionId: String
-    ): MockResponse {
-        if (actionId != "Create") return Error(404, "Invalid actionId: $actionId")
-
-        val pageInstructions = request.getPageInstructions()
-            ?: return Error(400, "Missing request body or pageInstructions")
-
-        // Verify at least 2 valid INSERT instructions targeting .CarsSelection with Id
-        val validInsertCount = pageInstructions.count {
-            val obj = it.jsonObject
-            obj["instruction"]?.jsonPrimitive?.content == "INSERT" &&
-                    obj["target"]?.jsonPrimitive?.content == ".CarsSelection" &&
-                    obj["content"]?.jsonObject?.containsKey("Id") == true
-        }
-        if (validInsertCount < 2) return Error(
-            400,
-            "Expected at least 2 valid INSERT instructions for .CarsSelection, got $validInsertCount"
-        )
-
-        return Asset(versionedPath("assignments/DataReferenceMultiSelectTest-1-Create.json"))
-    }
-
-    private fun handleDataReferenceListOfRecordsCardsTest(actionId: String): MockResponse {
-        return when (actionId) {
-            "Create" -> Asset(versionedPath("assignments/DataReferenceMultiSelectCardsTest-1-DataPageParam.json"))
-            "DataPageParamChange" -> Asset(versionedPath("assignments/DataReferenceMultiSelectCardsTest-2-HideLabelsAndImage.json"))
-            "VerifyCardContent" -> Asset(versionedPath("assignments/DataReferenceMultiSelectCardsTest-3-ReadOnly.json"))
-            "VerifyReadonlyMode" -> Asset(versionedPath("assignments/DataReferenceMultiSelectCardsTest-4-DisplayOnly.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleDataReferenceSingleRecordCardsTest(actionId: String): MockResponse {
-        return when (actionId) {
-            "Create" -> Asset(versionedPath("assignments/DataReferenceSingleSelectCardsTest-1-DataPageParam.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleEmbeddedDataRepeatingViewTest(actionId: String): MockResponse {
-        return when (actionId) {
-            "EDRepeatingViewEditable" -> Asset(versionedPath("assignments/EmbeddedDataTest-1-RepeatingViewReadonly.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleEmbeddedDataTableSimpleTableTest(
-        request: MockRequest,
-        actionId: String
-    ): MockResponse {
-        return when (actionId) {
-            "EmbeddedDataDisplayAsRepeatingViewEdit" -> Asset(versionedPath("assignments/EmbeddedDataTest-EditableTablePopup.json"))
-            "EDTableEditablePopup/refresh" -> {
-                val pageInstructions = request.getPageInstructions()
-                    ?: return Error(400, "Missing request body or pageInstructions")
-                when (pageInstructions.size) {
-                    2 -> Asset(versionedPath("assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-1.json"))
-                    4 -> Asset(versionedPath("assignments/refresh/EmbeddedDataTest-EditableTable-Popup-Refresh-2.json"))
-                    else -> Error(
-                        404,
-                        "No data for given pageInstructions size: ${pageInstructions.size} for actionId: $actionId"
-                    )
-                }
-            }
-
-            "EDTableEditablePopup" -> Asset(versionedPath("assignments/EmbeddedDataTest-ReadonlySimpleTable.json"))
-            "EDSimpleTableReadonly" -> Asset(versionedPath("assignments/EmbeddedDataTest-ReadonlyTable.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleEmbeddedDataConditionsTest(actionId: String): MockResponse {
-        return when (actionId) {
-            "EDCheckAddeditremoveConditions" -> Asset(versionedPath("assignments/EmbeddedDataTest-Conditions.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleGroupTest(actionId: String): MockResponse {
-        return when (actionId) {
-            "Create" -> Asset(versionedPath("assignments/GroupTest-1-Create.json"))
-            "Step2/refresh" -> Asset(versionedPath("assignments/refresh/GroupTest-Step2-Refresh-1.json"))
-            else -> Error(404, "Invalid actionId: $actionId")
-        }
-    }
-
-    private fun handleKeysAndCiphers(request: MockRequest, actionId: String) =
-        when (actionId) {
-            "SimpleTable" -> Asset(versionedPath("assignments/KeysCiphers-Table.json"))
-            "Table" -> Asset(versionedPath("assignments/KeysCiphers-Dropdown.json"))
-            "Dropdown/refresh" -> request.getContentPageKey("KeySelector", "Identifier")?.let {
-                Asset(versionedPath("assignments/KeysCiphers-Dropdown-Refresh-$it.json"))
-            } ?: Error(400, "Missing request body")
-
-            else -> Error(404, "Invalid actionId for K-10048: $actionId")
-        }
-
-    private fun handleDetailsTemplateTest(actionId: String) = when (actionId) {
-        "DetailsTemplate2" -> Asset(versionedPath("assignments/DetailsTemplateTest.json"))
-        else -> Error(404, "Invalid actionId: $actionId")
-    }
-
-    private fun handleDataRefSemanticLinkTest(actionId: String) = when (actionId) {
-        "Create" -> Asset(versionedPath("assignments/DataRefSemanticLinkTest-1-Create.json"))
-        "Create/refresh" -> Asset(versionedPath("assignments/refresh/DataRefSemanticLinkTest-Create-Refresh.json"))
-        else -> Error(404, "Invalid actionId: $actionId")
-    }
-
-    private fun handleNextPreviousTest(actionId: String): MockResponse {
-        val step1Json = versionedPath("cases/NextPreviousTest-Step1-POST.json")
-        val step2Json = versionedPath("assignments/NextPreviousTest-1-Step2.json")
-        val step3Json = versionedPath("assignments/NextPreviousTest-2-Step3.json")
-        val step4Json = versionedPath("assignments/NextPreviousTest-3-Step4.json")
-
-        val url = when (actionId) {
-            "Create" -> step2Json.also { nextPreviousTestStack.addLast(step1Json) }
-            "Step2" -> step3Json.also { nextPreviousTestStack.addLast(step2Json) }
-            "Step3" -> step4Json.also { nextPreviousTestStack.addLast(step3Json) }
-            "previous" -> return nextPreviousTestStack.removeLastOrNull()
-                ?.let { Asset(it) }
-                ?: Error(404, "No more assets for action 'previous' (stack is empty)")
-
-            else -> return Error(404, "Invalid actionId: $actionId")
-        }
-        return Asset(url)
     }
 
     private fun handleNewService(actionId: String) = when (actionId) {
-            "Customer" -> Asset("responses/dx/assignments/NewService-1-Customer.json")
-            "Address" -> Asset("responses/dx/assignments/NewService-2-Address.json")
-            "Service" -> Asset("responses/dx/assignments/NewService-3-Service.json")
-            "OtherNotes" -> Asset("responses/dx/assignments/NewService-4-OtherNotes.json")
+        "Customer" -> Asset("responses/dx/assignments/NewService-1-Customer.json")
+        "Address" -> Asset("responses/dx/assignments/NewService-2-Address.json")
+        "Service" -> Asset("responses/dx/assignments/NewService-3-Service.json")
+        "OtherNotes" -> Asset("responses/dx/assignments/NewService-4-OtherNotes.json")
         else -> Error(404, "Invalid actionId: $actionId")
     }
-
-    private fun versionedPath(relativePath: String) = "responses/dx/${pegaVersion.fixtureDirectory}/$relativePath"
-}
-
-private fun MockRequest.getPageInstructions() = body?.let {
-    Json.parseToJsonElement(it).jsonObject["pageInstructions"]?.jsonArray
-}
-
-private fun MockRequest.getContentPageKey(page: String, key: String) = body?.let {
-    Json.parseToJsonElement(it).jsonObject
-        .getValue("content").jsonObject
-        .getValue(page).jsonObject
-        .getValue(key).jsonPrimitive
-        .int
 }
