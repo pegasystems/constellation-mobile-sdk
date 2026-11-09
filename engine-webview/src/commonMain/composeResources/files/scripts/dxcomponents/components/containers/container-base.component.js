@@ -56,12 +56,19 @@ export class ContainerBaseComponent extends BaseComponent {
      *
      */
     reconcileChildren(newChildren = this.pConn.getChildren()) {
-        if (this.pConn.getComputedVisibility()) {
-            // children may have a 'reference' so normalize the children array
-            newChildren = ReferenceComponent.normalizePConnArray(newChildren);
-        } else {
-            newChildren = [];
-        }
+        // Resolve references before checking visibility: the parent's computed visibility can
+        // use the wrong page context and must not discard the referenced subtree prematurely.
+        newChildren = ReferenceComponent.normalizePConnArray(newChildren);
+        // Honor resolved boolean visibility before computing it in the nested context.
+        // Exclude false branches so inactive references do not contribute duplicate fields.
+        newChildren = newChildren.filter((child) => {
+            const childPConn = child?.getPConnect?.() ?? child;
+            const config = childPConn?.getConfigProps?.() ?? childPConn?.meta?.config ?? {};
+            const visibility = typeof config.visibility === "boolean"
+                ? config.visibility
+                : childPConn?.getComputedVisibility?.() ?? true;
+            return visibility !== false;
+        });
 
         const oldChildrenComponents = this.childrenComponents;
         const reconciledComponents = [];

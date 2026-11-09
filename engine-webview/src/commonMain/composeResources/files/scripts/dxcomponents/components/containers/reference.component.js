@@ -43,15 +43,26 @@ export class ReferenceComponent {
 
         const viewMetadata = inPConn.getReferencedView();
         if (!viewMetadata) {
-            throw new Error(`No view metadata found for reference: ${inPConn.getComponentConfig().name}`);
+            // Preserve the PConnect return contract even without metadata, using an empty
+            // hidden view rather than aborting normalization of the whole form.
+            const refName = inPConn.getComponentConfig()?.name || "unknown";
+            console.warn(
+                `[ReferenceComponent] Missing referenced view metadata for '${refName}'. Using an empty hidden view.`);
         }
         this._setShowLabelIfMissing(referenceConfig);
 
+        // Preserve visibility resolved in the reference context; re-evaluating the raw expression
+        // against the nested page can hide valid fields or expose inactive branches.
+        const resolvedVisibility = viewMetadata
+            ? (theResolvedConfigProps.visibility ?? referenceConfig.visibility ?? inPConn.getComputedVisibility?.() ?? true)
+            : false;
+
         const viewObject = {
-            ...viewMetadata,
+            ...(viewMetadata || { name: inPConn.getComponentConfig()?.name || "unknown", type: "View" }),
             config: {
-                ...viewMetadata.config,
+                ...viewMetadata?.config,
                 ...referenceConfig,
+                visibility: resolvedVisibility,
                 referenceContext: inPConn.getPageReference(),
             },
         };
@@ -64,6 +75,7 @@ export class ReferenceComponent {
 
         newCompPConnect.setInheritedConfig({
             ...referenceConfig,
+            visibility: resolvedVisibility,
             readOnly: theResolvedConfigProps.readOnly ? theResolvedConfigProps.readOnly : false,
             displayMode: theResolvedConfigProps.displayMode ? theResolvedConfigProps.displayMode : null,
         });
