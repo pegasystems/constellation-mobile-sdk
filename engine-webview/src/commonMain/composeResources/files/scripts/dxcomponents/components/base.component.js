@@ -37,6 +37,14 @@ export class BaseComponent {
 
     updateSelf() {}
 
+    clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
+        if (!validateMessage || validateMessage === "") {
+            pConn.clearErrorMessages({
+                property: propName,
+            });
+        }
+    }
+
     getPConnectContextReferenceKey(pConn) {
         return `${pConn.getContextName()}|${pConn.getPageReference()}`;
     }

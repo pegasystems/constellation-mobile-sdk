@@ -39,7 +39,7 @@ class AlertBannerRenderer : ComponentRenderer<AlertBannerComponent> {
         val bannerTheme = if (LocalIsDarkTheme.current) BannerThemeDark else BannerThemeLight
         Banner(
             variant = BannerVariant.valueOf(variant.name),
-            messages = messages,
+            messages = messages.map { it.message },
             bannerTheme = bannerTheme,
             modifier = Modifier.padding(top = 16.dp)
         )

@@ -119,7 +119,10 @@ export class FlowContainerComponent extends ContainerBaseComponent {
 
     #updateBanners() {
         const completeProps = this.jsComponentPConnect.getCurrentCompleteProps(this);
-        const newBannerMessages = (completeProps.pageMessages || []).concat(this.#getValidationMessages());
+        const newBannerMessages = [
+            ...(completeProps.pageMessages || []).map((msg) => ({ message: msg.message, isFieldMessage: false })),
+            ...this.#getValidationMessages().map((msg) => ({ message: msg.message, isFieldMessage: true })),
+        ];
 
         if (!deepEquals(newBannerMessages, this.bannerMessages)) {
             this.bannerMessages = newBannerMessages;
@@ -146,7 +149,10 @@ export class FlowContainerComponent extends ContainerBaseComponent {
             this.bannerMessages && this.bannerMessages.length > 0
                 ? [
                       {
-                          messages: this.bannerMessages?.map((msg) => this.localizedVal(msg.message, "Messages")),
+                          messages: this.bannerMessages.map((msg) => ({
+                              message: this.localizedVal(msg.message, "Messages"),
+                              isFieldMessage: msg.isFieldMessage,
+                          })),
                           variant: "urgent",
                       },
                   ]

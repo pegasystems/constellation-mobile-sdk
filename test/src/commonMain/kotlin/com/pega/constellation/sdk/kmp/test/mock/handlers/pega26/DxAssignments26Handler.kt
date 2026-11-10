@@ -19,7 +19,20 @@ internal class DxAssignments26Handler : VersionedDxAssignmentsHandler(PegaVersio
 
         assignmentId.contains("D-2004") -> handleSingleRecord(actionId)
 
+        assignmentId.contains("D-5010") -> handleTableConfig(actionId)
+
         else -> null
+    }
+
+    private fun handleTableConfig(actionId: String): MockResponse {
+        val response = when (actionId) {
+            "Create" -> "1-SingleDisabled"
+            "TableDisabled" -> "2-MultiRequired"
+            "MultiSelectTableRequired" -> "3-MultiDisabled"
+            "MultiSelectTableDisabled" -> "4-Complete"
+            else -> return Error(404, "Unexpected table configuration action: $actionId")
+        }
+        return asset("assignments/DataReferenceTableConfigTest-TableConfig-$response.json")
     }
 
     private fun handleListOfRecords(actionId: String): MockResponse {

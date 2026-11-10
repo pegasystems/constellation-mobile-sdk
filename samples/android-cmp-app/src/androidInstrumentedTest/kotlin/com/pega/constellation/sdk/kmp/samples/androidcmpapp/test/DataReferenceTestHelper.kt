@@ -1,5 +1,7 @@
 package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test
 
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
@@ -10,10 +12,16 @@ import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isPopup
+import androidx.compose.ui.test.isRoot
+import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import kotlinx.serialization.json.Json
+import kotlin.test.assertEquals
 
 internal class DataReferenceTestHelper(
     private val rule: ComposeContentTestRule,
@@ -70,5 +78,44 @@ internal class DataReferenceTestHelper(
 
     fun verifyCardData(model: String, values: List<String>) {
         values.forEach { card(model).assert(hasAnyDescendant(hasText(it))) }
+    }
+
+    companion object {
+        fun ComposeContentTestRule.submitAndVerify(
+            action: String,
+            expectedBody: String,
+            readRequestBody: (String) -> String
+        ) {
+            onNodeWithText("Next").performClick()
+            assertEquals(
+                Json.parseToJsonElement(expectedBody),
+                Json.parseToJsonElement(readRequestBody("/actions/$action?"))
+            )
+        }
+
+        fun ComposeContentTestRule.row(model: String, useUnfilteredMatcher: Boolean = false) =
+            onNode(rowMatcher(model, useUnfilteredMatcher), useUnmergedTree = true)
+
+        fun ComposeContentTestRule.rowMatcher(
+            model: String,
+            useUnfilteredMatcher: Boolean = false
+        ): SemanticsMatcher {
+            val nodes = onAllNodesWithText(model, useUnmergedTree = true).fetchSemanticsNodes()
+            val visibleNodes = if (useUnfilteredMatcher) {
+                nodes
+            } else {
+                val rootWidth = onAllNodes(isRoot(), useUnmergedTree = true).fetchSemanticsNodes().first().size.width
+                nodes.filter {
+                    it.size.width > 0 && it.size.height > 0 &&
+                        it.positionInRoot.x + it.size.width > 0 && it.positionInRoot.x < rootWidth
+                }
+            }
+            val centers = visibleNodes.map { it.positionInRoot.y + it.size.height / 2f }
+            return isToggleable() and SemanticsMatcher("Table row containing $model") { node ->
+                (useUnfilteredMatcher || !node.config.contains(SemanticsProperties.Role) ||
+                    node.config[SemanticsProperties.Role] != Role.Checkbox) &&
+                    centers.any { it in node.positionInRoot.y..(node.positionInRoot.y + node.size.height) }
+            }
+        }
     }
 }

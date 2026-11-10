@@ -163,6 +163,7 @@ export class SimpleTableSelectComponent extends ContainerBaseComponent {
             compositeKeys,
             viewName: this.viewName,
             parameters: this.parameters,
+            validateMessage: this.jsComponentPConnectData.validateMessage ?? ""
         };
 
         this.filters = (this.pConn.getRawMetadata()?.config).promotedFilters ?? [];

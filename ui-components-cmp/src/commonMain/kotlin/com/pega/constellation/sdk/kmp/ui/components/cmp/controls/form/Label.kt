@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
@@ -19,7 +20,8 @@ fun Label(
     required: Boolean = false,
     disabled: Boolean = false,
     readOnly: Boolean = false,
-    fontSize: TextUnit = TextUnit.Unspecified
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontWeight: FontWeight? = null
 ) {
     if (hideLabel || label.isEmpty()) return
 
@@ -31,9 +33,9 @@ fun Label(
     }
 
     Row(modifier = modifier) {
-        Text(text = label, color = textColor, fontSize = fontSize)
+        Text(text = label, color = textColor, fontSize = fontSize, fontWeight = fontWeight)
         if (required) {
-            Text(" *", color = asteriskColor, fontSize = fontSize)
+            Text(" *", color = asteriskColor, fontSize = fontSize, fontWeight = fontWeight)
         }
     }
 }
@@ -66,4 +68,10 @@ fun LabelPreviewHidden() {
 @Composable
 fun LabelPreviewFontSize() {
     Label(label = "Label", fontSize = 30.sp)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LabelPreviewFontWeight() {
+    Label(label = "Label", required = true, fontWeight = FontWeight.Bold)
 }

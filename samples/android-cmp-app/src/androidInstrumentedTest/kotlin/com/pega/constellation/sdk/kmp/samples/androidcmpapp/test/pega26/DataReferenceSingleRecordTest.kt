@@ -2,8 +2,6 @@ package com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.pega26
 
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsMatcher.Companion.expectValue
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -16,14 +14,15 @@ import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isOn
-import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.DataReferenceTestHelper
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.DataReferenceTestHelper.Companion.row
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.DataReferenceTestHelper.Companion.rowMatcher
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.DataReferenceTestHelper.Companion.submitAndVerify
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaCase
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
@@ -44,6 +43,7 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v26_1) {
     @Test
     @PegaCase("OR97MD-Constell_1-Work-DataReferenceTest")
     fun test_single_record() = runAndroidTest {
+        val readRequestBody: (String) -> String = { waitForRequestBody(it) }
         dataReference = DataReferenceTestHelper(this, "Data reference single record", cardMatcher)
         onNodeWithText("New Service").performClick()
         verifyStep("Combobox")
@@ -55,24 +55,28 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v26_1) {
         )
         verifyDropdownOptionsAndSelect("C-Class")
         verifyPayload("Combobox/refresh", "8495d3b2-609a-44a3-a8aa-1300db094ef7")
-        submitAndVerify("Combobox", "8495d3b2-609a-44a3-a8aa-1300db094ef7", "Dropdown")
+        submitAndVerify("Combobox", singleRecordPayload("8495d3b2-609a-44a3-a8aa-1300db094ef7"), readRequestBody)
+        verifyStep("Dropdown")
 
         dataReference.dropdownField().assert(hasText("C-Class"))
         verifyDropdownOptionsAndSelect("A4")
         verifyPayload("Dropdown/refresh", "067f6be1-819a-41ab-b0a1-fc129199a074")
-        submitAndVerify("Dropdown", "067f6be1-819a-41ab-b0a1-fc129199a074", "Table")
+        submitAndVerify("Dropdown", singleRecordPayload("067f6be1-819a-41ab-b0a1-fc129199a074"), readRequestBody)
+        verifyStep("Table")
 
         verifyTable("A4")
-        row("3 Series").performClick()
+        row("3 Series", useUnfilteredMatcher = true).performClick()
         verifySelectedRow("3 Series", dataReference.bmwRow)
-        row("A4").assertIsOff()
-        submitAndVerify("Table", "ad8a5b02-83fe-4bf2-a738-135d473df87a", "Simple Table")
+        row("A4", useUnfilteredMatcher = true).assertIsOff()
+        submitAndVerify("Table", singleRecordPayload("ad8a5b02-83fe-4bf2-a738-135d473df87a"), readRequestBody)
+        verifyStep("Simple Table")
 
         verifyTable("3 Series")
-        row("Golf").performClick()
+        row("Golf", useUnfilteredMatcher = true).performClick()
         verifySelectedRow("Golf", golfRow)
-        row("3 Series").assertIsOff()
-        submitAndVerify("SimpleTable", "c6398654-03bd-487c-a9b5-d1b474868ffc", "Cards")
+        row("3 Series", useUnfilteredMatcher = true).assertIsOff()
+        submitAndVerify("SimpleTable", singleRecordPayload("c6398654-03bd-487c-a9b5-d1b474868ffc"), readRequestBody)
+        verifyStep("Cards")
 
         onAllNodes(cardMatcher, useUnmergedTree = true).assertCountEquals(dataReference.models.size)
         dataReference.models.forEach { dataReference.card(it).performScrollTo().assertIsDisplayed() }
@@ -94,7 +98,8 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v26_1) {
                 "Mileage: 45230", "Price: 45999.99"
             )
         )
-        submitAndVerify("Cards", "eaf449dd-b7cc-483b-96f5-b9546336aa5d", "Readonly")
+        submitAndVerify("Cards", singleRecordPayload("eaf449dd-b7cc-483b-96f5-b9546336aa5d"), readRequestBody)
+        verifyStep("Readonly")
 
         waitForNode("Camry")
     }
@@ -116,45 +121,31 @@ class DataReferenceSingleRecordTest : ComposeTest(PegaVersion.v26_1) {
         dataReference.dropdownField().assert(hasText(model))
     }
 
-    private fun ComposeContentTestRule.rowMatcher(model: String): SemanticsMatcher {
-        val centers = onAllNodesWithText(model, useUnmergedTree = true).fetchSemanticsNodes()
-            .map { it.positionInRoot.y + it.size.height / 2f }
-        // DataTable exposes controls and cells as siblings, including measurement-only copies.
-        return isToggleable() and SemanticsMatcher("Table row containing $model") {
-            centers.any { center -> center in it.positionInRoot.y..(it.positionInRoot.y + it.size.height) }
-        }
-    }
-
-    private fun ComposeContentTestRule.row(model: String) =
-        onNode(rowMatcher(model), useUnmergedTree = true)
-
     private fun ComposeContentTestRule.verifyTable(selectedModel: String) {
         dataReference.waitForModels()
         dataReference.verifyTableColumns()
-        dataReference.models.forEach { row(it).assertExists() }
+        dataReference.models.forEach { row(it, useUnfilteredMatcher = true).assertExists() }
         verifySelectedRow(selectedModel)
     }
 
     private fun ComposeContentTestRule.verifySelectedRow(model: String, values: List<String> = emptyList()) {
         waitUntil(timeoutMillis = 5_000) {
-            onAllNodes(rowMatcher(model) and isOn(), useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty()
+            onAllNodes(
+                rowMatcher(model, useUnfilteredMatcher = true) and isOn(),
+                useUnmergedTree = true
+            ).fetchSemanticsNodes().isNotEmpty()
         }
-        row(model).assertIsOn()
-        dataReference.verifyRowData(model, row(model), values)
-    }
-
-    private fun ComposeContentTestRule.submitAndVerify(action: String, guid: String, nextTitle: String) {
-        onNodeWithText("Next").performClick()
-        verifyPayload("$action?", guid)
-        verifyStep(nextTitle)
+        row(model, useUnfilteredMatcher = true).assertIsOn()
+        dataReference.verifyRowData(model, row(model, useUnfilteredMatcher = true), values)
     }
 
     private fun ComposeContentTestRule.verifyPayload(action: String, guid: String) {
         assertEquals(
-            Json.parseToJsonElement(
-                """{"content":{"DataReferenceSingleRecord":{"pyGUID":"$guid"}},"pageInstructions":[]}"""
-            ),
+            Json.parseToJsonElement(singleRecordPayload(guid)),
             Json.parseToJsonElement(waitForRequestBody("/actions/$action"))
         )
     }
+
+    private fun singleRecordPayload(guid: String) =
+        """{"content":{"DataReferenceSingleRecord":{"pyGUID":"$guid"}},"pageInstructions":[]}"""
 }

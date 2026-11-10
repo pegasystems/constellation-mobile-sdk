@@ -15,6 +15,7 @@ import com.pega.constellation.sdk.kmp.core.components.getString
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -24,6 +25,12 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
     data class Item(val data: Map<String, String>, val selected: Boolean)
 
     var label by mutableStateOf("")
+        private set
+    var validateMessage by mutableStateOf("")
+        private set
+    var required by mutableStateOf(false)
+        private set
+    var disabled by mutableStateOf(false)
         private set
     var selectionMode by mutableStateOf(SINGLE)
         private set
@@ -36,6 +43,9 @@ class ListViewComponent(context: ComponentContext) : BaseComponent(context) {
 
     override fun applyProps(props: JsonObject) {
         label = props.getString("label")
+        validateMessage = props["validateMessage"]?.jsonPrimitive?.contentOrNull ?: ""
+        required = props.getBoolean("required")
+        disabled = props.getBoolean("disabled")
         selectionMode = props.selectionMode()
         columnNames = props.getJSONArray("columnNames").map { it.jsonPrimitive.content }
         columnLabels = props.getJSONArray("columnLabels").map { it.jsonPrimitive.content }

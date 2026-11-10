@@ -1,0 +1,49 @@
+{
+  "fetchDateTime": "2026-11-04T13:46:07.450Z",
+  "pxObjClass": "Pega-API-DataExploration-Data",
+  "resultCount": 5,
+  "data": [
+    {
+      "Brand": "Audi",
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Price": 56300.25,
+      "Model": "A4",
+      "pyGUID": "067f6be1-819a-41ab-b0a1-fc129199a074"
+    },
+    {
+      "Brand": "Mercedes-Benz",
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Price": 32750.5,
+      "Model": "C-Class",
+      "pyGUID": "8495d3b2-609a-44a3-a8aa-1300db094ef7"
+    },
+    {
+      "Brand": "BMW",
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Price": 78500.0,
+      "Model": "3 Series",
+      "pyGUID": "ad8a5b02-83fe-4bf2-a738-135d473df87a"
+    },
+    {
+      "Brand": "Volkswagen",
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Price": 89200.75,
+      "Model": "Golf",
+      "pyGUID": "c6398654-03bd-487c-a9b5-d1b474868ffc"
+    },
+    {
+      "Brand": "Toyota",
+      "pxObjClass": "OR97MD-Constell_1-Data-Car",
+      "Price": 45999.99,
+      "Model": "Camry",
+      "pyGUID": "eaf449dd-b7cc-483b-96f5-b9546336aa5d"
+    }
+  ],
+  "hasMoreResults": false,
+  "queryStats": {
+    "pxObjClass": "Embed-DataExploration-QueryStats",
+    "sourceType": "RDBMS - Pega (Local)",
+    "sourceExecutionTime": "833.4 μs"
+  },
+  "pageSize": 5
+}

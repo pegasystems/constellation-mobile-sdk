@@ -70,7 +70,7 @@ class ConstellationSdk25Test {
             waitUntil("required validation banner to appear") {
                 root.descendants()
                     .filterIsInstance<AlertBannerComponent>()
-                    .any { banner -> banner.messages.any { it.contains("Cannot be blank") } }
+                    .any { banner -> banner.messages.any { it.isFieldMessage && it.message.contains("Cannot be blank") } }
             }
 
             checkbox.updateValue("false")
@@ -91,7 +91,7 @@ class ConstellationSdk25Test {
             waitUntil("required validation banner to disappear") {
                 root.descendants()
                     .filterIsInstance<AlertBannerComponent>()
-                    .none { banner -> banner.messages.any { it.contains("Cannot be blank") } }
+                    .none { banner -> banner.messages.any { it.message.contains("Cannot be blank") } }
             }
         }
 

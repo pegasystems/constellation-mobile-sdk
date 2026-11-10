@@ -5,6 +5,7 @@
 - Read `.specify/memory/constitution.md` for the project's non-negotiable engineering principles.
 - For non-trivial changes, use the spec-driven workflow described in `CONTRIBUTING.md` and the Copilot skills under `.github/skills/`.
 - Read the relevant module README and `docs/` page before changing behavior. Preserve Kotlin Multiplatform module and source-set boundaries.
+- Avoid unjustified duplication in production and test code. Reuse existing methods or extract common helpers for equivalent behavior when this preserves clarity, behavior, and module boundaries; retain duplication when a concrete architectural or behavioral difference justifies it.
 - Use the checked-in Gradle Wrapper and report the exact verification commands and results.
 - Do not create or modify GitHub Actions workflows unless the user explicitly requests it.
 

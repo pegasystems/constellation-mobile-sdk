@@ -27,12 +27,16 @@ internal class DxCases26Handler : VersionedDxCasesHandler(PegaVersion.v26_1) {
     override val caseTypes = mapOf(
         "OAOEH9-EloEloApp-Work-CascadingDropdowns" to "CascadingDropdowns-POST.json",
         "OR97MD-Constell_1-Work-DataReferenceTest" to "DataReferenceSingleRecordTest-SingleRecord-Combobox.json",
+        "OR97MD-Constell_1-Work-DataReferenceConfigTest" to
+            "DataReferenceTableConfigTest-TableConfig-SingleRequired.json",
         "OR97MD-Constell_1-Work-DataReferenceListOfRecordsTest" to
             "DataReferenceListOfRecordsTest-ListOfRecords-Combobox.json"
     )
 
     override fun getCaseActions(request: MockRequest): MockResponse? =
         when {
+            request.url.contains("D-5010") ->
+                asset("cases/DataReferenceTableConfigTest-TableConfig-Actions.json")
             request.url.contains("D-3003") ->
                 asset("cases/DataReferenceListOfRecordsTest-ListOfRecords-Actions.json")
             request.url.contains("D-2004") ->

@@ -1,0 +1,69 @@
+{
+  "data": {
+    "caseInfo": {
+      "caseTypeID": "OR97MD-Constell_1-Work-DataReferenceConfigTest",
+      "owner": "test",
+      "associations": {
+        "follows": false
+      },
+      "lastUpdatedBy": "test",
+      "assignments": [],
+      "hasNewAttachments": false,
+      "businessID": "D-5010",
+      "sla": {
+        "goal": "",
+        "deadline": ""
+      },
+      "promotedActions": [
+        {
+          "name": "Change stage",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-5010/actions/pyChangeStage",
+              "type": "GET",
+              "title": "Get case action details"
+            }
+          },
+          "ID": "pyChangeStage",
+          "type": "case",
+          "category": "action"
+        }
+      ],
+      "WidgetsToRefresh": [
+        "TaskList"
+      ],
+      "caseTypeName": "Data Reference Config Test",
+      "urgency": 10,
+      "createTime": "2026-11-04T13:46:07.205Z",
+      "createdBy": "test",
+      "name": "Data Reference Config Test",
+      "stages": [
+        {
+          "entryTime": "2026-11-04T13:46:07.211Z",
+          "name": "Create",
+          "links": {
+            "open": {
+              "rel": "self",
+              "href": "/cases/OR97MD-CONSTELL_1-WORK D-5010/stages/PRIM0",
+              "type": "PUT",
+              "title": "Jump to this stage"
+            }
+          },
+          "visited_status": "completed",
+          "ID": "PRIM0",
+          "type": "Primary",
+          "transitionType": "create"
+        }
+      ],
+      "ID": "OR97MD-CONSTELL_1-WORK D-5010",
+      "caseTypeIcon": "cmicons/pycase.svg",
+      "status": "New",
+      "stageID": "PRIM0",
+      "stageLabel": "Create",
+      "lastUpdateTime": "2026-11-04T13:47:04.778Z",
+      "content": {}
+    }
+  },
+  "confirmationNote": "Thank you! The next step in this case has been routed appropriately."
+}

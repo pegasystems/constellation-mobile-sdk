@@ -14,6 +14,9 @@ class ListViewRenderer : ComponentRenderer<ListViewComponent> {
         val selectedItems = items.filter { it.selected }
         Table(
             label = label,
+            validateMessage = validateMessage,
+            required = required,
+            disabled = disabled,
             selectionMode = selectionMode.toTableSelectionMode(),
             columns = columnNames,
             columnsLabels = columnLabels,

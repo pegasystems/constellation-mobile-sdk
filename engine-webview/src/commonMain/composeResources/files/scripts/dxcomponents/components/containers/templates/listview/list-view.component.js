@@ -11,7 +11,7 @@ export class ListViewComponent extends BaseComponent {
     fields$;
     displayedColumns$ = [];
     displayedColumnsLabels$ = [];
-    configProps$;
+    configProps;
     selectionMode;
     singleSelectionMode;
     multiSelectionMode;
@@ -29,11 +29,15 @@ export class ListViewComponent extends BaseComponent {
     label = "";
     componentValue;
     contextPage;
+    propName;
 
     props = {
         label: "",
         selectionMode: "",
         selectedItemIndex: "",
+        validateMessage: "",
+        required: false,
+        disabled: false,
         columnNames: [],
         items: {},
     };
@@ -74,8 +78,8 @@ export class ListViewComponent extends BaseComponent {
 
     #shouldReloadData(oldPayload, newPayload) {
         const filterPayload = (payload) => {
-            // Fields to exclude from comparison (they contain selection values, not data config).
-            const { value, selectionKey, contextPage, primaryField, ...rest } = payload;
+            // Selection and validation updates do not change the data configuration.
+            const { value, selectionKey, contextPage, primaryField, validateMessage, ...rest } = payload;
             return rest;
         };
         return !deepEquals(filterPayload(oldPayload), filterPayload(newPayload));
@@ -101,27 +105,28 @@ export class ListViewComponent extends BaseComponent {
             selectedObject.$selected = isSelected;
         }
         this.pConn?.getListActions?.()?.setSelectedRows([selectedObject]);
+        this.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.payload?.validateMessage);
     }
 
     updateSelf(shouldReloadData = true) {
-        this.configProps$ = this.pConn.getConfigProps();
-
+        this.configProps = this.pConn.getConfigProps();
+        this.propName = this.pConn.getStateProps().value;
         // By default, pyGUID is used for Data classes and pyID is for Work classes as row-id/key
-        const defaultRowID = this.configProps$?.referenceType === "Case" ? "pyID" : "pyGUID";
-        this.compositeKeys = this.configProps$?.compositeKeys ?? this.payload.compositeKeys;
+        const defaultRowID = this.configProps?.referenceType === "Case" ? "pyID" : "pyGUID";
+        this.compositeKeys = this.configProps?.compositeKeys ?? this.payload.compositeKeys;
         console.debug(TAG, `Using compositeKeys: ${JSON.stringify(this.compositeKeys)}`);
 
         this.rowID = this.compositeKeys && this.compositeKeys?.length === 1 ? this.compositeKeys[0] : defaultRowID;
         console.debug(TAG, `Using rowID: ${this.rowID}`);
 
-        this.componentValue = this.configProps$?.value;
-        this.contextPage = this.configProps$?.contextPage;
+        this.componentValue = this.configProps?.value;
+        this.contextPage = this.configProps?.contextPage;
 
-        this.showDynamicFields = this.configProps$?.showDynamicFields;
-        this.selectionMode = this.configProps$.selectionMode;
+        this.showDynamicFields = this.configProps?.showDynamicFields;
+        this.selectionMode = this.configProps.selectionMode;
 
-        let title = this.configProps$?.title || this.configProps$?.label || "List";
-        const inheritedProps = this.configProps$?.inheritedProps;
+        let title = this.configProps?.title || this.configProps?.label || "List";
+        const inheritedProps = this.configProps?.inheritedProps;
 
         if (title === "List" && inheritedProps) {
             for (const inheritedProp of inheritedProps) {
@@ -142,13 +147,13 @@ export class ListViewComponent extends BaseComponent {
 
         console.log(TAG, `ListView update requires data reload.`);
 
-        if (!this.configProps$) {
+        if (!this.configProps) {
             console.warn(TAG, `No config props found for ListView component.`);
             return;
         }
 
         if (!this.payload) {
-            this.payload = { referenceList: this.configProps$.referenceList };
+            this.payload = { referenceList: this.configProps.referenceList };
         }
         getListContextResponse({
             pConn: this.pConn,
@@ -202,7 +207,7 @@ export class ListViewComponent extends BaseComponent {
 
     #updateSelectedItemsMultiForCompositeKeys() {
         if (!this.listViewItems?.length) return;
-        const selectedCompositeIds = this.configProps$?.readonlyContextList || [];
+        const selectedCompositeIds = this.configProps?.readonlyContextList || [];
         this.listViewItems.forEach((item) => {
             item.selected = selectedCompositeIds.some((context) => {
                 return this.compositeKeys.every((key) => {
@@ -216,7 +221,7 @@ export class ListViewComponent extends BaseComponent {
 
     #updateSelectedItemsMultiForSingleKey() {
         const selectedIds = new Set(
-            this.configProps$.readonlyContextList
+            this.configProps.readonlyContextList
                 .map(element => element[this.rowID])
                 .filter(id => id !== "" && id != null)
         );
@@ -250,6 +255,9 @@ export class ListViewComponent extends BaseComponent {
     #sendPropsUpdate() {
         this.props = {
             label: this.label,
+            validateMessage: this.payload?.validateMessage ?? "",
+            required: this.utils.getBooleanValue(this.configProps?.required ?? false),
+            disabled: this.utils.getBooleanValue(this.configProps?.disabled ?? false),
             selectionMode: this.selectionMode,
             columnNames: this.displayedColumns$,
             columnLabels: this.displayedColumnsLabels$,
@@ -264,9 +272,9 @@ export class ListViewComponent extends BaseComponent {
 
     #getListData(onDataCollected) {
         const componentConfig = this.pConn.getComponentConfig();
-        if (this.configProps$) {
+        if (this.configProps) {
             this.#preparePayload();
-            const refList = this.configProps$.referenceList;
+            const refList = this.configProps.referenceList;
             const fieldsMetaDataPromise = this.#getFieldsMetadata(refList);
             // returns a promise
             const payload = this.payload || this.filterPayload || {};
@@ -287,7 +295,7 @@ export class ListViewComponent extends BaseComponent {
                     if (!this.alive) {
                         return;
                     }
-                    this.fields$ = this.configProps$.presets[0].children[0].children;
+                    this.fields$ = this.configProps.presets[0].children[0].children;
                     // this is an unresovled version of this.fields$, need unresolved, so can get the property reference
                     const columnFields = componentConfig.presets[0].children[0].children;
 

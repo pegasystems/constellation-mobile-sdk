@@ -1,10 +1,10 @@
 <!--
 Sync Impact Report
-- Version: 1.0.1 -> 1.0.2
-- Modified principles: - Modified principles: IV. Verification Is Part of the Design
-- Added sections: Prohibit tests of test classes and infrastructure; verify them through existing scenarios.
+- Version: 1.0.2 -> 1.1.0
+- Modified principles: None
+- Added sections: Engineering standard for avoiding unjustified duplication.
 - Removed sections: None
-- Templates requiring updates: None
+- Templates requiring updates: None; templates read the constitution at runtime.
 - Follow-up TODOs: None
 -->
 
@@ -43,6 +43,10 @@ User-visible behavior, public APIs, supported platform constraints, integration 
 ## Engineering Standards
 
 - Use the existing Kotlin, Kotlin Multiplatform, Compose Multiplatform, SwiftUI, JavaScript, and Gradle conventions before introducing new abstractions.
+- Avoid unjustified code duplication in production and test code. Reuse existing
+  methods or extract common helpers for equivalent behavior when doing so preserves
+  clarity, behavior, and module boundaries; retain duplication when a concrete
+  architectural or behavioral difference justifies it.
 - Write Kotlin `if` constructs with braces and each branch on separate lines, even when a branch contains a single statement or expression; do not use single-line branches.
 - Keep changes focused. Do not mix unrelated refactoring, dependency upgrades, formatting churn, or generated artifacts with feature work.
 - Prefer explicit types and small composable functions. Add comments only where the intent or platform constraint is not obvious from the code.
@@ -61,6 +65,6 @@ User-visible behavior, public APIs, supported platform constraints, integration 
 
 ## Governance
 
-This constitution supplements `AGENTS.md`, module READMEs, and existing build or contribution documentation. When guidance conflicts, the more specific repository or module rule applies, while security and compatibility requirements remain mandatory. Constitution changes require a rationale, an update to the version and amendment date below, and review by the repository maintainers.
+This constitution supplements `AGENTS.md`, module READMEs, and existing build or contribution documentation. When guidance conflicts, the more specific repository or module rule applies, while security and compatibility requirements remain mandatory. Constitution changes require a rationale, an update to the version and amendment date below, and review by the repository maintainers. Version amendments follow semantic versioning: major for incompatible governance changes, minor for new or materially expanded guidance, and patch for clarifications. Reviews MUST check compliance and document justified exceptions.
 
-**Version**: 1.0.2 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-10-23
+**Version**: 1.1.0 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-11-04

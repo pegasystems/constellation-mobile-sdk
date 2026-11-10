@@ -23,6 +23,7 @@ internal class DxDataViews26Handler : VersionedDxDataViewsHandler(PegaVersion.v2
         val projection = when (fields) {
             null -> "DataReferenceListOfRecords-All"
             listOf("Model", "pyGUID") -> "Models"
+            listOf("Brand", "Model", "Price", "pyGUID") -> "TableConfig"
             listOf(
                 "Brand", "Model", "Mileage", "Length", "DateOfProduction", "Damaged", "Price",
                 "Discount", "CarAvailability", "DealerEmail", "DealerPhone", "DealerWebsite",

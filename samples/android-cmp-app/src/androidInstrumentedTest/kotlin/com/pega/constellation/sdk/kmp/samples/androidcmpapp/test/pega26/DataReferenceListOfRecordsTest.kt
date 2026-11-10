@@ -14,8 +14,6 @@ import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.isRoot
-import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
@@ -24,6 +22,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.ComposeTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.DataReferenceTestHelper
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.DataReferenceTestHelper.Companion.row
+import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.DataReferenceTestHelper.Companion.submitAndVerify
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.PegaCase
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.runAndroidTest
 import com.pega.constellation.sdk.kmp.samples.androidcmpapp.test.waitForNode
@@ -60,6 +60,7 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
     @Test
     @PegaCase("OR97MD-Constell_1-Work-DataReferenceListOfRecordsTest")
     fun test_data_reference_list_of_records() = runAndroidTest {
+        val readRequestBody: (String) -> String = { waitForRequestBody(it) }
         dataReference = DataReferenceTestHelper(this, "Data reference List of records", cardMatcher)
         onNodeWithText("New Service").performClick()
         verifyStep("Combobox")
@@ -71,7 +72,8 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         )
 
         verifyDropdownOptionsAndSelection()
-        submitAndVerify("Create", "Table")
+        submitAndVerify("Create", expectedPayloads.getValue("Create"), readRequestBody)
+        verifyStep("Table")
 
         verifyEditableTable(setOf("C-Class", "Golf"))
         row("Golf").performClick()
@@ -80,7 +82,8 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         row("3 Series").performClick()
         verifyEditableTable(setOf("C-Class", "3 Series"))
         dataReference.verifyRowData("3 Series", row("3 Series"), dataReference.bmwRow)
-        submitAndVerify("Table", "SimpleTable")
+        submitAndVerify("Table", expectedPayloads.getValue("Table"), readRequestBody)
+        verifyStep("SimpleTable")
 
         verifyEditableTable(setOf("C-Class", "3 Series"))
         row("C-Class").performClick()
@@ -89,7 +92,8 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         row("Camry").performClick()
         verifyEditableTable(setOf("3 Series", "Camry"))
         dataReference.verifyRowData("Camry", row("Camry"), camryRow)
-        submitAndVerify("SimpleTable", "Checkbox group")
+        submitAndVerify("SimpleTable", expectedPayloads.getValue("SimpleTable"), readRequestBody)
+        verifyStep("Checkbox group")
 
         verifyCheckboxGroup(setOf("3 Series", "Camry"))
         checkboxGroupOption("3 Series").performClick()
@@ -98,7 +102,8 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         checkboxGroupOption("A4").performClick()
         checkboxGroupOption("Golf").performClick()
         verifyCheckboxGroup(setOf("A4", "Golf", "Camry"))
-        submitAndVerify("CheckboxGroup", "Cards")
+        submitAndVerify("CheckboxGroup", expectedPayloads.getValue("CheckboxGroup"), readRequestBody)
+        verifyStep("Cards")
 
         verifyCards(setOf("A4", "Golf", "Camry"))
         dataReference.card("Camry").performScrollTo().performClick()
@@ -108,16 +113,20 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         dataReference.card("C-Class").performScrollTo().performClick()
         verifyCards(setOf("A4", "C-Class", "Golf"))
         verifyCardData("A4")
-        submitAndVerify("Cards", "Readonly field")
+        submitAndVerify("Cards", expectedPayloads.getValue("Cards"), readRequestBody)
+        verifyStep("Readonly field")
 
         listOf("A4", "Golf", "C-Class").forEach { waitForNode(it) }
-        submitAndVerify("ReadonlyField", "Readonly table")
+        submitAndVerify("ReadonlyField", expectedPayloads.getValue("ReadonlyField"), readRequestBody)
+        verifyStep("Readonly table")
 
         verifyReadonlyTable()
-        submitAndVerify("ReadonlyTable", "Readonly simpletable")
+        submitAndVerify("ReadonlyTable", expectedPayloads.getValue("ReadonlyTable"), readRequestBody)
+        verifyStep("Readonly simpletable")
 
         verifyReadonlyTable()
-        submitAndVerify("ReadonlySimpletable", "Readonly cards")
+        submitAndVerify("ReadonlySimpletable", expectedPayloads.getValue("ReadonlySimpletable"), readRequestBody)
+        verifyStep("Readonly cards")
 
         verifyReadonlyCards()
         verifyCardData("A4")
@@ -162,26 +171,6 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         waitForNode("C-Class, Golf")
     }
 
-    private fun ComposeContentTestRule.rowMatcher(model: String): SemanticsMatcher {
-        val rootWidth = onAllNodes(isRoot(), useUnmergedTree = true).fetchSemanticsNodes().first().size.width
-        val centers = onAllNodesWithText(model, useUnmergedTree = true).fetchSemanticsNodes()
-            .filter {
-                it.size.width > 0 &&
-                    it.size.height > 0 &&
-                    it.positionInRoot.x + it.size.width > 0 &&
-                    it.positionInRoot.x < rootWidth
-            }
-            .map { it.positionInRoot.y + it.size.height / 2f }
-        return isToggleable() and SemanticsMatcher("Table row containing $model") { node ->
-            (!node.config.contains(SemanticsProperties.Role) ||
-                node.config[SemanticsProperties.Role] != Role.Checkbox) &&
-                centers.any { center -> center in node.positionInRoot.y..(node.positionInRoot.y + node.size.height) }
-        }
-    }
-
-    private fun ComposeContentTestRule.row(model: String) =
-        onNode(rowMatcher(model), useUnmergedTree = true)
-
     private fun ComposeContentTestRule.verifyEditableTable(selectedModels: Set<String>) {
         dataReference.waitForModels()
         dataReference.verifyTableColumns()
@@ -212,7 +201,7 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         }
     }
 
-    private fun ComposeContentTestRule.verifyCardData(model: String) {
+    private fun verifyCardData(model: String) {
         val cardData = listOf(
             "Brand: Audi",
             "Model: A4",
@@ -250,15 +239,6 @@ class DataReferenceListOfRecordsTest : ComposeTest(PegaVersion.v26_1) {
         }
         onAllNodes(cardMatcher, useUnmergedTree = true).assertCountEquals(readonlyModels.size)
         readonlyModels.forEach { dataReference.card(it).performScrollTo().assertIsDisplayed() }
-    }
-
-    private fun ComposeContentTestRule.submitAndVerify(action: String, nextTitle: String) {
-        onNodeWithText("Next").performClick()
-        assertEquals(
-            Json.parseToJsonElement(expectedPayloads.getValue(action)),
-            Json.parseToJsonElement(waitForRequestBody("/actions/$action?"))
-        )
-        verifyStep(nextTitle)
     }
 
     private val expectedPayloads = mapOf(

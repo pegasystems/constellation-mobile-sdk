@@ -226,7 +226,10 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
             bannerMessages && bannerMessages.length > 0
                 ? [
                     {
-                        messages:bannerMessages?.map((msg) => this.localizedVal(msg.message, "Messages")),
+                        messages: bannerMessages.map((msg) => ({
+                            message: this.localizedVal(msg.message, "Messages"),
+                            isFieldMessage: msg.isFieldMessage,
+                        })),
                         variant: "urgent",
                     },
                 ]
@@ -242,8 +245,8 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
     #getBannerMessages() {
         const { pageMessages, httpMessages } = this.stateProps;
         const bannerMessages = [];
-        bannerMessages.push(...(pageMessages?.map(msg => { return { type: "error", message: msg }}) || []))
-        bannerMessages.push(...(httpMessages?.map(msg => { return { type: "error", message: msg }}) || []))
+        bannerMessages.push(...(pageMessages?.map(msg => { return { message: msg, isFieldMessage: false }}) || []))
+        bannerMessages.push(...(httpMessages?.map(msg => { return { message: msg, isFieldMessage: false }}) || []))
         bannerMessages.push(...(this.#getFieldsValidationMessages() || []));
         return bannerMessages;
     }
@@ -306,7 +309,7 @@ export class ModalViewContainerComponent extends ContainerBaseComponent {
         if (fieldValidationMessages) {
             fieldValidationMessages.forEach((fieldMessage) => {
                 const message = `${fieldMessage.label} ${fieldMessage.description}`;
-                messages.push({ type: "error", message: message });
+                messages.push({ message: message, isFieldMessage: true });
             });
         }
         return messages;

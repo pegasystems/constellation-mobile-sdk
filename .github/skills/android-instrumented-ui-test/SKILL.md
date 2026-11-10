@@ -127,8 +127,8 @@ required operator normalization. Keep fixture origin in related test documentati
   `handleAction` dispatch. Match assignments by the recorded case identifier using
   `assignmentId.contains("D-2004")`, not equality against the whole assignment ID, so routing
   does not depend on the assignment prefix, work class, flow suffix, or encoded spaces.
-  Match the action ID, including refresh suffixes where applicable. Validate submitted content and page instructions
-  against the recording before returning the next response.
+  Match the action ID, including refresh suffixes where applicable. Do not validate request bodies
+  in handlers; verify submitted content and page instructions in the instrumented scenario instead.
 - For case GET/POST/DELETE/PATCH responses in `dx/<version>/cases`, use the matching
   `pega24/DxCases24Handler.kt`, `pega25/DxCases25Handler.kt`, or `pega26/DxCases26Handler.kt`.
   Add creation entries to its `caseTypes` map, using the `caseTypeID` from the first recorded
@@ -244,7 +244,8 @@ cause false failures. Verify the complete recorded payload, including `content` 
 fields or instructions. Check creation and refresh bodies as well when they are part of the
 requested behavior.
 
-Handler-side validation complements captured-body assertions; it does not replace them.
+Do not add request-body validation to mock handlers. Handlers may inspect request inputs when
+needed to route distinct recorded responses; assert expected request bodies in the scenario.
 
 ---
 

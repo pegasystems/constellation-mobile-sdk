@@ -28,10 +28,10 @@ struct AlertBannerView: View {
                 Text(state.component.variant.style.title)
                     .font(.headline)
                     .fontWeight(.bold)
-                ForEach(state.component.messages, id: \.self) { message in
+                ForEach(Array(state.component.messages.enumerated()), id: \.offset) { _, message in
                     HStack(alignment: .top) {
                         Text("•")
-                        Text(message)
+                        Text(message.message)
                             .font(.body)
                             .fixedSize(horizontal:false, vertical:true)
                     }

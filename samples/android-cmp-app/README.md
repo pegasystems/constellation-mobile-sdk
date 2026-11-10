@@ -50,10 +50,6 @@ Scenario tests are grouped under
 - `pega25/`: Pega 25 scenarios.
 - `pega26/`: Pega 26 scenarios.
 
-Test setup, utilities, runners, and fakes remain shared in the parent package and `fake/`.
-`DataReferenceTestHelper` shares car data, dropdown and card lookup, and table/card assertions
-between the Pega 26 single-record and list-of-records scenarios; selection and submission logic
-remain in each scenario.
 Each test class passes its Pega version to `ComposeTest`, and each scenario declares its
 case type with `@PegaCase`:
 

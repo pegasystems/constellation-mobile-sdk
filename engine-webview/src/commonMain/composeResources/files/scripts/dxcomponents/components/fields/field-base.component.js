@@ -89,12 +89,4 @@ export class FieldBaseComponent extends BaseComponent {
         }
         this.clearErrorMessagesIfNoErrors(this.pConn, this.propName, this.jsComponentPConnectData.validateMessage);
     }
-
-    clearErrorMessagesIfNoErrors(pConn, propName, validateMessage) {
-        if (!validateMessage || validateMessage === "") {
-            pConn.clearErrorMessages({
-                property: propName,
-            });
-        }
-    }
 }

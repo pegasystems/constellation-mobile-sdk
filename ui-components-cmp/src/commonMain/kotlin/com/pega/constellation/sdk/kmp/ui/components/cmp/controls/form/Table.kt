@@ -17,9 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.common.Heading
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.TableSelectionMode.MULTI
 import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.TableSelectionMode.SINGLE
+import com.pega.constellation.sdk.kmp.ui.components.cmp.controls.form.internal.HelperText
 import io.github.windedge.table.DataTable
 
 enum class TableSelectionMode { SINGLE, MULTI }
@@ -36,34 +36,67 @@ data class TableItem(
 @Composable
 fun Table(
     label: String,
+    validateMessage: String,
     selectionMode: TableSelectionMode,
     columns: List<String>,
     columnsLabels: List<String>,
     items: List<TableItem>,
     selectedItem: List<TableItem>,
+    required: Boolean,
+    disabled: Boolean,
     onItemClick: (Int, Boolean) -> Unit
 ) {
     Column {
-        Heading(label, Modifier.padding(vertical = 8.dp), fontSize = 16.sp)
-
+        Label(
+            label = label,
+            modifier = Modifier.padding(vertical = 8.dp),
+            hideLabel = false,
+            required = required,
+            disabled = false,
+            readOnly = false,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        HelperText(
+            text = "",
+            modifier = Modifier.padding(bottom = 8.dp),
+            validateMessage = validateMessage,
+            disabled = disabled,
+            readOnly = false
+        )
         DataTable(
             modifier = Modifier.horizontalScroll(rememberScrollState()),
             columns = {
                 headerBackground { TableHeaderBackground() }
                 column {} // for selection control
-                columnsLabels.forEach { column { Text(it.uppercase(), fontWeight = FontWeight.Bold) } }
+                columnsLabels.forEach {
+                    column {
+                        Text(
+                            it.uppercase(),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         ) {
             items.forEachIndexed { i, item ->
                 val isChecked = selectedItem.contains(item)
-                row(Modifier.toggleable(isChecked) {
+                row(Modifier.toggleable(value = isChecked, enabled = !disabled) {
                     val selected = if (selectionMode == MULTI) !isChecked else true
                     onItemClick(i, selected)
                 }) {
                     cell {
                         when (selectionMode) {
-                            SINGLE -> RadioButton(isChecked, onClick = { onItemClick(i, true) })
-                            MULTI -> Checkbox(isChecked, onCheckedChange = { onItemClick(i, !isChecked) })
+                            SINGLE -> RadioButton(
+                                selected = isChecked,
+                                onClick = { onItemClick(i, true) },
+                                enabled = !disabled
+                            )
+                            MULTI -> Checkbox(
+                                checked = isChecked,
+                                onCheckedChange = { onItemClick(i, !isChecked) },
+                                enabled = !disabled
+                            )
                         }
                     }
                     columns.forEach { cell { Text(item.data[it].orEmpty()) } }
