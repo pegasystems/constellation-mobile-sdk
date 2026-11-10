@@ -62,7 +62,7 @@ To do that please follow below steps:
     - For "scope"  try to find object in current scope. It can be lifecycleScope of activity (if we are in activity class). (remember about import androidx.lifecycle.lifecycleScope)
       If no scope found ask user to provide one. If he does not provide any then create a scope.
     - For "callFactory" ask user for an instance. Explain that it is needed for Pega DX communication and can be any Call.Factory, including OkHttpClient.
-      If he does not provide any instance then create it for him using AndroidWebViewEngine.defaultHttpClient() method.
+      If he does not provide any instance then create it for him using AndroidWebViewEngine.defaultCallFactory() method.
       If you are creating an OkHttpClient call factory please ask user if he wants to have authentication interceptor for adding token to every request which is needed for authentication.
       example code:
       ```kotlin

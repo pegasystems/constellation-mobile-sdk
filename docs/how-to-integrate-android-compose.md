@@ -59,7 +59,7 @@ For programmatic diagnostics, use [`WebViewCompat.getCurrentWebViewPackage()`](h
    build.gradle.kts example:
 
     ```kotlin
-    val sdkVersion = "5.0.0"
+    val sdkVersion = "6.0.0"
     val okHttpVersion = "X.Y.Z" // use the desired version
     dependencies {
         implementation("com.pega.constellation.sdk.kmp:ui-components-cmp:$sdkVersion")
@@ -93,7 +93,7 @@ For programmatic diagnostics, use [`WebViewCompat.getCurrentWebViewPackage()`](h
     ```kotlin
    
     private fun buildHttpClient() =
-        AndroidWebViewEngine.defaultHttpClient()
+        AndroidWebViewEngine.defaultCallFactory()
             .newBuilder()
             .addInterceptor(AuthInterceptor())
             .build()

@@ -60,7 +60,7 @@
     ```kotlin
     kotlin {
         sourceSets {
-            val sdkVersion = "5.0.0"
+            val sdkVersion = "6.0.0"
             val okHttpVersion = "X.Y.Z" // use the desired version
             commonMain {
                 dependencies {
@@ -110,7 +110,7 @@
     ```kotlin
    
     private fun buildHttpClient() =
-        AndroidWebViewEngine.defaultHttpClient()
+        AndroidWebViewEngine.defaultCallFactory()
             .newBuilder()
             .addInterceptor(AuthInterceptor())
             .build()
