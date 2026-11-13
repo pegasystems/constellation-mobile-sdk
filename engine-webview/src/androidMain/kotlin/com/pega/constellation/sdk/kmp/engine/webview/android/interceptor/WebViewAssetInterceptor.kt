@@ -32,12 +32,23 @@ internal class WebViewAssetInterceptor(
         request: WebResourceRequest
     ): WebResourceResponse? {
         Log.v(TAG) { "Intercepting request: ${request.url}" }
+        val isSdkAssetAlias = request.url.scheme == "https" && request.url.host == SDK_ASSETS
         val uri = if (request.url == pegaUrl) {
             indexHtmlUri
+        } else if (isSdkAssetAlias) {
+            request.url.buildUpon()
+                .authority(pegaUrl.authority)
+                .encodedPath("/$SDK_ASSETS${request.url.encodedPath}")
+                .build()
         } else {
             request.url
         }
-        return assetLoader.shouldInterceptRequest(uri)
+        return assetLoader.shouldInterceptRequest(uri)?.apply {
+            if (isSdkAssetAlias) {
+                // The alias serves public bundled scripts, not authenticated server resources.
+                responseHeaders = responseHeaders.orEmpty() + ("Access-Control-Allow-Origin" to "*")
+            }
+        }
     }
 
     private val indexHtmlUri: Uri
