@@ -51,10 +51,16 @@ export class ReferenceComponent {
         }
         this._setShowLabelIfMissing(referenceConfig);
 
-        // Preserve visibility resolved in the reference context; re-evaluating the raw expression
-        // against the nested page can hide valid fields or expose inactive branches.
+        // References without a visibility rule are visible by default. During an assignment
+        // transition getComputedVisibility() can still reflect the previous view and must not
+        // remove the newly returned root view.
+        const configuredVisibility = theResolvedConfigProps.visibility ?? referenceConfig.visibility;
         const resolvedVisibility = viewMetadata
-            ? (theResolvedConfigProps.visibility ?? referenceConfig.visibility ?? inPConn.getComputedVisibility?.() ?? true)
+            ? (configuredVisibility == null
+                ? true
+                : typeof configuredVisibility === "boolean"
+                    ? configuredVisibility
+                    : inPConn.getComputedVisibility?.() ?? true)
             : false;
 
         const viewObject = {
