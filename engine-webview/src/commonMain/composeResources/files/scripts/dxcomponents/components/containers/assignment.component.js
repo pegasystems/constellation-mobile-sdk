@@ -85,6 +85,21 @@ export class AssignmentComponent extends ContainerBaseComponent {
         }
     }
 
+    onEvent(event) {
+        if (event.type === "AssignmentEvent" && event.eventData?.type === "navigateToStep") {
+            this.blurAllFields();
+            this.bReInit = true;
+
+            this.executeAction(
+                this.navigateToStep(event.eventData.stepId, event.eventData.itemKey ?? this.itemKey$),
+                "navigateToStep"
+            );
+            return;
+        }
+
+        super.onEvent(event);
+    }
+
     blurAllFields() {
         const event = {
             type: "FieldChangeWithFocus",
@@ -99,6 +114,7 @@ export class AssignmentComponent extends ContainerBaseComponent {
         this.props = {
             children: this.getChildrenProps(),
             loading: this.loading,
+            itemKey: this.itemKey$,
         };
         this.componentsManager.onComponentPropsUpdate(this);
     }

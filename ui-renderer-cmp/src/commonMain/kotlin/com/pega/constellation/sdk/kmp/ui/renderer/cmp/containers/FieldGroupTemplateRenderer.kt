@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
@@ -45,6 +46,14 @@ class FieldGroupTemplateRenderer : ComponentRenderer<FieldGroupTemplateComponent
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Heading(item.heading, fontSize = 16.sp)
+                        if (item.allowEdit) {
+                            Button(onClick = {
+                                focusManager.clearFocus()
+                                editItem(item)
+                            }) {
+                                Text("Edit")
+                            }
+                        }
                         if (item.allowDelete) {
                             IconButton(onClick = {
                                 focusManager.clearFocus()

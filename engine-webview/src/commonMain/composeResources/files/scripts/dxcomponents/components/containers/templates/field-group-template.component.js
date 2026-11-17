@@ -139,6 +139,7 @@ export class FieldGroupTemplateComponent extends ContainerBaseComponent {
                     : this.getStaticHeader(this.heading, index),
             componentId,
             allowDelete: this.allowedActions.delete && evaluateAllowRowAction(allowRowDelete, item),
+            pyReference: item?.pyReference ?? "",
         };
     }
 
