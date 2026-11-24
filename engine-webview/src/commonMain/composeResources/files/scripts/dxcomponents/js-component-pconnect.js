@@ -1,4 +1,4 @@
-import { removeNode } from "./pconnect-helpers.js";
+import { hasRegisteredViewNode, populateAdditionalProps, removeNode } from "./pconnect-helpers.js";
 import { deepEquals } from "./helpers/utils.js";
 
 const TAG = "[PConnBridge]";
@@ -273,7 +273,9 @@ export class JsComponentPConnectService {
         this.removeFormField(inComp);
         const pConn = inComp.pConn;
         if (pConn?.removeNode) {
-            pConn.removeNode();
+            if (!hasRegisteredViewNode(pConn)) {
+                pConn.removeNode();
+            }
             // we need to remove node manually for Pega 25 in case node is visible
             removeNode(inComp);
         }
@@ -283,7 +285,7 @@ export class JsComponentPConnectService {
      * Note: This function internally adds field to formFieldsMap if it is editable.
      */
     populateAdditionalProps(inComp, compProps) {
-        inComp.pConn.populateAdditionalProps(compProps);
+        populateAdditionalProps(inComp, compProps);
     }
 
     /**

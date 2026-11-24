@@ -45,3 +45,26 @@ files/scripts/dxcomponents/
 ```
 
 Keeping the ordinary source files in the conventional Compose resource directory avoids platform-dependent symlink behavior and additional resource-staging tasks. The Compose Multiplatform resources plugin includes them in Android, iOS, and JVM artifacts.
+
+## Conditional-view validation
+
+The bridge removes a View using its registered `viewName` and page reference, not
+its data-reference `config.name`. These names can differ; using the latter can
+remove a parent form and its required fields when a conditional variant is hidden.
+The compatibility guard applies during property updates and component teardown.
+It does not rename metadata, replace field validation, or affect Pega 24 runtimes
+without context-tree removal. Pega 26 visibility metadata is retained.
+
+Selectable tables run `checkAndUpdate()` during initialization so their validation
+metadata and initial error state are populated before submission.
+
+Run the focused bridge regressions from the repository root with Node.js 22.7 or newer
+(no npm dependencies):
+
+```bash
+node --test engine-webview/src/jsTest/pconnect-helpers.test.mjs
+```
+
+These are mocked bridge tests, not Android/iOS acceptance coverage. Verify required
+empty and answered selections, variant switching, and back navigation in the host
+application before releasing a patched artifact.

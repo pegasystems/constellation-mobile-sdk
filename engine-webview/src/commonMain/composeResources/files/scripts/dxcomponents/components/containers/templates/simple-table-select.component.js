@@ -34,7 +34,7 @@ export class SimpleTableSelectComponent extends ContainerBaseComponent {
             this.checkAndUpdate
         );
         this.componentsManager.onComponentAdded(this);
-        this.updateSelf();
+        this.checkAndUpdate();
     }
 
     updateSelf() {

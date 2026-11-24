@@ -117,6 +117,12 @@ and check that version-specific responses are served only for their matching ver
    version, **Then** it is not silently served that fixture.
 4. **Given** supported reference metadata, **When** a reference is selected or
    displayed, **Then** its configured identity and display fields are respected.
+5. **Given** conditional views whose data-reference name matches the parent view,
+   **When** a hidden variant updates or is destroyed, **Then** only that variant
+   is removed from the context tree and the visible required field remains registered.
+6. **Given** a visible variant becomes hidden, **When** its node is removed,
+   **Then** its descendants no longer participate in validation while sibling fields
+   remain registered.
 
 ### Edge Cases
 
@@ -148,6 +154,9 @@ and check that version-specific responses are served only for their matching ver
 - **FR-008**: Isolate version-specific mock scenarios and retain shared legacy routes.
 - **FR-009**: Cover the six-presentation single-record and recorded list-of-records journeys
   with repeatable scenario checks; report incomplete platform verification explicitly.
+- **FR-010**: Use the registered view name and page reference when removing a View,
+  without changing its data-reference binding. Preserve native field/address cleanup,
+  Pega 24 behavior, and Pega 26 visibility metadata.
 
 ## Non-Functional Requirements
 

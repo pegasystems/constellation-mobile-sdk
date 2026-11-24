@@ -14,9 +14,40 @@ function trimAnnotation(annotation) {
     return annotation.substring(spaceIndex + 1);
 }
 
+export function hasRegisteredViewNode(pConn) {
+    return pConn.getRawMetadata()?.type?.toLowerCase() === "view" && !!pConn.viewName;
+}
+
+export function populateAdditionalProps(inComp, compProps) {
+    const pConn = inComp.pConn;
+    if (typeof pConn.removeNode !== "function" || !hasRegisteredViewNode(pConn)) {
+        return pConn.populateAdditionalProps(compProps);
+    }
+
+    // CoreJS may use the data-reference name to remove a hidden View, deleting its parent instead.
+    const originalRemoveNode = pConn.removeNode;
+    const ownDescriptor = Object.getOwnPropertyDescriptor(pConn, "removeNode");
+    pConn.removeNode = (...args) => {
+        if (pConn.isVisible()) {
+            return originalRemoveNode.apply(pConn, args);
+        }
+        return removeNode(inComp);
+    };
+    try {
+        return pConn.populateAdditionalProps(compProps);
+    } finally {
+        if (ownDescriptor) {
+            Object.defineProperty(pConn, "removeNode", ownDescriptor);
+        } else {
+            delete pConn.removeNode;
+        }
+    }
+}
+
 /**
  * Removes a component and its descendants from the context tree.
- * Implementation ported from CoreJS 25.1.4 without node visibility check
+ * Uses the registered View identity; other nodes retain CoreJS removal semantics.
+ * Unlike CoreJS 25.1.4, also removes visible nodes during component teardown.
  */
 export function removeNode(inComp) {
     const pConn = inComp.pConn;
@@ -45,10 +76,13 @@ export function removeNode(inComp) {
         );
     } else {
         // remove view node and its children
-        const pageRef = rawMetadata?.config?.context
+        const registeredView = hasRegisteredViewNode(pConn);
+        const pageRef = !registeredView && rawMetadata?.config?.context
             ? `${pageReference}${rawMetadata.config.context}`
             : pageReference;
-        const viewName = rawMetadata?.config?.name || rawMetadata?.config?.id || "";
+        const viewName = registeredView
+            ? pConn.viewName
+            : rawMetadata?.config?.name || rawMetadata?.config?.id || "";
         const visibility = pConn.options?.visibility
             ?? rawMetadata?.config?.visibility
             ?? rawMetadata?.config?.referenceVisibility;
